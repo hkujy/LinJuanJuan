@@ -476,7 +476,6 @@ void ReadGraphData(GRAPH &Graph)
 	else if (ModelIndex == 3)
 	{
 		fin.open("..//Input//SiouxFallsNetwork//LinkData.txt");
-
 		//fopen_s(&fin, "..//Input//SiouxFallsNetwork//LinkData.txt", "r");
 	}
 	else

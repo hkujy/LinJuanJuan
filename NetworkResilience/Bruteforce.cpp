@@ -65,8 +65,8 @@ void BruteForceFor3NodeSmall(NODEPROMATRIX &NodeProbMatrix,
 
 void EnumerateMedium(vector<CHROME> &Sol, const NODEPROMATRIX &Prob)
 {
-	unsigned int n[8];
-	for (unsigned int i = 0; i < 8; i++)
+	unsigned int n[5];
+	for (unsigned int i = 0; i < 5; i++)
 	{
 		n[i] = i;
 	}
@@ -75,7 +75,7 @@ void EnumerateMedium(vector<CHROME> &Sol, const NODEPROMATRIX &Prob)
 
 
 
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		tmc.Nodes.push_back(i);
 	}
@@ -90,12 +90,7 @@ void EnumerateMedium(vector<CHROME> &Sol, const NODEPROMATRIX &Prob)
 				{
 					for (unsigned int d4 = 0; d4 < Prob.Dof.size(); d4++)
 					{
-						for (unsigned int d5 = 0; d5 < Prob.Dof.size(); d5++)
-						{
-							for (unsigned int d6 = 0; d6 < Prob.Dof.size(); d6++)
-							{
-								for (unsigned int d7 = 0; d7 < Prob.Dof.size(); d7++)
-								{
+						
 
 									//if (NumSol > 10) continue;
 									Sol.push_back(tmc);
@@ -104,9 +99,7 @@ void EnumerateMedium(vector<CHROME> &Sol, const NODEPROMATRIX &Prob)
 									Sol.back().NodeDof.push_back(Prob.Dof.at(d2));
 									Sol.back().NodeDof.push_back(Prob.Dof.at(d3));
 									Sol.back().NodeDof.push_back(Prob.Dof.at(d4));
-									Sol.back().NodeDof.push_back(Prob.Dof.at(d5));
-									Sol.back().NodeDof.push_back(Prob.Dof.at(d6));
-									Sol.back().NodeDof.push_back(Prob.Dof.at(d7));
+									
 
 
 
@@ -115,13 +108,11 @@ void EnumerateMedium(vector<CHROME> &Sol, const NODEPROMATRIX &Prob)
 									Sol.back().NodeDofProb.push_back(Prob.Matrix[d2][n[2]]);
 									Sol.back().NodeDofProb.push_back(Prob.Matrix[d3][n[3]]);
 									Sol.back().NodeDofProb.push_back(Prob.Matrix[d4][n[4]]);
-									Sol.back().NodeDofProb.push_back(Prob.Matrix[d5][n[5]]);
-									Sol.back().NodeDofProb.push_back(Prob.Matrix[d6][n[6]]);
-									Sol.back().NodeDofProb.push_back(Prob.Matrix[d7][n[7]]);
+									
 									NumSol++;
-								}
-							}
-						}
+							
+						
+					
 					}
 				}
 			}

@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 	//cout << "Case 4: TestCSAandGA" << endl;
 
 	int ErrMsg = -1;
-	ModelIndex = 3; //SiouxFallsNetwork
+	ModelIndex = 1; //SiouxFallsNetwork
 	if (!ReadModelParas()) cerr << "Read Model Fails" << endl;// Must before 
 	ofstream RemarkFile;
 	AssertLog.open("..//OutPut//AssertLog.txt", ios::trunc);
@@ -60,6 +60,7 @@ int main(int argc, char *argv[])
 	LINKPROMATRIX LinkProbMatrix;
 	ReadDataMain(BaseGraph, NodeProbMatrix, LinkProbMatrix);
 	BaseGraph.EvaluteGraph();
+	BaseGraph.PrintLinks_onscreen();   
 	//TestNagurenyNetwork(); 
 	//TestMedium();
 	//TestAlgorithmPara();

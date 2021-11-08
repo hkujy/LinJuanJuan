@@ -115,6 +115,7 @@ public:
 	void CreateOriginSet();
 	void CreateNodes();
 	int PrintLinks(std::ofstream &fout);
+	int PrintLinks_onscreen();
 	int PrintOD(std::ofstream &fout);
 	int PrintSp(int Orign, int Dest, std::ofstream &fout);
 	void EvaluteGraph();//ue total cost unpn

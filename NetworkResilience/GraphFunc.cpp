@@ -143,6 +143,40 @@ int GRAPH::PrintLinks(std::ofstream &fout){
 
 }
 
+int GRAPH::PrintLinks_onscreen() {
+	try {
+		cout.setf(ios::fixed);
+		cout << left << setw(6) << "ID" << ",";
+		cout << left << setw(12) << "Tail" << ",";
+		cout << left << setw(12) << "Head" << ",";
+		cout << left << setw(12) << "T0" << ",";
+		cout << left << setw(12) << "Ca0" << ",";
+		cout << left << setw(12) << "CaRev" << ",";
+		cout << left << setw(12) << "Cost" << ",";
+		cout << left << setw(12) << "Flow" << endl;
+		//fout << endl;
+		for (auto l = this->Links.begin(); l != this->Links.end(); l++)
+		{
+			cout << l->ID << ",";
+			cout << l->Tail << ",";
+			cout << l->Head << ",";
+			cout << l->T0 << ",";
+			cout << l->CaInput << ",";
+			cout << l->CaRevise << ",";
+			cout << l->Cost << ",";
+			cout << l->Flow << endl;
+			//fout << endl;
+		}
+		return 1;
+	}
+	catch (exception& e)
+	{
+		TRACE("%s", e);
+		return 0;
+	}
+
+}
+
 int GRAPH::PrintOD(std::ofstream &fout)
 {
 	try

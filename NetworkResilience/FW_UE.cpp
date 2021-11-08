@@ -227,9 +227,7 @@ int GRAPH::FW_UE() {
 			l->Cost = l->BPRCost();
 		}
 		StatusMsg = this->FindMinCostRoutes();
-#ifdef DEBUG
 		cout << "UE No. of Iter " << NumIter << "\t, Converge Gap Value is" << Err << endl;
-#endif
 		//cout << "UE No. of Iter " << NumIter << "\t, Converge Gap Value is" << Err << endl;
 
 		//assert(PrintConverge(NumIter, Err, AssertLog));
