@@ -1,0 +1,8 @@
+NumNodes	5
+NumOD	1
+NumLinks	6
+OneDimEsp	0.0000001
+UEeps	0.000001
+UEmaxIter	500
+
+

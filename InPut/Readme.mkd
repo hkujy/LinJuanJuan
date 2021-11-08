@@ -1,0 +1,3 @@
+# Input Data 
+1. The node/link index starts from zero
+2. The last row of the input data is set to be -1
