@@ -3,7 +3,168 @@
 #include <math.h>       /* pow */
 #include "RandomFuncs.h"
 using namespace std;
+void increasdof(double& NowDof, vector<double> DofVarSet);
+void decreaseDof(double& NowDof, vector<double> DofVarSet);
+struct CompareStruct {
+	bool operator() (const CHROME& A, CHROME& B) { return (A.Fitness > B.Fitness); }
+} SortDecent;
+void Algorithms::SortSol(unsigned int Num)
+{
+	//cout << (this->Chroms.begin() + Num)->ID << endl;
+	std::sort(this->Chroms.begin(), this->Chroms.begin() + Num, SortDecent);
+	MaxFitValue = Chroms.begin()->Fitness;
+	MinFitValue = (Chroms.begin() + Num - 1)->Fitness;
+	//assert(MinFitValue >= -10.0);
+};
+Algorithms::~Algorithms() {
+	this->Chroms.clear();
+	NodeVarSet.clear();
+	NodeDofVarSet.clear();
+};
+int Algorithms::GenerateSol(int ChromIndex)
+{
+	/******************Random generation procedure***************/
+	//vector<int> CandiSet(NodeVarSet);
 
+	//int pos = -1;
+	///*this->Chroms.at(ChromIndex).Nodes.clear();
+	//this->Chroms.at(ChromIndex).Dof.clear();*/
+	//for (unsigned int i = 0; i < NodeVarSet.size(); i++)
+	//{
+	//	pos = GenRandomPos((unsigned int)CandiSet.size());
+
+	//	//this->Chroms.at(ChromIndex).Nodes.push_back(NodeVarSet.at(pos));
+	//	this->Chroms.at(ChromIndex).Nodes.push_back(CandiSet.at(pos));
+	//	CandiSet.erase(CandiSet.begin() + pos);
+	//	this->Chroms.at(ChromIndex).NodeDof.push_back(GenRandomdouble(NodeDofVarSet));
+	//}
+	/*******************************************/
+	/******************Secquence***************/
+	//vector<int> CandiSet(NodeVarSet);
+	for (int i = 0; i < NodeVarSet.size(); i++)
+	{
+		this->Chroms.at(ChromIndex).Nodes.push_back(NodeVarSet.at(i));
+		this->Chroms.at(ChromIndex).NodeDof.push_back(GenRandomFloat(NodeDofVarSet));
+	}
+	//int pos = -1;
+	///*this->Chroms.at(ChromIndex).Nodes.clear();
+	//this->Chroms.at(ChromIndex).Dof.clear();*/
+	//for (unsigned int i = 0; i < NodeVarSet.size(); i++)
+	//{
+	//	pos = GenRandomPos((unsigned int)CandiSet.size());
+
+	//	//this->Chroms.at(ChromIndex).Nodes.push_back(NodeVarSet.at(pos));
+	//	this->Chroms.at(ChromIndex).Nodes.push_back(CandiSet.at(pos));
+	//	CandiSet.erase(CandiSet.begin() + pos);
+	//	this->Chroms.at(ChromIndex).NodeDof.push_back(GenRandomFloat(NodeDofVarSet));
+	//}
+	/*******************************************/
+	return 1;
+};
+void Algorithms::HyperMutateMain(CHROME& Chrom) {
+
+	int MutatorIndex;  // from 1 to 5
+	double f;
+	switch (AlgorithmIndex)
+	{
+	case CSA:
+		f = GenRandomReal();
+		if (f < double(1.0f / 6.0f))
+		{
+			MutatorIndex = 0;	break;
+		}
+		if (f < double(2.0f / 6.0f) && f >= double(1.0f / 6.0f))
+		{
+			MutatorIndex = 1;	break;
+		}
+		if (f < double(3.0f / 6.0f) && f >= double(2.0f / 6.0f))
+		{
+			MutatorIndex = 2;	break;
+		}
+		if (f < double(4.0f / 6.0f) && f >= double(3.0f / 6.0f))
+		{
+			MutatorIndex = 3;	break;
+		}
+		if (f < double(5.0f / 6.0f) && f >= double(4.0f / 6.0f))
+		{
+			MutatorIndex = 4;	break;
+		}
+		if (f <= double(6.0f / 6.0f) && f >= double(5.0f / 6.0f))
+		{
+			MutatorIndex = 5;
+			break;
+		}
+		//MutatorIndex = CaseIndex(Chrom.Fitness, MaxFitValue, MinFitValue); break;
+	case GA:
+		f = GenRandomReal();
+		if (f < double(1.0f / 6.0f))
+		{
+			MutatorIndex = 0;	break;
+		}
+		if (f < double(2.0f / 6.0f) && f >= double(1.0f / 6.0f))
+		{
+			MutatorIndex = 1;	break;
+		}
+		if (f < double(3.0f / 6.0f) && f >= double(2.0f / 6.0f))
+		{
+			MutatorIndex = 2;	break;
+		}
+		if (f < double(4.0f / 6.0f) && f >= double(3.0f / 6.0f))
+		{
+			MutatorIndex = 3;	break;
+		}
+		if (f < double(5.0f / 6.0f) && f >= double(4.0f / 6.0f))
+		{
+			MutatorIndex = 4;	break;
+		}
+		if (f <= double(6.0f / 6.0f) && f >= double(5.0f / 6.0f))
+		{
+			MutatorIndex = 5;
+			break;
+		}
+
+	default:
+		cerr << "Algorithm index is not proper defined" << endl;
+		system("PAUSE");
+		break;
+	}
+
+	switch (MutatorIndex)
+	{
+	case 0:
+		for (unsigned int i = 0; i < Chrom.NodeDof.size(); i++)
+		{
+			if (GenRandomReal() >= 0.5f) increasdof(Chrom.NodeDof.at(i), NodeDofVarSet);
+			else decreaseDof(Chrom.NodeDof.at(i), NodeDofVarSet);
+		}
+		break;
+	case 1:
+		if (GenRandomReal() <= 0.1f) this->FirstProcedure(Chrom);
+		else this->SecondProcedure(Chrom, 0.2f);
+		break;
+	case 2:
+		if (GenRandomReal() <= 0.2f) this->FirstProcedure(Chrom);
+		else this->SecondProcedure(Chrom, 0.4f);
+		break;
+	case 3:
+		if (GenRandomReal() <= 0.3f) this->FirstProcedure(Chrom);
+		else this->SecondProcedure(Chrom, 0.6f);
+		break;
+	case 4:
+		if (GenRandomReal() <= 0.4f) this->FirstProcedure(Chrom);
+		else this->SecondProcedure(Chrom, 0.8f);
+		break;
+	case 5:
+		if (GenRandomReal() <= 0.5f) this->FirstProcedure(Chrom);
+		else this->SecondProcedure(Chrom, 1.0f);
+		break;
+	default:
+		TRACE("CSA Hypermutation main generates wrong Index");
+		system("PAUSE");
+		break;
+	}
+
+};
 void Algorithms::GAselectParent(int &Father, int &Mother,const int NumPop){
 
 	vector<double> Prob(NumPop + 1, 0.0f);
@@ -80,7 +241,20 @@ void Algorithms::GACrossOver(CHROME &Father, CHROME &Mother, CHROME &BigBro, CHR
 	
 
 }
-void RecordSolVa(double &SolFit, double &CurrentBest, int &NumCount, ofstream &fout);
+void RecordSolVa(double& SolFit, double& CurrentBest, int& NumCount, ofstream& fout) {
+	if (SolFit > CurrentBest)
+	{
+		CurrentBest = SolFit;
+	}
+	NumCount++;
+
+	if (isWriteConverge)
+	{
+		// write best solution with respect to the number of solution generated
+		fout << SeedRunCount << "," << NumCount << "," << CurrentBest << endl;
+	}
+}
+
 void Algorithms::GAmain(GRAPH &Graph, const int NumPop, const int NumChild,
 	const NODEPROMATRIX &NodeProbMatrix, const LINKPROMATRIX &LinkProbMatrix, ofstream &ConvergeFile)
 {
@@ -187,3 +361,4 @@ Repeat:
 
 	fsolconv.close();
 }
+

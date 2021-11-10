@@ -3,8 +3,8 @@ using namespace std;
 
 int CsaTestMain(GRAPH &BaseGraph, const NODEPROMATRIX &Pmatrix, const LINKPROMATRIX &LinkPmatrix, vector<CHROME> &BestSol,
 	vector<double> &CpuTimeVec);
-void OutputSummary(vector<CHROME> &BestSol, GRAPH &Graph, vector<double> &CpuTime,
-	NODEPROMATRIX &Pmatrix);
+//void OutputSummary(vector<CHROME> &BestSol, GRAPH &Graph, vector<double> &CpuTime, NODEPROMATRIX &Pmatrix);
+void OutputSummary(vector<CHROME> &BestSol, GRAPH &Graph, vector<double> &CpuTime);
 void ReadDataMain(GRAPH &BaseGraph, NODEPROMATRIX &Pmatrix);
 bool ReadModelParas();
 void ReadDataMain(GRAPH &BaseGraph, NODEPROMATRIX &Pmatrix, LINKPROMATRIX &LinkPmatrix);
@@ -34,7 +34,8 @@ int TestAlgorithmPara()
 		ErrMsg = CsaTestMain(BaseGraph, NodeProbMatrix, LinkProbMatrix, BestSol, CpuTimeVec);
 		//ErrMsg = GATestMain(BaseGraph, NodeProbMatrix, LinkProbMatrix, BestSol, CpuTimeVec);
 		//DebugMain();
-		OutputSummary(BestSol, BaseGraph, CpuTimeVec, NodeProbMatrix);
+		//OutputSummary(BestSol, BaseGraph, CpuTimeVec, NodeProbMatrix);
+		OutputSummary(BestSol, BaseGraph, CpuTimeVec);
 	}
 	return 0;
 

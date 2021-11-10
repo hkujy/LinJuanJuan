@@ -102,10 +102,6 @@ public:
 	std::vector<OriginBasedOD> OriginSet;
 	double UNPM;
 	double TotalSystemCost;
-	//std::vector<LINK> Links;
-	//std::vector<NODE> Nodes;
-	//std::vector<OD> ODpairs;
-	//std::vector<OriginBasedOD> OriginSet;
 	int **MinPathPredLink;
 	GRAPH();
 	~GRAPH();
@@ -202,15 +198,19 @@ public:
 	void exchangeNodeDof(CHROME &Chrom);
 	void GAselectParent(int &Father, int &Mother, const int NumPop);
 	void GACrossOver(CHROME &Father, CHROME &Mother, CHROME &BigBro, CHROME &CuteSis);
-	void CSAmain(GRAPH &Graph, int NumPop, int NumClone, int NumRep,
-		const NODEPROMATRIX &NodeProbMatrix, const LINKPROMATRIX &LinkProbMatrix, ofstream &ConvergeFile);
 	void GAmain(GRAPH &Graph, const int NumPop, const int NumChild, const NODEPROMATRIX &ProbMatrix,
 		const LINKPROMATRIX &LinkProbMatrix, ofstream &ConvergeFile);
-	void CSAmainVarA(GRAPH &Graph, int NumPop, int NumClone, int NumRep,
-		const NODEPROMATRIX &NodeProbMatrix, const LINKPROMATRIX &LinkProbMatrix, ofstream &ConvergeFile);
-	Algorithms(int NumPop, int NumClone, int NumRep);//CSA
+
+	//Algorithms(int NumPop, int NumClone, int NumRep);//CSA
 	Algorithms(int NumPop, int NumChild);//GA
 	~Algorithms();
+		
+	//CSA
+	//void CSAmain(GRAPH &Graph, int NumPop, int NumClone, int NumRep,
+	//	const NODEPROMATRIX &NodeProbMatrix, const LINKPROMATRIX &LinkProbMatrix, ofstream &ConvergeFile);
+		//void CSAmainVarA(GRAPH &Graph, int NumPop, int NumClone, int NumRep,
+	//	const NODEPROMATRIX &NodeProbMatrix, const LINKPROMATRIX &LinkProbMatrix, ofstream &ConvergeFile);
+
 
 };
 #endif

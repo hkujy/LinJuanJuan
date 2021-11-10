@@ -13,7 +13,8 @@ double LINK::IniCost(){
 double LINK::BPRCost(){
 	//assert(this->CaRevise > Zero);
 	//return (this->T0*(1.0f + (this->AlphaBpr)*std::pow((this->Flow /std::max(this->CaRevise, Zero)), this->BetaBBpr)));
-	return (this->T0*(1.0f + 0.15*std::pow((this->Flow /std::max(this->CaRevise, Zero)), 4.0)));
+	//return (this->T0*(1.0f + 0.15*std::pow((this->Flow /std::max(this->CaRevise, Zero)), 4.0)));
+	return (this->T0*(1.0f + AlphaBpr*std::pow((this->Flow /std::max(this->CaRevise, Zero)),BetaBBpr)));
 };
 
 LINK::LINK(const LINK& OtherLink){

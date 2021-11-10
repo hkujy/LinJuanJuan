@@ -11,7 +11,8 @@ inline double GetBPRCost(double &flow,double &Ca,double &t0,
 	//return (t0*(1.0f + AlphBpr*pow((flow / Ca), BetaBpr)));
 	//return (t0*(1.0f + AlphBpr*(flow / Ca)*(flow / Ca)*(flow / Ca)*(flow / Ca)));// by defalut Bpr = 4;
 	//return (t0*(1.0f + 0.15*(flow / Ca)*(flow / Ca)*(flow / Ca)*(flow / Ca)));// by defalut Bpr = 4;
-	return (t0*(1.0f + 0.15*std::pow((flow / Ca),4)));// by defalut Bpr = 4;
+	//return (t0*(1.0f + 0.15*std::pow((flow / Ca),4)));// by defalut Bpr = 4;
+	return (t0*(1.0f + AlphBpr*std::pow((flow / Ca),BetaBpr)));// by defalut Bpr = 4;
 };
 
 double LinksDirectionDerivative(vector<LINK> &XLink, vector<double> &FlowDif, double &Alpha)

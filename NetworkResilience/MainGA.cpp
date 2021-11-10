@@ -1,7 +1,28 @@
 #include "CommonHeaders.h"
 #include "RandomFuncs.h"
 using namespace std;
-bool ReadSeedVec(std::vector<int> &SeedVec, FILE *fin);
+//bool ReadSeedVec(std::vector<int> &SeedVec, FILE *fin);
+bool ReadSeedVec(std::vector<int>& SeedVec,
+	FILE* fin) {
+	int SeedValue;
+	SeedVec.clear();
+	if (nullptr == fin) {
+		perror("Read Seed File Fails \n");
+		return false;
+	}
+	else
+	{
+		while (!feof(fin))
+		{
+			fscanf_s(fin, "%i",
+				&SeedValue);
+			if (SeedValue != EOF) {
+				SeedVec.push_back(SeedValue);
+			}
+		}
+	}
+	return true;
+}
 int GATestMain(GRAPH &BaseGraph, const NODEPROMATRIX &NodeProbMatrix, const LINKPROMATRIX &LinkProbMatrix, vector<CHROME> &BestSol,
 	vector<double> &CpuTimeVec)
 {
@@ -75,4 +96,26 @@ int GATestMain(GRAPH &BaseGraph, const NODEPROMATRIX &NodeProbMatrix, const LINK
 		TRACE("%s", e);
 		return 0;
 	}
+}
+Algorithms::Algorithms(int NumPop, int NumChild) {
+
+	//Pop solution
+	CHROME ts;
+	int idCount = 0;
+	for (int i = 0; i < NumPop; i++)
+	{
+		ts.ID = idCount;
+		this->Chroms.push_back(ts);
+		idCount++;
+	}
+	// child
+	for (int i = 0; i < NumChild; i++)
+	{
+		ts.ID = idCount;
+		this->Chroms.push_back(ts);
+		idCount++;
+	}
+	NodeVarSet.reserve(NumNodes);
+	NodeDofVarSet.reserve(NumNodes);
+	AlgorithmIndex = GA;
 }

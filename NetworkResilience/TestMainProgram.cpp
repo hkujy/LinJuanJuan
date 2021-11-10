@@ -10,6 +10,7 @@ int TestNagurenyNetwork();
 void ReadDataMain(GRAPH& BaseGraph, NODEPROMATRIX& Pmatrix);
 bool ReadModelParas();
 void ReadDataMain(GRAPH& BaseGraph, NODEPROMATRIX& Pmatrix, LINKPROMATRIX& LinkPmatrix);
+void ReadDataMain(GRAPH& BaseGraph);
 // TODO: Change some input to the format of CSV
 
 int main(int argc, char *argv[])
@@ -50,24 +51,30 @@ int main(int argc, char *argv[])
 	//cout << "Case 4: TestCSAandGA" << endl;
 
 	int ErrMsg = -1;
-	ModelIndex = 1; //SiouxFallsNetwork
+	//ModelIndex = 1; //SiouxFallsNetwork
+	ModelIndex = 4; //Paradox network
 	if (!ReadModelParas()) cerr << "Read Model Fails" << endl;// Must before 
 	ofstream RemarkFile;
 	AssertLog.open("..//OutPut//AssertLog.txt", ios::trunc);
 	RemarkFile.open("..//OutPut//TestRemark.txt", ios::trunc);
 	GRAPH BaseGraph;
-	NODEPROMATRIX NodeProbMatrix;
-	LINKPROMATRIX LinkProbMatrix;
-	ReadDataMain(BaseGraph, NodeProbMatrix, LinkProbMatrix);
+	//NODEPROMATRIX NodeProbMatrix;
+	//LINKPROMATRIX LinkProbMatrix;
+	ReadDataMain(BaseGraph);
 	BaseGraph.EvaluteGraph();
+	BaseGraph.PrintLinks_onscreen();   
+	cout << "BeforeCase: Total Cost = " << BaseGraph.TotalSystemCost << endl;
+	double TempVal = BaseGraph.Links.at(4).CaInput;
+	BaseGraph.Links.at(4).CaRevise = 0.0000001;
+	BaseGraph.Links.at(4).CaInput = 0.0000001;
+	BaseGraph.EvaluteGraph();
+	BaseGraph.Links.at(4).CaInput = TempVal;
+	cout << "AfterCase: Total Cost = " << BaseGraph.TotalSystemCost << endl;
 	BaseGraph.PrintLinks_onscreen();   
 	//TestNagurenyNetwork(); 
 	//TestMedium();
 	//TestAlgorithmPara();
 	//TestCSAandGA();
-
-
-
 	//CloseFiles();
 
 	return 0;

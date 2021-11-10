@@ -68,9 +68,6 @@
     <ClCompile Include="ChromFuncs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CSAFuncs.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GraphFunc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -80,9 +77,6 @@
     <ClCompile Include="RandomValue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CSAMutation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ScanMedum.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -90,9 +84,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MutaFuncs.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MainCsa.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ProbMatrixFuncs.cpp">
@@ -110,16 +101,7 @@
     <ClCompile Include="CloneSet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TestMedium.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TestNagurenyNetwork.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TestCSAParas.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TestCSAandGA.cpp">
+    <ClCompile Include="TestBaressParadox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

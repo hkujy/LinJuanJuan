@@ -1,0 +1,238 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+AlgorithmIndex	.\NetworkResilience\Classes.h	/^	AlgorithmType AlgorithmIndex;  \/\/ 1: CSA, 2:GA$/;"	m	class:Algorithms
+AlgorithmType	.\NetworkResilience\Parameters.h	/^enum AlgorithmType$/;"	g
+Algorithms	.\NetworkResilience\CSAFuncs.cpp	/^Algorithms::Algorithms(int NumPop, int NumChild){$/;"	f	class:Algorithms
+Algorithms	.\NetworkResilience\CSAFuncs.cpp	/^Algorithms::Algorithms(int NumPop, int NumClone, int NumRep)$/;"	f	class:Algorithms
+Algorithms	.\NetworkResilience\Classes.h	/^class Algorithms \/\/ ==  scenario$/;"	c
+AlphaBpr	.\NetworkResilience\Classes.h	/^	double AlphaBpr; \/\/ parameter in the BPR  \/\/ 0.15$/;"	m	class:LINK
+AssertLog	.\NetworkResilience\DefGloVar.h	/^std::ofstream  AssertLog;$/;"	v
+Assign	.\NetworkResilience\FW_UE.cpp	/^void Assign(const std::vector<OriginBasedOD> &Oset,$/;"	f
+BPRCost	.\NetworkResilience\LinkFuncs.cpp	/^double LINK::BPRCost(){$/;"	f	class:LINK
+BaseUNPM	.\NetworkResilience\Classes.h	/^	double BaseUNPM;$/;"	m	class:Algorithms
+BetaBBpr	.\NetworkResilience\Classes.h	/^	double BetaBBpr; \/\/ parameter in the BPR  \/\/ 4.0$/;"	m	class:LINK
+BruteForceFor3NodeSmall	.\NetworkResilience\Bruteforce.cpp	/^void BruteForceFor3NodeSmall(NODEPROMATRIX &NodeProbMatrix,$/;"	f
+CHROME	.\NetworkResilience\ChromFuncs.cpp	/^CHROME::CHROME(){$/;"	f	class:CHROME
+CHROME	.\NetworkResilience\Classes.h	/^class CHROME \/\/ ==  scenario$/;"	c
+COMMONHEADER	.\NetworkResilience\CommonHeaders.h	3;"	d
+CSA	.\NetworkResilience\Parameters.h	/^	CSA, GA$/;"	e	enum:AlgorithmType
+CSACloneMethod	.\NetworkResilience\DefGloVar.h	/^int CSACloneMethod;$/;"	v
+CSAmain	.\NetworkResilience\CSAFuncs.cpp	/^void Algorithms::CSAmain(GRAPH &Graph, int NumPop, int NumClone, int NumRep,$/;"	f	class:Algorithms
+CSAmainVarA	.\NetworkResilience\CSAFuncs.cpp	/^void Algorithms::CSAmainVarA(GRAPH &Graph, int NumPop, int NumClone, int NumRep,$/;"	f	class:Algorithms
+CaInput	.\NetworkResilience\Classes.h	/^	double CaInput;$/;"	m	class:LINK
+CaRevise	.\NetworkResilience\Classes.h	/^	double CaRevise;$/;"	m	class:LINK
+CaseIndex	.\NetworkResilience\CSAMutation.cpp	/^int CaseIndex(double Fit, double MaxFit, double MinFit){$/;"	f
+Chroms	.\NetworkResilience\Classes.h	/^	vector<CHROME> Chroms;$/;"	m	class:Algorithms
+CleanLinkFlow	.\NetworkResilience\LinkFuncs.cpp	/^double LINK::CleanLinkFlow(){$/;"	f	class:LINK
+CloseFiles	.\NetworkResilience\OpenCloseFiles.cpp	/^void CloseFiles(){$/;"	f
+CompareStruct	.\NetworkResilience\CSAFuncs.cpp	/^struct CompareStruct {$/;"	s	file:
+Copy	.\NetworkResilience\ChromFuncs.cpp	/^void CHROME::Copy(const CHROME& FromSource){$/;"	f	class:CHROME
+Cost	.\NetworkResilience\Classes.h	/^	double Cost;$/;"	m	class:LINK
+Create1DAarray	.\NetworkResilience\TempleteFunc.h	/^T *Create1DAarray(const int dim1) {$/;"	f
+Create2DAarray	.\NetworkResilience\TempleteFunc.h	/^template <typename T>  T **Create2DAarray(const int dim1, const int dim2){$/;"	f
+CreateNodes	.\NetworkResilience\GraphFunc.cpp	/^void GRAPH::CreateNodes(){$/;"	f	class:GRAPH
+CreateOriginSet	.\NetworkResilience\GraphFunc.cpp	/^void GRAPH::CreateOriginSet()$/;"	f	class:GRAPH
+CsaCloneBeta	.\NetworkResilience\DefGloVar.h	/^double CsaCloneBeta;$/;"	v
+CsaNumPop	.\NetworkResilience\DefGloVar.h	/^int CsaNumPop;$/;"	v
+CsaRepRatio	.\NetworkResilience\DefGloVar.h	/^double CsaRepRatio;$/;"	v
+CsaTestMain	.\NetworkResilience\MainCsa.cpp	/^int CsaTestMain(GRAPH &BaseGraph, const NODEPROMATRIX &NodeProbMatrix,const LINKPROMATRIX &LinkProbMatrix, vector<CHROME> &BestSol,$/;"	f
+DGV	.\NetworkResilience\DefGloVar.h	3;"	d
+DebugStop	.\NetworkResilience\TempleteFunc.h	/^void DebugStop(T val, T tv){$/;"	f
+Demand	.\NetworkResilience\Classes.h	/^	double Demand;$/;"	m	class:OD
+Dest	.\NetworkResilience\Classes.h	/^	int Dest;$/;"	m	class:OD
+Dof	.\NetworkResilience\Classes.h	/^	vector<double> Dof; \/\/ degree of failure$/;"	m	class:LINKPROMATRIX
+Dof	.\NetworkResilience\Classes.h	/^	vector<double> Dof; \/\/ degree of failure$/;"	m	class:NODEPROMATRIX
+EnumerateMedium	.\NetworkResilience\Bruteforce.cpp	/^void EnumerateMedium(vector<CHROME> &Sol, const NODEPROMATRIX &Prob)$/;"	f
+EnumerateNagureny	.\NetworkResilience\Bruteforce.cpp	/^void EnumerateNagureny(vector<CHROME> &Sol, const LINKPROMATRIX &Prob)$/;"	f
+Enumerate_Samll_1	.\NetworkResilience\Bruteforce.cpp	/^void Enumerate_Samll_1(vector<CHROME> &Sol, const NODEPROMATRIX &Prob)$/;"	f
+EvaluateSol	.\NetworkResilience\ChromFuncs.cpp	/^void CHROME::EvaluateSol(GRAPH &Graph, const double BaseUNPM, const NODEPROMATRIX &NodeProbMatrix,$/;"	f	class:CHROME
+EvaluteGraph	.\NetworkResilience\FW_UE.cpp	/^void GRAPH::EvaluteGraph() {$/;"	f	class:GRAPH
+FW_UE	.\NetworkResilience\FW_UE.cpp	/^int GRAPH::FW_UE() {$/;"	f	class:GRAPH
+FindMinCostRoutes	.\NetworkResilience\GraphFunc.cpp	/^int GRAPH::FindMinCostRoutes(){$/;"	f	class:GRAPH
+FirstProcedure	.\NetworkResilience\CSAMutation.cpp	/^void Algorithms::FirstProcedure(CHROME &Chrom){$/;"	f	class:Algorithms
+FirstProcedureFunc	.\NetworkResilience\MutaFuncs.cpp	/^void FirstProcedureFunc(CHROME &Chrom, vector<double> DofVarSet){$/;"	f
+Fitness	.\NetworkResilience\Classes.h	/^	double Fitness;$/;"	m	class:CHROME
+Flow	.\NetworkResilience\Classes.h	/^	double Flow;$/;"	m	class:LINK
+Free1DArrey	.\NetworkResilience\TempleteFunc.h	/^void Free1DArrey(T *Array) {$/;"	f
+Free2DArrey	.\NetworkResilience\TempleteFunc.h	/^void Free2DArrey(T **Array, const int dim1) {$/;"	f
+GA	.\NetworkResilience\Parameters.h	/^	CSA, GA$/;"	e	enum:AlgorithmType
+GACrossOver	.\NetworkResilience\GAfuncs.cpp	/^void Algorithms::GACrossOver(CHROME &Father, CHROME &Mother, CHROME &BigBro, CHROME &CuteSis)$/;"	f	class:Algorithms
+GANumChild	.\NetworkResilience\DefGloVar.h	/^int GANumChild;$/;"	v
+GANumPop	.\NetworkResilience\DefGloVar.h	/^int GANumPop;$/;"	v
+GATestMain	.\NetworkResilience\MainGA.cpp	/^int GATestMain(GRAPH &BaseGraph, const NODEPROMATRIX &NodeProbMatrix, const LINKPROMATRIX &LinkProbMatrix, vector<CHROME> &BestSol,$/;"	f
+GAmain	.\NetworkResilience\GAfuncs.cpp	/^void Algorithms::GAmain(GRAPH &Graph, const int NumPop, const int NumChild,$/;"	f	class:Algorithms
+GAselectParent	.\NetworkResilience\GAfuncs.cpp	/^void Algorithms::GAselectParent(int &Father, int &Mother,const int NumPop){$/;"	f	class:Algorithms
+GLOBALVAR	.\NetworkResilience\GlobalVar.h	3;"	d
+GRAPH	.\NetworkResilience\Classes.h	/^class GRAPH$/;"	c
+GRAPH	.\NetworkResilience\GraphFunc.cpp	/^GRAPH::GRAPH(){$/;"	f	class:GRAPH
+GaMutationRate	.\NetworkResilience\DefGloVar.h	/^double GaMutationRate;$/;"	v
+GenRan	.\NetworkResilience\DefGloVar.h	/^std::default_random_engine GenRan;$/;"	v
+GenRandomFloat	.\NetworkResilience\RandomValue.cpp	/^double GenRandomFloat(const std::vector<double> &Vec)$/;"	f
+GenRandomInt	.\NetworkResilience\RandomValue.cpp	/^int GenRandomInt(const std::vector<int> &Vec)$/;"	f
+GenRandomPos	.\NetworkResilience\RandomValue.cpp	/^int GenRandomPos(unsigned int siz)$/;"	f
+GenRandomReal	.\NetworkResilience\RandomValue.cpp	/^double GenRandomReal()$/;"	f
+GenerateCloneSet	.\NetworkResilience\CloneSet.cpp	/^void GenerateCloneSet(const vector<CHROME> Chroms, const int NumPop,const int NumClone,$/;"	f
+GenerateSol	.\NetworkResilience\CSAFuncs.cpp	/^int Algorithms::GenerateSol(int ChromIndex)$/;"	f	class:Algorithms
+GetBPRCost	.\NetworkResilience\LineSearchUingDirective.cpp	/^inline double GetBPRCost(double &flow,double &Ca,double &t0,$/;"	f
+GetNowTime	.\NetworkResilience\DebugMsg.cpp	/^void GetNowTime(ofstream FileName)$/;"	f
+Head	.\NetworkResilience\Classes.h	/^	int Head;$/;"	m	class:LINK
+HyperMutateMain	.\NetworkResilience\CSAMutation.cpp	/^void Algorithms::HyperMutateMain(CHROME &Chrom){$/;"	f	class:Algorithms
+ID	.\NetworkResilience\Classes.h	/^	int ID;$/;"	m	class:CHROME
+ID	.\NetworkResilience\Classes.h	/^	int ID;$/;"	m	class:LINK
+ID	.\NetworkResilience\Classes.h	/^	int ID;$/;"	m	class:NODE
+ID	.\NetworkResilience\Classes.h	/^	int ID;$/;"	m	class:OD
+ID	.\NetworkResilience\Classes.h	/^	int ID;$/;"	m	class:TEST
+ImpactValue	.\NetworkResilience\Classes.h	/^	double ImpactValue;$/;"	m	class:CHROME
+InLinks	.\NetworkResilience\Classes.h	/^	std::vector<const LINK*> InLinks;$/;"	m	class:NODE
+IniCap	.\NetworkResilience\ChromFuncs.cpp	/^void CHROME::IniCap(GRAPH &ScenarioGraph){$/;"	f	class:CHROME
+IniCap	.\NetworkResilience\LinkFuncs.cpp	/^void LINK::IniCap(){$/;"	f	class:LINK
+IniCost	.\NetworkResilience\LinkFuncs.cpp	/^double LINK::IniCost(){$/;"	f	class:LINK
+InvaildFloat	.\NetworkResilience\Parameters.h	/^const double InvaildFloat = -999.9f;$/;"	v
+InvaildInt	.\NetworkResilience\Parameters.h	/^const int InvaildInt=-1;$/;"	v
+InvalidMinCost	.\NetworkResilience\Parameters.h	/^const double InvalidMinCost = 99999.0f;$/;"	v
+LINK	.\NetworkResilience\Classes.h	/^class LINK$/;"	c
+LINK	.\NetworkResilience\LinkFuncs.cpp	/^LINK::LINK(){$/;"	f	class:LINK
+LINK	.\NetworkResilience\LinkFuncs.cpp	/^LINK::LINK(const LINK& OtherLink){$/;"	f	class:LINK
+LINKPROMATRIX	.\NetworkResilience\Classes.h	/^class LINKPROMATRIX{$/;"	c
+LINKPROMATRIX	.\NetworkResilience\ProbMatrixFuncs.cpp	/^LINKPROMATRIX::LINKPROMATRIX(){$/;"	f	class:LINKPROMATRIX
+LargeNum	.\NetworkResilience\Parameters.h	/^const double LargeNum = 1.0e+20f;$/;"	v
+LinkDof	.\NetworkResilience\Classes.h	/^	vector<double> LinkDof;$/;"	m	class:CHROME
+LinkDofProb	.\NetworkResilience\Classes.h	/^	vector<double> LinkDofProb;$/;"	m	class:CHROME
+Links	.\NetworkResilience\Classes.h	/^	std::vector<LINK> Links;$/;"	m	class:GRAPH
+Links	.\NetworkResilience\Classes.h	/^	vector<int> Links;$/;"	m	class:CHROME
+LinksDirectionDerivative	.\NetworkResilience\LineSearchUingDirective.cpp	/^double LinksDirectionDerivative(vector<LINK> &XLink, vector<double> &FlowDif, double &Alpha)$/;"	f
+LinksSDLineSearch	.\NetworkResilience\LineSearchUingDirective.cpp	/^double LinksSDLineSearch(vector<LINK> &XLink, vector<LINK> &YLink)$/;"	f
+Log	.\NetworkResilience\OpenCloseFiles.cpp	/^std::ofstream Log;$/;"	v
+LogMsg	.\NetworkResilience\DebugMsg.cpp	/^void LogMsg(const char *format, ...) {$/;"	f
+Matrix	.\NetworkResilience\Classes.h	/^	double **Matrix;\/\/ matrix[degree of failure index][node number]$/;"	m	class:LINKPROMATRIX
+Matrix	.\NetworkResilience\Classes.h	/^	double **Matrix;\/\/ matrix[degree of failure index][node number]$/;"	m	class:NODEPROMATRIX
+MaxCsaIter	.\NetworkResilience\DefGloVar.h	/^int MaxCsaIter;$/;"	v
+MaxFitValue	.\NetworkResilience\Classes.h	/^	double MaxFitValue;$/;"	m	class:Algorithms
+MaxGAIter	.\NetworkResilience\DefGloVar.h	/^int MaxGAIter;$/;"	v
+MaxNumDof	.\NetworkResilience\Parameters.h	/^const int MaxNumDof = 10;$/;"	v
+MaxNumNodes	.\NetworkResilience\Parameters.h	/^const int MaxNumNodes = 1000;$/;"	v
+MaxNumSolEval	.\NetworkResilience\DefGloVar.h	/^int MaxNumSolEval;$/;"	v
+MinCost	.\NetworkResilience\Classes.h	/^	double MinCost;$/;"	m	class:OD
+MinFitValue	.\NetworkResilience\Classes.h	/^	double MinFitValue;$/;"	m	class:Algorithms
+MinPathPredLink	.\NetworkResilience\Classes.h	/^	int **MinPathPredLink;$/;"	m	class:GRAPH
+ModelIndex	.\NetworkResilience\DefGloVar.h	/^int ModelIndex;$/;"	v
+MyClasses	.\NetworkResilience\Classes.h	3;"	d
+NODE	.\NetworkResilience\Classes.h	/^	NODE(){$/;"	f	class:NODE
+NODE	.\NetworkResilience\Classes.h	/^class NODE$/;"	c
+NODEPROMATRIX	.\NetworkResilience\Classes.h	/^class NODEPROMATRIX{$/;"	c
+NODEPROMATRIX	.\NetworkResilience\ProbMatrixFuncs.cpp	/^NODEPROMATRIX::NODEPROMATRIX(){$/;"	f	class:NODEPROMATRIX
+NodeDof	.\NetworkResilience\Classes.h	/^	vector<double> NodeDof;$/;"	m	class:CHROME
+NodeDofProb	.\NetworkResilience\Classes.h	/^	vector<double> NodeDofProb;$/;"	m	class:CHROME
+NodeDofVarSet	.\NetworkResilience\Classes.h	/^	vector<double> NodeDofVarSet;\/\/ set of degree of reduction$/;"	m	class:Algorithms
+NodeVarSet	.\NetworkResilience\Classes.h	/^	vector<int> NodeVarSet;$/;"	m	class:Algorithms
+Nodes	.\NetworkResilience\Classes.h	/^	std::vector<NODE> Nodes;$/;"	m	class:GRAPH
+Nodes	.\NetworkResilience\Classes.h	/^	vector<int> Nodes;$/;"	m	class:CHROME
+NumDest	.\NetworkResilience\DefGloVar.h	/^int NumDest;$/;"	v
+NumLinks	.\NetworkResilience\DefGloVar.h	/^int NumLinks;$/;"	v
+NumNodes	.\NetworkResilience\DefGloVar.h	/^int NumNodes;$/;"	v
+NumOD	.\NetworkResilience\DefGloVar.h	/^int NumOD;$/;"	v
+NumOrig	.\NetworkResilience\DefGloVar.h	/^int NumOrig;$/;"	v
+OD	.\NetworkResilience\Classes.h	/^	OD(){$/;"	f	class:OD
+OD	.\NetworkResilience\Classes.h	/^class OD$/;"	c
+ODset	.\NetworkResilience\Classes.h	/^	std::vector<const OD*>  ODset;$/;"	m	class:OriginBasedOD
+OdPairs	.\NetworkResilience\Classes.h	/^	std::vector<OD> OdPairs;$/;"	m	class:GRAPH
+OneDim	.\NetworkResilience\FW_UE.cpp	/^double OneDim(vector<LINK> VALinks, std::vector<LINK> VBLinks,$/;"	f
+OneDimEsp	.\NetworkResilience\DefGloVar.h	/^double  OneDimEsp;$/;"	v
+Onode	.\NetworkResilience\Classes.h	/^	int Onode;$/;"	m	class:OriginBasedOD
+OpenAndCleanFiles	.\NetworkResilience\OpenCloseFiles.cpp	/^void OpenAndCleanFiles(){$/;"	f
+OriginBasedOD	.\NetworkResilience\Classes.h	/^	OriginBasedOD(){$/;"	f	class:OriginBasedOD
+OriginBasedOD	.\NetworkResilience\Classes.h	/^class OriginBasedOD$/;"	c
+OriginSet	.\NetworkResilience\Classes.h	/^	std::vector<OriginBasedOD> OriginSet;$/;"	m	class:GRAPH
+Orign	.\NetworkResilience\Classes.h	/^	int Orign;$/;"	m	class:OD
+OutLinks	.\NetworkResilience\Classes.h	/^	std::vector<const LINK*> OutLinks;$/;"	m	class:NODE
+OutPutGraph	.\NetworkResilience\OutPutGraph.cpp	/^void OutPutGraph(GRAPH &Graph){$/;"	f
+OutputSummary	.\NetworkResilience\OutPutGraph.cpp	/^void OutputSummary(vector<CHROME> &BestSol,GRAPH &Graph,vector<double> &CpuTime,$/;"	f
+PARA	.\NetworkResilience\Parameters.h	2;"	d
+PrintConverge	.\NetworkResilience\FW_UE.cpp	/^int PrintConverge(int NumIter, double Err, ofstream &fout) {$/;"	f
+PrintLinks	.\NetworkResilience\GraphFunc.cpp	/^int GRAPH::PrintLinks(std::ofstream &fout){$/;"	f	class:GRAPH
+PrintLinks_onscreen	.\NetworkResilience\GraphFunc.cpp	/^int GRAPH::PrintLinks_onscreen() {$/;"	f	class:GRAPH
+PrintMatrix	.\NetworkResilience\ProbMatrixFuncs.cpp	/^int LINKPROMATRIX::PrintMatrix(ofstream &fout){$/;"	f	class:LINKPROMATRIX
+PrintMatrix	.\NetworkResilience\ProbMatrixFuncs.cpp	/^int NODEPROMATRIX::PrintMatrix(ofstream &fout){$/;"	f	class:NODEPROMATRIX
+PrintModelParas	.\NetworkResilience\ReadData.cpp	/^bool PrintModelParas(){$/;"	f
+PrintOD	.\NetworkResilience\GraphFunc.cpp	/^int GRAPH::PrintOD(std::ofstream &fout)$/;"	f	class:GRAPH
+PrintParaValue	.\NetworkResilience\TempleteFunc.h	/^void PrintParaValue(char *Name, T Value)$/;"	f
+PrintSol	.\NetworkResilience\ChromFuncs.cpp	/^int CHROME::PrintSol(ofstream &fout){$/;"	f	class:CHROME
+PrintSp	.\NetworkResilience\GraphFunc.cpp	/^int GRAPH::PrintSp(int Orign, int Dest, std::ofstream &fout)$/;"	f	class:GRAPH
+RANFUNS	.\NetworkResilience\RandomFuncs.h	2;"	d
+ReadDataMain	.\NetworkResilience\ReadData.cpp	/^void ReadDataMain(GRAPH &BaseGraph, NODEPROMATRIX &NodePmatrix, LINKPROMATRIX &LinkPmatrix){$/;"	f
+ReadDataMain	.\NetworkResilience\ReadData.cpp	/^void ReadDataMain(GRAPH &BaseGraph, NODEPROMATRIX &Pmatrix){$/;"	f
+ReadDataMain	.\NetworkResilience\ReadData.cpp	/^void ReadDataMain(GRAPH& BaseGraph) {$/;"	f
+ReadDemandData	.\NetworkResilience\ReadData.cpp	/^bool ReadDemandData(vector<OD> &ODPairs,$/;"	f
+ReadGraphData	.\NetworkResilience\ReadData.cpp	/^void ReadGraphData(GRAPH &Graph)$/;"	f
+ReadLinkData	.\NetworkResilience\ReadData.cpp	/^bool ReadLinkData(std::vector<LINK> &Links,$/;"	f
+ReadLinkProb	.\NetworkResilience\ReadData.cpp	/^void ReadLinkProb(LINKPROMATRIX &LinkProbMatrix)$/;"	f
+ReadModelParas	.\NetworkResilience\ReadData.cpp	/^bool ReadModelParas(){$/;"	f
+ReadNodeProb	.\NetworkResilience\ReadData.cpp	/^void ReadNodeProb(NODEPROMATRIX &Pmatrix)$/;"	f
+ReadSeedVec	.\NetworkResilience\MainCsa.cpp	/^bool ReadSeedVec(std::vector<int> &SeedVec,$/;"	f
+RecordSolVa	.\NetworkResilience\CSAFuncs.cpp	/^void RecordSolVa(double &SolFit, double &CurrentBest,int &NumCount,ofstream &fout){$/;"	f
+RemoveLinkCost	.\NetworkResilience\Parameters.h	/^const double RemoveLinkCost = 99999.0f;$/;"	v
+ReviseCap	.\NetworkResilience\ChromFuncs.cpp	/^void CHROME::ReviseCap(GRAPH &Graph){$/;"	f	class:CHROME
+SP	.\NetworkResilience\SP.cpp	/^int GRAPH::SP(const int Orig, std::vector<double> &Lable)$/;"	f	class:GRAPH
+ScanMedium	.\NetworkResilience\ScanMedum.cpp	/^int ScanMedium(GRAPH &BaseGraph, vector<CHROME> &BestSol,$/;"	f
+ScanNagurenyNetwork	.\NetworkResilience\ScanMedum.cpp	/^int ScanNagurenyNetwork(GRAPH &BaseGraph, vector<CHROME> &BestSol, const NODEPROMATRIX &Pmatrix,$/;"	f
+SecondProcedure	.\NetworkResilience\CSAMutation.cpp	/^void Algorithms::SecondProcedure(CHROME &Chrom, double Ratio){$/;"	f	class:Algorithms
+SeedRunCount	.\NetworkResilience\DefGloVar.h	/^int SeedRunCount;$/;"	v
+SolProb	.\NetworkResilience\Classes.h	/^	double SolProb;$/;"	m	class:CHROME
+SortDecent	.\NetworkResilience\CSAFuncs.cpp	/^} SortDecent;$/;"	v	typeref:struct:CompareStruct
+SortSol	.\NetworkResilience\CSAFuncs.cpp	/^void Algorithms::SortSol(unsigned int Num)$/;"	f	class:Algorithms
+StopCriteria	.\NetworkResilience\DefGloVar.h	/^int StopCriteria;$/;"	v
+T0	.\NetworkResilience\Classes.h	/^	double T0;$/;"	m	class:LINK
+TEST	.\NetworkResilience\Classes.h	/^	TEST(){$/;"	f	class:TEST
+TEST	.\NetworkResilience\Classes.h	/^class TEST$/;"	c
+TRACE	.\NetworkResilience\Debug.h	5;"	d
+Tail	.\NetworkResilience\Classes.h	/^	int Tail;$/;"	m	class:LINK
+TempletFun	.\NetworkResilience\TempleteFunc.h	4;"	d
+TestAlgorithmPara	.\NetworkResilience\TestCSAParas.cpp	/^int TestAlgorithmPara()$/;"	f
+TestBaressParadoxNetwork	.\NetworkResilience\TestBaressParadox.cpp	/^int TestBaressParadoxNetwork()$/;"	f
+TestCSAandGA	.\NetworkResilience\TestCSAandGA.cpp	/^int TestCSAandGA()$/;"	f
+TestMedium	.\NetworkResilience\TestMedium.cpp	/^int TestMedium()$/;"	f
+TestNagurenyNetwork	.\NetworkResilience\TestNagurenyNetwork.cpp	/^int TestNagurenyNetwork()$/;"	f
+TotalCost	.\NetworkResilience\Classes.h	/^	double TotalCost;$/;"	m	class:CHROME
+TotalSystemCost	.\NetworkResilience\Classes.h	/^	double TotalSystemCost;$/;"	m	class:GRAPH
+UEeps	.\NetworkResilience\DefGloVar.h	/^double  UEeps;$/;"	v
+UEmaxIter	.\NetworkResilience\DefGloVar.h	/^int	   UEmaxIter;$/;"	v
+UNPM	.\NetworkResilience\Classes.h	/^	double UNPM;$/;"	m	class:CHROME
+UNPM	.\NetworkResilience\Classes.h	/^	double UNPM;$/;"	m	class:GRAPH
+UpdateLable	.\NetworkResilience\SP.cpp	/^bool UpdateLable(const double CurrentCost, const double LinkCost, const double OldNextNodeCost, double &NewCost)$/;"	f
+Wobj	.\NetworkResilience\FW_UE.cpp	/^double Wobj(const vector<LINK> &Links)$/;"	f
+Zero	.\NetworkResilience\Parameters.h	/^const double Zero = 1.0e-6f;$/;"	v
+addNewNode	.\NetworkResilience\CSAMutation.cpp	/^void Algorithms::addNewNode(CHROME &Chrom){$/;"	f	class:Algorithms
+addNewNodeFunc	.\NetworkResilience\MutaFuncs.cpp	/^void addNewNodeFunc(CHROME &Chrom, vector<double> DofVarSet)$/;"	f
+clear	.\NetworkResilience\ChromFuncs.cpp	/^void CHROME::clear(){$/;"	f	class:CHROME
+decreaseDof	.\NetworkResilience\MutaFuncs.cpp	/^void decreaseDof(double &NowDof, vector<double> DofVarSet){$/;"	f
+empties_ok	.\NetworkResilience\TempleteFunc.h	/^	enum empties_t { empties_ok, no_empties };$/;"	e	enum:split::empties_t
+empties_t	.\NetworkResilience\TempleteFunc.h	/^	enum empties_t { empties_ok, no_empties };$/;"	g	struct:split
+exchangeNodeDof	.\NetworkResilience\CSAMutation.cpp	/^void Algorithms::exchangeNodeDof(CHROME &Chrom){$/;"	f	class:Algorithms
+exchangeNodeDofFunc	.\NetworkResilience\MutaFuncs.cpp	/^void exchangeNodeDofFunc(CHROME &Chrom, const vector<double> &DofVarSet){$/;"	f
+getSolProb	.\NetworkResilience\ChromFuncs.cpp	/^double CHROME::getSolProb(const NODEPROMATRIX &Pmatrix,const LINKPROMATRIX &LinkPmatrix){$/;"	f	class:CHROME
+increasdof	.\NetworkResilience\MutaFuncs.cpp	/^void increasdof(double &NowDof, vector<double> DofVarSet){$/;"	f
+isConnected	.\NetworkResilience\Classes.h	/^	bool isConnected;$/;"	m	class:OD
+isEqual	.\NetworkResilience\TempleteFunc.h	/^inline bool isEqual(const T &Rhs, const T &Lhs){$/;"	f
+isEqual	.\NetworkResilience\TempleteFunc.h	/^inline bool isEqual(const double &Rhs, const double &Lhs) {$/;"	f
+isSame	.\NetworkResilience\ChromFuncs.cpp	/^bool CHROME::isSame(const CHROME &CompareSource)$/;"	f	class:CHROME
+isWriteConverge	.\NetworkResilience\DefGloVar.h	/^bool isWriteConverge;$/;"	v
+main	.\NetworkResilience\TestMainProgram.cpp	/^int main(int argc, char *argv[])$/;"	f
+no_empties	.\NetworkResilience\TempleteFunc.h	/^	enum empties_t { empties_ok, no_empties };$/;"	e	enum:split::empties_t
+operator ()	.\NetworkResilience\CSAFuncs.cpp	/^	bool operator() (const CHROME &A, CHROME &B) { return (A.Fitness > B.Fitness); }$/;"	f	struct:CompareStruct
+removeNodeDof	.\NetworkResilience\CSAMutation.cpp	/^void Algorithms::removeNodeDof(CHROME &Chrom){$/;"	f	class:Algorithms
+removeNodeDofFunc	.\NetworkResilience\MutaFuncs.cpp	/^void removeNodeDofFunc(CHROME &Chrom){$/;"	f
+split	.\NetworkResilience\TempleteFunc.h	/^struct split$/;"	s
+splitf	.\NetworkResilience\TempleteFunc.h	/^Container& splitf($/;"	f
+~Algorithms	.\NetworkResilience\CSAFuncs.cpp	/^Algorithms::~Algorithms(){$/;"	f	class:Algorithms
+~CHROME	.\NetworkResilience\ChromFuncs.cpp	/^CHROME::~CHROME(){$/;"	f	class:CHROME
+~GRAPH	.\NetworkResilience\GraphFunc.cpp	/^GRAPH::~GRAPH(){$/;"	f	class:GRAPH
+~LINK	.\NetworkResilience\LinkFuncs.cpp	/^LINK::~LINK(){$/;"	f	class:LINK
+~LINKPROMATRIX	.\NetworkResilience\ProbMatrixFuncs.cpp	/^LINKPROMATRIX::~LINKPROMATRIX(){$/;"	f	class:LINKPROMATRIX
+~NODE	.\NetworkResilience\Classes.h	/^	~NODE(){$/;"	f	class:NODE
+~NODEPROMATRIX	.\NetworkResilience\ProbMatrixFuncs.cpp	/^NODEPROMATRIX::~NODEPROMATRIX(){$/;"	f	class:NODEPROMATRIX
+~OD	.\NetworkResilience\Classes.h	/^	~OD(){$/;"	f	class:OD
+~OriginBasedOD	.\NetworkResilience\Classes.h	/^	~OriginBasedOD(){$/;"	f	class:OriginBasedOD

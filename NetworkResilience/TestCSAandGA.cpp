@@ -5,8 +5,8 @@ void OpenAndCleanFiles();
 void CloseFiles();
 int CsaTestMain(GRAPH &BaseGraph, const NODEPROMATRIX &Pmatrix, const LINKPROMATRIX &LinkPmatrix, vector<CHROME> &BestSol,
 	vector<double> &CpuTimeVec);
-void OutputSummary(vector<CHROME> &BestSol, GRAPH &Graph, vector<double> &CpuTime,
-	NODEPROMATRIX &Pmatrix);
+//void OutputSummary(vector<CHROME> &BestSol, GRAPH &Graph, vector<double> &CpuTime, NODEPROMATRIX &Pmatrix);
+void OutputSummary(vector<CHROME> &BestSol, GRAPH &Graph, vector<double> &CpuTime);
 void ReadDataMain(GRAPH &BaseGraph, NODEPROMATRIX &Pmatrix);
 bool ReadModelParas();
 void ReadDataMain(GRAPH &BaseGraph, NODEPROMATRIX &Pmatrix, LINKPROMATRIX &LinkPmatrix);
@@ -43,7 +43,8 @@ int TestCSAandGA()
 		BestSol.clear();
 		CpuTimeVec.clear();
 		ErrMsg = CsaTestMain(BaseGraph, NodeProbMatrix, LinkProbMatrix, BestSol, CpuTimeVec);
-		OutputSummary(BestSol, BaseGraph, CpuTimeVec, NodeProbMatrix);
+		//OutputSummary(BestSol, BaseGraph, CpuTimeVec, NodeProbMatrix);
+		OutputSummary(BestSol, BaseGraph, CpuTimeVec);
 		for (int i = 0; i < (int)BestSol.size(); i++)
 		{
 			BestSolSummary.push_back(BestSol[i].Fitness);
@@ -56,7 +57,8 @@ int TestCSAandGA()
 		BestSol.clear();
 		CpuTimeVec.clear();
 		ErrMsg = GATestMain(BaseGraph, NodeProbMatrix, LinkProbMatrix, BestSol, CpuTimeVec);
-		OutputSummary(BestSol, BaseGraph, CpuTimeVec, NodeProbMatrix);
+		//OutputSummary(BestSol, BaseGraph, CpuTimeVec, NodeProbMatrix);
+		OutputSummary(BestSol, BaseGraph, CpuTimeVec);
 		for (int i = 0; i < (int) BestSol.size(); ++i)
 		{
 			BestSolSummary.push_back(BestSol[i].Fitness);

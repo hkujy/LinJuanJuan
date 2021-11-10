@@ -138,3 +138,42 @@ void decreaseDof(double &NowDof, vector<double> DofVarSet){
 	}
 }
 
+
+void Algorithms::FirstProcedure(CHROME& Chrom) {
+	FirstProcedureFunc(Chrom, this->NodeDofVarSet);
+}
+
+void Algorithms::addNewNode(CHROME& Chrom) {
+	addNewNodeFunc(Chrom, this->NodeDofVarSet);
+}
+
+void Algorithms::removeNodeDof(CHROME& Chrom) {
+	removeNodeDofFunc(Chrom);
+}
+
+void Algorithms::exchangeNodeDof(CHROME& Chrom) {
+	exchangeNodeDofFunc(Chrom, this->NodeDofVarSet);
+}
+
+void Algorithms::SecondProcedure(CHROME& Chrom, double Ratio) {
+
+	int NumOfRepeate = (int)((double)NumNodes * Ratio);
+	std::vector<int> v = { 1, 2, 3 }; //a,b,c, three operators
+	for (int i = 0; i < NumOfRepeate; i++)
+	{
+		int Index = GenRandomInt(v);
+		//cout << "index = " << Index<<endl;
+		switch (Index)
+		{
+			//add a new failed node and assign it dof value
+		case 1: addNewNode(Chrom); break;
+		case 2: removeNodeDof(Chrom); break;
+		case 3: exchangeNodeDof(Chrom); break;
+		default:
+			TRACE("SecondProcedure generate wrong Index");
+			system("PAUSE");
+			break;
+		}
+	}
+
+}

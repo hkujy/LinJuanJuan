@@ -194,6 +194,12 @@ bool ReadModelParas(){
 		fcsa.open("..//InPut//SiouxFallsNetwork//CsaPara.txt");
 		fga.open("..//InPut//SiouxFallsNetwork//GAPara.txt");
 	}
+	else if (ModelIndex == 4)
+	{
+		fin.open("..//InPut//ParadoxNet//Para.txt");
+		//fcsa.open("..//InPut//ParadoxNet//CsaPara.txt");
+		//fga.open("..//InPut//ParadoxNet//GAPara.txt");
+	}
 	else
 	{
 		cout << "Model Index is not specified" << endl;
@@ -444,6 +450,11 @@ void ReadGraphData(GRAPH &Graph)
 		fin.open("..//Input//Nagureny2009Network//DeamdData.txt");
 		//fopen_s(&fin, "..//Input//Nagureny2009Network//DeamdData.txt", "r");
 	}
+	else if (ModelIndex == 4)
+	{
+		fin.open("..//Input//ParadoxNet//DeamdData.txt");
+		//fopen_s(&fin, "..//Input//Nagureny2009Network//DeamdData.txt", "r");
+	}
 	else
 	{
 		cout << "Mode Index is not specified" << endl;
@@ -476,6 +487,11 @@ void ReadGraphData(GRAPH &Graph)
 	else if (ModelIndex == 3)
 	{
 		fin.open("..//Input//SiouxFallsNetwork//LinkData.txt");
+		//fopen_s(&fin, "..//Input//SiouxFallsNetwork//LinkData.txt", "r");
+	}
+	else if (ModelIndex == 4)
+	{
+		fin.open("..//Input//ParadoxNet//LinkData.txt");
 		//fopen_s(&fin, "..//Input//SiouxFallsNetwork//LinkData.txt", "r");
 	}
 	else
@@ -560,8 +576,21 @@ void ReadDataMain(GRAPH &BaseGraph, NODEPROMATRIX &NodePmatrix, LINKPROMATRIX &L
 	OutPutFile.open("..//OutPut//DemandData.txt");
 	BaseGraph.PrintOD(OutPutFile);
 	OutPutFile.close();
-
 }
+
+
+void ReadDataMain(GRAPH& BaseGraph) {
+
+	ofstream OutPutFile;
+	ReadGraphData(BaseGraph);
+	OutPutFile.open("..//OutPut//LinkData.txt");
+	BaseGraph.PrintLinks(OutPutFile);
+	OutPutFile.close();
+	OutPutFile.open("..//OutPut//DemandData.txt");
+	BaseGraph.PrintOD(OutPutFile);
+	OutPutFile.close();
+}
+
 
 
 

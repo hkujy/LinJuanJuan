@@ -1,0 +1,238 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+AlgorithmIndex	.\Classes.h	/^	AlgorithmType AlgorithmIndex;  \/\/ 1: CSA, 2:GA$/;"	m	class:Algorithms
+AlgorithmType	.\Parameters.h	/^enum AlgorithmType$/;"	g
+Algorithms	.\CSAFuncs.cpp	/^Algorithms::Algorithms(int NumPop, int NumChild){$/;"	f	class:Algorithms
+Algorithms	.\CSAFuncs.cpp	/^Algorithms::Algorithms(int NumPop, int NumClone, int NumRep)$/;"	f	class:Algorithms
+Algorithms	.\Classes.h	/^class Algorithms \/\/ ==  scenario$/;"	c
+AlphaBpr	.\Classes.h	/^	double AlphaBpr; \/\/ parameter in the BPR  \/\/ 0.15$/;"	m	class:LINK
+AssertLog	.\DefGloVar.h	/^std::ofstream  AssertLog;$/;"	v
+Assign	.\FW_UE.cpp	/^void Assign(const std::vector<OriginBasedOD> &Oset,$/;"	f
+BPRCost	.\LinkFuncs.cpp	/^double LINK::BPRCost(){$/;"	f	class:LINK
+BaseUNPM	.\Classes.h	/^	double BaseUNPM;$/;"	m	class:Algorithms
+BetaBBpr	.\Classes.h	/^	double BetaBBpr; \/\/ parameter in the BPR  \/\/ 4.0$/;"	m	class:LINK
+BruteForceFor3NodeSmall	.\Bruteforce.cpp	/^void BruteForceFor3NodeSmall(NODEPROMATRIX &NodeProbMatrix,$/;"	f
+CHROME	.\ChromFuncs.cpp	/^CHROME::CHROME(){$/;"	f	class:CHROME
+CHROME	.\Classes.h	/^class CHROME \/\/ ==  scenario$/;"	c
+COMMONHEADER	.\CommonHeaders.h	3;"	d
+CSA	.\Parameters.h	/^	CSA, GA$/;"	e	enum:AlgorithmType
+CSACloneMethod	.\DefGloVar.h	/^int CSACloneMethod;$/;"	v
+CSAmain	.\CSAFuncs.cpp	/^void Algorithms::CSAmain(GRAPH &Graph, int NumPop, int NumClone, int NumRep,$/;"	f	class:Algorithms
+CSAmainVarA	.\CSAFuncs.cpp	/^void Algorithms::CSAmainVarA(GRAPH &Graph, int NumPop, int NumClone, int NumRep,$/;"	f	class:Algorithms
+CaInput	.\Classes.h	/^	double CaInput;$/;"	m	class:LINK
+CaRevise	.\Classes.h	/^	double CaRevise;$/;"	m	class:LINK
+CaseIndex	.\CSAMutation.cpp	/^int CaseIndex(double Fit, double MaxFit, double MinFit){$/;"	f
+Chroms	.\Classes.h	/^	vector<CHROME> Chroms;$/;"	m	class:Algorithms
+CleanLinkFlow	.\LinkFuncs.cpp	/^double LINK::CleanLinkFlow(){$/;"	f	class:LINK
+CloseFiles	.\OpenCloseFiles.cpp	/^void CloseFiles(){$/;"	f
+CompareStruct	.\CSAFuncs.cpp	/^struct CompareStruct {$/;"	s	file:
+Copy	.\ChromFuncs.cpp	/^void CHROME::Copy(const CHROME& FromSource){$/;"	f	class:CHROME
+Cost	.\Classes.h	/^	double Cost;$/;"	m	class:LINK
+Create1DAarray	.\TempleteFunc.h	/^T *Create1DAarray(const int dim1) {$/;"	f
+Create2DAarray	.\TempleteFunc.h	/^template <typename T>  T **Create2DAarray(const int dim1, const int dim2){$/;"	f
+CreateNodes	.\GraphFunc.cpp	/^void GRAPH::CreateNodes(){$/;"	f	class:GRAPH
+CreateOriginSet	.\GraphFunc.cpp	/^void GRAPH::CreateOriginSet()$/;"	f	class:GRAPH
+CsaCloneBeta	.\DefGloVar.h	/^double CsaCloneBeta;$/;"	v
+CsaNumPop	.\DefGloVar.h	/^int CsaNumPop;$/;"	v
+CsaRepRatio	.\DefGloVar.h	/^double CsaRepRatio;$/;"	v
+CsaTestMain	.\MainCsa.cpp	/^int CsaTestMain(GRAPH &BaseGraph, const NODEPROMATRIX &NodeProbMatrix,const LINKPROMATRIX &LinkProbMatrix, vector<CHROME> &BestSol,$/;"	f
+DGV	.\DefGloVar.h	3;"	d
+DebugStop	.\TempleteFunc.h	/^void DebugStop(T val, T tv){$/;"	f
+Demand	.\Classes.h	/^	double Demand;$/;"	m	class:OD
+Dest	.\Classes.h	/^	int Dest;$/;"	m	class:OD
+Dof	.\Classes.h	/^	vector<double> Dof; \/\/ degree of failure$/;"	m	class:LINKPROMATRIX
+Dof	.\Classes.h	/^	vector<double> Dof; \/\/ degree of failure$/;"	m	class:NODEPROMATRIX
+EnumerateMedium	.\Bruteforce.cpp	/^void EnumerateMedium(vector<CHROME> &Sol, const NODEPROMATRIX &Prob)$/;"	f
+EnumerateNagureny	.\Bruteforce.cpp	/^void EnumerateNagureny(vector<CHROME> &Sol, const LINKPROMATRIX &Prob)$/;"	f
+Enumerate_Samll_1	.\Bruteforce.cpp	/^void Enumerate_Samll_1(vector<CHROME> &Sol, const NODEPROMATRIX &Prob)$/;"	f
+EvaluateSol	.\ChromFuncs.cpp	/^void CHROME::EvaluateSol(GRAPH &Graph, const double BaseUNPM, const NODEPROMATRIX &NodeProbMatrix,$/;"	f	class:CHROME
+EvaluteGraph	.\FW_UE.cpp	/^void GRAPH::EvaluteGraph() {$/;"	f	class:GRAPH
+FW_UE	.\FW_UE.cpp	/^int GRAPH::FW_UE() {$/;"	f	class:GRAPH
+FindMinCostRoutes	.\GraphFunc.cpp	/^int GRAPH::FindMinCostRoutes(){$/;"	f	class:GRAPH
+FirstProcedure	.\CSAMutation.cpp	/^void Algorithms::FirstProcedure(CHROME &Chrom){$/;"	f	class:Algorithms
+FirstProcedureFunc	.\MutaFuncs.cpp	/^void FirstProcedureFunc(CHROME &Chrom, vector<double> DofVarSet){$/;"	f
+Fitness	.\Classes.h	/^	double Fitness;$/;"	m	class:CHROME
+Flow	.\Classes.h	/^	double Flow;$/;"	m	class:LINK
+Free1DArrey	.\TempleteFunc.h	/^void Free1DArrey(T *Array) {$/;"	f
+Free2DArrey	.\TempleteFunc.h	/^void Free2DArrey(T **Array, const int dim1) {$/;"	f
+GA	.\Parameters.h	/^	CSA, GA$/;"	e	enum:AlgorithmType
+GACrossOver	.\GAfuncs.cpp	/^void Algorithms::GACrossOver(CHROME &Father, CHROME &Mother, CHROME &BigBro, CHROME &CuteSis)$/;"	f	class:Algorithms
+GANumChild	.\DefGloVar.h	/^int GANumChild;$/;"	v
+GANumPop	.\DefGloVar.h	/^int GANumPop;$/;"	v
+GATestMain	.\MainGA.cpp	/^int GATestMain(GRAPH &BaseGraph, const NODEPROMATRIX &NodeProbMatrix, const LINKPROMATRIX &LinkProbMatrix, vector<CHROME> &BestSol,$/;"	f
+GAmain	.\GAfuncs.cpp	/^void Algorithms::GAmain(GRAPH &Graph, const int NumPop, const int NumChild,$/;"	f	class:Algorithms
+GAselectParent	.\GAfuncs.cpp	/^void Algorithms::GAselectParent(int &Father, int &Mother,const int NumPop){$/;"	f	class:Algorithms
+GLOBALVAR	.\GlobalVar.h	3;"	d
+GRAPH	.\Classes.h	/^class GRAPH$/;"	c
+GRAPH	.\GraphFunc.cpp	/^GRAPH::GRAPH(){$/;"	f	class:GRAPH
+GaMutationRate	.\DefGloVar.h	/^double GaMutationRate;$/;"	v
+GenRan	.\DefGloVar.h	/^std::default_random_engine GenRan;$/;"	v
+GenRandomFloat	.\RandomValue.cpp	/^double GenRandomFloat(const std::vector<double> &Vec)$/;"	f
+GenRandomInt	.\RandomValue.cpp	/^int GenRandomInt(const std::vector<int> &Vec)$/;"	f
+GenRandomPos	.\RandomValue.cpp	/^int GenRandomPos(unsigned int siz)$/;"	f
+GenRandomReal	.\RandomValue.cpp	/^double GenRandomReal()$/;"	f
+GenerateCloneSet	.\CloneSet.cpp	/^void GenerateCloneSet(const vector<CHROME> Chroms, const int NumPop,const int NumClone,$/;"	f
+GenerateSol	.\CSAFuncs.cpp	/^int Algorithms::GenerateSol(int ChromIndex)$/;"	f	class:Algorithms
+GetBPRCost	.\LineSearchUingDirective.cpp	/^inline double GetBPRCost(double &flow,double &Ca,double &t0,$/;"	f
+GetNowTime	.\DebugMsg.cpp	/^void GetNowTime(ofstream FileName)$/;"	f
+Head	.\Classes.h	/^	int Head;$/;"	m	class:LINK
+HyperMutateMain	.\CSAMutation.cpp	/^void Algorithms::HyperMutateMain(CHROME &Chrom){$/;"	f	class:Algorithms
+ID	.\Classes.h	/^	int ID;$/;"	m	class:CHROME
+ID	.\Classes.h	/^	int ID;$/;"	m	class:LINK
+ID	.\Classes.h	/^	int ID;$/;"	m	class:NODE
+ID	.\Classes.h	/^	int ID;$/;"	m	class:OD
+ID	.\Classes.h	/^	int ID;$/;"	m	class:TEST
+ImpactValue	.\Classes.h	/^	double ImpactValue;$/;"	m	class:CHROME
+InLinks	.\Classes.h	/^	std::vector<const LINK*> InLinks;$/;"	m	class:NODE
+IniCap	.\ChromFuncs.cpp	/^void CHROME::IniCap(GRAPH &ScenarioGraph){$/;"	f	class:CHROME
+IniCap	.\LinkFuncs.cpp	/^void LINK::IniCap(){$/;"	f	class:LINK
+IniCost	.\LinkFuncs.cpp	/^double LINK::IniCost(){$/;"	f	class:LINK
+InvaildFloat	.\Parameters.h	/^const double InvaildFloat = -999.9f;$/;"	v
+InvaildInt	.\Parameters.h	/^const int InvaildInt=-1;$/;"	v
+InvalidMinCost	.\Parameters.h	/^const double InvalidMinCost = 99999.0f;$/;"	v
+LINK	.\Classes.h	/^class LINK$/;"	c
+LINK	.\LinkFuncs.cpp	/^LINK::LINK(){$/;"	f	class:LINK
+LINK	.\LinkFuncs.cpp	/^LINK::LINK(const LINK& OtherLink){$/;"	f	class:LINK
+LINKPROMATRIX	.\Classes.h	/^class LINKPROMATRIX{$/;"	c
+LINKPROMATRIX	.\ProbMatrixFuncs.cpp	/^LINKPROMATRIX::LINKPROMATRIX(){$/;"	f	class:LINKPROMATRIX
+LargeNum	.\Parameters.h	/^const double LargeNum = 1.0e+20f;$/;"	v
+LinkDof	.\Classes.h	/^	vector<double> LinkDof;$/;"	m	class:CHROME
+LinkDofProb	.\Classes.h	/^	vector<double> LinkDofProb;$/;"	m	class:CHROME
+Links	.\Classes.h	/^	std::vector<LINK> Links;$/;"	m	class:GRAPH
+Links	.\Classes.h	/^	vector<int> Links;$/;"	m	class:CHROME
+LinksDirectionDerivative	.\LineSearchUingDirective.cpp	/^double LinksDirectionDerivative(vector<LINK> &XLink, vector<double> &FlowDif, double &Alpha)$/;"	f
+LinksSDLineSearch	.\LineSearchUingDirective.cpp	/^double LinksSDLineSearch(vector<LINK> &XLink, vector<LINK> &YLink)$/;"	f
+Log	.\OpenCloseFiles.cpp	/^std::ofstream Log;$/;"	v
+LogMsg	.\DebugMsg.cpp	/^void LogMsg(const char *format, ...) {$/;"	f
+Matrix	.\Classes.h	/^	double **Matrix;\/\/ matrix[degree of failure index][node number]$/;"	m	class:LINKPROMATRIX
+Matrix	.\Classes.h	/^	double **Matrix;\/\/ matrix[degree of failure index][node number]$/;"	m	class:NODEPROMATRIX
+MaxCsaIter	.\DefGloVar.h	/^int MaxCsaIter;$/;"	v
+MaxFitValue	.\Classes.h	/^	double MaxFitValue;$/;"	m	class:Algorithms
+MaxGAIter	.\DefGloVar.h	/^int MaxGAIter;$/;"	v
+MaxNumDof	.\Parameters.h	/^const int MaxNumDof = 10;$/;"	v
+MaxNumNodes	.\Parameters.h	/^const int MaxNumNodes = 1000;$/;"	v
+MaxNumSolEval	.\DefGloVar.h	/^int MaxNumSolEval;$/;"	v
+MinCost	.\Classes.h	/^	double MinCost;$/;"	m	class:OD
+MinFitValue	.\Classes.h	/^	double MinFitValue;$/;"	m	class:Algorithms
+MinPathPredLink	.\Classes.h	/^	int **MinPathPredLink;$/;"	m	class:GRAPH
+ModelIndex	.\DefGloVar.h	/^int ModelIndex;$/;"	v
+MyClasses	.\Classes.h	3;"	d
+NODE	.\Classes.h	/^	NODE(){$/;"	f	class:NODE
+NODE	.\Classes.h	/^class NODE$/;"	c
+NODEPROMATRIX	.\Classes.h	/^class NODEPROMATRIX{$/;"	c
+NODEPROMATRIX	.\ProbMatrixFuncs.cpp	/^NODEPROMATRIX::NODEPROMATRIX(){$/;"	f	class:NODEPROMATRIX
+NodeDof	.\Classes.h	/^	vector<double> NodeDof;$/;"	m	class:CHROME
+NodeDofProb	.\Classes.h	/^	vector<double> NodeDofProb;$/;"	m	class:CHROME
+NodeDofVarSet	.\Classes.h	/^	vector<double> NodeDofVarSet;\/\/ set of degree of reduction$/;"	m	class:Algorithms
+NodeVarSet	.\Classes.h	/^	vector<int> NodeVarSet;$/;"	m	class:Algorithms
+Nodes	.\Classes.h	/^	std::vector<NODE> Nodes;$/;"	m	class:GRAPH
+Nodes	.\Classes.h	/^	vector<int> Nodes;$/;"	m	class:CHROME
+NumDest	.\DefGloVar.h	/^int NumDest;$/;"	v
+NumLinks	.\DefGloVar.h	/^int NumLinks;$/;"	v
+NumNodes	.\DefGloVar.h	/^int NumNodes;$/;"	v
+NumOD	.\DefGloVar.h	/^int NumOD;$/;"	v
+NumOrig	.\DefGloVar.h	/^int NumOrig;$/;"	v
+OD	.\Classes.h	/^	OD(){$/;"	f	class:OD
+OD	.\Classes.h	/^class OD$/;"	c
+ODset	.\Classes.h	/^	std::vector<const OD*>  ODset;$/;"	m	class:OriginBasedOD
+OdPairs	.\Classes.h	/^	std::vector<OD> OdPairs;$/;"	m	class:GRAPH
+OneDim	.\FW_UE.cpp	/^double OneDim(vector<LINK> VALinks, std::vector<LINK> VBLinks,$/;"	f
+OneDimEsp	.\DefGloVar.h	/^double  OneDimEsp;$/;"	v
+Onode	.\Classes.h	/^	int Onode;$/;"	m	class:OriginBasedOD
+OpenAndCleanFiles	.\OpenCloseFiles.cpp	/^void OpenAndCleanFiles(){$/;"	f
+OriginBasedOD	.\Classes.h	/^	OriginBasedOD(){$/;"	f	class:OriginBasedOD
+OriginBasedOD	.\Classes.h	/^class OriginBasedOD$/;"	c
+OriginSet	.\Classes.h	/^	std::vector<OriginBasedOD> OriginSet;$/;"	m	class:GRAPH
+Orign	.\Classes.h	/^	int Orign;$/;"	m	class:OD
+OutLinks	.\Classes.h	/^	std::vector<const LINK*> OutLinks;$/;"	m	class:NODE
+OutPutGraph	.\OutPutGraph.cpp	/^void OutPutGraph(GRAPH &Graph){$/;"	f
+OutputSummary	.\OutPutGraph.cpp	/^void OutputSummary(vector<CHROME> &BestSol,GRAPH &Graph,vector<double> &CpuTime,$/;"	f
+PARA	.\Parameters.h	2;"	d
+PrintConverge	.\FW_UE.cpp	/^int PrintConverge(int NumIter, double Err, ofstream &fout) {$/;"	f
+PrintLinks	.\GraphFunc.cpp	/^int GRAPH::PrintLinks(std::ofstream &fout){$/;"	f	class:GRAPH
+PrintLinks_onscreen	.\GraphFunc.cpp	/^int GRAPH::PrintLinks_onscreen() {$/;"	f	class:GRAPH
+PrintMatrix	.\ProbMatrixFuncs.cpp	/^int LINKPROMATRIX::PrintMatrix(ofstream &fout){$/;"	f	class:LINKPROMATRIX
+PrintMatrix	.\ProbMatrixFuncs.cpp	/^int NODEPROMATRIX::PrintMatrix(ofstream &fout){$/;"	f	class:NODEPROMATRIX
+PrintModelParas	.\ReadData.cpp	/^bool PrintModelParas(){$/;"	f
+PrintOD	.\GraphFunc.cpp	/^int GRAPH::PrintOD(std::ofstream &fout)$/;"	f	class:GRAPH
+PrintParaValue	.\TempleteFunc.h	/^void PrintParaValue(char *Name, T Value)$/;"	f
+PrintSol	.\ChromFuncs.cpp	/^int CHROME::PrintSol(ofstream &fout){$/;"	f	class:CHROME
+PrintSp	.\GraphFunc.cpp	/^int GRAPH::PrintSp(int Orign, int Dest, std::ofstream &fout)$/;"	f	class:GRAPH
+RANFUNS	.\RandomFuncs.h	2;"	d
+ReadDataMain	.\ReadData.cpp	/^void ReadDataMain(GRAPH &BaseGraph, NODEPROMATRIX &NodePmatrix, LINKPROMATRIX &LinkPmatrix){$/;"	f
+ReadDataMain	.\ReadData.cpp	/^void ReadDataMain(GRAPH &BaseGraph, NODEPROMATRIX &Pmatrix){$/;"	f
+ReadDataMain	.\ReadData.cpp	/^void ReadDataMain(GRAPH& BaseGraph) {$/;"	f
+ReadDemandData	.\ReadData.cpp	/^bool ReadDemandData(vector<OD> &ODPairs,$/;"	f
+ReadGraphData	.\ReadData.cpp	/^void ReadGraphData(GRAPH &Graph)$/;"	f
+ReadLinkData	.\ReadData.cpp	/^bool ReadLinkData(std::vector<LINK> &Links,$/;"	f
+ReadLinkProb	.\ReadData.cpp	/^void ReadLinkProb(LINKPROMATRIX &LinkProbMatrix)$/;"	f
+ReadModelParas	.\ReadData.cpp	/^bool ReadModelParas(){$/;"	f
+ReadNodeProb	.\ReadData.cpp	/^void ReadNodeProb(NODEPROMATRIX &Pmatrix)$/;"	f
+ReadSeedVec	.\MainCsa.cpp	/^bool ReadSeedVec(std::vector<int> &SeedVec,$/;"	f
+RecordSolVa	.\CSAFuncs.cpp	/^void RecordSolVa(double &SolFit, double &CurrentBest,int &NumCount,ofstream &fout){$/;"	f
+RemoveLinkCost	.\Parameters.h	/^const double RemoveLinkCost = 99999.0f;$/;"	v
+ReviseCap	.\ChromFuncs.cpp	/^void CHROME::ReviseCap(GRAPH &Graph){$/;"	f	class:CHROME
+SP	.\SP.cpp	/^int GRAPH::SP(const int Orig, std::vector<double> &Lable)$/;"	f	class:GRAPH
+ScanMedium	.\ScanMedum.cpp	/^int ScanMedium(GRAPH &BaseGraph, vector<CHROME> &BestSol,$/;"	f
+ScanNagurenyNetwork	.\ScanMedum.cpp	/^int ScanNagurenyNetwork(GRAPH &BaseGraph, vector<CHROME> &BestSol, const NODEPROMATRIX &Pmatrix,$/;"	f
+SecondProcedure	.\CSAMutation.cpp	/^void Algorithms::SecondProcedure(CHROME &Chrom, double Ratio){$/;"	f	class:Algorithms
+SeedRunCount	.\DefGloVar.h	/^int SeedRunCount;$/;"	v
+SolProb	.\Classes.h	/^	double SolProb;$/;"	m	class:CHROME
+SortDecent	.\CSAFuncs.cpp	/^} SortDecent;$/;"	v	typeref:struct:CompareStruct
+SortSol	.\CSAFuncs.cpp	/^void Algorithms::SortSol(unsigned int Num)$/;"	f	class:Algorithms
+StopCriteria	.\DefGloVar.h	/^int StopCriteria;$/;"	v
+T0	.\Classes.h	/^	double T0;$/;"	m	class:LINK
+TEST	.\Classes.h	/^	TEST(){$/;"	f	class:TEST
+TEST	.\Classes.h	/^class TEST$/;"	c
+TRACE	.\Debug.h	5;"	d
+Tail	.\Classes.h	/^	int Tail;$/;"	m	class:LINK
+TempletFun	.\TempleteFunc.h	4;"	d
+TestAlgorithmPara	.\TestCSAParas.cpp	/^int TestAlgorithmPara()$/;"	f
+TestBaressParadoxNetwork	.\TestBaressParadox.cpp	/^int TestBaressParadoxNetwork()$/;"	f
+TestCSAandGA	.\TestCSAandGA.cpp	/^int TestCSAandGA()$/;"	f
+TestMedium	.\TestMedium.cpp	/^int TestMedium()$/;"	f
+TestNagurenyNetwork	.\TestNagurenyNetwork.cpp	/^int TestNagurenyNetwork()$/;"	f
+TotalCost	.\Classes.h	/^	double TotalCost;$/;"	m	class:CHROME
+TotalSystemCost	.\Classes.h	/^	double TotalSystemCost;$/;"	m	class:GRAPH
+UEeps	.\DefGloVar.h	/^double  UEeps;$/;"	v
+UEmaxIter	.\DefGloVar.h	/^int	   UEmaxIter;$/;"	v
+UNPM	.\Classes.h	/^	double UNPM;$/;"	m	class:CHROME
+UNPM	.\Classes.h	/^	double UNPM;$/;"	m	class:GRAPH
+UpdateLable	.\SP.cpp	/^bool UpdateLable(const double CurrentCost, const double LinkCost, const double OldNextNodeCost, double &NewCost)$/;"	f
+Wobj	.\FW_UE.cpp	/^double Wobj(const vector<LINK> &Links)$/;"	f
+Zero	.\Parameters.h	/^const double Zero = 1.0e-6f;$/;"	v
+addNewNode	.\CSAMutation.cpp	/^void Algorithms::addNewNode(CHROME &Chrom){$/;"	f	class:Algorithms
+addNewNodeFunc	.\MutaFuncs.cpp	/^void addNewNodeFunc(CHROME &Chrom, vector<double> DofVarSet)$/;"	f
+clear	.\ChromFuncs.cpp	/^void CHROME::clear(){$/;"	f	class:CHROME
+decreaseDof	.\MutaFuncs.cpp	/^void decreaseDof(double &NowDof, vector<double> DofVarSet){$/;"	f
+empties_ok	.\TempleteFunc.h	/^	enum empties_t { empties_ok, no_empties };$/;"	e	enum:split::empties_t
+empties_t	.\TempleteFunc.h	/^	enum empties_t { empties_ok, no_empties };$/;"	g	struct:split
+exchangeNodeDof	.\CSAMutation.cpp	/^void Algorithms::exchangeNodeDof(CHROME &Chrom){$/;"	f	class:Algorithms
+exchangeNodeDofFunc	.\MutaFuncs.cpp	/^void exchangeNodeDofFunc(CHROME &Chrom, const vector<double> &DofVarSet){$/;"	f
+getSolProb	.\ChromFuncs.cpp	/^double CHROME::getSolProb(const NODEPROMATRIX &Pmatrix,const LINKPROMATRIX &LinkPmatrix){$/;"	f	class:CHROME
+increasdof	.\MutaFuncs.cpp	/^void increasdof(double &NowDof, vector<double> DofVarSet){$/;"	f
+isConnected	.\Classes.h	/^	bool isConnected;$/;"	m	class:OD
+isEqual	.\TempleteFunc.h	/^inline bool isEqual(const T &Rhs, const T &Lhs){$/;"	f
+isEqual	.\TempleteFunc.h	/^inline bool isEqual(const double &Rhs, const double &Lhs) {$/;"	f
+isSame	.\ChromFuncs.cpp	/^bool CHROME::isSame(const CHROME &CompareSource)$/;"	f	class:CHROME
+isWriteConverge	.\DefGloVar.h	/^bool isWriteConverge;$/;"	v
+main	.\TestMainProgram.cpp	/^int main(int argc, char *argv[])$/;"	f
+no_empties	.\TempleteFunc.h	/^	enum empties_t { empties_ok, no_empties };$/;"	e	enum:split::empties_t
+operator ()	.\CSAFuncs.cpp	/^	bool operator() (const CHROME &A, CHROME &B) { return (A.Fitness > B.Fitness); }$/;"	f	struct:CompareStruct
+removeNodeDof	.\CSAMutation.cpp	/^void Algorithms::removeNodeDof(CHROME &Chrom){$/;"	f	class:Algorithms
+removeNodeDofFunc	.\MutaFuncs.cpp	/^void removeNodeDofFunc(CHROME &Chrom){$/;"	f
+split	.\TempleteFunc.h	/^struct split$/;"	s
+splitf	.\TempleteFunc.h	/^Container& splitf($/;"	f
+~Algorithms	.\CSAFuncs.cpp	/^Algorithms::~Algorithms(){$/;"	f	class:Algorithms
+~CHROME	.\ChromFuncs.cpp	/^CHROME::~CHROME(){$/;"	f	class:CHROME
+~GRAPH	.\GraphFunc.cpp	/^GRAPH::~GRAPH(){$/;"	f	class:GRAPH
+~LINK	.\LinkFuncs.cpp	/^LINK::~LINK(){$/;"	f	class:LINK
+~LINKPROMATRIX	.\ProbMatrixFuncs.cpp	/^LINKPROMATRIX::~LINKPROMATRIX(){$/;"	f	class:LINKPROMATRIX
+~NODE	.\Classes.h	/^	~NODE(){$/;"	f	class:NODE
+~NODEPROMATRIX	.\ProbMatrixFuncs.cpp	/^NODEPROMATRIX::~NODEPROMATRIX(){$/;"	f	class:NODEPROMATRIX
+~OD	.\Classes.h	/^	~OD(){$/;"	f	class:OD
+~OriginBasedOD	.\Classes.h	/^	~OriginBasedOD(){$/;"	f	class:OriginBasedOD

@@ -4,8 +4,8 @@ using namespace std;
 int ScanMedium(GRAPH &BaseGraph, vector<CHROME> &BestSol, const NODEPROMATRIX &Pmatrix, const LINKPROMATRIX &LinkMatrx);
 int CsaTestMain(GRAPH &BaseGraph, const NODEPROMATRIX &Pmatrix, const LINKPROMATRIX &LinkPmatrix, vector<CHROME> &BestSol,
 	vector<double> &CpuTimeVec);
-void OutputSummary(vector<CHROME> &BestSol, GRAPH &Graph, vector<double> &CpuTime,
-	NODEPROMATRIX &Pmatrix);
+//void OutputSummary(vector<CHROME> &BestSol, GRAPH &Graph, vector<double> &CpuTime, NODEPROMATRIX &Pmatrix);
+void OutputSummary(vector<CHROME> &BestSol, GRAPH &Graph, vector<double> &CpuTim);
 void ReadDataMain(GRAPH &BaseGraph, NODEPROMATRIX &Pmatrix);
 bool ReadModelParas();
 void ReadDataMain(GRAPH &BaseGraph, NODEPROMATRIX &Pmatrix, LINKPROMATRIX &LinkPmatrix);
@@ -44,7 +44,8 @@ int TestMedium()
 	clock_t ET = clock();
 	CpuTimeVec.push_back((double)(ET - ST) / CLOCKS_PER_SEC); // time unit is second
 	cout << "CSA Complete " << endl;
-	OutputSummary(BestSol, BaseGraph, CpuTimeVec, NodeProbMatrix);
+	//OutputSummary(BestSol, BaseGraph, CpuTimeVec, NodeProbMatrix);
+	OutputSummary(BestSol, BaseGraph, CpuTimeVec);
 
 	fSummay.open("..//OutPut//Summary.txt", ios::app);
 	fSummay << "The following results from scan" << endl;
@@ -63,7 +64,8 @@ Scan:
 	
 	fSummay << "The following output contains both CSA and scan: the last row is scan results"<< endl;
 
-	OutputSummary(BestSol, BaseGraph, CpuTimeVec, NodeProbMatrix);
+	//OutputSummary(BestSol, BaseGraph, CpuTimeVec, NodeProbMatrix);
+	OutputSummary(BestSol, BaseGraph, CpuTimeVec);
 
 	return 0;
 

@@ -32,8 +32,6 @@
   <ItemGroup>
     <ClCompile Include="Bruteforce.cpp" />
     <ClCompile Include="CloneSet.cpp" />
-    <ClCompile Include="CSAFuncs.cpp" />
-    <ClCompile Include="CSAMutation.cpp" />
     <ClCompile Include="GAfuncs.cpp" />
     <ClCompile Include="GraphFunc.cpp" />
     <ClCompile Include="DebugMsg.cpp" />
@@ -41,7 +39,7 @@
     <ClCompile Include="LineSearchUingDirective.cpp" />
     <ClCompile Include="LinkFuncs.cpp" />
     <ClCompile Include="MainGA.cpp" />
-    <ClCompile Include="TestCSAandGA.cpp" />
+    <ClCompile Include="TestBaressParadox.cpp" />
     <ClCompile Include="TestMainProgram.cpp" />
     <ClCompile Include="MutaFuncs.cpp" />
     <ClCompile Include="ProbMatrixFuncs.cpp" />
@@ -49,13 +47,9 @@
     <ClCompile Include="OutPutGraph.cpp" />
     <ClCompile Include="RandomValue.cpp" />
     <ClCompile Include="ReadData.cpp" />
-    <ClCompile Include="MainCsa.cpp" />
     <ClCompile Include="ChromFuncs.cpp" />
     <ClCompile Include="ScanMedum.cpp" />
     <ClCompile Include="SP.cpp" />
-    <ClCompile Include="TestMedium.cpp" />
-    <ClCompile Include="TestNagurenyNetwork.cpp" />
-    <ClCompile Include="TestCSAParas.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
