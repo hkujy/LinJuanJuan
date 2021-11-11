@@ -165,24 +165,24 @@ void Algorithms::HyperMutateMain(CHROME& Chrom) {
 	}
 
 };
-void Algorithms::GAselectParent(int &Father, int &Mother,const int NumPop){
+void Algorithms::GAselectParent(int& Father, int& Mother, const int NumPop) {
 
 	vector<double> Prob(NumPop + 1, 0.0f);
 	double sumFit = 0.0;
 	for (auto c = this->Chroms.begin(); c < this->Chroms.begin() + NumPop; c++)
 	{
 		sumFit += c->Fitness;
-	}	
+	}
 	assert(sumFit > 0);
 	Prob.at(0) = 0.0f;
-	for (int i = 0; i <NumPop;i++)
+	for (int i = 0; i < NumPop; i++)
 	{
 		Prob.at(i + 1) = Prob.at(i) + this->Chroms.at(i).Fitness / sumFit;// cumulative prob
 	}
-	double f=GenRandomReal();
-	for (int i = 0; i < Prob.size()-1;i++)
+	double f = GenRandomReal();
+	for (int i = 0; i < Prob.size() - 1; i++)
 	{
-		if (f >= Prob.at(i) && f<Prob.at(i+1))
+		if (f >= Prob.at(i) && f < Prob.at(i + 1))
 		{
 			Father = i;
 			break;
@@ -199,19 +199,19 @@ void Algorithms::GAselectParent(int &Father, int &Mother,const int NumPop){
 				break;
 			}
 		}
-	} while (Father ==Mother);
+	} while (Father == Mother);
 
 }
 
-void Algorithms::GACrossOver(CHROME &Father, CHROME &Mother, CHROME &BigBro, CHROME &CuteSis)
+void Algorithms::GACrossOver(CHROME& Father, CHROME& Mother, CHROME& BigBro, CHROME& CuteSis)
 {
 	//step: 1 sect a location
 	int pos;
-	do 
+	do
 	{
 		pos = GenRandomPos((unsigned int)this->NodeVarSet.size() - 1);
 	} while (pos == 0);
-	if (BigBro.Nodes.size() == 0||CuteSis.Nodes.size() == 0)
+	if (BigBro.Nodes.size() == 0 || CuteSis.Nodes.size() == 0)
 	{
 		BigBro.Nodes.assign(Father.Nodes.size(), 0);
 		BigBro.NodeDof.assign(Father.Nodes.size(), 0.0f);
@@ -220,7 +220,7 @@ void Algorithms::GACrossOver(CHROME &Father, CHROME &Mother, CHROME &BigBro, CHR
 		CuteSis.NodeDof.assign(Father.Nodes.size(), 0.0f);
 		CuteSis.NodeDofProb.assign(Father.Nodes.size(), 0.0f);;
 	}
-	for (int i = 0; i < pos;i++)
+	for (int i = 0; i < pos; i++)
 	{
 		BigBro.Nodes.at(i) = Father.Nodes.at(i);
 		BigBro.NodeDof.at(i) = Father.NodeDof.at(i);
@@ -229,7 +229,7 @@ void Algorithms::GACrossOver(CHROME &Father, CHROME &Mother, CHROME &BigBro, CHR
 		CuteSis.NodeDof.at(i) = Mother.NodeDof.at(i);
 		CuteSis.NodeDofProb.at(i) = Mother.NodeDofProb.at(i);
 	}
-	for (int i = pos; i < this->NodeVarSet.size();i++)
+	for (int i = pos; i < this->NodeVarSet.size(); i++)
 	{
 		BigBro.Nodes.at(i) = Mother.Nodes.at(i);
 		BigBro.NodeDof.at(i) = Mother.NodeDof.at(i);
@@ -238,7 +238,7 @@ void Algorithms::GACrossOver(CHROME &Father, CHROME &Mother, CHROME &BigBro, CHR
 		CuteSis.NodeDof.at(i) = Father.NodeDof.at(i);
 		CuteSis.NodeDofProb.at(i) = Father.NodeDofProb.at(i);
 	}
-	
+
 
 }
 void RecordSolVa(double& SolFit, double& CurrentBest, int& NumCount, ofstream& fout) {
@@ -255,8 +255,8 @@ void RecordSolVa(double& SolFit, double& CurrentBest, int& NumCount, ofstream& f
 	}
 }
 
-void Algorithms::GAmain(GRAPH &Graph, const int NumPop, const int NumChild,
-	const NODEPROMATRIX &NodeProbMatrix, const LINKPROMATRIX &LinkProbMatrix, ofstream &ConvergeFile)
+void Algorithms::GAmain(GRAPH& Graph, const int NumPop, const int NumChild,
+	const NODEPROMATRIX& NodeProbMatrix, const LINKPROMATRIX& LinkProbMatrix, ofstream& ConvergeFile)
 {
 	//phase 1 Generate Initial Solution
 	ofstream fsolconv;
@@ -303,17 +303,17 @@ Repeat:
 			this->Chroms.at(BigBro), this->Chroms.at(CuteSis));
 	}
 	// step 2 mutation on the offspring
-	int NumMutation = static_cast<int>(GaMutationRate*NumPop);
+	int NumMutation = static_cast<int>(GaMutationRate * NumPop);
 
 	std::vector<bool> Mutated(NumChild, false);
 
 	for (int i = 0; i < NumMutation; i++)
 	{
-		int MutationIndex = static_cast<int>(NumChild*GenRandomReal());
+		int MutationIndex = static_cast<int>(NumChild * GenRandomReal());
 		int LoopCount = 0;
-		while (Mutated.at(MutationIndex)&& LoopCount<100)
+		while (Mutated.at(MutationIndex) && LoopCount < 100)
 		{
-			MutationIndex = static_cast<int>(NumChild*GenRandomReal());
+			MutationIndex = static_cast<int>(NumChild * GenRandomReal());
 			LoopCount++;
 		}
 		Mutated.at(MutationIndex) = true;
@@ -325,7 +325,7 @@ Repeat:
 			this->HyperMutateMain(this->Chroms.at(MutationIndex));
 			for (int kk = 0; kk < Chroms.size(); kk++)
 			{
-				if (kk==MutationIndex) continue;
+				if (kk == MutationIndex) continue;
 				if (this->Chroms.at(MutationIndex).isSame(this->Chroms.at(kk)))
 				{
 					isRepeat = true;
@@ -351,12 +351,12 @@ Repeat:
 	this->SortSol((unsigned int)Chroms.size());
 	if (isWriteConverge)
 	{
-		ConvergeFile << SeedRunCount<<","<< IterCounter << "," << this->Chroms.at(0).Fitness << endl;
+		ConvergeFile << SeedRunCount << "," << IterCounter << "," << this->Chroms.at(0).Fitness << endl;
 		//cout << IterCounter << "," << this->Chroms.at(0).Fitness << endl;
 	}
-	
+
 	Mutated.clear();
-	if (StopCriteria==0 && IterCounter<MaxGAIter) goto Repeat;
+	if (StopCriteria == 0 && IterCounter < MaxGAIter) goto Repeat;
 	if (StopCriteria == 1 && NumSolEvaluated < MaxNumSolEval) goto Repeat;
 
 	fsolconv.close();
