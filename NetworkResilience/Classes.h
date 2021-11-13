@@ -1,6 +1,7 @@
 
 #ifndef MyClasses
 #define MyClasses
+#include <iostream>
 #include <vector>
 #include "Parameters.h"
 #include "TempleteFunc.h"
@@ -93,6 +94,26 @@ public:
 	}
 };
 
+// Contains the disruption scenario
+class Scenario
+{
+public:
+	std::vector<int> LinkIds;  // affected link id
+	std::vector<int> tau;   // time period for the corresponding times
+	Scenario() {
+		LinkIds.clear(); tau.clear();
+	}
+	~Scenario() { LinkIds.clear(); tau.clear(); }
+	void print()
+	{
+		for (int i = 0; i < LinkIds.size(); i++)
+		{
+			std::cout << "DisruptedLinkID=" << LinkIds.at(i) << ",TimePeriod=" << tau.at(i) << endl;
+		}
+	}
+};
+
+
 class GRAPH
 {
 public:
@@ -115,6 +136,8 @@ public:
 	int PrintOD(std::ofstream &fout);
 	int PrintSp(int Orign, int Dest, std::ofstream &fout);
 	void EvaluteGraph();//ue total cost unpn
+	void EvalutateFailureScenarios(const Scenario &s);  // evaluate one failure scenario 
+	void RevertFailureScenarios(const Scenario &s);  // evaluate one failure scenario 
 	friend class CHROME;
 	friend class Algorithms;
 };
@@ -210,7 +233,5 @@ public:
 	//	const NODEPROMATRIX &NodeProbMatrix, const LINKPROMATRIX &LinkProbMatrix, ofstream &ConvergeFile);
 		//void CSAmainVarA(GRAPH &Graph, int NumPop, int NumClone, int NumRep,
 	//	const NODEPROMATRIX &NodeProbMatrix, const LINKPROMATRIX &LinkProbMatrix, ofstream &ConvergeFile);
-
-
 };
 #endif

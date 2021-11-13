@@ -9,6 +9,7 @@ const double RemoveLinkCost = 99999.0f;
 const double InvalidMinCost = 99999.0f;
 const int MaxNumNodes = 1000;
 const int MaxNumDof = 10;
+const int NumOfPeriod = 1;
 enum AlgorithmType
 {
 	CSA, GA

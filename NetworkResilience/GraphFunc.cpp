@@ -167,6 +167,7 @@ int GRAPH::PrintLinks_onscreen() {
 			cout << l->Flow << endl;
 			//fout << endl;
 		}
+		cout << " Total Cost = " << TotalSystemCost << endl;
 		return 1;
 	}
 	catch (exception& e)
@@ -244,6 +245,58 @@ int GRAPH::PrintSp(int Orign, int Dest, std::ofstream &fout)
 		TRACE("%s", e);
 		return 0;
 	}
+}
+
+void GRAPH::EvalutateFailureScenarios(const Scenario &s)
+{
+	if (s.tau.size() != s.LinkIds.size())
+	{
+		cout << "err: the size of tau and linked should be equal" << endl;
+		system("pause");
+	}
+
+	cout << "------Eva Link Cap Fail-----------------------" << endl;
+	for (int i = 0; i < NumOfPeriod; i++)  // loop all the period
+	{
+		for (int j = 0; j < s.tau.size(); j++)
+		{
+			if (i == s.tau.at(j))
+			{
+				this->Links.at(s.LinkIds.at(j)).CaRevise = Zero;
+			}
+		}
+		this->EvaluteGraph();
+		cout << "------Summary for period = " << i << "-------" << endl;
+		this->PrintLinks_onscreen();
+		cout << "------End of summary for period = " << i << "-------" << endl;
+	}
+	cout << "------End of Eva Link Cap Fail-----------------------" << endl;
+}
+
+void GRAPH::RevertFailureScenarios(const Scenario& s)
+{
+	if (s.tau.size() != s.LinkIds.size())
+	{
+		cout << "err: the size of tau and linked should be equal" << endl;
+		system("pause");
+	}
+
+	cout << "------Restore Link Cap-----------------------" << endl;
+	for (int i = 0; i < NumOfPeriod; i++)  // loop all the period
+	{
+		for (int j = 0; j < s.tau.size(); j++)
+		{
+			if (i == s.tau.at(j))
+			{
+				this->Links.at(s.LinkIds.at(j)).IniCap();
+			}
+		}
+		this->EvaluteGraph();
+		cout << "------Summary for period = " << i << "-------" << endl;
+		this->PrintLinks_onscreen();
+		cout << "------End of summary for period = " << i << "-------" << endl;
+	}
+	cout << "------End Restore Link Cap-----------------------" << endl;
 }
 
 

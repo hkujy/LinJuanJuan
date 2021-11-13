@@ -26,22 +26,26 @@ int main(int argc, char* argv[])
 	GRAPH BaseGraph;
 	ReadDataMain(BaseGraph);
 
-	// Step 1: evaluate the network without the link, by setting the capacity to be a large number
-	double TempVal = BaseGraph.Links.at(4).CaInput;
-	BaseGraph.Links.at(4).CaRevise = 0.0000001;
-	BaseGraph.Links.at(4).CaInput = 0.0000001;
-	BaseGraph.EvaluteGraph();
-	cout << "Without the paradox link: Total Cost = " << BaseGraph.TotalSystemCost << endl;
-	BaseGraph.PrintLinks_onscreen();
-
-	// Step 2: evaluate the network with the link, by setting the capacity to be the same as the input value
-	BaseGraph.Links.at(4).CaInput = TempVal;
-	BaseGraph.Links.at(4).CaRevise = TempVal;
-	BaseGraph.EvaluteGraph();
-	BaseGraph.PrintLinks_onscreen();
-	cout << "With the paradox link: Total Cost = " << BaseGraph.TotalSystemCost << endl;
+	Scenario s;
+	s.LinkIds.push_back(4); s.tau.push_back(0);
+	BaseGraph.EvalutateFailureScenarios(s);
+	BaseGraph.RevertFailureScenarios(s);
 
 
+	//// Step 1: evaluate the network without the link, by setting the capacity to be a large number
+	//double TempVal = BaseGraph.Links.at(4).CaInput;
+	//BaseGraph.Links.at(4).CaRevise = 0.0000001;
+	//BaseGraph.Links.at(4).CaInput = 0.0000001;
+	//BaseGraph.EvaluteGraph();
+	//cout << "Without the paradox link: Total Cost = " << BaseGraph.TotalSystemCost << endl;
+	//BaseGraph.PrintLinks_onscreen();
+
+	//// Step 2: evaluate the network with the link, by setting the capacity to be the same as the input value
+	//BaseGraph.Links.at(4).CaInput = TempVal;
+	//BaseGraph.Links.at(4).CaRevise = TempVal;
+	//BaseGraph.EvaluteGraph();
+	//BaseGraph.PrintLinks_onscreen();
+	//cout << "With the paradox link: Total Cost = " << BaseGraph.TotalSystemCost << endl;
 
 	//CsaNumPop = 0;
 	//CsaCloneBeta = 0.0f;
