@@ -27,10 +27,16 @@ int main(int argc, char* argv[])
 	ReadDataMain(BaseGraph);
 
 	Scenario s;
-	s.LinkIds.push_back(4); s.tau.push_back(0);
+	// evaluate one link failure scenario
+	s.LinkIds.push_back(6); s.tau.push_back(0);
 	BaseGraph.EvalutateFailureScenarios(s);
 	BaseGraph.RevertFailureScenarios(s);
 
+
+	//s.LinkIds.clear(); s.tau.clear();
+	//s.LinkIds.push_back(7); s.tau.push_back(0);
+	//BaseGraph.EvalutateFailureScenarios(s);
+	//BaseGraph.RevertFailureScenarios(s);
 
 	//// Step 1: evaluate the network without the link, by setting the capacity to be a large number
 	//double TempVal = BaseGraph.Links.at(4).CaInput;
