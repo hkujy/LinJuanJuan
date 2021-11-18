@@ -27,6 +27,7 @@
     <ClInclude Include="MutationFuncHeader.h" />
     <ClInclude Include="Parameters.h" />
     <ClInclude Include="RandomFuncs.h" />
+    <ClInclude Include="RestoreSchClass.h" />
     <ClInclude Include="TempleteFunc.h" />
   </ItemGroup>
   <ItemGroup>
@@ -39,6 +40,7 @@
     <ClCompile Include="LineSearchUingDirective.cpp" />
     <ClCompile Include="LinkFuncs.cpp" />
     <ClCompile Include="MainGA.cpp" />
+    <ClCompile Include="RestoreSch.cpp" />
     <ClCompile Include="TestBaressParadox.cpp" />
     <ClCompile Include="TestMainProgram.cpp" />
     <ClCompile Include="MutaFuncs.cpp" />

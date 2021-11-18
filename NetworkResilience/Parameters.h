@@ -10,6 +10,8 @@ const double InvalidMinCost = 99999.0f;
 const int MaxNumNodes = 1000;
 const int MaxNumDof = 10;
 const int NumOfPeriod = 1;
+const int NumOfSchPeriod = 5;
+const double ResourceForEachPeriod = 3.0;
 enum AlgorithmType
 {
 	CSA, GA

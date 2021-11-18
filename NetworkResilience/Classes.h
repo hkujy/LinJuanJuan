@@ -223,7 +223,6 @@ public:
 	void GACrossOver(CHROME &Father, CHROME &Mother, CHROME &BigBro, CHROME &CuteSis);
 	void GAmain(GRAPH &Graph, const int NumPop, const int NumChild, const NODEPROMATRIX &ProbMatrix,
 		const LINKPROMATRIX &LinkProbMatrix, ofstream &ConvergeFile);
-
 	//Algorithms(int NumPop, int NumClone, int NumRep);//CSA
 	Algorithms(int NumPop, int NumChild);//GA
 	~Algorithms();
