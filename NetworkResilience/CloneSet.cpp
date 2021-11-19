@@ -43,7 +43,7 @@ void GenerateCloneSet(const vector<CHROME> Chroms, const int NumPop,const int Nu
 			{
 				if (f >= CloneProb.at(j) && f < CloneProb.at(j + 1))
 				{
-					CloneSet.at(i) = j;
+					CloneSet.at(i) = static_cast<int>(j);
 					break;
 				}
 			}

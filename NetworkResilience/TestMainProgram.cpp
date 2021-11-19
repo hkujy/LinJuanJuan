@@ -1,5 +1,6 @@
 #include "CommonHeaders.h"
 #include "DefGloVar.h"
+#include "RestoreSchClass.h"
 using namespace std;
 //int TestMedium();
 //int TestAlgorithmPara();
@@ -25,12 +26,27 @@ int main(int argc, char* argv[])
 	RemarkFile.open("..//OutPut//TestRemark.txt", ios::trunc);
 	GRAPH BaseGraph;
 	ReadDataMain(BaseGraph);
+	UEeps = 0.01;
+	BaseGraph.EvaluteGraph();
+	cout << "BaseGraph Without Failure = " << BaseGraph.TotalSystemCost << endl;
+	//TODO: Read extern failure links data
+	BaseGraph.Links.at(6).RequiredRes = 1;
+	BaseGraph.Links.at(7).RequiredRes = 1;
+	BaseGraph.Links.at(8).RequiredRes = 1;
 
-	Scenario s;
-	// evaluate one link failure scenario
-	s.LinkIds.push_back(6); s.tau.push_back(0);
-	BaseGraph.EvalutateFailureScenarios(s);
-	BaseGraph.RevertFailureScenarios(s);
+	BaseGraph.Links.at(6).RecoverTime = 2;
+	BaseGraph.Links.at(7).RecoverTime = 2;
+	BaseGraph.Links.at(8).RecoverTime = 2;
+
+	ABCAlgorithms MainAlgo;
+	MainAlgo.GenerateIni(BaseGraph);
+
+
+	//Scenario s;
+	//// evaluate one link failure scenario
+	//s.LinkIds.push_back(6); s.tau.push_back(0);
+	//BaseGraph.EvalutateFailureScenarios(s);
+	//BaseGraph.RevertFailureScenarios(s);
 
 
 	//s.LinkIds.clear(); s.tau.clear();

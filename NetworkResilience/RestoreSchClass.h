@@ -12,16 +12,38 @@ using namespace std;
 class SCHCLASS   // class for the schedule 
 {
 public:
+	int ID;
 	std::vector<LINK*> Links;
 	std::vector<int> StartTime;
 	std::vector<int> EndTime;
 	std::vector<double> UsedRes; /// resource consumption 
-	SCHCLASS() {};
+	double TotalCost;
+	SCHCLASS() {}
+	SCHCLASS(int _id) { ID = _id; }
+	/// <summary>
+	/// It is important to write this copy constructor
+	/// </summary>
+	/// <param name="obj"></param>
+	SCHCLASS(const SCHCLASS& obj) {
+		for (int l = 0; l < obj.Links.size(); l++) this->Links.push_back(obj.Links.at(l));
+		this->StartTime.assign(obj.StartTime.begin(), obj.StartTime.end());
+		this->EndTime.assign(obj.EndTime.begin(), obj.EndTime.end());
+		this->UsedRes.assign(obj.UsedRes.begin(), obj.UsedRes.end());
+		this->ID = obj.ID;
+		this->TotalCost = obj.TotalCost;
+	};  // copy constructor
 	~SCHCLASS()
 	{
-		for (vector<LINK*>::iterator it = Links.begin(); it != Links.end(); ++it)
+		if (Links.size() > 0)
 		{
-			delete* it;
+			Links.clear();
+			//for (int l = 0; l < Links.size(); l++)
+			//{
+				//delete Links.at(l);
+				//Links.at(l) = nullptr;
+			//}
+			//for (vector<LINK*>::iterator it = Links.begin(); it != Links.end(); ++it)
+			//{
 		}
 	}
 	// functions
@@ -31,10 +53,16 @@ public:
 	void GenerateIniSch(GRAPH& g, const vector<int>& FailureLinkSet);
 	void print() const;
 	void getRes();
-	void updatePrecedingRes(int st,int et);
-	void updateResFor(int Pos);
-	int findEarliestSt(int l, const vector<double>& ResCap);
+	void updatePrecedingRes(size_t st,size_t et);
+	void updateResFor(size_t Pos);
+	int findEarliestSt(size_t l, const vector<double>& ResCap);
 	void updateEndTime();
+	void Evaluate(GRAPH& g);
+	int GetLastPeriod()
+	{
+		return EndTime.back();
+	}
+	vector<size_t> getNewReadyLinks(int tau);
 };
 
 
@@ -58,8 +86,11 @@ public:
 		NumEmployedBee = 10;
 		NumOnlookers = 10;
 		NumScouts = 10;
+		FailureLinks.push_back(6);
+		FailureLinks.push_back(7);
+		FailureLinks.push_back(8);
 	};
-	~ABCAlgorithms();
+	~ABCAlgorithms() {};
 	std::vector<SCHCLASS> Sols;
 	void GenerateIni(GRAPH& Graph);
 	void ABCMain(GRAPH& Graph);

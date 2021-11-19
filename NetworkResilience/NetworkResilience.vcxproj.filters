@@ -104,9 +104,6 @@
     <ClCompile Include="CloneSet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TestBaressParadox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RestoreSch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

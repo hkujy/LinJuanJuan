@@ -1,6 +1,6 @@
 NumNodes,6
 NumOD,1
-NumLinks,7
+NumLinks,9
 OneDimEsp,0.000001
 UEeps,0.0001
 UEmaxIter,500

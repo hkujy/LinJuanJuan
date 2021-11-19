@@ -41,7 +41,6 @@
     <ClCompile Include="LinkFuncs.cpp" />
     <ClCompile Include="MainGA.cpp" />
     <ClCompile Include="RestoreSch.cpp" />
-    <ClCompile Include="TestBaressParadox.cpp" />
     <ClCompile Include="TestMainProgram.cpp" />
     <ClCompile Include="MutaFuncs.cpp" />
     <ClCompile Include="ProbMatrixFuncs.cpp" />
