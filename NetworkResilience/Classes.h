@@ -23,11 +23,12 @@ public:
 	double Flow;
 	double AlphaBpr; // parameter in the BPR  // 0.15
 	double BetaBBpr; // parameter in the BPR  // 4.0
-
 	double CleanLinkFlow();
 	double BPRCost();
 	double IniCost();
 	void IniCap();
+	int RecoverTime;  // recover time
+	int RequiredRes; // required resources
 	LINK();
 	LINK(const LINK& OtherLink);
 	~LINK();
@@ -106,7 +107,7 @@ public:
 	~Scenario() { LinkIds.clear(); tau.clear(); }
 	void print()
 	{
-		for (int i = 0; i < LinkIds.size(); i++)
+		for (size_t i = 0; i < LinkIds.size(); i++)
 		{
 			std::cout << "DisruptedLinkID=" << LinkIds.at(i) << ",TimePeriod=" << tau.at(i) << endl;
 		}
@@ -147,7 +148,6 @@ class TEST
 	TEST(){
 		ID = InvaildInt;
 	}
-
 };
 
 class NODEPROMATRIX{

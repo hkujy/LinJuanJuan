@@ -41,7 +41,7 @@ int Algorithms::GenerateSol(int ChromIndex)
 	/*******************************************/
 	/******************Secquence***************/
 	//vector<int> CandiSet(NodeVarSet);
-	for (int i = 0; i < NodeVarSet.size(); i++)
+	for (size_t i = 0; i < NodeVarSet.size(); i++)
 	{
 		this->Chroms.at(ChromIndex).Nodes.push_back(NodeVarSet.at(i));
 		this->Chroms.at(ChromIndex).NodeDof.push_back(GenRandomFloat(NodeDofVarSet));
@@ -180,22 +180,22 @@ void Algorithms::GAselectParent(int& Father, int& Mother, const int NumPop) {
 		Prob.at(i + 1) = Prob.at(i) + this->Chroms.at(i).Fitness / sumFit;// cumulative prob
 	}
 	double f = GenRandomReal();
-	for (int i = 0; i < Prob.size() - 1; i++)
+	for (size_t i = 0; i < Prob.size() - 1; i++)
 	{
 		if (f >= Prob.at(i) && f < Prob.at(i + 1))
 		{
-			Father = i;
+			Father = static_cast<int>(i);
 			break;
 		}
 	}
 	do
 	{
 		double m = GenRandomReal();
-		for (int i = 0; i < Prob.size() - 1; i++)
+		for (size_t i = 0; i < Prob.size() - 1; i++)
 		{
 			if (m >= Prob.at(i) && m < Prob.at(i + 1))
 			{
-				Mother = i;
+				Mother =static_cast<int>(i);
 				break;
 			}
 		}
@@ -229,7 +229,7 @@ void Algorithms::GACrossOver(CHROME& Father, CHROME& Mother, CHROME& BigBro, CHR
 		CuteSis.NodeDof.at(i) = Mother.NodeDof.at(i);
 		CuteSis.NodeDofProb.at(i) = Mother.NodeDofProb.at(i);
 	}
-	for (int i = pos; i < this->NodeVarSet.size(); i++)
+	for (size_t i = pos; i < this->NodeVarSet.size(); i++)
 	{
 		BigBro.Nodes.at(i) = Mother.Nodes.at(i);
 		BigBro.NodeDof.at(i) = Mother.NodeDof.at(i);
@@ -323,7 +323,7 @@ Repeat:
 		{
 			isRepeat = false;
 			this->HyperMutateMain(this->Chroms.at(MutationIndex));
-			for (int kk = 0; kk < Chroms.size(); kk++)
+			for (size_t kk = 0; kk < Chroms.size(); kk++)
 			{
 				if (kk == MutationIndex) continue;
 				if (this->Chroms.at(MutationIndex).isSame(this->Chroms.at(kk)))

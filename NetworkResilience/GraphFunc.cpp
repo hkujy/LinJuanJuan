@@ -256,9 +256,9 @@ void GRAPH::EvalutateFailureScenarios(const Scenario &s)
 	}
 
 	cout << "------Eva Link Cap Fail-----------------------" << endl;
-	for (int i = 0; i < NumOfPeriod; i++)  // loop all the period
+	for (int i = 0; i < MaxNumOfSchPeriod; i++)  // loop all the period
 	{
-		for (int j = 0; j < s.tau.size(); j++)
+		for (size_t j = 0; j < s.tau.size(); j++)
 		{
 			if (i == s.tau.at(j))
 			{
@@ -282,9 +282,9 @@ void GRAPH::RevertFailureScenarios(const Scenario& s)
 	}
 
 	cout << "------Restore Link Cap-----------------------" << endl;
-	for (int i = 0; i < NumOfPeriod; i++)  // loop all the period
+	for (int i = 0; i < MaxNumOfSchPeriod; i++)  // loop all the period
 	{
-		for (int j = 0; j < s.tau.size(); j++)
+		for (size_t j = 0; j < s.tau.size(); j++)
 		{
 			if (i == s.tau.at(j))
 			{

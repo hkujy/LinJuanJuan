@@ -39,7 +39,7 @@ void GenerateCloneSet(const vector<CHROME> Chroms, const int NumPop,const int Nu
 		for (int i = 0; i < NumClone; i++)
 		{
 			double f = GenRandomReal();
-			for (int j = 0; j < CloneProb.size() - 1; j++)
+			for (size_t j = 0; j < CloneProb.size() - 1; j++)
 			{
 				if (f >= CloneProb.at(j) && f < CloneProb.at(j + 1))
 				{

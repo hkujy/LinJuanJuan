@@ -9,6 +9,13 @@ int GenRandomInt(const std::vector<int> &Vec)
 	unsigned int Num = distribution(GenRan);
 	return Vec.at(Num);
 }
+int GenRandomInt(int MinVal, int MaxVal)
+{
+	std::uniform_int_distribution<unsigned int> distribution(MinVal,MaxVal);
+	return static_cast<int>(distribution(GenRan));
+}
+
+
 
 double GenRandomFloat(const std::vector<double> &Vec)
 {

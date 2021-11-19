@@ -26,9 +26,13 @@ LINK::LINK(const LINK& OtherLink){
 	this->CaRevise = OtherLink.CaRevise;
 	this->CaInput = OtherLink.CaInput;
 	this->Cost = OtherLink.Cost;
+	this->RecoverTime = OtherLink.RecoverTime;
+	this->RequiredRes = OtherLink.RequiredRes;
 }
 
 LINK::LINK(){
+	RecoverTime = 2; // take two period
+	RequiredRes = 1; // only occupy on resource unit
 	ID = Tail = Head = InvaildInt;
 	Flow = InvaildFloat;
 	Cost = InvaildFloat;
