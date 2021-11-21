@@ -205,7 +205,7 @@ vector<size_t> SCHCLASS::getNewReadyLinks(int tau)
 
 void SCHCLASS::Evaluate(GRAPH& g)
 {
-	TotalCost = 0.0;
+	Fitness = 0.0;
 	vector<double> TravelTime;  // travel time for each period 
 	vector<size_t> CumulativeReadyLinks;
 	TravelTime.assign(GetLastPeriod(), 0);
@@ -249,7 +249,7 @@ void SCHCLASS::Evaluate(GRAPH& g)
 	{
 		cout << "t = " << t << ", TravelTime = " << TravelTime.at(t) << endl;
 	}
-	this->TotalCost = std::accumulate(TravelTime.begin(), TravelTime.end(), 0.0);
-	cout << "total cost = " << this->TotalCost << endl;
+	this->Fitness = std::accumulate(TravelTime.begin(), TravelTime.end(), 0.0);
+	cout << "total cost = " << this->Fitness << endl;
 }
 

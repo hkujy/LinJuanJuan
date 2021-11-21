@@ -17,7 +17,7 @@ public:
 	std::vector<int> StartTime;
 	std::vector<int> EndTime;
 	std::vector<double> UsedRes; /// resource consumption 
-	double TotalCost;
+	double Fitness;
 	SCHCLASS() {}
 	SCHCLASS(int _id) { ID = _id; }
 	/// <summary>
@@ -30,7 +30,7 @@ public:
 		this->EndTime.assign(obj.EndTime.begin(), obj.EndTime.end());
 		this->UsedRes.assign(obj.UsedRes.begin(), obj.UsedRes.end());
 		this->ID = obj.ID;
-		this->TotalCost = obj.TotalCost;
+		this->Fitness = obj.Fitness;
 	};  // copy constructor
 	~SCHCLASS()
 	{
@@ -65,67 +65,25 @@ public:
 	}
 	vector<size_t> getNewReadyLinks(int tau);
 	// write a few neighbor operators
-	void GenNei(GRAPH& g, const vector<int>& FailureLinkSet, const vector<double>& ResCap);
+	void GenNei(SCHCLASS& Nei, GRAPH& g, const vector<int>& FailureLinkSet, const vector<double>& ResCap);
 	void Nei_Swap(SCHCLASS &NewSol);
 	void Nei_New(SCHCLASS& NewSol, GRAPH& g, const vector<int>& FailureLinkSet, const vector<double>& ResCap);
 	void Nei_Move_One_To_Right(SCHCLASS& NewSol);
 	void Nei_Move_One_To_Left(SCHCLASS& NewSol);
 	void Nei_CrossOver_OnePoint(SCHCLASS& NewSol);
 
-
-
 	void GenerateTimeFromOrder(const vector<double>& ResCap);
 	void Repair_Delay();
-
-
-
 
 	SCHCLASS& operator=(const SCHCLASS& rhs) {
 		ID = rhs.ID; 
 		StartTime.assign(rhs.StartTime.begin(), rhs.StartTime.end());
 		EndTime.assign(rhs.EndTime.begin(), rhs.EndTime.end());
 		UsedRes.assign(rhs.UsedRes.begin(), rhs.UsedRes.end());
-		TotalCost = rhs.TotalCost;
+		Fitness = rhs.Fitness;
 		Links.assign(rhs.Links.begin(), rhs.Links.end());
 		return* this;
 	}
 };
-
-//
-//class ABCAlgorithms // to begin with use ABC algorithm
-//{
-//public:
-//	//double BaseUNPM;
-//	double MaxFitValue;
-//	double MinFitValue;
-//	int NumEmployedBee;
-//	int NumOnlookers;
-//	int NumScouts;
-//	//TODO: the resource cap for each period should be a large period than the project perido
-//	std::vector<double> ResourceCap;  // Capacity of the resources
-//	std::vector<int> FailureLinks;
-//	ABCAlgorithms() {
-//		MaxFitValue = -99999999999999;
-//		MinFitValue = 999999999999999;
-//		ResourceCap.assign(MaxNumOfSchPeriod, ResourceForEachPeriod);
-//		//TODO: add set of failure links
-//		//TODO: adjust the number of algorithm parameters 
-//		NumEmployedBee = 10;
-//		NumOnlookers = 1;
-//		NumScouts = 1;
-//		FailureLinks.push_back(5);
-//		FailureLinks.push_back(6);
-//		FailureLinks.push_back(7);
-//		FailureLinks.push_back(8);
-//	};
-//	~ABCAlgorithms() {};
-//	std::vector<SCHCLASS> Sols;
-//	void GenerateIni(GRAPH& Graph);
-//	void ABCMain(GRAPH& Graph);
-//	void EmployBee(GRAPH& Graph);
-//	void Onlooker();
-//	void Scout();
-//};
-
 
 #endif

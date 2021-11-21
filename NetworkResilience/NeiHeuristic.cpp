@@ -11,50 +11,37 @@ int Select_One_Nei()
 }
 
 //main fun for generate a nei
-void SCHCLASS::GenNei(GRAPH& g, const vector<int>& FailureLinkSet, const vector<double>& ResCap)
+void SCHCLASS::GenNei(SCHCLASS &Nei, GRAPH& g, const vector<int>& FailureLinkSet, const vector<double>& ResCap)
 {
-	//Step 1: Create a neighbor solutions
-	SCHCLASS nei(*this);
-	if (nei.findEarliestInFeasibleSt(ResCap) >= 0) cout << "ini solution is infeasible" << endl;
-	//Step 2: Call Neighbour Operator
 	int NeighourOperatorIndex = Select_One_Nei();
 	switch (NeighourOperatorIndex)
 	{
-	case(1):Nei_Swap(nei);
+	case(1):Nei_Swap(Nei);
 		break;
 	case(2):
-		Nei_CrossOver_OnePoint(nei);
+		Nei_CrossOver_OnePoint(Nei);
 		break;
 	case(3):
-		Nei_Move_One_To_Left(nei);
+		Nei_Move_One_To_Left(Nei);
 		break;
 	case(4):
-		Nei_Move_One_To_Right(nei);
+		Nei_Move_One_To_Right(Nei);
 		break;
 	default:
 		cout << "Neighbor operator index is properly set" << endl;
 		system("PAUSE");
 		break;
 	}
-	nei.GenerateTimeFromOrder(ResCap);
-	if (!nei.isFeasible(ResCap))
+	Nei.GenerateTimeFromOrder(ResCap);
+	if (!Nei.isFeasible(ResCap))
 	{
 		cout << "*************************" << endl;
 		cout << "The solution is infeasible" << endl;
 		cout << "need to write repair" << endl;
 		cout << "*************************" << endl;
 	}
-	nei.Evaluate(g);
+	Nei.Evaluate(g);
 	
-	cout << "************Compare Obje************" << endl;
-	if (this->TotalCost != nei.TotalCost)
-	{
-		cout << this->TotalCost << "," << nei.TotalCost << endl;
-		nei.print();
-		this->print();
-	}
-	
-
 }
 
 //Swap the order of two links

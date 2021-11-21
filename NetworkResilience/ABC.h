@@ -17,10 +17,14 @@ public:
 	double MinFitValue;
 	int NumEmployedBee;
 	int NumOnlookers;
-	int NumScouts;
+	int MaxIter;
+	vector<int> ScountCounter;
+	int MaxScountCount;
 	//TODO: the resource cap for each period should be a large period than the project perido
 	std::vector<double> ResourceCap;  // Capacity of the resources
 	std::vector<int> FailureLinks;
+	vector<double> Prob; // probability for the onlookers
+	SCHCLASS GlobalBest;
 	ABCAlgorithms() {
 		MaxFitValue = -99999999999999;
 		MinFitValue = 999999999999999;
@@ -28,20 +32,28 @@ public:
 		//TODO: add set of failure links
 		//TODO: adjust the number of algorithm parameters 
 		NumEmployedBee = 10;
-		NumOnlookers = 1;
-		NumScouts = 1;
+		NumOnlookers = 10;
+		MaxScountCount = 10;
+		MaxIter = 10;
+		ScountCounter.assign(NumEmployedBee, 0);
+		FailureLinks.push_back(3);
 		FailureLinks.push_back(5);
 		FailureLinks.push_back(6);
 		FailureLinks.push_back(7);
 		FailureLinks.push_back(8);
+		Prob.assign(NumEmployedBee, 0.0);
 	};
 	~ABCAlgorithms() {};
 	std::vector<SCHCLASS> Sols;
 	void GenerateIni(GRAPH& Graph);
 	void ABCMain(GRAPH& Graph);
-	void EmployBee(GRAPH& Graph);
-	void Onlooker();
-	void Scout();
+	void EmployBeePhase(GRAPH& Graph);
+	void OnlookerPhase(GRAPH& Graph);
+	void ScoutPhase(GRAPH& Graph);
+
+	void GetProb();
+	void ReadData();
+	size_t Select_Basedon_Prob();
 };
 
 
