@@ -22,12 +22,17 @@ int FindValIndex(const vector<int>& vec, int key)
 	}
 }
 
+//generate the time from order to time
+void SCHCLASS::GenerateTimeFromOrder(const vector<double>& ResCap)
+{
+	AlignStartTime(ResCap);
+}
 void SCHCLASS::print() const
 {
 	cout << "*******Print and check one sol********" << endl;
 	for (size_t i = 0; i < Links.size(); i++)
 	{
-		cout << "Link = " << Links.at(i)->ID << ", Start Time = " << StartTime.at(i) <<", End Time = "<<EndTime.at(i)<< endl;
+		cout << "Link = " << Links.at(i)->ID << ", Start Time = " << StartTime.at(i) << ", End Time = " << EndTime.at(i) << endl;
 	}
 	cout << "********End*************************" << endl;
 }
@@ -38,13 +43,14 @@ Scenario SCHCLASS::ConvertToScenario() {
 	for (auto t : StartTime) s.tau.push_back(t);
 	return s;
 }
+
 void SCHCLASS::getRes()
 {
 	UsedRes.assign(MaxNumOfSchPeriod, 0);
 
 	for (size_t l = 0; l < Links.size(); l++)
 	{
-		for (int t = StartTime.at(l); t <= EndTime.at(0); t++)
+		for (int t = StartTime.at(l); t < EndTime.at(l); t++)
 		{
 			UsedRes.at(t) += Links.at(l)->RequiredRes;
 		}
@@ -73,7 +79,7 @@ bool SCHCLASS::isFeasible(const vector<double>& res)
 
 //update the resource used before the pos project
 //does not include the et link, which is supposed to be the current link
-void SCHCLASS::updatePrecedingRes(size_t st,size_t et)
+void SCHCLASS::updatePrecedingRes(size_t st, size_t et)
 {
 	for (size_t l = st; l < et; l++)
 	{
@@ -93,8 +99,8 @@ void SCHCLASS::updateResFor(size_t Pos)
 }
 
 //find the earliest a time with available resources
-int SCHCLASS::findEarliestSt(size_t l, const vector<double> &ResCap) {
-	
+int SCHCLASS::findEarliestFeasibleSt(size_t l, const vector<double>& ResCap) {
+
 	for (int t = 0; t < MaxNumOfSchPeriod; t++)
 	{
 		if (UsedRes.at(t) + this->Links.at(l)->RequiredRes <= ResCap.at(t))
@@ -104,12 +110,23 @@ int SCHCLASS::findEarliestSt(size_t l, const vector<double> &ResCap) {
 	}
 	cout << "ERR: can not find the earliest start time for project " << l << endl;
 	return -1;
-
 }
 
-void SCHCLASS::AlignStartTime(const vector<double> &ResCap) {
+int SCHCLASS::findEarliestInFeasibleSt(const vector<double>& ResCap) {
+
+	for (int t = 0; t < MaxNumOfSchPeriod; t++)
+	{
+		if (UsedRes.at(t) > ResCap.at(t))
+		{
+			return t;
+		}
+	}
+	return -1;
+}
+
+void SCHCLASS::AlignStartTime(const vector<double>& ResCap) {
 	// shift the project to the earliest feasible time
-	this->UsedRes.assign(MaxNumOfSchPeriod,0.0);
+	this->UsedRes.assign(MaxNumOfSchPeriod, 0.0);
 	for (size_t l = 0; l < Links.size(); l++)
 	{
 		if (l == 0)
@@ -120,20 +137,24 @@ void SCHCLASS::AlignStartTime(const vector<double> &ResCap) {
 		else
 		{
 			updatePrecedingRes(l - 1, l);
-			StartTime.at(l) = findEarliestSt(l,ResCap);
+			StartTime.at(l) = findEarliestFeasibleSt(l, ResCap);
 			EndTime.at(l) = StartTime.at(l) + Links.at(l)->RecoverTime;
 		}
 	}
 	updateResFor(this->Links.size() - 1);
 }
 
-void SCHCLASS::GenerateIniSch(GRAPH& g, const vector<int> &FailureLinks)
+void SCHCLASS::GenerateIniSch(GRAPH& g, const vector<int>& FailureLinks)
 {
+	if (this->Links.size() > 0)
+	{
+		Links.clear(); StartTime.clear(); EndTime.clear();
+	}
 	// step 1 generate ini number of links
 	int NumOfFailureLinks = (int)FailureLinks.size();
 	vector<bool> isSelected(FailureLinks.size(), false);
 	int CountDoWhile = 0;
-	do 
+	do
 	{
 		int linkNum = GenRandomInt(FailureLinks);
 		int pos = FindValIndex(FailureLinks, linkNum);
@@ -145,18 +166,18 @@ void SCHCLASS::GenerateIniSch(GRAPH& g, const vector<int> &FailureLinks)
 			isSelected.at(pos) = true;
 		}
 		CountDoWhile++;
-		if (CountDoWhile>1000)
+		if (CountDoWhile > 1000)
 		{
 			cout << "ERR: Do while count is larger than 1000" << endl;
 			system("PAUSE");
 		}
-	} while (std::find(isSelected.begin(), isSelected.end(), false)!=isSelected.end());
+	} while (std::find(isSelected.begin(), isSelected.end(), false) != isSelected.end());
 	// step 1 generate ini number of links
 	EndTime.assign(FailureLinks.size(), -1);
 	StartTime.assign(FailureLinks.size(), -1);
 	for (int i = 0; i < FailureLinks.size(); i++)
 	{
-		this->StartTime.at(i)=GenRandomInt(0, MaxNumOfSchPeriod);
+		this->StartTime.at(i) = GenRandomInt(0, MaxNumOfSchPeriod);
 	}
 	SortStartTime(StartTime);
 	updateEndTime();
@@ -165,7 +186,7 @@ void SCHCLASS::GenerateIniSch(GRAPH& g, const vector<int> &FailureLinks)
 
 vector<size_t> SCHCLASS::getNewReadyLinks(int tau)
 {
-	
+
 	vector<size_t> results;
 	if (tau == 0) return results;
 	else
@@ -178,7 +199,7 @@ vector<size_t> SCHCLASS::getNewReadyLinks(int tau)
 			}
 		}
 	}
-	
+
 	return results;
 }
 
@@ -194,9 +215,9 @@ void SCHCLASS::Evaluate(GRAPH& g)
 		Links.at(l)->CaRevise = Zero;
 	}
 	g.EvaluteGraph();
-	
+
 	// step 2: compute the time in each period
-	for (int t = 0; t < GetLastPeriod()+1; t++)
+	for (int t = 0; t < GetLastPeriod() + 1; t++)
 	{
 		cout << "time = " << t << endl;
 		vector<size_t> NewReady = getNewReadyLinks(t);
@@ -215,7 +236,7 @@ void SCHCLASS::Evaluate(GRAPH& g)
 		else
 		{
 			for (auto l : NewReady) Links.at(l)->IniCap();
-			cout << "---Period = " << t <<","<<NewReady.size()<<" link is added" << endl;
+			cout << "---Period = " << t << "," << NewReady.size() << " link is added" << endl;
 			g.EvaluteGraph();
 			CumulativeReadyLinks.insert(CumulativeReadyLinks.end(), NewReady.begin(), NewReady.end());
 			if (t == GetLastPeriod()) TravelTime.push_back(g.TotalSystemCost);
@@ -228,28 +249,7 @@ void SCHCLASS::Evaluate(GRAPH& g)
 	{
 		cout << "t = " << t << ", TravelTime = " << TravelTime.at(t) << endl;
 	}
-	this->TotalCost = std::accumulate(TravelTime.begin(), TravelTime.end(),0.0);
+	this->TotalCost = std::accumulate(TravelTime.begin(), TravelTime.end(), 0.0);
 	cout << "total cost = " << this->TotalCost << endl;
 }
 
-
-
-void ABCAlgorithms:: GenerateIni(GRAPH& Graph)
-{	
-	// improve the solutions
-	for (int i = 0; i < NumEmployedBee; i++)
-	{
-		cout << "-----------------------EB = " << i << "-------------------" << endl;
-		//SCHCLASS news;
-		Sols.push_back(SCHCLASS(i));
-		Sols.back().GenerateIniSch(Graph,FailureLinks);
-		Sols.back().AlignStartTime(ResourceCap);
-		cout << "----------Print solution after solution alignment--------" << endl;
-		Sols.back().print();
-		cout << "----------End print solution after solution alignment--------" << endl;
-		Sols.back().Evaluate(Graph);
-	}
-
-	for (auto s : Sols) cout <<s.ID<<","<< s.TotalCost << endl;
-
-}

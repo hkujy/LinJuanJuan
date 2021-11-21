@@ -1,6 +1,7 @@
 #include "CommonHeaders.h"
 #include "DefGloVar.h"
 #include "RestoreSchClass.h"
+#include "ABC.h"
 using namespace std;
 //int TestMedium();
 //int TestAlgorithmPara();
@@ -39,7 +40,8 @@ int main(int argc, char* argv[])
 	BaseGraph.Links.at(8).RecoverTime = 2;
 
 	ABCAlgorithms MainAlgo;
-	MainAlgo.GenerateIni(BaseGraph);
+	//MainAlgo.GenerateIni(BaseGraph);
+	MainAlgo.ABCMain(BaseGraph);
 
 
 	//Scenario s;

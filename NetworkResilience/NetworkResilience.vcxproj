@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ABC.h" />
     <ClInclude Include="Classes.h" />
     <ClInclude Include="CommonHeaders.h" />
     <ClInclude Include="Debug.h" />
@@ -31,6 +32,7 @@
     <ClInclude Include="TempleteFunc.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ABC.cpp" />
     <ClCompile Include="Bruteforce.cpp" />
     <ClCompile Include="CloneSet.cpp" />
     <ClCompile Include="GAfuncs.cpp" />
@@ -40,6 +42,7 @@
     <ClCompile Include="LineSearchUingDirective.cpp" />
     <ClCompile Include="LinkFuncs.cpp" />
     <ClCompile Include="MainGA.cpp" />
+    <ClCompile Include="NeiHeuristic.cpp" />
     <ClCompile Include="RestoreSch.cpp" />
     <ClCompile Include="TestMainProgram.cpp" />
     <ClCompile Include="MutaFuncs.cpp" />
