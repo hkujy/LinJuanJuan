@@ -27,7 +27,7 @@ void OpenAndCleanFiles(){
 	OutFile.close();
 
 	OutFile.open("..//OutPut//PrintPeriod.txt", ios::trunc);
-	OutFile << "Seed,Period,Cost,ActiveProject" << endl;
+	OutFile << "Seed,Period,Cost" << endl;
 	OutFile.close();
 
 	OutFile.open("..//OutPut//LinkData.txt", ios::trunc);

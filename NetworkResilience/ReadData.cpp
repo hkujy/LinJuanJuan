@@ -55,36 +55,6 @@ using namespace std;
 //	return true;
 //}
 
-bool ReadLinkData(std::vector<LINK> &Links,
-	ifstream &fin) {
-	LINK tl;
-	int IDcount = 0;
-	//int tail, head;
-	//float t0, ca0;
-	//float BprAlph, BprBeta;
-	vector<string> fields;
-	string line;
-
-	while (getline(fin, line))
-	{
-		splitf(fields, line, ",");
-		if ( std::stoi(fields[0])<0)
-			continue;
-	/*	fscanf_s(fin, "%i %i %f %f %f %f",
-			&tail, &head, &t0, &ca0, &BprAlph, &BprBeta);*/
-		Links.push_back(tl);
-		Links.back().ID = IDcount;
-		Links.back().Tail = std::stoi(fields[0]);
-		Links.back().Head = std::stoi(fields[1]);
-		Links.back().T0 = std::stof(fields[2]);
-		Links.back().CaInput = std::stof(fields[3]);
-		Links.back().CaRevise = std::stof(fields[3]);
-		Links.back().AlphaBpr = std::stof(fields[4]);
-		Links.back().BetaBBpr = std::stof(fields[5]);
-		IDcount++;
-	}
-	return true;
-}
 
 //bool ReadDemandData(vector<OD> &ODPairs,
 //	FILE *fin){
@@ -118,33 +88,6 @@ bool ReadLinkData(std::vector<LINK> &Links,
 //}
 
 
-bool ReadDemandData(vector<OD> &ODPairs,
-	ifstream &fin) {
-
-	int IDcount = 0;
-	//int or , de;
-	//float dd;
-	vector<string> fields;
-	string line;
-	OD tod;
-
-	while (getline(fin, line))
-	{
-		splitf(fields, line, ",");
-		if (std::stoi(fields[0])<0)
-			continue;
-
-		ODPairs.push_back(tod);
-		ODPairs.back().ID = IDcount;
-		ODPairs.back().Orign = std::stoi(fields[0]);
-		ODPairs.back().Dest = std::stoi(fields[1]);
-		ODPairs.back().Demand = std::stof(fields[2]);
-		IDcount++;
-	}
-
-	return true;
-}
-
 
 bool PrintModelParas(){
 
@@ -176,29 +119,25 @@ bool PrintModelParas(){
 }
 
 bool ReadModelParas(){
-	ifstream fin, fcsa,fga,fabc;
+	ifstream fin, fga,fabc;
 	if (ModelIndex == 1)
 	{
 		fin.open("..//InPut//MediumNetwork//Para.txt");
-		fcsa.open("..//InPut//MediumNetwork//CsaPara.txt");
 		/*fga.open("..//InPut//SiouxFallsNetwork//GAPara.txt");*/
 	}
 	else if (ModelIndex == 2)
 	{
 		fin.open("..//InPut//Nagureny2009Network//Para.txt");
-		fcsa.open("..//InPut//Nagureny2009Network//CsaPara.txt");
 	}
 	else if (ModelIndex == 3)
 	{
 		fin.open("..//InPut//SiouxFallsNetwork//Para.txt");
-		fcsa.open("..//InPut//SiouxFallsNetwork//CsaPara.txt");
 		fga.open("..//InPut//SiouxFallsNetwork//GAPara.txt");
 	}
 	else if (ModelIndex == 4)
 	{
 		fin.open("..//InPut//ParadoxNet//Para.txt");
 		fabc.open("..//InPut//ParadoxNet//ABCPara.txt");
-		//fcsa.open("..//InPut//ParadoxNet//CsaPara.txt");
 		//fga.open("..//InPut//ParadoxNet//GAPara.txt");
 	}
 	else
@@ -226,20 +165,6 @@ bool ReadModelParas(){
 	}
 	cout << "OneDimEsp = " << OneDimEsp << endl;
 	fin.close();
-
-
-	while (getline(fcsa, line))
-	{
-		splitf(fields, line, ",");
-		if (fields.size() != 2)
-			continue;
-		if (fields[0] == "CsaNumPop")	CsaNumPop = stoi(fields[1]);
-		if (fields[0] == "CsaCloneBeta")	CsaCloneBeta = stof(fields[1]);
-		if (fields[0] == "CsaRepRatio")	CsaRepRatio = stof(fields[1]);
-		if (fields[0] == "MaxCsaIter")	MaxCsaIter = stoi(fields[1]);
-
-	}
-	fcsa.close();
 
 	while (getline(fga, line))
 	{
@@ -423,174 +348,71 @@ void ReadLinkProb(LINKPROMATRIX &LinkProbMatrix)
 
 }
 
-
-
-
-
-
-void ReadGraphData(GRAPH &Graph)
-{
-	
-	//FILE * fin;
-	std::ifstream fin;
-	// Read Demand data
-	if (ModelIndex == 1) // Scan
-	{
-		//fopen_s(&fin, "..//Input//MediumNetwork//DeamdData.txt", "r");
-		fin.open("..//Input//MediumNetwork//DeamdData.txt");
-		//fopen_s(&fin, "..//Input//MediumNetwork//DeamdData.txt", "r");
-	}
-	else if (ModelIndex == 2)
-	{
-		fin.open("..//Input//Nagureny2009Network//DeamdData.txt");
-		//fopen_s(&fin, "..//Input//Nagureny2009Network//DeamdData.txt", "r");
-	}
-	else if (ModelIndex == 3)
-	{
-		fin.open("..//Input//Nagureny2009Network//DeamdData.txt");
-		//fopen_s(&fin, "..//Input//Nagureny2009Network//DeamdData.txt", "r");
-	}
-	else if (ModelIndex == 4)
-	{
-		fin.open("..//Input//ParadoxNet//DeamdData.txt");
-		//fopen_s(&fin, "..//Input//Nagureny2009Network//DeamdData.txt", "r");
-	}
-	else
-	{
-		cout << "Mode Index is not specified" << endl;
-		system("PAUSE");
-		fin.open("..//Input//DeamdData.txt");
-		//fopen_s(&fin, "..//Input//DeamdData.txt", "r");
-	}
-
-	if (!ReadDemandData(Graph.OdPairs, fin))
-	{
-		cerr << "read demand data fails" << endl;
-		system("PAUSE");
-	}
-
-	fin.close();
-	
-	// Read link data
-	if (ModelIndex == 1) // Scan
-	{
-		fin.open("..//Input//MediumNetwork//LinkData.txt");
-		//fopen_s(&fin, "..//Input//MediumNetwork//LinkData.txt", "r");
-	}
-	else if (ModelIndex == 2)
-	{
-		fin.open("..//Input//Nagureny2009Network//LinkData.txt");
-		//fin.open("C://GitCodes//NRI//InPut//Nagureny2009Network//LinkData.txt");
-			//LinkData.txt");
-		//fopen_s(&fin, "..//Input//Nagureny2009Network//LinkData.txt", "r");
-	}
-	else if (ModelIndex == 3)
-	{
-		fin.open("..//Input//SiouxFallsNetwork//LinkData.txt");
-		//fopen_s(&fin, "..//Input//SiouxFallsNetwork//LinkData.txt", "r");
-	}
-	else if (ModelIndex == 4)
-	{
-		fin.open("..//Input//ParadoxNet//LinkData.txt");
-		//fopen_s(&fin, "..//Input//SiouxFallsNetwork//LinkData.txt", "r");
-	}
-	else
-	{
-		fin.open("..//Input//LinkData.txt");
-		//fopen_s(&fin, "..//Input//LinkData.txt", "r");
-	}
-
-	if (!fin.is_open())
-		cout << "link data file is not open" << endl;
-
-
-	if (!ReadLinkData(Graph.Links, fin))
-	{
-		cerr << "read link data fails" << endl;
-		system("PAUSE");
-	}
-	fin.close();
-	Graph.CreateOriginSet();
-	Graph.CreateNodes();
-}
-
-void ReadLinkProbMatrix(LINKPROMATRIX &LinkProbMatrix);
-void ReadDataMain(GRAPH &BaseGraph, NODEPROMATRIX &Pmatrix){
-
-	ReadNodeProb(Pmatrix);
-	ReadGraphData(BaseGraph);
-	//assert(BaseGraph.PrintLinks(AssertLog));
-	//assert(BaseGraph.PrintOD(AssertLog));
-}
-
-void ReadDataMain(GRAPH &BaseGraph, NODEPROMATRIX &NodePmatrix, LINKPROMATRIX &LinkPmatrix){
-
-	ofstream OutPutFile;
-	ReadGraphData(BaseGraph);
-	if (ModelIndex == 3)
-	{
-		// for Sioux fall network specify data
-		// the link failure prob is zero 
-		// and only consider the failure of the nodse
-		LinkPmatrix.Dof.push_back(0.0);
-		for (int i = 0; i < NumLinks;i++)
-		{
-			LinkPmatrix.Matrix[0][i] = 1.0f;  
-		}
-
-		// degree of failure for nodes
-		NodePmatrix.Dof.push_back(0.0f); 
-		NodePmatrix.Dof.push_back(0.3f);
-		NodePmatrix.Dof.push_back(0.6f);
-		NodePmatrix.Dof.push_back(0.9f);
-		/////////////////
-		for (int i = 0; i < NumNodes;i++)
-		{
-			NodePmatrix.Matrix[0][i] = 0.60f;
-			NodePmatrix.Matrix[1][i] = 0.20f;
-			NodePmatrix.Matrix[2][i] = 0.15f;
-			NodePmatrix.Matrix[3][i] = 0.05f;
-		}
-		OutPutFile.open("..//OutPut//NodeProbMatrix.txt");
-		NodePmatrix.PrintMatrix(OutPutFile);
-		OutPutFile.close();
-		OutPutFile.open("..//OutPut//LinkProbMatrix.txt");
-		LinkPmatrix.PrintMatrix(OutPutFile);
-		OutPutFile.close();
-
-	}
-	else
-	{
-		ReadNodeProb(NodePmatrix);
-		ReadLinkProb(LinkPmatrix);
-		OutPutFile.open("..//OutPut//NodeProbMatrix.txt");
-		NodePmatrix.PrintMatrix(OutPutFile);
-		OutPutFile.close();
-		OutPutFile.open("..//OutPut//LinkProbMatrix.txt");
-		LinkPmatrix.PrintMatrix(OutPutFile);
-		OutPutFile.close();
-	}
-	OutPutFile.open("..//OutPut//LinkData.txt");
-	BaseGraph.PrintLinks(OutPutFile);
-	OutPutFile.close();
-	OutPutFile.open("..//OutPut//DemandData.txt");
-	BaseGraph.PrintOD(OutPutFile);
-	OutPutFile.close();
-}
-
-
-void ReadDataMain(GRAPH& BaseGraph) {
-
-	ofstream OutPutFile;
-	ReadGraphData(BaseGraph);
-	OutPutFile.open("..//OutPut//LinkData.txt");
-	BaseGraph.PrintLinks(OutPutFile);
-	OutPutFile.close();
-	OutPutFile.open("..//OutPut//DemandData.txt");
-	BaseGraph.PrintOD(OutPutFile);
-	OutPutFile.close();
-}
-
+//void ReadLinkProbMatrix(LINKPROMATRIX &LinkProbMatrix);
+//void ReadDataMain(GRAPH &BaseGraph, NODEPROMATRIX &Pmatrix){
+//
+//	ReadNodeProb(Pmatrix);
+//	ReadGraphData(BaseGraph);
+//	//assert(BaseGraph.PrintLinks(AssertLog));
+//	//assert(BaseGraph.PrintOD(AssertLog));
+//}
+//
+//void ReadDataMain(GRAPH &BaseGraph, NODEPROMATRIX &NodePmatrix, LINKPROMATRIX &LinkPmatrix){
+//
+//	ofstream OutPutFile;
+//	ReadGraphData(BaseGraph);
+//	if (ModelIndex == 3)
+//	{
+//		// for Sioux fall network specify data
+//		// the link failure prob is zero 
+//		// and only consider the failure of the nodse
+//		LinkPmatrix.Dof.push_back(0.0);
+//		for (int i = 0; i < NumLinks;i++)
+//		{
+//			LinkPmatrix.Matrix[0][i] = 1.0f;  
+//		}
+//
+//		// degree of failure for nodes
+//		NodePmatrix.Dof.push_back(0.0f); 
+//		NodePmatrix.Dof.push_back(0.3f);
+//		NodePmatrix.Dof.push_back(0.6f);
+//		NodePmatrix.Dof.push_back(0.9f);
+//		/////////////////
+//		for (int i = 0; i < NumNodes;i++)
+//		{
+//			NodePmatrix.Matrix[0][i] = 0.60f;
+//			NodePmatrix.Matrix[1][i] = 0.20f;
+//			NodePmatrix.Matrix[2][i] = 0.15f;
+//			NodePmatrix.Matrix[3][i] = 0.05f;
+//		}
+//		OutPutFile.open("..//OutPut//NodeProbMatrix.txt");
+//		NodePmatrix.PrintMatrix(OutPutFile);
+//		OutPutFile.close();
+//		OutPutFile.open("..//OutPut//LinkProbMatrix.txt");
+//		LinkPmatrix.PrintMatrix(OutPutFile);
+//		OutPutFile.close();
+//
+//	}
+//	else
+//	{
+//		ReadNodeProb(NodePmatrix);
+//		ReadLinkProb(LinkPmatrix);
+//		OutPutFile.open("..//OutPut//NodeProbMatrix.txt");
+//		NodePmatrix.PrintMatrix(OutPutFile);
+//		OutPutFile.close();
+//		OutPutFile.open("..//OutPut//LinkProbMatrix.txt");
+//		LinkPmatrix.PrintMatrix(OutPutFile);
+//		OutPutFile.close();
+//	}
+//	OutPutFile.open("..//OutPut//LinkData.txt");
+//	BaseGraph.PrintLinks(OutPutFile);
+//	OutPutFile.close();
+//	OutPutFile.open("..//OutPut//DemandData.txt");
+//	BaseGraph.PrintOD(OutPutFile);
+//	OutPutFile.close();
+//}
+//
+//
 
 
 

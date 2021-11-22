@@ -206,7 +206,6 @@ vector<size_t> SCHCLASS::getNewReadyLinks(int tau)
 void SCHCLASS::Evaluate(GRAPH& g)
 {
 	Fitness = 0.0;
-	vector<double> TravelTime;  // travel time for each period 
 	vector<size_t> CumulativeReadyLinks;
 	TravelTime.assign(GetLastPeriod(), 0);
 	// step 1: set all the capacity of failure links to be 0.0 and evalute the total cost in tau = 0

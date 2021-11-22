@@ -3,6 +3,36 @@
 #include <math.h>       /* pow */
 using namespace std;
 
+bool ReadLinkData(std::vector<LINK>& Links,
+	ifstream& fin) {
+	LINK tl;
+	int IDcount = 0;
+	//int tail, head;
+	//float t0, ca0;
+	//float BprAlph, BprBeta;
+	vector<string> fields;
+	string line;
+
+	while (getline(fin, line))
+	{
+		splitf(fields, line, ",");
+		if (std::stoi(fields[0]) < 0)
+			continue;
+		/*	fscanf_s(fin, "%i %i %f %f %f %f",
+				&tail, &head, &t0, &ca0, &BprAlph, &BprBeta);*/
+		Links.push_back(tl);
+		Links.back().ID = IDcount;
+		Links.back().Tail = std::stoi(fields[0]);
+		Links.back().Head = std::stoi(fields[1]);
+		Links.back().T0 = std::stof(fields[2]);
+		Links.back().CaInput = std::stof(fields[3]);
+		Links.back().CaRevise = std::stof(fields[3]);
+		Links.back().AlphaBpr = std::stof(fields[4]);
+		Links.back().BetaBBpr = std::stof(fields[5]);
+		IDcount++;
+	}
+	return true;
+}
 
 GRAPH::GRAPH(){
 	this->OdPairs.reserve(NumOD + 1);
@@ -106,6 +136,120 @@ void GRAPH::CreateNodes(){
 	}
 }
 
+bool ReadDemandData(vector<OD>& ODPairs,
+	ifstream& fin) {
+
+	int IDcount = 0;
+	//int or , de;
+	//float dd;
+	vector<string> fields;
+	string line;
+	OD tod;
+
+	while (getline(fin, line))
+	{
+		splitf(fields, line, ",");
+		if (std::stoi(fields[0]) < 0)
+			continue;
+
+		ODPairs.push_back(tod);
+		ODPairs.back().ID = IDcount;
+		ODPairs.back().Orign = std::stoi(fields[0]);
+		ODPairs.back().Dest = std::stoi(fields[1]);
+		ODPairs.back().Demand = std::stof(fields[2]);
+		IDcount++;
+	}
+
+	return true;
+}
+
+
+void GRAPH::ReadGraphData()
+{
+
+	//FILE * fin;
+	std::ifstream fin;
+	// Read Demand data
+	if (ModelIndex == 1) // Scan
+	{
+		//fopen_s(&fin, "..//Input//MediumNetwork//DeamdData.txt", "r");
+		fin.open("..//Input//MediumNetwork//DeamdData.txt");
+		//fopen_s(&fin, "..//Input//MediumNetwork//DeamdData.txt", "r");
+	}
+	else if (ModelIndex == 2)
+	{
+		fin.open("..//Input//Nagureny2009Network//DeamdData.txt");
+		//fopen_s(&fin, "..//Input//Nagureny2009Network//DeamdData.txt", "r");
+	}
+	else if (ModelIndex == 3)
+	{
+		fin.open("..//Input//Nagureny2009Network//DeamdData.txt");
+		//fopen_s(&fin, "..//Input//Nagureny2009Network//DeamdData.txt", "r");
+	}
+	else if (ModelIndex == 4)
+	{
+		fin.open("..//Input//ParadoxNet//DeamdData.txt");
+		//fopen_s(&fin, "..//Input//Nagureny2009Network//DeamdData.txt", "r");
+	}
+	else
+	{
+		cout << "Mode Index is not specified" << endl;
+		system("PAUSE");
+		fin.open("..//Input//DeamdData.txt");
+		//fopen_s(&fin, "..//Input//DeamdData.txt", "r");
+	}
+
+	if (!ReadDemandData(OdPairs, fin))
+	{
+		cerr << "read demand data fails" << endl;
+		system("PAUSE");
+	}
+
+	fin.close();
+
+	// Read link data
+	if (ModelIndex == 1) // Scan
+	{
+		fin.open("..//Input//MediumNetwork//LinkData.txt");
+		//fopen_s(&fin, "..//Input//MediumNetwork//LinkData.txt", "r");
+	}
+	else if (ModelIndex == 2)
+	{
+		fin.open("..//Input//Nagureny2009Network//LinkData.txt");
+		//fin.open("C://GitCodes//NRI//InPut//Nagureny2009Network//LinkData.txt");
+			//LinkData.txt");
+		//fopen_s(&fin, "..//Input//Nagureny2009Network//LinkData.txt", "r");
+	}
+	else if (ModelIndex == 3)
+	{
+		fin.open("..//Input//SiouxFallsNetwork//LinkData.txt");
+		//fopen_s(&fin, "..//Input//SiouxFallsNetwork//LinkData.txt", "r");
+	}
+	else if (ModelIndex == 4)
+	{
+		fin.open("..//Input//ParadoxNet//LinkData.txt");
+		//fopen_s(&fin, "..//Input//SiouxFallsNetwork//LinkData.txt", "r");
+	}
+	else
+	{
+		fin.open("..//Input//LinkData.txt");
+		//fopen_s(&fin, "..//Input//LinkData.txt", "r");
+	}
+
+	if (!fin.is_open())
+		cout << "link data file is not open" << endl;
+
+
+	if (!ReadLinkData(Links, fin))
+	{
+		cerr << "read link data fails" << endl;
+		system("PAUSE");
+	}
+	fin.close();
+	CreateOriginSet();
+	CreateNodes();
+}
+
 
 int GRAPH::PrintLinks(std::ofstream &fout){
 
@@ -140,7 +284,6 @@ int GRAPH::PrintLinks(std::ofstream &fout){
 		TRACE("%s", e);
 		return 0;
 	}
-
 }
 
 int GRAPH::PrintLinks_onscreen() {

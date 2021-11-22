@@ -11,35 +11,32 @@ using namespace std;
 
 bool ReadSeedVec(std::vector<int>& SeedVec, FILE* fin);
 
-void ABCAlgorithms::ABCMain(GRAPH& Graph)
+void ABCAlgorithms::ABCMain()
 {
-	//step 0: ini parameters 
-	Prob.assign(NumEmployedBee, 0.0);
-	ScountCounter.assign(NumEmployedBee, 0);
-	GlobalBest.Fitness = 9999999;
-	ConvergeMeasure.assign(MaxIter, -1);
-	//step 1: generate initial solutions
-	GenerateIni(Graph);
-	//step 2: call employ bee phase
 	ofstream ConvergeFile;
 	ConvergeFile.open("..//OutPut//ABCConverge.txt", ios::app);
 	for (int s=0;s<SeedVecVal.size();s++)
 	{
 		GenRan.seed((unsigned)SeedVecVal.at(s));
+		// start the process of one seed operation
+		GenerateIni();
+		ConvergeMeasure.assign(MaxIter, -1);
+		Prob.assign(NumEmployedBee, 0.0);
+		GlobalBest.Fitness = 9999999;
+		ScountCounter.assign(NumEmployedBee, 0);
 		for (int i = 0; i < MaxIter; i++)
 		{
-			EmployBeePhase(Graph);
+			EmployBeePhase();
 			GetProb();
-			OnlookerPhase(Graph);
-			ScoutPhase(Graph);
+			OnlookerPhase();
+			ScoutPhase();
 			ConvergeMeasure.at(i) = GlobalBest.Fitness;
-			ConvergeFile << s << "," << i << "," << ConvergeMeasure.at(i) << endl;
-			//if (isWriteConverge)
-			//{
-			//	// write best solution with respect to the number of solution generated
-			//	ConvergeFile << s << "," << i << "," << ConvergeMeasure.at(i) << endl;
-			//}
+			if (isWriteConverge)
+			{
+				ConvergeFile << s << "," << i << "," << ConvergeMeasure.at(i) << endl;
+			}
 		}
+		this->PrintFinal(s);
 	}
 
 	cout << "*************************ABC completes**************************" << endl;
@@ -49,9 +46,7 @@ void ABCAlgorithms::ABCMain(GRAPH& Graph)
 	cout << "*************************Done**************************" << endl;
 }
 
-
-
-void ABCAlgorithms::GenerateIni(GRAPH& Graph)
+void ABCAlgorithms::GenerateIni()
 {
 	// improve the solutions
 	for (int i = 0; i < NumEmployedBee; i++)
@@ -59,22 +54,19 @@ void ABCAlgorithms::GenerateIni(GRAPH& Graph)
 		cout << "-----------------------EB = " << i << "-------------------" << endl;
 		//SCHCLASS news;
 		Sols.push_back(SCHCLASS(i));
-		Sols.back().GenerateIniSch(Graph, FailureLinks);
+		Sols.back().GenerateIniSch(*Graph, FailureLinks);
 		Sols.back().AlignStartTime(ResourceCap);
 		cout << "----------Print solution after solution alignment--------" << endl;
 		Sols.back().print();
 		cout << "----------End print solution after solution alignment--------" << endl;
 
-		Sols.back().Links.at(0) = &Graph.Links.at(3);
-		Sols.back().Links.at(1) = &Graph.Links.at(7);
-		Sols.back().Links.at(2) = &Graph.Links.at(6);
-		Sols.back().Links.at(3) = &Graph.Links.at(8);
-		Sols.back().Links.at(4) = &Graph.Links.at(5);
+		//Sols.back().Links.at(0) = &Graph->Links.at(7);
+		////Sols.back().Links.at(2) = Graph.Links.at(6);
+		////Sols.back().Links.at(3) = Graph.Links.at(8);
+		////Sols.back().Links.at(4) = Graph.Links.at(5);
+		//Sols.back().GenerateTimeFromOrder(ResourceCap);
 
-		Sols.back().GenerateTimeFromOrder(ResourceCap);
-
-
-		Sols.back().Evaluate(Graph);
+		Sols.back().Evaluate(*Graph);
 		if (Sols.back().Fitness < GlobalBest.Fitness)
 		{
 			GlobalBest = Sols.back();
@@ -83,15 +75,13 @@ void ABCAlgorithms::GenerateIni(GRAPH& Graph)
 	for (auto s : Sols) cout << s.ID << "," << s.Fitness << endl;
 }
 
-
-
-void ABCAlgorithms::EmployBeePhase(GRAPH& Graph)
+void ABCAlgorithms::EmployBeePhase()
 {
 	for (int i = 0; i < NumEmployedBee; i++)
 	{
 		SCHCLASS Nei(this->Sols.at(i));
 		cout << "Eb = " << i << endl;
-		this->Sols.at(i).GenNei(Nei, Graph, FailureLinks, ResourceCap);
+		this->Sols.at(i).GenNei(Nei, *Graph, FailureLinks, ResourceCap);
 		if (Nei.Fitness < this->Sols.at(i).Fitness)
 		{
 			cout << this->Sols.at(i).Fitness << "," << Nei.Fitness << endl;
@@ -107,13 +97,13 @@ void ABCAlgorithms::EmployBeePhase(GRAPH& Graph)
 	}
 }
 
-void ABCAlgorithms::OnlookerPhase(GRAPH& Graph)
+void ABCAlgorithms::OnlookerPhase()
 {
 	for (int i = 0; i < NumOnlookers; i++)
 	{
 		size_t Selected = Select_Basedon_Prob();
 		SCHCLASS Nei(this->Sols.at(Selected));
-		this->Sols.at(Selected).GenNei(Nei, Graph, FailureLinks, ResourceCap);
+		this->Sols.at(Selected).GenNei(Nei, *Graph, FailureLinks, ResourceCap);
 
 		if (Nei.Fitness < this->Sols.at(Selected).Fitness)
 		{
@@ -130,15 +120,15 @@ void ABCAlgorithms::OnlookerPhase(GRAPH& Graph)
 	}
 }
 
-void ABCAlgorithms::ScoutPhase(GRAPH& Graph)
+void ABCAlgorithms::ScoutPhase()
 {
 	for (size_t t = 0; t < NumEmployedBee; t++)
 	{
 		if (ScountCounter.at(t) > MaxScountCount)
 		{
-			this->Sols.at(t).GenerateIniSch(Graph, FailureLinks);
+			this->Sols.at(t).GenerateIniSch(*Graph, FailureLinks);
 			this->Sols.at(t).AlignStartTime(ResourceCap);
-			this->Sols.at(t).Evaluate(Graph);
+			this->Sols.at(t).Evaluate(*Graph);
 			if (this->Sols.at(t).Fitness < GlobalBest.Fitness)
 			{
 				GlobalBest = this->Sols.at(t);
@@ -178,18 +168,17 @@ size_t ABCAlgorithms::Select_Basedon_Prob()
 	return selected;
 }
 
-void ABCAlgorithms::ReadData()
+void ABCAlgorithms::ReadData(GRAPH &g)
 {
-	//read abc para
-	//read failure link para
-	ifstream fin, fabc;
+	this->Graph = &g;
+
+	ifstream fin, fabc,fl;
 	FILE* fseedin;
 	if (ModelIndex == 1)
 	{
 		cout << "Model Index is not specified" << endl;
 		system("Pause");
 		//fin.open("..//InPut//MediumNetwork//Para.txt");
-		//fcsa.open("..//InPut//MediumNetwork//CsaPara.txt");
 		/*fga.open("..//InPut//SiouxFallsNetwork//GAPara.txt");*/
 	}
 	else if (ModelIndex == 2)
@@ -197,20 +186,18 @@ void ABCAlgorithms::ReadData()
 		cout << "Model Index is not specified" << endl;
 		system("Pause");
 		//fin.open("..//InPut//Nagureny2009Network//Para.txt");
-		//fcsa.open("..//InPut//Nagureny2009Network//CsaPara.txt");
 	}
 	else if (ModelIndex == 3)
 	{
 		cout << "Model Index is not specified" << endl;
 		system("Pause");
 		//fin.open("..//InPut//SiouxFallsNetwork//Para.txt");
-		//fcsa.open("..//InPut//SiouxFallsNetwork//CsaPara.txt");
 		//fga.open("..//InPut//SiouxFallsNetwork//GAPara.txt");
 	}
 	else if (ModelIndex == 4)
 	{
-		fin.open("..//InPut//ParadoxNet//Para.txt");
 		fabc.open("..//InPut//ParadoxNet//ABCPara.txt");
+		fl.open("..//InPut//ParadoxNet//FailureLinks.txt");
 		fopen_s(&fseedin, "..//Input//ParadoxNet//Seed.txt", "r");
 		if (!ReadSeedVec(SeedVecVal, fseedin)) TRACE("Read Seed File Fails \n");
 	}
@@ -219,7 +206,6 @@ void ABCAlgorithms::ReadData()
 		cout << "Model Index is not specified" << endl;
 		system("Pause");
 	}
-
 
 	string line;
 	vector<string> fields;
@@ -253,6 +239,34 @@ void ABCAlgorithms::ReadData()
 	}
 	fabc.close();
 
+	while (getline(fl, line))
+	{
+		splitf(fields, line, ",");
+		if (fields.size() == 3)
+		{
+			int linkId = stoi(fields[0]);
+			int length = stoi(fields[1]);
+			int res = stoi(fields[2]);
+			FailureLinks.push_back(linkId);
+			(*Graph).Links.at(linkId).RecoverTime = length;
+			(*Graph).Links.at(linkId).RequiredRes = res;
+		}
+		else if (fields.size() == 2)
+		{
+			if (fields[0]._Equal("res"))
+			{
+				ResourceCap.assign(MaxNumOfSchPeriod, stoi(fields[1]));
+			}
+			else
+				cout<<"ERR: Read failure links warning"<<endl;
+		}
+		else
+			cout<<"ERR: Read failure links warning"<<endl;
+	
+	}
+	fl.close();
+
+
 
 	/// <summary>
 	/// print and check the model parameters input
@@ -271,21 +285,27 @@ void ABCAlgorithms::ReadData()
 	fout << "MaxScountCount" << "," << MaxScountCount << endl;
 	fout << "MaxABCIter" << "," << MaxIter << endl;
 	fout.close();
-
-
-
 }
+
 
 void ABCAlgorithms::PrintFinal(int sd)
 {
 	ofstream sf;
 	sf.open("..//OutPut//PrintSols.txt", ios::app);
-	//OutFile << "Seed,Link,St,Et" << endl;
-	//OutFile.close();
 	for (size_t t = 0; t < GlobalBest.Links.size(); t++)
 	{
-		cout << sd << "," << GlobalBest.Links.at(t)->ID << "," << GlobalBest.StartTime.at(t) << "," <<
+		sf << sd << "," << GlobalBest.Links.at(t)->ID << "," << GlobalBest.StartTime.at(t) << "," <<
 			GlobalBest.EndTime.at(t) << endl;
 	}
+	sf.close();
+
+
+	sf.open("..//OutPut//PrintPeriod.txt", ios::app);
+
+	for (size_t t = 0;t<GlobalBest.TravelTime.size();t++)
+	{
+		sf << sd << "," << t << "," << GlobalBest.TravelTime.at(t) << endl;
+	}
+	sf.close();
 
 }

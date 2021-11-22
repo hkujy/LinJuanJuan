@@ -17,6 +17,7 @@ public:
 	std::vector<int> StartTime;
 	std::vector<int> EndTime;
 	std::vector<double> UsedRes; /// resource consumption 
+	std::vector<double> TravelTime;
 	double Fitness;
 	SCHCLASS() {}
 	SCHCLASS(int _id) { ID = _id; }
@@ -29,6 +30,7 @@ public:
 		this->StartTime.assign(obj.StartTime.begin(), obj.StartTime.end());
 		this->EndTime.assign(obj.EndTime.begin(), obj.EndTime.end());
 		this->UsedRes.assign(obj.UsedRes.begin(), obj.UsedRes.end());
+		this->TravelTime.assign(obj.TravelTime.begin(), obj.TravelTime.end());
 		this->ID = obj.ID;
 		this->Fitness = obj.Fitness;
 	};  // copy constructor
@@ -37,14 +39,8 @@ public:
 		if (Links.size() > 0)
 		{
 			Links.clear();
-			//for (int l = 0; l < Links.size(); l++)
-			//{
-				//delete Links.at(l);
-				//Links.at(l) = nullptr;
-			//}
-			//for (vector<LINK*>::iterator it = Links.begin(); it != Links.end(); ++it)
-			//{
 		}
+		StartTime.clear(); EndTime.clear(); UsedRes.clear(); TravelTime.clear();
 	}
 	// functions
 	Scenario ConvertToScenario(); // convert sch class to scenario and return 
@@ -82,6 +78,7 @@ public:
 		UsedRes.assign(rhs.UsedRes.begin(), rhs.UsedRes.end());
 		Fitness = rhs.Fitness;
 		Links.assign(rhs.Links.begin(), rhs.Links.end());
+		TravelTime.assign(rhs.TravelTime.begin(), rhs.TravelTime.end());
 		return* this;
 	}
 };

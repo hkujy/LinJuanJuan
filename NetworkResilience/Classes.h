@@ -136,11 +136,22 @@ public:
 	int PrintLinks_onscreen();
 	int PrintOD(std::ofstream &fout);
 	int PrintSp(int Orign, int Dest, std::ofstream &fout);
-	void EvaluteGraph();//ue total cost unpn
+	void EvaluteGraph();//ue total cost unpin
 	void EvalutateFailureScenarios(const Scenario &s);  // evaluate one failure scenario 
 	void RevertFailureScenarios(const Scenario &s);  // evaluate one failure scenario 
 	friend class CHROME;
 	friend class Algorithms;
+	void ReadGraphData();
+	void ReadDataMain() {
+		ofstream OutPutFile;
+		ReadGraphData();
+		OutPutFile.open("..//OutPut//LinkData.txt");
+		PrintLinks(OutPutFile);
+		OutPutFile.close();
+		OutPutFile.open("..//OutPut//DemandData.txt");
+		PrintOD(OutPutFile);
+		OutPutFile.close();
+	}
 };
 class TEST
 {
