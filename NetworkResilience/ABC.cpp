@@ -9,7 +9,27 @@
 #include <string>
 using namespace std;
 
-bool ReadSeedVec(std::vector<int>& SeedVec, FILE* fin);
+bool ReadSeedVec(std::vector<int>& SeedVec,
+	FILE* fin) {
+	int SeedValue;
+	SeedVec.clear();
+	if (nullptr == fin) {
+		perror("Read Seed File Fails \n");
+		return false;
+	}
+	else
+	{
+		while (!feof(fin))
+		{
+			fscanf_s(fin, "%i",
+				&SeedValue);
+			if (SeedValue != EOF) {
+				SeedVec.push_back(SeedValue);
+			}
+		}
+	}
+	return true;
+}
 
 void ABCAlgorithms::ABCMain()
 {

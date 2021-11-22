@@ -180,173 +180,173 @@ bool ReadModelParas(){
 }
 
 
-
-void ReadNodeProb(NODEPROMATRIX &Pmatrix)
-{
-	ifstream fin;
-
-	if (ModelIndex == 1) // Scan
-	{
-		fin.open("..//Input//MediumNetwork//NodeProbMatrix.txt", ios::in);
-	}
-	else if (ModelIndex==2)
-	{
-		fin.open("..//Input//Nagureny2009Network//NodeProbMatrix.txt", ios::in);
-	}
-	else
-	{
-		fin.open("..//Input//NodeProbMatrix.txt", ios::in);
-	}
-
-	// Read Demand data
-	int NumLines = 0;
-	std::string::size_type Sub1Begin, Sub1End;
-	std::vector<std::string> SubStrs, ResidualStr;
-	
-	vector<string> fields;
-	string line;
-	while (getline(fin, line))
-	{
-
-		NumLines++;
-		Sub1Begin = 0;
-		SubStrs.clear();
-		Sub1End = line.find(",");
-		do
-		{
-			SubStrs.push_back(line.substr(Sub1Begin, Sub1End - Sub1Begin));
-			Sub1Begin = Sub1End + 1;
-			Sub1End = line.find(",", Sub1End + 1);
-		} while (Sub1End != std::string::npos);
-		SubStrs.push_back(line.substr(Sub1Begin, Sub1End - Sub1Begin));
-		if (SubStrs.size() <= 2) break;
-		assert((SubStrs).size() == NumNodes + 1);
-		// split nodes
-		Pmatrix.Dof.push_back(stof(SubStrs.at(0)));
-		for (unsigned int i = 0; i < (unsigned int)NumNodes; i++)
-		{
-			Pmatrix.Matrix[Pmatrix.Dof.size() - 1][i] = stof(SubStrs.at(i + 1));
-		}
-	
-	}
-
-	//
-	//if (fin.fail()) cerr << "Open Pmatrix fails" << endl;
-	//else
-	//{
-	//	while (!fin.eof())
-	//	{
-	//		NumLines++;
-	//		Sub1Begin = 0;
-	//		SubStrs.clear();
-	//		getline(fin, tmp);
-	//		Sub1End = tmp.find(",");
-	//		do
-	//		{
-	//			SubStrs.push_back(tmp.substr(Sub1Begin, Sub1End - Sub1Begin));
-	//			Sub1Begin = Sub1End + 1;
-	//			Sub1End = tmp.find(",", Sub1End + 1);
-	//		} while (Sub1End != std::string::npos);
-	//		SubStrs.push_back(tmp.substr(Sub1Begin, Sub1End - Sub1Begin));
-	//		if (SubStrs.size() <= 2) break;
-	//		assert((SubStrs).size() == NumNodes + 1);
-	//		// split nodes
-	//		Pmatrix.Dof.push_back(stof(SubStrs.at(0)));
-	//		for (unsigned int i = 0; i < (unsigned int)NumNodes; i++)
-	//		{
-	//			Pmatrix.Matrix[Pmatrix.Dof.size() - 1][i] = stof(SubStrs.at(i + 1));
-	//		}
-	//	}
-	//}
-
-	//assert(Pmatrix.PrintMatrix(AssertLog));
-
-	fin.close();
-
-}
-
-
-void ReadLinkProb(LINKPROMATRIX &LinkProbMatrix)
-{
-	ifstream fin;
-
-	if (ModelIndex == 2)
-	{
-		fin.open("..//Input//Nagureny2009Network//LinkProbMatrix.txt", ios::in);
-	}
-	else if (ModelIndex == 1)
-	{
-		fin.open("..//Input//MediumNetwork//LinkProbMatrix.txt", ios::in);
-	}
-	else
-	{
-		cerr << "wrong model index for read link prob matrix" << endl;
-	}
-
-	// Read Demand data
-	int NumLines = 0;
-	std::string::size_type Sub1Begin, Sub1End;
-	std::vector<std::string> SubStrs, ResidualStr;
-	vector<string> fields;
-	string line;
-
-	while (getline(fin, line))
-	{
-		NumLines++;
-		Sub1Begin = 0;
-		SubStrs.clear();
-		Sub1End = line.find(",");
-		do
-		{
-			SubStrs.push_back(line.substr(Sub1Begin, Sub1End - Sub1Begin));
-			Sub1Begin = Sub1End + 1;
-			Sub1End = line.find(",", Sub1End + 1);
-		} while (Sub1End != std::string::npos);
-		SubStrs.push_back(line.substr(Sub1Begin, Sub1End - Sub1Begin));
-		if (SubStrs.size() <= 2) break;
-		assert((SubStrs).size() == NumLinks + 1);
-		// split nodes
-		LinkProbMatrix.Dof.push_back(stof(SubStrs.at(0)));
-		for (unsigned int i = 0; i < (unsigned int)NumLinks; i++)
-		{
-			LinkProbMatrix.Matrix[LinkProbMatrix.Dof.size() - 1][i] = stof(SubStrs.at(i + 1));
-		}
-
-	}
-
-	//if (fin.fail()) cerr << "Open Pmatrix fails" << endl;
-	//else
-	//{
-	//	while (!fin.eof())
-	//	{
-	//		NumLines++;
-	//		Sub1Begin = 0;
-	//		SubStrs.clear();
-	//		getline(fin, tmp);
-	//		Sub1End = tmp.find(",");
-	//		do
-	//		{
-	//			SubStrs.push_back(tmp.substr(Sub1Begin, Sub1End - Sub1Begin));
-	//			Sub1Begin = Sub1End + 1;
-	//			Sub1End = tmp.find(",", Sub1End + 1);
-	//		} while (Sub1End != std::string::npos);
-	//		SubStrs.push_back(tmp.substr(Sub1Begin, Sub1End - Sub1Begin));
-	//		if (SubStrs.size() <= 2) break;
-	//		assert((SubStrs).size() == NumLinks + 1);
-	//		// split nodes
-	//		LinkProbMatrix.Dof.push_back(stof(SubStrs.at(0)));
-	//		for (unsigned int i = 0; i < (unsigned int)NumLinks; i++)
-	//		{
-	//			LinkProbMatrix.Matrix[LinkProbMatrix.Dof.size() - 1][i] = stof(SubStrs.at(i + 1));
-	//		}
-	//	}
-	//}
-
-	//assert(LinkProbMatrix.PrintMatrix(AssertLog));
-
-	fin.close();
-
-}
+//
+//void ReadNodeProb(NODEPROMATRIX &Pmatrix)
+//{
+//	ifstream fin;
+//
+//	if (ModelIndex == 1) // Scan
+//	{
+//		fin.open("..//Input//MediumNetwork//NodeProbMatrix.txt", ios::in);
+//	}
+//	else if (ModelIndex==2)
+//	{
+//		fin.open("..//Input//Nagureny2009Network//NodeProbMatrix.txt", ios::in);
+//	}
+//	else
+//	{
+//		fin.open("..//Input//NodeProbMatrix.txt", ios::in);
+//	}
+//
+//	// Read Demand data
+//	int NumLines = 0;
+//	std::string::size_type Sub1Begin, Sub1End;
+//	std::vector<std::string> SubStrs, ResidualStr;
+//	
+//	vector<string> fields;
+//	string line;
+//	while (getline(fin, line))
+//	{
+//
+//		NumLines++;
+//		Sub1Begin = 0;
+//		SubStrs.clear();
+//		Sub1End = line.find(",");
+//		do
+//		{
+//			SubStrs.push_back(line.substr(Sub1Begin, Sub1End - Sub1Begin));
+//			Sub1Begin = Sub1End + 1;
+//			Sub1End = line.find(",", Sub1End + 1);
+//		} while (Sub1End != std::string::npos);
+//		SubStrs.push_back(line.substr(Sub1Begin, Sub1End - Sub1Begin));
+//		if (SubStrs.size() <= 2) break;
+//		assert((SubStrs).size() == NumNodes + 1);
+//		// split nodes
+//		Pmatrix.Dof.push_back(stof(SubStrs.at(0)));
+//		for (unsigned int i = 0; i < (unsigned int)NumNodes; i++)
+//		{
+//			Pmatrix.Matrix[Pmatrix.Dof.size() - 1][i] = stof(SubStrs.at(i + 1));
+//		}
+//	
+//	}
+//
+//	//
+//	//if (fin.fail()) cerr << "Open Pmatrix fails" << endl;
+//	//else
+//	//{
+//	//	while (!fin.eof())
+//	//	{
+//	//		NumLines++;
+//	//		Sub1Begin = 0;
+//	//		SubStrs.clear();
+//	//		getline(fin, tmp);
+//	//		Sub1End = tmp.find(",");
+//	//		do
+//	//		{
+//	//			SubStrs.push_back(tmp.substr(Sub1Begin, Sub1End - Sub1Begin));
+//	//			Sub1Begin = Sub1End + 1;
+//	//			Sub1End = tmp.find(",", Sub1End + 1);
+//	//		} while (Sub1End != std::string::npos);
+//	//		SubStrs.push_back(tmp.substr(Sub1Begin, Sub1End - Sub1Begin));
+//	//		if (SubStrs.size() <= 2) break;
+//	//		assert((SubStrs).size() == NumNodes + 1);
+//	//		// split nodes
+//	//		Pmatrix.Dof.push_back(stof(SubStrs.at(0)));
+//	//		for (unsigned int i = 0; i < (unsigned int)NumNodes; i++)
+//	//		{
+//	//			Pmatrix.Matrix[Pmatrix.Dof.size() - 1][i] = stof(SubStrs.at(i + 1));
+//	//		}
+//	//	}
+//	//}
+//
+//	//assert(Pmatrix.PrintMatrix(AssertLog));
+//
+//	fin.close();
+//
+//}
+//
+//
+//void ReadLinkProb(LINKPROMATRIX &LinkProbMatrix)
+//{
+//	ifstream fin;
+//
+//	if (ModelIndex == 2)
+//	{
+//		fin.open("..//Input//Nagureny2009Network//LinkProbMatrix.txt", ios::in);
+//	}
+//	else if (ModelIndex == 1)
+//	{
+//		fin.open("..//Input//MediumNetwork//LinkProbMatrix.txt", ios::in);
+//	}
+//	else
+//	{
+//		cerr << "wrong model index for read link prob matrix" << endl;
+//	}
+//
+//	// Read Demand data
+//	int NumLines = 0;
+//	std::string::size_type Sub1Begin, Sub1End;
+//	std::vector<std::string> SubStrs, ResidualStr;
+//	vector<string> fields;
+//	string line;
+//
+//	while (getline(fin, line))
+//	{
+//		NumLines++;
+//		Sub1Begin = 0;
+//		SubStrs.clear();
+//		Sub1End = line.find(",");
+//		do
+//		{
+//			SubStrs.push_back(line.substr(Sub1Begin, Sub1End - Sub1Begin));
+//			Sub1Begin = Sub1End + 1;
+//			Sub1End = line.find(",", Sub1End + 1);
+//		} while (Sub1End != std::string::npos);
+//		SubStrs.push_back(line.substr(Sub1Begin, Sub1End - Sub1Begin));
+//		if (SubStrs.size() <= 2) break;
+//		assert((SubStrs).size() == NumLinks + 1);
+//		// split nodes
+//		LinkProbMatrix.Dof.push_back(stof(SubStrs.at(0)));
+//		for (unsigned int i = 0; i < (unsigned int)NumLinks; i++)
+//		{
+//			LinkProbMatrix.Matrix[LinkProbMatrix.Dof.size() - 1][i] = stof(SubStrs.at(i + 1));
+//		}
+//
+//	}
+//
+//	//if (fin.fail()) cerr << "Open Pmatrix fails" << endl;
+//	//else
+//	//{
+//	//	while (!fin.eof())
+//	//	{
+//	//		NumLines++;
+//	//		Sub1Begin = 0;
+//	//		SubStrs.clear();
+//	//		getline(fin, tmp);
+//	//		Sub1End = tmp.find(",");
+//	//		do
+//	//		{
+//	//			SubStrs.push_back(tmp.substr(Sub1Begin, Sub1End - Sub1Begin));
+//	//			Sub1Begin = Sub1End + 1;
+//	//			Sub1End = tmp.find(",", Sub1End + 1);
+//	//		} while (Sub1End != std::string::npos);
+//	//		SubStrs.push_back(tmp.substr(Sub1Begin, Sub1End - Sub1Begin));
+//	//		if (SubStrs.size() <= 2) break;
+//	//		assert((SubStrs).size() == NumLinks + 1);
+//	//		// split nodes
+//	//		LinkProbMatrix.Dof.push_back(stof(SubStrs.at(0)));
+//	//		for (unsigned int i = 0; i < (unsigned int)NumLinks; i++)
+//	//		{
+//	//			LinkProbMatrix.Matrix[LinkProbMatrix.Dof.size() - 1][i] = stof(SubStrs.at(i + 1));
+//	//		}
+//	//	}
+//	//}
+//
+//	//assert(LinkProbMatrix.PrintMatrix(AssertLog));
+//
+//	fin.close();
+//
+//}
 
 //void ReadLinkProbMatrix(LINKPROMATRIX &LinkProbMatrix);
 //void ReadDataMain(GRAPH &BaseGraph, NODEPROMATRIX &Pmatrix){

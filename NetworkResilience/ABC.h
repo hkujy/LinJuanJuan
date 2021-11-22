@@ -21,7 +21,6 @@ public:
 	int MaxIter;
 	vector<int> ScountCounter;
 	int MaxScountCount;
-	//TODO: the resource cap for each period should be a large period than the project period
 	std::vector<double> ResourceCap;  // Capacity of the resources
 	std::vector<int> FailureLinks;
 	vector<double> Prob; // probability for the onlookers
@@ -31,15 +30,15 @@ public:
 		MaxFitValue = -99999999999999; MinFitValue = 999999999999999;
 		NumEmployedBee = -1; NumOnlookers = -1; MaxScountCount = -1; MaxIter = -1;
 		ScountCounter.reserve(100); ResourceCap.reserve(100); FailureLinks.reserve(100); Prob.reserve(100);
+		Graph = new GRAPH;
 	};
-	~ABCAlgorithms() {};
+	~ABCAlgorithms() { Graph = nullptr; };
 	std::vector<SCHCLASS> Sols;
 	void GenerateIni();
 	void ABCMain();
 	void EmployBeePhase();
 	void OnlookerPhase();
 	void ScoutPhase();
-
 	void GetProb();
 	void ReadData(GRAPH& Graph);
 	size_t Select_Basedon_Prob();

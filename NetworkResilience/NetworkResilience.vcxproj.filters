@@ -68,9 +68,6 @@
     <ClCompile Include="LineSearchUingDirective.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Bruteforce.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ChromFuncs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -83,16 +80,10 @@
     <ClCompile Include="RandomValue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ScanMedum.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="OutPutGraph.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MutaFuncs.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ProbMatrixFuncs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MainGA.cpp">

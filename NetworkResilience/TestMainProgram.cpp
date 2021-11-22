@@ -67,16 +67,8 @@ void ReadModelPara()
 
 int main(int argc, char* argv[])
 {
-	//TODO: Read and Print the input parameters
-	//TODO: 2. Link Failure Value
-	//isWriteConverge = false;
 	isWriteConverge = true;
 	ModelIndex = 4; //Paradox network
-	//if (isWriteConverge) cout << "Output converge file" << endl;
-	//else cout << "converge file is not written" << endl;
-	//first store the value 
-	//then output the values
-
 	OpenAndCleanFiles();
 	ReadModelPara();
 	ABCAlgorithms MainAlgo;
@@ -94,7 +86,6 @@ int main(int argc, char* argv[])
 	//UEeps = 0.01;
 	//BaseGraph.EvaluteGraph();
 	//cout << "BaseGraph Without Failure = " << BaseGraph.TotalSystemCost << endl;
-	////TODO: Read extern failure links data
 	return 0;
 
 }

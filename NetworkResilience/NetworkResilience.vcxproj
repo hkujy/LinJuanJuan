@@ -33,7 +33,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ABC.cpp" />
-    <ClCompile Include="Bruteforce.cpp" />
     <ClCompile Include="CloneSet.cpp" />
     <ClCompile Include="GAfuncs.cpp" />
     <ClCompile Include="GraphFunc.cpp" />
@@ -46,13 +45,11 @@
     <ClCompile Include="RestoreSch.cpp" />
     <ClCompile Include="TestMainProgram.cpp" />
     <ClCompile Include="MutaFuncs.cpp" />
-    <ClCompile Include="ProbMatrixFuncs.cpp" />
     <ClCompile Include="OpenCloseFiles.cpp" />
     <ClCompile Include="OutPutGraph.cpp" />
     <ClCompile Include="RandomValue.cpp" />
     <ClCompile Include="ReadData.cpp" />
     <ClCompile Include="ChromFuncs.cpp" />
-    <ClCompile Include="ScanMedum.cpp" />
     <ClCompile Include="SP.cpp" />
   </ItemGroup>
   <ItemGroup>

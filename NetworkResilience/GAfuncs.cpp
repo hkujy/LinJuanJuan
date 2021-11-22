@@ -254,111 +254,111 @@ void RecordSolVa(double& SolFit, double& CurrentBest, int& NumCount, ofstream& f
 		fout << SeedRunCount << "," << NumCount << "," << CurrentBest << endl;
 	}
 }
-
-void Algorithms::GAmain(GRAPH& Graph, const int NumPop, const int NumChild,
-	const NODEPROMATRIX& NodeProbMatrix, const LINKPROMATRIX& LinkProbMatrix, ofstream& ConvergeFile)
-{
-	//phase 1 Generate Initial Solution
-	ofstream fsolconv;
-	fsolconv.open("..//OutPut//GAConvergeBasedOnSol.txt", ios::app);
-	double CurrentBestFitness = -1.0f;
-	int NumSolEvaluated = 0;
-
-	for (int i = 0; i < NumPop; i++)
-	{
-		bool isRepeat = false;
-		do
-		{
-			this->Chroms.at(i).clear();
-			GenerateSol(i);
-			isRepeat = false;
-			for (int j = 0; j <= i; j++)
-			{
-				if (j == i) break;
-				if (this->Chroms.at(i).isSame(this->Chroms.at(j)))
-				{
-					isRepeat = true;
-					break;
-				}
-			}
-		} while (isRepeat);
-		this->Chroms.at(i).getSolProb(NodeProbMatrix, LinkProbMatrix);
-		Chroms.at(i).EvaluateSol(Graph, BaseUNPM, NodeProbMatrix, LinkProbMatrix);
-		RecordSolVa(Chroms.at(i).Fitness, CurrentBestFitness, NumSolEvaluated, fsolconv);
-	}
-	int IterCounter = 0;
-	this->SortSol((unsigned int)NumPop);
-Repeat:
-	IterCounter++;
-	//cout << "Iteration = " << IterCounter << endl;
-	// step 1 crossover and generate offspring 
-	int Father, Mother;
-	for (int i = 0; i < NumChild; i = i + 2)
-	{
-		this->GAselectParent(Father, Mother, NumPop);
-		int BigBro = NumPop + i;
-		int CuteSis = NumPop + i + 1;
-		// assume crossover rate is 1.0
-		this->GACrossOver(this->Chroms.at(Father), this->Chroms.at(Mother),
-			this->Chroms.at(BigBro), this->Chroms.at(CuteSis));
-	}
-	// step 2 mutation on the offspring
-	int NumMutation = static_cast<int>(GaMutationRate * NumPop);
-
-	std::vector<bool> Mutated(NumChild, false);
-
-	for (int i = 0; i < NumMutation; i++)
-	{
-		int MutationIndex = static_cast<int>(NumChild * GenRandomReal());
-		int LoopCount = 0;
-		while (Mutated.at(MutationIndex) && LoopCount < 100)
-		{
-			MutationIndex = static_cast<int>(NumChild * GenRandomReal());
-			LoopCount++;
-		}
-		Mutated.at(MutationIndex) = true;
-		MutationIndex += NumPop;
-		bool isRepeat;
-		do
-		{
-			isRepeat = false;
-			this->HyperMutateMain(this->Chroms.at(MutationIndex));
-			for (size_t kk = 0; kk < Chroms.size(); kk++)
-			{
-				if (kk == MutationIndex) continue;
-				if (this->Chroms.at(MutationIndex).isSame(this->Chroms.at(kk)))
-				{
-					isRepeat = true;
-					break;
-				}
-			}
-		} while (isRepeat);
-	}
-
-	// step 3 evaluate offspring
-
-	for (int i = 0; i < NumChild; i++)
-	{
-		int ChildIndex = i + NumPop;
-		this->Chroms.at(ChildIndex).getSolProb(NodeProbMatrix, LinkProbMatrix);
-		Chroms.at(ChildIndex).EvaluateSol(Graph, BaseUNPM, NodeProbMatrix, LinkProbMatrix);
-		RecordSolVa(Chroms.at(ChildIndex).Fitness, CurrentBestFitness, NumSolEvaluated, fsolconv);
-		if (StopCriteria == 1 && NumSolEvaluated >= MaxNumSolEval) return;
-	}
-
-	// step 4 sort and return next generation
-
-	this->SortSol((unsigned int)Chroms.size());
-	if (isWriteConverge)
-	{
-		ConvergeFile << SeedRunCount << "," << IterCounter << "," << this->Chroms.at(0).Fitness << endl;
-		//cout << IterCounter << "," << this->Chroms.at(0).Fitness << endl;
-	}
-
-	Mutated.clear();
-	if (StopCriteria == 0 && IterCounter < MaxGAIter) goto Repeat;
-	if (StopCriteria == 1 && NumSolEvaluated < MaxNumSolEval) goto Repeat;
-
-	fsolconv.close();
-}
-
+//
+//void Algorithms::GAmain(GRAPH& Graph, const int NumPop, const int NumChild,
+//	const NODEPROMATRIX& NodeProbMatrix, const LINKPROMATRIX& LinkProbMatrix, ofstream& ConvergeFile)
+//{
+//	//phase 1 Generate Initial Solution
+//	ofstream fsolconv;
+//	fsolconv.open("..//OutPut//GAConvergeBasedOnSol.txt", ios::app);
+//	double CurrentBestFitness = -1.0f;
+//	int NumSolEvaluated = 0;
+//
+//	for (int i = 0; i < NumPop; i++)
+//	{
+//		bool isRepeat = false;
+//		do
+//		{
+//			this->Chroms.at(i).clear();
+//			GenerateSol(i);
+//			isRepeat = false;
+//			for (int j = 0; j <= i; j++)
+//			{
+//				if (j == i) break;
+//				if (this->Chroms.at(i).isSame(this->Chroms.at(j)))
+//				{
+//					isRepeat = true;
+//					break;
+//				}
+//			}
+//		} while (isRepeat);
+//		this->Chroms.at(i).getSolProb(NodeProbMatrix, LinkProbMatrix);
+//		Chroms.at(i).EvaluateSol(Graph, BaseUNPM, NodeProbMatrix, LinkProbMatrix);
+//		RecordSolVa(Chroms.at(i).Fitness, CurrentBestFitness, NumSolEvaluated, fsolconv);
+//	}
+//	int IterCounter = 0;
+//	this->SortSol((unsigned int)NumPop);
+//Repeat:
+//	IterCounter++;
+//	//cout << "Iteration = " << IterCounter << endl;
+//	// step 1 crossover and generate offspring 
+//	int Father, Mother;
+//	for (int i = 0; i < NumChild; i = i + 2)
+//	{
+//		this->GAselectParent(Father, Mother, NumPop);
+//		int BigBro = NumPop + i;
+//		int CuteSis = NumPop + i + 1;
+//		// assume crossover rate is 1.0
+//		this->GACrossOver(this->Chroms.at(Father), this->Chroms.at(Mother),
+//			this->Chroms.at(BigBro), this->Chroms.at(CuteSis));
+//	}
+//	// step 2 mutation on the offspring
+//	int NumMutation = static_cast<int>(GaMutationRate * NumPop);
+//
+//	std::vector<bool> Mutated(NumChild, false);
+//
+//	for (int i = 0; i < NumMutation; i++)
+//	{
+//		int MutationIndex = static_cast<int>(NumChild * GenRandomReal());
+//		int LoopCount = 0;
+//		while (Mutated.at(MutationIndex) && LoopCount < 100)
+//		{
+//			MutationIndex = static_cast<int>(NumChild * GenRandomReal());
+//			LoopCount++;
+//		}
+//		Mutated.at(MutationIndex) = true;
+//		MutationIndex += NumPop;
+//		bool isRepeat;
+//		do
+//		{
+//			isRepeat = false;
+//			this->HyperMutateMain(this->Chroms.at(MutationIndex));
+//			for (size_t kk = 0; kk < Chroms.size(); kk++)
+//			{
+//				if (kk == MutationIndex) continue;
+//				if (this->Chroms.at(MutationIndex).isSame(this->Chroms.at(kk)))
+//				{
+//					isRepeat = true;
+//					break;
+//				}
+//			}
+//		} while (isRepeat);
+//	}
+//
+//	// step 3 evaluate offspring
+//
+//	for (int i = 0; i < NumChild; i++)
+//	{
+//		int ChildIndex = i + NumPop;
+//		this->Chroms.at(ChildIndex).getSolProb(NodeProbMatrix, LinkProbMatrix);
+//		Chroms.at(ChildIndex).EvaluateSol(Graph, BaseUNPM, NodeProbMatrix, LinkProbMatrix);
+//		RecordSolVa(Chroms.at(ChildIndex).Fitness, CurrentBestFitness, NumSolEvaluated, fsolconv);
+//		if (StopCriteria == 1 && NumSolEvaluated >= MaxNumSolEval) return;
+//	}
+//
+//	// step 4 sort and return next generation
+//
+//	this->SortSol((unsigned int)Chroms.size());
+//	if (isWriteConverge)
+//	{
+//		ConvergeFile << SeedRunCount << "," << IterCounter << "," << this->Chroms.at(0).Fitness << endl;
+//		//cout << IterCounter << "," << this->Chroms.at(0).Fitness << endl;
+//	}
+//
+//	Mutated.clear();
+//	if (StopCriteria == 0 && IterCounter < MaxGAIter) goto Repeat;
+//	if (StopCriteria == 1 && NumSolEvaluated < MaxNumSolEval) goto Repeat;
+//
+//	fsolconv.close();
+//}
+//

@@ -7,11 +7,8 @@ const double Zero = 1.0e-6f;
 const double LargeNum = 1.0e+20f;
 const double RemoveLinkCost = 99999.0f;
 const double InvalidMinCost = 99999.0f;
-const int MaxNumNodes = 1000;
-const int MaxNumDof = 10;
 const int MaxNumOfSchPeriod = 10;
 //const int NumOfDisruptLinks = 3;
-const double ResourceForEachPeriod = 2.0;
 enum AlgorithmType
 {
 	CSA, GA

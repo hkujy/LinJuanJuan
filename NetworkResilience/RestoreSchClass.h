@@ -19,8 +19,13 @@ public:
 	std::vector<double> UsedRes; /// resource consumption 
 	std::vector<double> TravelTime;
 	double Fitness;
-	SCHCLASS() {}
-	SCHCLASS(int _id) { ID = _id; }
+	SCHCLASS() {
+		ID = -1; Fitness = -1; Links.reserve(100); StartTime.reserve(100); EndTime.reserve(100); UsedRes.reserve(100); TravelTime.reserve(100);
+	};
+	SCHCLASS(int _id) {
+		ID = _id; Fitness = -1;
+		Links.reserve(100); StartTime.reserve(100); EndTime.reserve(100); UsedRes.reserve(100); TravelTime.reserve(100);
+	}
 	/// <summary>
 	/// It is important to write this copy constructor
 	/// </summary>

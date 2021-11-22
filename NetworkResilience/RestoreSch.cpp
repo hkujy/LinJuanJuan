@@ -205,6 +205,18 @@ vector<size_t> SCHCLASS::getNewReadyLinks(int tau)
 
 void SCHCLASS::Evaluate(GRAPH& g)
 {
+
+#ifdef _DEBUG
+	for (auto l:g.Links)
+	{
+		if (l.CaRevise < l.CaInput - 1)
+		{
+			cout << "Warning: the capacity is not set to initial value before the evalute procedure" << endl;
+			system("PAUSE");
+		}
+	}
+#endif
+
 	Fitness = 0.0;
 	vector<size_t> CumulativeReadyLinks;
 	TravelTime.assign(GetLastPeriod(), 0);

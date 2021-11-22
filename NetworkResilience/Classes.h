@@ -45,6 +45,7 @@ public:
 	//std::vector<int> OutLinks;
 	//std::vector<int> InLinks;
 	NODE(){
+		ID = -1;
 		OutLinks.reserve(10);
 		InLinks.reserve(10);
 	}
@@ -64,6 +65,7 @@ public:
 	double MinCost;
 	bool isConnected;
 	OD(){
+		ID = -1;
 		Orign = InvaildInt;
 		Dest = InvaildInt;
 		isConnected = false;
@@ -153,6 +155,8 @@ public:
 		OutPutFile.close();
 	}
 };
+
+
 class TEST
 {
 	int ID;
@@ -161,24 +165,6 @@ class TEST
 	}
 };
 
-class NODEPROMATRIX{
-public:
-	vector<double> Dof; // degree of failure
-	double **Matrix;// matrix[degree of failure index][node number]
-	NODEPROMATRIX();
-	~NODEPROMATRIX();
-	int PrintMatrix(ofstream &fout);
-};
-
-
-class LINKPROMATRIX{
-public:
-	vector<double> Dof; // degree of failure
-	double **Matrix;// matrix[degree of failure index][node number]
-	LINKPROMATRIX();
-	~LINKPROMATRIX();
-	int PrintMatrix(ofstream &fout);
-};
 
 class CHROME // ==  scenario
 {
@@ -196,15 +182,14 @@ public:
 	double ImpactValue;
 	double Fitness;
 	void clear();
-	void EvaluateSol(GRAPH &Graph, const double BaseUNPM, const NODEPROMATRIX &Pmatrix,
-		const LINKPROMATRIX &LinkPmatrix);
+	//void EvaluateSol(GRAPH &Graph, const double BaseUNPM, const NODEPROMATRIX &Pmatrix,
+	//	const LINKPROMATRIX &LinkPmatrix);
 	void ReviseCap(GRAPH &Graph);
 	void IniCap(GRAPH &Graph);
-	double getSolProb(const NODEPROMATRIX &Pmatrix, const LINKPROMATRIX &LinkPmatrix);
+	//double getSolProb(const NODEPROMATRIX &Pmatrix, const LINKPROMATRIX &LinkPmatrix);
 	int PrintSol(ofstream &fout);
-	void PrintGrahpLink(ofstream &fout);
-	void PrintGrahpOD(ofstream &fout);
-
+	//void PrintGrahpLink(ofstream &fout);
+	//void PrintGrahpOD(ofstream &fout);
 	void Copy(const CHROME& FromSource); // does not copy solution ID
 	bool isSame(const CHROME &CompareSource);
 	CHROME();
@@ -232,8 +217,8 @@ public:
 	void exchangeNodeDof(CHROME &Chrom);
 	void GAselectParent(int &Father, int &Mother, const int NumPop);
 	void GACrossOver(CHROME &Father, CHROME &Mother, CHROME &BigBro, CHROME &CuteSis);
-	void GAmain(GRAPH &Graph, const int NumPop, const int NumChild, const NODEPROMATRIX &ProbMatrix,
-		const LINKPROMATRIX &LinkProbMatrix, ofstream &ConvergeFile);
+	//void GAmain(GRAPH &Graph, const int NumPop, const int NumChild, const NODEPROMATRIX &ProbMatrix,
+		//const LINKPROMATRIX &LinkProbMatrix, ofstream &ConvergeFile);*/
 	//Algorithms(int NumPop, int NumClone, int NumRep);//CSA
 	Algorithms(int NumPop, int NumChild);//GA
 	~Algorithms();

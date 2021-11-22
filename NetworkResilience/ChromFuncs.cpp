@@ -99,88 +99,86 @@ void CHROME::IniCap(GRAPH &ScenarioGraph){
 	{
 		 ScenarioGraph.Links.at(i).IniCap();
 	}
-
-
 };
-
-double CHROME::getSolProb(const NODEPROMATRIX &Pmatrix,const LINKPROMATRIX &LinkPmatrix){
-	this->NodeDofProb.clear();
-	for (unsigned int i = 0; i < this->Nodes.size(); i++)
-	{
-		int col = this->Nodes.at(i);
-		int row = InvaildInt;
-		for (unsigned int j = 0; j < Pmatrix.Dof.size(); j++)
-		{
-			if (isEqual(Pmatrix.Dof.at(j), this->NodeDof.at(i)))
-			{
-				row = j;
-				break;
-			}
-		}
-		assert(this->NodeDofProb.size() == i);
-		assert(row != -1);
-		this->NodeDofProb.push_back(Pmatrix.Matrix[row][col]);
-	}
-	double r = 1.0;
-	for (auto p = this->NodeDofProb.begin(); p != this->NodeDofProb.end(); p++)
-	{
-		r = r*(*p);
-	}
-
-
-
-	this->LinkDofProb.clear();
-	for (unsigned int i = 0; i < this->Links.size(); i++)
-	{
-		int col = this->Links.at(i);
-		int row = InvaildInt;
-		//for (unsigned int j = 0; j < Pmatrix.Dof.size(); j++)
-		for (unsigned int j = 0; j < LinkPmatrix.Dof.size(); j++)
-		{
-			//if (isEqual(Pmatrix.Dof.at(j), this->NodeDof.at(i)))
-			if (isEqual(LinkPmatrix.Dof.at(j), this->LinkDof.at(i)))
-			{
-				row = j;
-				break;
-			}
-		}
-		assert(this->LinkDofProb.size() == i);
-		assert(row != -1);
-		this->LinkDofProb.push_back(LinkPmatrix.Matrix[row][col]);
-	}
-
-	for (auto p = this->LinkDofProb.begin(); p != this->LinkDofProb.end(); p++)
-	{
-		r = r*(*p);
-	}
-
-
-	return r;
-}
-void CHROME::EvaluateSol(GRAPH &Graph, const double BaseUNPM, const NODEPROMATRIX &NodeProbMatrix,
-	const LINKPROMATRIX &LinkPmatrix)
-{
-	try
-	{
-		// step 1 update cost:
-		this->ReviseCap(Graph);
-		// Step 2  Probability of scenarios 
-		this->SolProb = getSolProb(NodeProbMatrix,LinkPmatrix);
-		// Step 3 UE evaluate 
-		Graph.EvaluteGraph();
-		//assert(Graph.PrintLinks(AssertLog));
-		this->IniCap(Graph); // after revising the capacity and change it back
-		this->UNPM = Graph.UNPM;
-		this->TotalCost = Graph.TotalSystemCost;
-		this->ImpactValue = (BaseUNPM - this->UNPM) / BaseUNPM;
-		this->Fitness = this->ImpactValue*this->SolProb;
-	}
-	catch (exception& e)
-	{
-		TRACE("%s", e);
-
-	}
-}
+//
+//double CHROME::getSolProb(const NODEPROMATRIX &Pmatrix,const LINKPROMATRIX &LinkPmatrix){
+//	this->NodeDofProb.clear();
+//	for (unsigned int i = 0; i < this->Nodes.size(); i++)
+//	{
+//		int col = this->Nodes.at(i);
+//		int row = InvaildInt;
+//		for (unsigned int j = 0; j < Pmatrix.Dof.size(); j++)
+//		{
+//			if (isEqual(Pmatrix.Dof.at(j), this->NodeDof.at(i)))
+//			{
+//				row = j;
+//				break;
+//			}
+//		}
+//		assert(this->NodeDofProb.size() == i);
+//		assert(row != -1);
+//		this->NodeDofProb.push_back(Pmatrix.Matrix[row][col]);
+//	}
+//	double r = 1.0;
+//	for (auto p = this->NodeDofProb.begin(); p != this->NodeDofProb.end(); p++)
+//	{
+//		r = r*(*p);
+//	}
+//
+//
+//
+//	this->LinkDofProb.clear();
+//	for (unsigned int i = 0; i < this->Links.size(); i++)
+//	{
+//		int col = this->Links.at(i);
+//		int row = InvaildInt;
+//		//for (unsigned int j = 0; j < Pmatrix.Dof.size(); j++)
+//		for (unsigned int j = 0; j < LinkPmatrix.Dof.size(); j++)
+//		{
+//			//if (isEqual(Pmatrix.Dof.at(j), this->NodeDof.at(i)))
+//			if (isEqual(LinkPmatrix.Dof.at(j), this->LinkDof.at(i)))
+//			{
+//				row = j;
+//				break;
+//			}
+//		}
+//		assert(this->LinkDofProb.size() == i);
+//		assert(row != -1);
+//		this->LinkDofProb.push_back(LinkPmatrix.Matrix[row][col]);
+//	}
+//
+//	for (auto p = this->LinkDofProb.begin(); p != this->LinkDofProb.end(); p++)
+//	{
+//		r = r*(*p);
+//	}
+//
+//
+//	return r;
+//}
+//void CHROME::EvaluateSol(GRAPH &Graph, const double BaseUNPM, const NODEPROMATRIX &NodeProbMatrix,
+//	const LINKPROMATRIX &LinkPmatrix)
+//{
+//	try
+//	{
+//		// step 1 update cost:
+//		this->ReviseCap(Graph);
+//		// Step 2  Probability of scenarios 
+//		this->SolProb = getSolProb(NodeProbMatrix,LinkPmatrix);
+//		// Step 3 UE evaluate 
+//		Graph.EvaluteGraph();
+//		//assert(Graph.PrintLinks(AssertLog));
+//		this->IniCap(Graph); // after revising the capacity and change it back
+//		this->UNPM = Graph.UNPM;
+//		this->TotalCost = Graph.TotalSystemCost;
+//		this->ImpactValue = (BaseUNPM - this->UNPM) / BaseUNPM;
+//		this->Fitness = this->ImpactValue*this->SolProb;
+//	}
+//	catch (exception& e)
+//	{
+//		TRACE("%s", e);
+//
+//	}
+//}
 
 int CHROME::PrintSol(ofstream &fout){
 
