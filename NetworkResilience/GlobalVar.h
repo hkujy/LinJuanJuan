@@ -31,6 +31,7 @@ extern int StopCriteria;
 extern int CSACloneMethod;
 extern double GaMutationRate;
 extern int SeedRunCount;
+extern std::vector<int> SeedVecVal;
 // stop criteria =1: based on number of solution evalueated
 // stop criteria =0: normal : based on number of iterations
 

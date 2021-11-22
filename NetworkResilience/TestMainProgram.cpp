@@ -21,32 +21,30 @@ int main(int argc, char* argv[])
 	//isWriteConverge = false;
 	isWriteConverge = true;
 	ModelIndex = 4; //Paradox network
-	if (isWriteConverge) cout << "Output converge file" << endl;
-	else cout << "converge file is not written" << endl;
+	//if (isWriteConverge) cout << "Output converge file" << endl;
+	//else cout << "converge file is not written" << endl;
+	
+	//TODO: write the convergence value for each seed and each generation
+	//first store the value 
+	//then output the values
+
 	OpenAndCleanFiles();
-	if (!ReadModelParas()) cerr << "Read Model Fails" << endl;// Must before 
-	ofstream RemarkFile;
-	AssertLog.open("..//OutPut//AssertLog.txt", ios::trunc);
-	RemarkFile.open("..//OutPut//TestRemark.txt", ios::trunc);
+	ABCAlgorithms MainAlgo;
+	MainAlgo.ReadData();
 	GRAPH BaseGraph;
 	ReadDataMain(BaseGraph);
 	UEeps = 0.01;
-	BaseGraph.EvaluteGraph();
-	cout << "BaseGraph Without Failure = " << BaseGraph.TotalSystemCost << endl;
-	//TODO: Read extern failure links data
-	BaseGraph.Links.at(6).RequiredRes = 1;
-	BaseGraph.Links.at(7).RequiredRes = 1;
-	BaseGraph.Links.at(8).RequiredRes = 1;
-
-	BaseGraph.Links.at(6).RecoverTime = 2;
-	BaseGraph.Links.at(7).RecoverTime = 2;
-	BaseGraph.Links.at(8).RecoverTime = 2;
-
-	ABCAlgorithms MainAlgo;
 	MainAlgo.ABCMain(BaseGraph);
 
 
-
+	//ofstream RemarkFile;
+	//AssertLog.open("..//OutPut//AssertLog.txt", ios::trunc);
+	//RemarkFile.open("..//OutPut//TestRemark.txt", ios::trunc);
+	////if (!ReadModelParas()) cerr << "Read Model Fails" << endl;// Must before 
+	//UEeps = 0.01;
+	//BaseGraph.EvaluteGraph();
+	//cout << "BaseGraph Without Failure = " << BaseGraph.TotalSystemCost << endl;
+	////TODO: Read extern failure links data
 	return 0;
 
 }

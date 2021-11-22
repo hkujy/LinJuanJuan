@@ -12,31 +12,38 @@ void OpenAndCleanFiles(){
 	OutFile.close();
 	OutFile.open("..//OutPut//ModelPara.txt", ios::trunc);
 	OutFile.close();
-	OutFile.open("..//OutPut//CSAconverge.txt", ios::trunc);
-	OutFile.close();
-	OutFile.open("..//OutPut//GAconverge.txt", ios::trunc);
-	OutFile.close();
+	//OutFile.open("..//OutPut//CSAconverge.txt", ios::trunc);
+	//OutFile.close();
+	//OutFile.open("..//OutPut//GAconverge.txt", ios::trunc);
+	//OutFile.close();
 	OutFile.open("..//OutPut//Summary.txt", ios::trunc);
 	OutFile.close();
-	OutFile.open("..//OutPut//BestSolLink.txt", ios::trunc);
-	OutFile.close();
-	OutFile.open("..//OutPut//BestSolOD.txt", ios::trunc);
-	OutFile.close();
+	//OutFile.open("..//OutPut//BestSolLink.txt", ios::trunc);
+	//OutFile.close();
+	//OutFile.open("..//OutPut//BestSolOD.txt", ios::trunc);
+	//OutFile.close();
 	OutFile.open("..//OutPut//PrintSols.txt", ios::trunc);
+	OutFile << "Seed,Link,St,Et" << endl;
 	OutFile.close();
+
+	OutFile.open("..//OutPut//PrintPeriod.txt", ios::trunc);
+	OutFile << "Seed,Period,Cost,ActiveProject" << endl;
+	OutFile.close();
+
 	OutFile.open("..//OutPut//LinkData.txt", ios::trunc);
 	OutFile.close();
 	OutFile.open("..//OutPut//DemandData.txt", ios::trunc);
 	OutFile.close();
-	OutFile.open("..//OutPut//NodeProbMatrix.txt", ios::trunc);
+	//OutFile.open("..//OutPut//NodeProbMatrix.txt", ios::trunc);
+	//OutFile.close();
+	//OutFile.open("..//OutPut//LinkProbMatrix.txt", ios::trunc);
+	//OutFile.close();
+	//OutFile.open("..//OutPut//CSAConvergeBasedOnSol.txt", ios::trunc);
+	//OutFile.close();
+	//OutFile.open("..//OutPut//GAConvergeBasedOnSol.txt", ios::trunc);
+	//OutFile.close();
+	OutFile.open("..//OutPut//ABCConverge.txt", ios::trunc);
 	OutFile.close();
-	OutFile.open("..//OutPut//LinkProbMatrix.txt", ios::trunc);
-	OutFile.close();
-	OutFile.open("..//OutPut//CSAConvergeBasedOnSol.txt", ios::trunc);
-	OutFile.close();
-	OutFile.open("..//OutPut//GAConvergeBasedOnSol.txt", ios::trunc);
-	OutFile.close();
-
 }
 //void WriteFileCaseHead(){
 //

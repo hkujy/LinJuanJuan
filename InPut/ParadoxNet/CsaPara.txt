@@ -1,4 +1,0 @@
-CsaNumPop,20
-CsaCloneBeta,0.8
-CsaRepRatio,0.2
-MaxCsaIter,500

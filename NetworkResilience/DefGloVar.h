@@ -27,4 +27,6 @@ int StopCriteria;
 int CSACloneMethod;
 double GaMutationRate;
 int SeedRunCount;
+std::vector<int> SeedVecVal;
+
 #endif

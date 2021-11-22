@@ -239,8 +239,14 @@ void SCHCLASS::Evaluate(GRAPH& g)
 			cout << "---Period = " << t << "," << NewReady.size() << " link is added" << endl;
 			g.EvaluteGraph();
 			CumulativeReadyLinks.insert(CumulativeReadyLinks.end(), NewReady.begin(), NewReady.end());
-			if (t == GetLastPeriod()) TravelTime.push_back(g.TotalSystemCost);
-			else TravelTime.at(t) = g.TotalSystemCost;
+			if (t == GetLastPeriod())
+			{
+				//TravelTime.push_back(0);
+			}
+			else
+			{
+				TravelTime.at(t) = g.TotalSystemCost;
+			}
 		}
 	}
 	cout << "-------summary of travel time----------" << endl;

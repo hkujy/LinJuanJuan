@@ -174,9 +174,9 @@ bool PrintModelParas(){
 
 	return true;
 }
-bool ReadModelParas(){
 
-	ifstream fin, fcsa,fga;
+bool ReadModelParas(){
+	ifstream fin, fcsa,fga,fabc;
 	if (ModelIndex == 1)
 	{
 		fin.open("..//InPut//MediumNetwork//Para.txt");
@@ -197,6 +197,7 @@ bool ReadModelParas(){
 	else if (ModelIndex == 4)
 	{
 		fin.open("..//InPut//ParadoxNet//Para.txt");
+		fabc.open("..//InPut//ParadoxNet//ABCPara.txt");
 		//fcsa.open("..//InPut//ParadoxNet//CsaPara.txt");
 		//fga.open("..//InPut//ParadoxNet//GAPara.txt");
 	}
@@ -204,8 +205,6 @@ bool ReadModelParas(){
 	{
 		cout << "Model Index is not specified" << endl;
 		system("Pause");
-		fin.open("..//InPut//Para.txt");
-		fcsa.open("..//InPut//CsaPara.txt");
 	}
 
 	string line;
@@ -227,6 +226,7 @@ bool ReadModelParas(){
 	}
 	cout << "OneDimEsp = " << OneDimEsp << endl;
 	fin.close();
+
 
 	while (getline(fcsa, line))
 	{

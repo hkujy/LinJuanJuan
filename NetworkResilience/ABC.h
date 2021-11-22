@@ -25,23 +25,21 @@ public:
 	std::vector<int> FailureLinks;
 	vector<double> Prob; // probability for the onlookers
 	SCHCLASS GlobalBest;
+	vector<double> ConvergeMeasure;
 	ABCAlgorithms() {
 		MaxFitValue = -99999999999999;
 		MinFitValue = 999999999999999;
 		ResourceCap.assign(MaxNumOfSchPeriod, ResourceForEachPeriod);
 		//TODO: add set of failure links
 		//TODO: adjust the number of algorithm parameters 
-		NumEmployedBee = 10;
-		NumOnlookers = 10;
-		MaxScountCount = 10;
-		MaxIter = 10;
-		ScountCounter.assign(NumEmployedBee, 0);
+		NumEmployedBee = -1; NumOnlookers = -1; MaxScountCount = -1; MaxIter = -1;
 		FailureLinks.push_back(3);
 		FailureLinks.push_back(5);
 		FailureLinks.push_back(6);
 		FailureLinks.push_back(7);
 		FailureLinks.push_back(8);
-		Prob.assign(NumEmployedBee, 0.0);
+		//Prob.assign(NumEmployedBee, 0.0);
+		//ScountCounter.assign(NumEmployedBee, 0);
 	};
 	~ABCAlgorithms() {};
 	std::vector<SCHCLASS> Sols;
@@ -54,6 +52,8 @@ public:
 	void GetProb();
 	void ReadData();
 	size_t Select_Basedon_Prob();
+	void PrintFinal(int sd);
+
 };
 
 
