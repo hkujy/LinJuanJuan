@@ -1,3 +1,8 @@
+# Todo list 
+1. add a variable to check the performance of each operators
+2. check whether is improved or not
+
+
 # class structure
 ## sol
 ### structure of the solution
@@ -11,19 +16,24 @@
 1. Nei_swap
     - random select two and replace their locations
         - I can randomly select two links and change their
-2. Nei_replace
-    - generate a complete new solution
+2. Nei_new
+    - generate a completely new solution
+3. Nei_move_one_to_right 
+    - random select one and move its order to the right 
+4. Nei_move_one_to_left
+    - random select one and move its order to the left
+5. Nei_one_point_cross_over
+    - one point cross over, swap before and after 
 
-
-
-2. change a group of links
-    - change the number of links start at the same period, and then
-    - the group of links may not start at the same period, but only part
-3. regenerate a complete new one 
-4. partially regenerate some of the links 
-5. Greedy ?
-6. Repair operators 
-    - only delay the projects
+##### todo
+1. random move: move one to a random positions 
+2. move a group to the left
+3. move a group of links to right 
+4. partically regenerated part of the links
+5. Allow a subpath is formed by connecting two links
+    - set origin to be the tail node of one link and dest to be the head node of the other link 
+    - then run the shortest path method, to see whether, the distance is changed 
+    - I can make this greedy ?
 
 ### Other ideas
 1. I can design a construction algorithm
