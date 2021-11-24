@@ -221,6 +221,13 @@ void ABCAlgorithms::ReadData(GRAPH &g)
 		fopen_s(&fseedin, "..//Input//ParadoxNet//Seed.txt", "r");
 		if (!ReadSeedVec(SeedVecVal, fseedin)) TRACE("Read Seed File Fails \n");
 	}
+	else if (ModelIndex == 5)
+	{
+		fabc.open("..//InPut//WangNetwork//ABCPara.txt");
+		fl.open("..//InPut//WangNetwork//FailureLinks.txt");
+		fopen_s(&fseedin, "..//Input//WangNetwork//Seed.txt", "r");
+		if (!ReadSeedVec(SeedVecVal, fseedin)) TRACE("Read Seed File Fails \n");
+	}
 	else
 	{
 		cout << "Model Index is not specified" << endl;

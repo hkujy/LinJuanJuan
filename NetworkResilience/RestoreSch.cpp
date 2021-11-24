@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <numeric>
+#include <assert.h>
 
 void SortStartTime(vector<int>& st)
 {
@@ -146,6 +147,7 @@ void SCHCLASS::AlignStartTime(const vector<double>& ResCap) {
 
 void SCHCLASS::GenerateIniSch(GRAPH& g, const vector<int>& FailureLinks)
 {
+	assert(FailureLinks.size() > 0);
 	if (this->Links.size() > 0)
 	{
 		Links.clear(); StartTime.clear(); EndTime.clear();

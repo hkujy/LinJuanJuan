@@ -39,6 +39,10 @@ void ReadModelPara()
 	{
 		fin.open("..//InPut//ParadoxNet//Para.txt");
 	}
+	else if (ModelIndex == 5)
+	{
+		fin.open("..//InPut//WangNetwork//Para.txt");
+	}
 	else
 	{
 		cout << "Model Index is not specified" << endl;
@@ -69,15 +73,17 @@ int main(int argc, char* argv[])
 {
 	isWriteConverge = true;
 	ModelIndex = 4; //Paradox network
+	//ModelIndex = 5; //Paradox network
 	OpenAndCleanFiles();
 	ReadModelPara();
 	ABCAlgorithms MainAlgo;
 	GRAPH BaseGraph;
 	BaseGraph.ReadDataMain();
+	UEeps = 0.01;
+	BaseGraph.EvaluteGraph();
 	MainAlgo.ReadData(BaseGraph);
 	UEeps = 0.01;
 	MainAlgo.ABCMain();
-
 
 	//ofstream RemarkFile;
 	//AssertLog.open("..//OutPut//AssertLog.txt", ios::trunc);

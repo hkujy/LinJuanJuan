@@ -43,7 +43,7 @@
     <ClCompile Include="MainGA.cpp" />
     <ClCompile Include="NeiHeuristic.cpp" />
     <ClCompile Include="RestoreSch.cpp" />
-    <ClCompile Include="TestMainProgram.cpp" />
+    <ClCompile Include="0TestMainProgram.cpp" />
     <ClCompile Include="MutaFuncs.cpp" />
     <ClCompile Include="OpenCloseFiles.cpp" />
     <ClCompile Include="OutPutGraph.cpp" />

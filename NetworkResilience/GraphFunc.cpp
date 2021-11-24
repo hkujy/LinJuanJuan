@@ -67,6 +67,7 @@ int GRAPH::FindMinCostRoutes(){
 		for (auto o = this->OriginSet.begin(); o != this->OriginSet.end(); o++)
 		{
 			int Orig = o->Onode;
+			if (Orig<0) continue;
 			StatusMsg = this->SP(o->Onode, Lable);// shortest path
 			assert(StatusMsg);
 			//printf("Find min tree for Onode = %d \n", Orig);
@@ -108,17 +109,22 @@ void GRAPH::CreateOriginSet()
 		isOrign.at(od->Orign) = true;
 	}
 	for (int n = 0; n < NumNodes; n++) {
-		if (isOrign.at(n))
-		{
-			Oset.Onode = n;
-			this->OriginSet.push_back(Oset);
-		}
+
+		this->OriginSet.push_back(Oset);
+		if (isOrign.at(n))	this->OriginSet.back().Onode = n;
+		//if (isOrign.at(n))
+		//{
+		//	Oset.Onode = n;
+		//	this->OriginSet.push_back(Oset);
+		//}
 	}
+
 	for (auto od = this->OdPairs.begin(); od != this->OdPairs.end(); od++)
 	{
 		this->OriginSet.at(od->Orign).ODset.push_back(&*od);
 	}
 
+	cout << "finish create origin set" << endl;
 }
 
 void GRAPH::CreateNodes(){
@@ -191,6 +197,11 @@ void GRAPH::ReadGraphData()
 		fin.open("..//Input//ParadoxNet//DeamdData.txt");
 		//fopen_s(&fin, "..//Input//Nagureny2009Network//DeamdData.txt", "r");
 	}
+	else if (ModelIndex ==5)
+	{
+		fin.open("..//Input//WangNetwork//DeamdData.txt");
+		//fopen_s(&fin, "..//Input//Nagureny2009Network//DeamdData.txt", "r");
+	}
 	else
 	{
 		cout << "Mode Index is not specified" << endl;
@@ -230,6 +241,11 @@ void GRAPH::ReadGraphData()
 		fin.open("..//Input//ParadoxNet//LinkData.txt");
 		//fopen_s(&fin, "..//Input//SiouxFallsNetwork//LinkData.txt", "r");
 	}
+	else if (ModelIndex == 5)
+	{
+		fin.open("..//Input//WangNetwork//LinkData.txt");
+		//fopen_s(&fin, "..//Input//SiouxFallsNetwork//LinkData.txt", "r");
+	}
 	else
 	{
 		fin.open("..//Input//LinkData.txt");
@@ -238,7 +254,6 @@ void GRAPH::ReadGraphData()
 
 	if (!fin.is_open())
 		cout << "link data file is not open" << endl;
-
 
 	if (!ReadLinkData(Links, fin))
 	{
