@@ -1,3 +1,5 @@
+# Remarks
+1. I can reproduce Wang's work, however, there may be some accuracy issue
 # Todo list 
 1. add a variable to check the performance of each operators
 2. check whether is improved or not
