@@ -81,12 +81,12 @@ int main(int argc, char* argv[])
 	BaseGraph.ReadDataMain();
 	Scenario s;
 	s.LinkIds.push_back(15); s.tau.push_back(0);
+	UEeps = 0.000000000001;
 	BaseGraph.EvalutateFailureScenarios(s);
 	cout << "BaseGraph Without Failure = " << BaseGraph.TotalSystemCost << endl;
 
 	return 0;
 
-	UEeps = 0.01;
 	BaseGraph.EvaluteGraph();
 	MainAlgo.ReadData(BaseGraph);
 	UEeps = 0.01;
