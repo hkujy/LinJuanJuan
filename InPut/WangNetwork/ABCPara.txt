@@ -1,4 +1,4 @@
 NumEmployBee,4
 NumOnlookerBee,4
 MaxScountCount,4
-MaxABCIter,100
+MaxABCIter,10

@@ -1,6 +1,7 @@
 #include "CommonHeaders.h"
 #include <vector>
 #include <algorithm>
+#include <limits>
 #include <numeric>
 #include <iostream>
 #include "RandomFuncs.h"
@@ -42,7 +43,7 @@ void ABCAlgorithms::ABCMain()
 		GenerateIni();
 		ConvergeMeasure.assign(MaxIter, -1);
 		Prob.assign(NumEmployedBee, 0.0);
-		GlobalBest.Fitness = 9999999;
+		GlobalBest.Fitness = std::numeric_limits<double>::max();
 		ScountCounter.assign(NumEmployedBee, 0);
 		for (int i = 0; i < MaxIter; i++)
 		{
@@ -53,7 +54,7 @@ void ABCAlgorithms::ABCMain()
 			ConvergeMeasure.at(i) = GlobalBest.Fitness;
 			if (isWriteConverge)
 			{
-				ConvergeFile << s << "," << i << "," << ConvergeMeasure.at(i) << endl;
+				ConvergeFile << s << "," << i << "," << fixed << setprecision(2) << ConvergeMeasure.at(i) << endl;
 			}
 		}
 		this->PrintFinal(s);
