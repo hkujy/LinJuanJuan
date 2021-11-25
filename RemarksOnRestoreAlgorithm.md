@@ -16,21 +16,25 @@
 1. Nei_swap
     - random select two and replace their locations
         - I can randomly select two links and change their
-2. Nei_new
+2. Nei_new 
     - generate a completely new solution
+    > remark: this is not used in the nei operators but a scout phase for new solutions
 3. Nei_move_one_to_right 
     - random select one and move its order to the right 
 4. Nei_move_one_to_left
     - random select one and move its order to the left
 5. Nei_one_point_cross_over
     - one point cross over, swap before and after 
+6. Nei_Insert_One_Random_To_Right
+    - randomly select one node and move it to the right
+7. Nei_Insert_One_Random_To_Left
+    - randomly select one node and move it to the left
 
 ##### todo
-1. random move: move one to a random positions 
+1. define a proper pair and then move
 2. move a group to the left
 3. move a group of links to right 
-4. partically regenerated part of the links
-5. Allow a subpath is formed by connecting two links
+4. Allow a subpath is formed by connecting two links
     - set origin to be the tail node of one link and dest to be the head node of the other link 
     - then run the shortest path method, to see whether, the distance is changed 
     - I can make this greedy ?

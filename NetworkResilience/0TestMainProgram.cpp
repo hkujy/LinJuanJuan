@@ -72,8 +72,8 @@ void ReadModelPara()
 int main(int argc, char* argv[])
 {
 	isWriteConverge = true;
-	ModelIndex = 4; //Paradox network
-	//ModelIndex = 5; //Paradox network
+	//ModelIndex = 4; //Paradox network
+	ModelIndex = 5; //Wang Zhiwei network
 	OpenAndCleanFiles();
 	ReadModelPara();
 	ABCAlgorithms MainAlgo;

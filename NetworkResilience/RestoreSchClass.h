@@ -71,6 +71,8 @@ public:
 	void Nei_New(SCHCLASS& NewSol, GRAPH& g, const vector<int>& FailureLinkSet, const vector<double>& ResCap);
 	void Nei_Move_One_To_Right(SCHCLASS& NewSol);
 	void Nei_Move_One_To_Left(SCHCLASS& NewSol);
+	void Nei_Insert_One_Random_To_Right(SCHCLASS& NewSol);
+	void Nei_Insert_One_Random_To_Left(SCHCLASS& NewSol);
 	void Nei_CrossOver_OnePoint(SCHCLASS& NewSol);
 
 	void GenerateTimeFromOrder(const vector<double>& ResCap);
