@@ -1,4 +1,4 @@
-NumEmployBee,4
-NumOnlookerBee,4
-MaxScountCount,4
-MaxABCIter,10
+NumEmployBee,5
+NumOnlookerBee,5
+MaxScountCount,5
+MaxABCIter,50

@@ -3,9 +3,10 @@ import shutil
 import myclass as mc
 from shutil import copyfile
 import shutil
+import logging
 
-# isRunTest = True
-isRunTest = False
+isRunTest = True
+# isRunTest = False
 isDebug = True
 # isDebug = False
 
@@ -13,13 +14,21 @@ class ParaClass(object):
     """parameter class
     """
     def __init__(self):
-        self.para ={ "NumEmployBee":4, 
-                    "NumOnlookerBee":4, 
-                    "MaxScountCount":4, 
-                    "MaxABCIter":10
+        self.para ={ "NumEmployBee":5, 
+                    "NumOnlookerBee":5, 
+                    "MaxScountCount":5, 
+                    "MaxABCIter":50
                     }
-    
-
+    def print_abc_para(self,net=""):
+        """
+        """
+        if net is "Wang":
+            with open("..//InPut//WangNetwork//ABCPara.txt","w+") as f:
+                for key,value in self.para.items():
+                    print("{0},{1}".format(key,value),file=f) 
+        else:
+            logging.debug("Input network is not specified for print ABC para")
+            
 def SFileToDFile(sourcefile,fileclass,destinationfile):
     if os.path.exists(destinationfile):
         pass

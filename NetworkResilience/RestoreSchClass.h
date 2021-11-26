@@ -62,7 +62,7 @@ public:
 	void Evaluate(GRAPH& g);
 	int GetLastPeriod()
 	{
-		return EndTime.back();
+		return *max_element(EndTime.begin(), EndTime.end()); ;
 	}
 	vector<size_t> getNewReadyLinks(int tau);
 	// write a few neighbor operators

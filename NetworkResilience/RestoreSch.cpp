@@ -248,7 +248,8 @@ void SCHCLASS::Evaluate(GRAPH& g)
 		}
 		else
 		{
-			for (auto l : NewReady) Links.at(l)->IniCap();
+			for (auto l : NewReady) 
+				Links.at(l)->IniCap();
 			cout << "---Period = " << t << "," << NewReady.size() << " link is added" << endl;
 			g.EvaluteGraph();
 			CumulativeReadyLinks.insert(CumulativeReadyLinks.end(), NewReady.begin(), NewReady.end());

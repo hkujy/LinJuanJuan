@@ -32,6 +32,17 @@ public:
 	LINK();
 	LINK(const LINK& OtherLink);
 	~LINK();
+	LINK& operator=(const LINK& rhs) {
+		ID = rhs.ID; Tail = rhs.Tail; Head = rhs.Head;
+		T0 = rhs.T0; CaInput = rhs.CaInput;
+		CaRevise = rhs.CaRevise;
+		Cost = rhs.Cost; Flow = rhs.Flow;
+		AlphaBpr = rhs.AlphaBpr;
+		BetaBBpr = rhs.BetaBBpr;
+		RecoverTime = rhs.RecoverTime;  // recover time
+		RequiredRes=rhs.RequiredRes; // required resources
+		return*this;
+	}
 
 };
 

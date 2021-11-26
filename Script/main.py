@@ -16,6 +16,7 @@ if __name__ == "__main__":
     para.Copy_input_and_test_files(mf)
     run.run_test(mf)
     ps = para.ParaClass()
+    ps.print_abc_para(net="Wang")
     myplot.plot_converge(ps,mf.root_folder+"LinJuanJuan\\Output\\ABCConverge.txt")
     
     

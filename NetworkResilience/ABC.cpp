@@ -102,6 +102,8 @@ void ABCAlgorithms::EmployBeePhase()
 	{
 		SCHCLASS Nei(this->Sols.at(i));
 		cout << "Eb = " << i << endl;
+		if (i == 2)
+			cout << "wtf" << endl;
 		this->Sols.at(i).GenNei(Nei, *Graph, FailureLinks, ResourceCap);
 		if (Nei.Fitness < this->Sols.at(i).Fitness)
 		{

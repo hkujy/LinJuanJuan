@@ -218,7 +218,7 @@ int GRAPH::FW_UE() {
 
 		if (Err > UEeps && NumIter < UEmaxIter)
 		{
-			cout << NumIter<<"\t"<<Err << endl;
+			//cout << NumIter<<"\t"<<Err << endl;
 			//assert(PrintConverge(NumIter, Err, AssertLog));
 			goto UeLop;
 		}
