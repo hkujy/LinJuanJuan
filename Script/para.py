@@ -4,11 +4,21 @@ import myclass as mc
 from shutil import copyfile
 import shutil
 
-isRunTest = True
-# isRunTest = False
+# isRunTest = True
+isRunTest = False
 isDebug = True
 # isDebug = False
 
+class ParaClass(object):
+    """parameter class
+    """
+    def __init__(self):
+        self.para ={ "NumEmployBee":4, 
+                    "NumOnlookerBee":4, 
+                    "MaxScountCount":4, 
+                    "MaxABCIter":10
+                    }
+    
 
 def SFileToDFile(sourcefile,fileclass,destinationfile):
     if os.path.exists(destinationfile):

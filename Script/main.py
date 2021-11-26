@@ -7,6 +7,7 @@ import shutil
 import run
 import para
 import myclass as mc
+import myplot
 
 
 if __name__ == "__main__":
@@ -14,7 +15,10 @@ if __name__ == "__main__":
     print("Working folder is", mf.root_folder)
     para.Copy_input_and_test_files(mf)
     run.run_test(mf)
-
+    ps = para.ParaClass()
+    myplot.plot_converge(ps,mf.root_folder+"LinJuanJuan\\Output\\ABCConverge.txt")
+    
+    
     # my_files.ini(para.root_folder+"\\mm\\Output\\ISTTT24")
     # test_paras = para.ini_para() 
     # para.print_para_setting(test_paras,my_files.test_para)

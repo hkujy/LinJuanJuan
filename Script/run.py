@@ -4,7 +4,7 @@ import para
 
 def run_test(mf):
     """
-    run the test
+    run the tes
     """
     debug_exe_file = mf.root_folder + "LinJuanJuan\\x64\\Debug\\NetworkResilience.exe"
     release_exe_file = mf.root_folder + "LinJuanJuan\\x64\\Release\\NetworkResilience.exe" 

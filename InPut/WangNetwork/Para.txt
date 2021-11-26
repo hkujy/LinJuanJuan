@@ -3,6 +3,6 @@ NumOD,2
 NumLinks,16
 OneDimEsp,0.0000001
 UEeps,0.000001
-UEmaxIter,5000
+UEmaxIter,500
 MaxNumSol,5000
 StopCriteria,0

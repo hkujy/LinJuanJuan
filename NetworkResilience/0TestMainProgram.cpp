@@ -68,26 +68,26 @@ void ReadModelPara()
 	cout << "OneDimEsp = " << OneDimEsp << endl;
 	fin.close();
 }
-
+void ReproduceWang(GRAPH& g)
+{
+	cout << "--Start Reproduce David Work--- " << endl;
+	Scenario s;
+	s.LinkIds.push_back(15); s.tau.push_back(0);
+	UEeps = 0.0001;
+	g.EvalutateFailureScenarios(s);
+	cout << "Total Cost = " << g.TotalSystemCost << endl;
+	cout << "--Complete Reproduce David Work--- " << endl;
+}
 int main(int argc, char* argv[])
 {
 	isWriteConverge = true;
 	//ModelIndex = 4; //Paradox network
-	ModelIndex = 5; //Wang Zhiwei network
+	ModelIndex = 5; //Wang David network
 	OpenAndCleanFiles();
 	ReadModelPara();
 	ABCAlgorithms MainAlgo;
 	GRAPH BaseGraph;
 	BaseGraph.ReadDataMain();
-	Scenario s;
-	s.LinkIds.push_back(15); s.tau.push_back(0);
-	UEeps = 0.000000000001;
-	BaseGraph.EvalutateFailureScenarios(s);
-	cout << "BaseGraph Without Failure = " << BaseGraph.TotalSystemCost << endl;
-
-	return 0;
-
-	BaseGraph.EvaluteGraph();
 	MainAlgo.ReadData(BaseGraph);
 	UEeps = 0.01;
 	MainAlgo.ABCMain();
