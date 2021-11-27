@@ -1,9 +1,11 @@
-
+#pragma once
 #ifndef GLOBALVAR
 #define GLOBALVAR
 #include <fstream>
 #include <random>
 //Constant
+extern bool wtf;
+extern double Zero;
 extern int NumOrig;
 extern int NumDest;
 extern int NumLinks;
@@ -21,7 +23,6 @@ extern int ModelIndex;
 extern int CsaNumPop;
 extern double CsaCloneBeta;
 extern double CsaRepRatio;
-
 extern int MaxGAIter;
 extern int GANumPop;
 extern int GANumChild;
@@ -34,5 +35,4 @@ extern int SeedRunCount;
 extern std::vector<int> SeedVecVal;
 // stop criteria =1: based on number of solution evalueated
 // stop criteria =0: normal : based on number of iterations
-
 #endif

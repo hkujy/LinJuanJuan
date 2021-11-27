@@ -47,10 +47,15 @@ void ABCAlgorithms::ABCMain()
 		ScountCounter.assign(NumEmployedBee, 0);
 		for (int i = 0; i < MaxIter; i++)
 		{
+			cout << "---------------------ABC iter = " << i << "--------------" << endl;
 			EmployBeePhase();
+			cout << "---------------------ABC iter" << i << " complete employed bee phase" << endl;
 			GetProb();
+			cout << "---------------------ABC iter" << i << " complete get prob" << endl;
 			OnlookerPhase();
+			cout << "---------------------ABC iter" << i << " complete on looker phase" << endl;
 			ScoutPhase();
+			cout << "---------------------ABC iter" << i << " complete on scout phase" << endl;
 			ConvergeMeasure.at(i) = GlobalBest.Fitness;
 			if (isWriteConverge)
 			{
@@ -80,14 +85,29 @@ void ABCAlgorithms::GenerateIni()
 		cout << "----------Print solution after solution alignment--------" << endl;
 		Sols.back().print();
 		cout << "----------End print solution after solution alignment--------" << endl;
-
-		//Sols.back().Links.at(0) = &Graph->Links.at(7);
-		////Sols.back().Links.at(2) = Graph.Links.at(6);
-		////Sols.back().Links.at(3) = Graph.Links.at(8);
-		////Sols.back().Links.at(4) = Graph.Links.at(5);
-		//Sols.back().GenerateTimeFromOrder(ResourceCap);
-
+	
+		// Wang links
+		//Sols.back().Links.at(0) = &Graph->Links.at(15);
+		//Sols.back().Links.at(1) = &Graph->Links.at(2);
+		//Sols.back().Links.at(2) = &Graph->Links.at(8);
+		//Sols.back().Links.at(3) = &Graph->Links.at(12);
+		//Sols.back().Links.at(4) = &Graph->Links.at(7);
+		Sols.back().Links.at(0) = &Graph->Links.at(8);
+		Sols.back().Links.at(1) = &Graph->Links.at(7);
+		Sols.back().Links.at(2) = &Graph->Links.at(5);
+		Sols.back().Links.at(3) = &Graph->Links.at(3);
+		Sols.back().Links.at(4) = &Graph->Links.at(6);
+		Sols.back().GenerateTimeFromOrder(ResourceCap);
 		Sols.back().Evaluate(*Graph);
+		cout << Sols.back().Fitness << endl;
+		Sols.back().Links.at(0) = &Graph->Links.at(8);
+		Sols.back().Links.at(1) = &Graph->Links.at(5);
+		Sols.back().Links.at(2) = &Graph->Links.at(3);
+		Sols.back().Links.at(3) = &Graph->Links.at(7);
+		Sols.back().Links.at(4) = &Graph->Links.at(6);
+		Sols.back().GenerateTimeFromOrder(ResourceCap);
+		Sols.back().Evaluate(*Graph);
+		cout << Sols.back().Fitness << endl;
 		if (Sols.back().Fitness < GlobalBest.Fitness)
 		{
 			GlobalBest = Sols.back();
@@ -100,6 +120,7 @@ void ABCAlgorithms::EmployBeePhase()
 {
 	for (int i = 0; i < NumEmployedBee; i++)
 	{
+		cout << "******Employed Bee = " << i << "**************"<<endl;
 		SCHCLASS Nei(this->Sols.at(i));
 		cout << "Eb = " << i << endl;
 		if (i == 2)
@@ -124,7 +145,15 @@ void ABCAlgorithms::OnlookerPhase()
 {
 	for (int i = 0; i < NumOnlookers; i++)
 	{
+
+		cout << "******Onlooker Bee = " << i << "**************"<<endl;
 		size_t Selected = Select_Basedon_Prob();
+		cout << "******Selected Bee = " << Selected << "**************"<<endl;
+		if (i == 4 && Selected == 2)
+		{
+			cout << "wtf" << endl;
+			wtf = true;
+		}
 		SCHCLASS Nei(this->Sols.at(Selected));
 		this->Sols.at(Selected).GenNei(Nei, *Graph, FailureLinks, ResourceCap);
 
@@ -149,6 +178,8 @@ void ABCAlgorithms::ScoutPhase()
 	{
 		if (ScountCounter.at(t) > MaxScountCount)
 		{
+
+			cout << "******Scout selected employed bee = " << t << "**************"<<endl;
 			this->Sols.at(t).GenerateIniSch(*Graph, FailureLinks);
 			this->Sols.at(t).AlignStartTime(ResourceCap);
 			this->Sols.at(t).Evaluate(*Graph);
@@ -237,6 +268,8 @@ void ABCAlgorithms::ReadData(GRAPH &g)
 		system("Pause");
 	}
 
+	cout << "Complte open files" << endl;
+	cout << "Start to read para" << endl;
 	string line;
 	vector<string> fields;
 	while (getline(fin, line))
@@ -257,6 +290,9 @@ void ABCAlgorithms::ReadData(GRAPH &g)
 	cout << "OneDimEsp = " << OneDimEsp << endl;
 	fin.close();
 
+	
+	cout << "complete to read para" << endl;
+	cout << "start to read abc para" << endl;
 	while (getline(fabc, line))
 	{
 		splitf(fields, line, ",");
@@ -268,7 +304,8 @@ void ABCAlgorithms::ReadData(GRAPH &g)
 		if (fields[0] == "MaxABCIter")	MaxIter = stoi(fields[1]);
 	}
 	fabc.close();
-
+	cout << "complete read abc para" << endl;
+	cout << "Start to read failure link data" << endl;
 	while (getline(fl, line))
 	{
 		splitf(fields, line, ",");
@@ -296,7 +333,7 @@ void ABCAlgorithms::ReadData(GRAPH &g)
 	}
 	fl.close();
 
-
+	cout << "compete read failure link data" << endl;
 
 	/// <summary>
 	/// print and check the model parameters input

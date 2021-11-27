@@ -73,23 +73,33 @@ void ReproduceWang(GRAPH& g)
 	cout << "--Start Reproduce David Work--- " << endl;
 	Scenario s;
 	s.LinkIds.push_back(15); s.tau.push_back(0);
-	UEeps = 0.0001;
+	UEeps = 0.0000000001;
+	Zero = 1.0e-16f;
+	UEmaxIter = 5000;
 	g.EvalutateFailureScenarios(s);
 	cout << "Total Cost = " << g.TotalSystemCost << endl;
 	cout << "--Complete Reproduce David Work--- " << endl;
 }
 int main(int argc, char* argv[])
 {
+	wtf = false;
 	isWriteConverge = true;
-	//ModelIndex = 4; //Paradox network
-	ModelIndex = 5; //Wang David network
+	ModelIndex = 4; //Paradox network
+	//ModelIndex = 5; //Wang David network
 	OpenAndCleanFiles();
 	ReadModelPara();
 	ABCAlgorithms MainAlgo;
 	GRAPH BaseGraph;
+	cout << "# start to read graph data" << endl;
 	BaseGraph.ReadDataMain();
+	cout << "# complete read graph data" << endl;
+	cout << "# start to read algo data" << endl;
 	MainAlgo.ReadData(BaseGraph);
-	UEeps = 0.01;
+	cout << "# complete read graph data" << endl;
+	UEeps = 0.0001;
+	Zero = 1.0e-6f;
+	UEmaxIter = 500;
+	//ReproduceWang(BaseGraph);
 	MainAlgo.ABCMain();
 
 	//ofstream RemarkFile;

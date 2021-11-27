@@ -128,6 +128,7 @@ void GRAPH::CreateOriginSet()
 }
 
 void GRAPH::CreateNodes(){
+	cout << this->Links.size() << endl;
 	assert(this->Links.size() > 0);
 	NODE tnode;
 	for (int i = 0; i < NumNodes; i++)
@@ -414,8 +415,9 @@ void GRAPH::EvalutateFailureScenarios(const Scenario &s)
 	}
 
 	cout << "------Eva Link Cap Fail-----------------------" << endl;
-	for (int i = 0; i < MaxNumOfSchPeriod; i++)  // loop all the period
+	for (int i = 0; i < 1; i++)  // loop all the period
 	{
+		cout << "Remark: Only Evaluate one period for test case" << endl;
 		for (size_t j = 0; j < s.tau.size(); j++)
 		{
 			if (i == s.tau.at(j))

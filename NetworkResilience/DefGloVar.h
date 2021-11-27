@@ -1,8 +1,12 @@
 // define global variables
+#pragma once
 #ifndef DGV
 #define DGV
 #include <random>
-//defin glovar
+#include <fstream>
+//define global
+bool wtf;
+double Zero;
 int NumOrig;
 int NumDest;
 int NumLinks;

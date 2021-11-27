@@ -1,7 +1,11 @@
-#include "Parameters.h"
-#include "Classes.h"
+#pragma once
 #ifndef TempletFun
 #define TempletFun
+
+#include "Parameters.h"
+#include "Classes.h"
+//#include "DefGloVar.h"
+#include "GlobalVar.h"
 template <typename T>  T **Create2DAarray(const int dim1, const int dim2){
 	T **array;
 	array = new T*[dim1];

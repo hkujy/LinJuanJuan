@@ -3,22 +3,22 @@
 #include <math.h>       /* pow */
 using namespace std;
 
-double LinksSDLineSearch(vector<LINK> &XLink, vector<LINK> &YLink);
-double Wobj(const vector<LINK> &Links)
+double LinksSDLineSearch(vector<LINK>& XLink, vector<LINK>& YLink);
+double Wobj(const vector<LINK>& Links)
 {
 	double Wobj = 0.0;
 	for (auto l = Links.begin(); l != Links.end(); l++)
 	{
 		//Wobj += l->Flow*l->Cost + (l->AlphaBpr) * l->Cost * l->CaRevise *(std::pow((l->Flow / l->CaRevise), l->BetaBBpr + 1.0f) / (double)(l->BetaBBpr+ 1.0f));
 		//Wobj += l->Flow*l->Cost + 0.15 * l->Cost * l->CaRevise *(std::pow((l->Flow / l->CaRevise), 4 + 1.0f) / (double)(4+ 1.0f));
-		Wobj += l->Flow*l->Cost + 0.15 * l->Cost * (pow(1 / l->CaRevise, 4))*pow(l->Flow, 5) / 5;
+		Wobj += l->Flow * l->Cost + 0.15 * l->Cost * (pow(1 / l->CaRevise, 4)) * pow(l->Flow, 5) / 5;
 		//WOBJ = WOBJ + V(i)*TOLL(I) / VOT :: toll is not considered in this paper
 	}
 	return Wobj;
 }
 
 double OneDim(vector<LINK> VALinks, std::vector<LINK> VBLinks,
-	vector<LINK> &V1Links, vector<LINK> &V2Links)
+	vector<LINK>& V1Links, vector<LINK>& V2Links)
 {
 	try {
 		double Alfa = 1.0f;
@@ -31,13 +31,13 @@ double OneDim(vector<LINK> VALinks, std::vector<LINK> VBLinks,
 		double F1, F2;
 		for (unsigned int i = 0; i < VALinks.size(); i++)
 		{
-			V1Links.at(i).Flow = VALinks.at(i).Flow + R1*(VBLinks.at(i).Flow - VALinks.at(i).Flow);
-			V2Links.at(i).Flow = VALinks.at(i).Flow + R2*(VBLinks.at(i).Flow - VALinks.at(i).Flow);
+			V1Links.at(i).Flow = VALinks.at(i).Flow + R1 * (VBLinks.at(i).Flow - VALinks.at(i).Flow);
+			V2Links.at(i).Flow = VALinks.at(i).Flow + R2 * (VBLinks.at(i).Flow - VALinks.at(i).Flow);
 		}
 		/*VA = VA + R1*(VB - VA);
 		VB = VA + R2*(VB - VA);*/
-		V1 = VA + R1*(VB - VA);
-		V2 = VA + R2*(VB - VA);
+		V1 = VA + R1 * (VB - VA);
+		V2 = VA + R2 * (VB - VA);
 		F1 = Wobj(V1Links);
 		F2 = Wobj(V2Links);
 
@@ -48,11 +48,11 @@ double OneDim(vector<LINK> VALinks, std::vector<LINK> VBLinks,
 			{
 				VBLinks.at(i).Flow = V2Links.at(i).Flow;
 				V2Links.at(i).Flow = V1Links.at(i).Flow;
-				V1Links.at(i).Flow = VALinks.at(i).Flow + R1*(VBLinks.at(i).Flow - VALinks.at(i).Flow);
+				V1Links.at(i).Flow = VALinks.at(i).Flow + R1 * (VBLinks.at(i).Flow - VALinks.at(i).Flow);
 			}
 			VB = V2;
 			V2 = V1;
-			V1 = VA + R1*(VB - VA);
+			V1 = VA + R1 * (VB - VA);
 			F2 = F1;
 			F1 = Wobj(V1Links);
 		}
@@ -62,11 +62,11 @@ double OneDim(vector<LINK> VALinks, std::vector<LINK> VBLinks,
 			{
 				VALinks.at(i).Flow = V1Links.at(i).Flow;
 				V1Links.at(i).Flow = V2Links.at(i).Flow;
-				V2Links.at(i).Flow = VALinks.at(i).Flow + R2*(VBLinks.at(i).Flow - VALinks.at(i).Flow);
+				V2Links.at(i).Flow = VALinks.at(i).Flow + R2 * (VBLinks.at(i).Flow - VALinks.at(i).Flow);
 			}
 			VA = V1;
 			V1 = V2;
-			V2 = VA + R2*(VB - VA);
+			V2 = VA + R2 * (VB - VA);
 			F1 = F2;
 			F2 = Wobj(V2Links);
 		}
@@ -85,50 +85,57 @@ double OneDim(vector<LINK> VALinks, std::vector<LINK> VBLinks,
 	}
 }
 
-void Assign(const std::vector<OriginBasedOD> &Oset,
-	int **PreLinks,
-	std::vector<LINK> &Links) {
-	try {
+void Assign(const std::vector<OriginBasedOD>& Oset,
+	int** PreLinks,
+	std::vector<LINK>& Links) {
+	//try {
 
-		for (auto l = Links.begin(); l != Links.end(); l++)
+	for (auto l = Links.begin(); l != Links.end(); l++)
+	{
+		l->Flow = l->CleanLinkFlow();
+	}
+	for (auto o = Oset.begin(); o != Oset.end(); o++)
+	{
+		for (auto od = o->ODset.begin(); od != o->ODset.end(); od++)
 		{
-			l->Flow = l->CleanLinkFlow();
-		}
-		for (auto o = Oset.begin(); o != Oset.end(); o++)
-		{
-			for (auto od = o->ODset.begin(); od != o->ODset.end(); od++)
-			{
-				//if (isEqual((*od)->Demand,0.0f)) continue;
-				if ((*od)->Demand < 1.0f) continue;
-				assert((*od)->Demand > 0.0);
-				int CurrentNode = (*od)->Dest;
-				while (CurrentNode != (*od)->Orign) {
-					int k = PreLinks[(*od)->Orign][CurrentNode];
-#ifdef __DEBUG__ 
-					if (k == InvaildInt) {
-						DEBUG("A problem in mincostroutes.c (Assign): Invalid pred for node %d Orig %d \n\n", CurrentNode, Origin);
-						break;
-					}
-#endif
-					Links.at(k).Flow += (*od)->Demand;
-					CurrentNode = Links.at(k).Tail;
+			//if (isEqual((*od)->Demand,0.0f)) continue;
+			if ((*od)->Demand < 1.0f) continue;
+			assert((*od)->Demand > 0.0);
+			int CurrentNode = (*od)->Dest;
+			while (CurrentNode != (*od)->Orign) {
+				int k = PreLinks[(*od)->Orign][CurrentNode];
+				if (k < 0)
+				{
+					cout << "k="<<k << endl;
+					cout << "origin = " << o->Onode << ", dest = " << (*od)->Dest << endl;
+					cout <<  "This OD pair may not be connected" << endl;
 				}
 
+#ifdef __DEBUG__ 
+				if (k == InvaildInt) {
+					DEBUG("A problem in mincostroutes.c (Assign): Invalid pred for node %d Orig %d \n\n", CurrentNode, Origin);
+					break;
+				}
+#endif
+				Links.at(k).Flow += (*od)->Demand;
+				CurrentNode = Links.at(k).Tail;
 			}
+
 		}
 	}
-	catch (exception& e)
-	{
-		TRACE("Assign Flow %s", e.what());
-	}
+	//}
+	//catch (exception& e)
+	//{
+	//	TRACE("Assign Flow %s", e.what());
+	//}
 }
-int PrintConverge(int NumIter, double Err, ofstream &fout) {
+int PrintConverge(int NumIter, double Err, ofstream& fout) {
 
 	fout << "Iter," << NumIter << "," << Err << endl;
 	return 1;
 }
 int GRAPH::FW_UE() {
-	try {
+	//try {
 		int StatusMsg;
 		// step -1 clean and create variable:
 		int NumIter = -1;
@@ -187,12 +194,12 @@ int GRAPH::FW_UE() {
 
 		//double Alfa = OneDim(this->Links, YLinks,V1Links,V2Links); 
 		double Alfa = LinksSDLineSearch(this->Links, YLinks);
-		assert(Alfa <= 1.0&&Alfa >= 0);
+		assert(Alfa <= 1.0 && Alfa >= 0);
 
 		//STEP 4 : MOVE
 		for (size_t i = 0; i < this->Links.size(); i++)
 		{
-			this->Links.at(i).Flow = this->Links.at(i).Flow + Alfa*(YLinks.at(i).Flow - this->Links.at(i).Flow);
+			this->Links.at(i).Flow = this->Links.at(i).Flow + Alfa * (YLinks.at(i).Flow - this->Links.at(i).Flow);
 			//this->Links.at(i).Flow = this->Links.at(i).Flow + Alfa*(V1Links.at(i).Flow - V2Links.at(i).Flow);
 		}
 
@@ -202,7 +209,7 @@ int GRAPH::FW_UE() {
 		for (unsigned int i = 0; i < this->Links.size(); i++)
 		{
 			Err += (OldLinks.at(i).Flow - this->Links.at(i).Flow)
-				*(OldLinks.at(i).Flow - this->Links.at(i).Flow);
+				* (OldLinks.at(i).Flow - this->Links.at(i).Flow);
 			TotalFlow += this->Links.at(i).Flow;
 		}
 
@@ -218,7 +225,7 @@ int GRAPH::FW_UE() {
 
 		if (Err > UEeps && NumIter < UEmaxIter)
 		{
-			//cout << NumIter<<"\t"<<Err << endl;
+			cout << NumIter<<"\t"<<Err << endl;
 			//assert(PrintConverge(NumIter, Err, AssertLog));
 			goto UeLop;
 		}
@@ -228,16 +235,15 @@ int GRAPH::FW_UE() {
 		}
 		StatusMsg = this->FindMinCostRoutes();
 		cout << "UE No. of Iter " << NumIter << "\t, Converge Gap Value is" << Err << endl;
-		//cout << "UE No. of Iter " << NumIter << "\t, Converge Gap Value is" << Err << endl;
 
 		//assert(PrintConverge(NumIter, Err, AssertLog));
 		return 1;
-	}
-	catch (exception &e)
-	{
-		TRACE("%s", e);
-		return 0;
-	}
+	//}
+	//catch (exception& e)
+	//{
+	//	TRACE("%s", e);
+	//	return 0;
+	//}
 }
 
 void GRAPH::EvaluteGraph() {
@@ -247,7 +253,7 @@ void GRAPH::EvaluteGraph() {
 	StatusMsg = this->FW_UE();
 	for (auto od = this->OdPairs.begin(); od != this->OdPairs.end(); od++)
 	{
-		this->TotalSystemCost += od->Demand*od->MinCost;
+		this->TotalSystemCost += od->Demand * od->MinCost;
 	}
 	assert(StatusMsg);
 	this->UNPM = 0.0f;

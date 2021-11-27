@@ -15,6 +15,7 @@ void SCHCLASS::GenNei(SCHCLASS& Nei, GRAPH& g, const vector<int>& FailureLinkSet
 {
 	int NeighourOperatorIndex = Select_One_Nei();
 	//NeighourOperatorIndex = 6;
+	cout << ".......selected neighbor index = " << NeighourOperatorIndex <<"........."<<endl;
 	switch (NeighourOperatorIndex)
 	{
 	case(1): Nei_Swap(Nei); break;
