@@ -1,3 +1,7 @@
+# TODO 
+1. write the solution to update the neighbour operators 
+
+
 # Remarks
 1. I can reproduce Wang's work, however, there may be some accuracy issue
 2. Remark: even for the link with one failure links the recover secquence is not the same
@@ -11,7 +15,6 @@
 2. ordered starting time index
 ### Functions
 1. convert the solution representation to the scenario structure
-
 
 ### Heuristic
 1. Nei_swap

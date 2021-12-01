@@ -44,6 +44,11 @@ void OpenAndCleanFiles(){
 	//OutFile.close();
 	OutFile.open("..//OutPut//ABCConverge.txt", ios::trunc);
 	OutFile.close();
+
+
+	OutFile.open("..//OutPut//OperatorsMeasure.txt", ios::trunc);
+	OutFile << "seed,id,good,bad,sum,gp,bp" << endl;
+	OutFile.close();
 }
 //void WriteFileCaseHead(){
 //

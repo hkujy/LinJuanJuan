@@ -9,6 +9,7 @@
 #include "GlobalVar.h"
 using namespace std;
 
+
 class SCHCLASS   // class for the schedule 
 {
 public:
@@ -66,7 +67,7 @@ public:
 	}
 	vector<size_t> getNewReadyLinks(int tau);
 	// write a few neighbor operators
-	void GenNei(SCHCLASS& Nei, GRAPH& g, const vector<int>& FailureLinkSet, const vector<double>& ResCap);
+	void GenNei(SCHCLASS& Nei, GRAPH& g, int& OpId, const vector<int>& FailureLinkSet, const vector<double>& ResCap);
 	void Nei_Swap(SCHCLASS &NewSol);
 	void Nei_New(SCHCLASS& NewSol, GRAPH& g, const vector<int>& FailureLinkSet, const vector<double>& ResCap);
 	void Nei_Move_One_To_Right(SCHCLASS& NewSol);

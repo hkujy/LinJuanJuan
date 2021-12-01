@@ -7,23 +7,23 @@
 
 int Select_One_Nei()
 {
-	return GenRandomInt(1, 6);
+	return GenRandomInt(1, NumOperators);
 }
 
-//main fun for generate a nei
-void SCHCLASS::GenNei(SCHCLASS& Nei, GRAPH& g, const vector<int>& FailureLinkSet, const vector<double>& ResCap)
+//main fun for generate a neighborhoods operator
+void SCHCLASS::GenNei(SCHCLASS& Nei, GRAPH& g, int &OpId,const vector<int>& FailureLinkSet, const vector<double>& ResCap)
 {
-	int NeighourOperatorIndex = Select_One_Nei();
+	OpId = Select_One_Nei();
 	//NeighourOperatorIndex = 6;
-	cout << ".......selected neighbor index = " << NeighourOperatorIndex <<"........."<<endl;
-	switch (NeighourOperatorIndex)
+	cout << ".......selected neighbor index = " << OpId <<"........."<<endl;
+	switch (OpId)
 	{
-	case(1): Nei_Swap(Nei); break;
-	case(2): Nei_CrossOver_OnePoint(Nei); break;
-	case(3): Nei_Move_One_To_Left(Nei); break;
-	case(4): Nei_Move_One_To_Right(Nei); break;
-	case(5): Nei_Insert_One_Random_To_Left(Nei); break;
-	case(6): Nei_Insert_One_Random_To_Right(Nei); break;
+		case(1): Nei_Swap(Nei); break;
+		case(2): Nei_CrossOver_OnePoint(Nei); break;
+		case(3): Nei_Move_One_To_Left(Nei); break;
+		case(4): Nei_Move_One_To_Right(Nei); break;
+		case(5): Nei_Insert_One_Random_To_Left(Nei); break;
+		case(6): Nei_Insert_One_Random_To_Right(Nei); break;
 	default:
 		cout << "Neighbor operator index is properly set" << endl;
 		system("PAUSE");
@@ -38,7 +38,6 @@ void SCHCLASS::GenNei(SCHCLASS& Nei, GRAPH& g, const vector<int>& FailureLinkSet
 		cout << "*************************" << endl;
 	}
 	Nei.Evaluate(g);
-
 }
 
 //Swap the order of two links

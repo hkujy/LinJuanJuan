@@ -3,6 +3,9 @@
 #include "RestoreSchClass.h"
 #include "ABC.h"
 using namespace std;
+//TODO: Test the operator performance
+// ---- I can either use a online or offline version 
+// ---- offline version combine the histortical case using different cases
 //int TestMedium();
 //int TestAlgorithmPara();
 //int TestCSAandGA();
@@ -70,6 +73,8 @@ void ReadModelPara()
 }
 void ReproduceWang(GRAPH& g)
 {
+	if (ModelIndex != 5)
+		cout << "Warning: reproduce Wang's work need to set the model index to be 5" << endl;
 	cout << "--Start Reproduce David Work--- " << endl;
 	Scenario s;
 	s.LinkIds.push_back(15); s.tau.push_back(0);
@@ -80,12 +85,13 @@ void ReproduceWang(GRAPH& g)
 	cout << "Total Cost = " << g.TotalSystemCost << endl;
 	cout << "--Complete Reproduce David Work--- " << endl;
 }
+
 int main(int argc, char* argv[])
 {
 	wtf = false;
 	isWriteConverge = true;
-	ModelIndex = 4; //Paradox network
-	//ModelIndex = 5; //Wang David network
+	//ModelIndex = 4; //Paradox network
+	ModelIndex = 5; //Wang David network
 	OpenAndCleanFiles();
 	ReadModelPara();
 	ABCAlgorithms MainAlgo;
@@ -101,7 +107,6 @@ int main(int argc, char* argv[])
 	UEmaxIter = 500;
 	//ReproduceWang(BaseGraph);
 	MainAlgo.ABCMain();
-
 	//ofstream RemarkFile;
 	//AssertLog.open("..//OutPut//AssertLog.txt", ios::trunc);
 	//RemarkFile.open("..//OutPut//TestRemark.txt", ios::trunc);
@@ -110,5 +115,4 @@ int main(int argc, char* argv[])
 	//BaseGraph.EvaluteGraph();
 	//cout << "BaseGraph Without Failure = " << BaseGraph.TotalSystemCost << endl;
 	return 0;
-
 }

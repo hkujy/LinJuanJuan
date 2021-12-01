@@ -36,7 +36,7 @@ void ABCAlgorithms::ABCMain()
 {
 	ofstream ConvergeFile;
 	ConvergeFile.open("..//OutPut//ABCConverge.txt", ios::app);
-	for (int s=0;s<SeedVecVal.size();s++)
+	for (int s = 0; s < SeedVecVal.size(); s++)
 	{
 		GenRan.seed((unsigned)SeedVecVal.at(s));
 		// start the process of one seed operation
@@ -63,6 +63,7 @@ void ABCAlgorithms::ABCMain()
 			}
 		}
 		this->PrintFinal(s);
+		PrintOperator(s);
 	}
 
 	cout << "*************************ABC completes**************************" << endl;
@@ -77,7 +78,7 @@ void ABCAlgorithms::GenerateIni()
 	// improve the solutions
 	for (int i = 0; i < NumEmployedBee; i++)
 	{
-		cout << "-----------------------EB = " << i << "-------------------" << endl;
+		cout << "-----------------------Generate Ini Sol= " << i << "-------------------" << endl;
 		//SCHCLASS news;
 		Sols.push_back(SCHCLASS(i));
 		Sols.back().GenerateIniSch(*Graph, FailureLinks);
@@ -85,19 +86,18 @@ void ABCAlgorithms::GenerateIni()
 		cout << "----------Print solution after solution alignment--------" << endl;
 		Sols.back().print();
 		cout << "----------End print solution after solution alignment--------" << endl;
-	
 		// Wang links
 		//Sols.back().Links.at(0) = &Graph->Links.at(15);
 		//Sols.back().Links.at(1) = &Graph->Links.at(2);
 		//Sols.back().Links.at(2) = &Graph->Links.at(8);
 		//Sols.back().Links.at(3) = &Graph->Links.at(12);
 		//Sols.back().Links.at(4) = &Graph->Links.at(7);
-		Sols.back().Links.at(0) = &Graph->Links.at(8);
-		Sols.back().Links.at(1) = &Graph->Links.at(7);
-		Sols.back().Links.at(2) = &Graph->Links.at(5);
-		Sols.back().Links.at(3) = &Graph->Links.at(3);
-		Sols.back().Links.at(4) = &Graph->Links.at(6);
-		Sols.back().GenerateTimeFromOrder(ResourceCap);
+		//Sols.back().Links.at(0) = &Graph->Links.at(8);
+		//Sols.back().Links.at(1) = &Graph->Links.at(7);
+		//Sols.back().Links.at(2) = &Graph->Links.at(5);
+		//Sols.back().Links.at(3) = &Graph->Links.at(3);
+		//Sols.back().Links.at(4) = &Graph->Links.at(6);
+	/*	Sols.back().GenerateTimeFromOrder(ResourceCap);
 		Sols.back().Evaluate(*Graph);
 		cout << Sols.back().Fitness << endl;
 		Sols.back().Links.at(0) = &Graph->Links.at(8);
@@ -105,7 +105,7 @@ void ABCAlgorithms::GenerateIni()
 		Sols.back().Links.at(2) = &Graph->Links.at(3);
 		Sols.back().Links.at(3) = &Graph->Links.at(7);
 		Sols.back().Links.at(4) = &Graph->Links.at(6);
-		Sols.back().GenerateTimeFromOrder(ResourceCap);
+		Sols.back().GenerateTimeFromOrder(ResourceCap);*/
 		Sols.back().Evaluate(*Graph);
 		cout << Sols.back().Fitness << endl;
 		if (Sols.back().Fitness < GlobalBest.Fitness)
@@ -116,28 +116,58 @@ void ABCAlgorithms::GenerateIni()
 	for (auto s : Sols) cout << s.ID << "," << s.Fitness << endl;
 }
 
+void ABCAlgorithms::UpdateOperatorMeaures(int _id, bool isImproved)
+{
+	//TODO: write the update the counters of the operators
+	assert(_id <= NumOperators);
+	assert(_id >= 1);
+	if (isImproved)
+	{
+		this->Operators.at(_id - 1).CounterGood++;
+	}
+	else
+	{
+		this->Operators.at(_id - 1).CounterBad++;
+	}
+	this->Operators.at(_id - 1).CounterSum++;
+}
+
+bool ABCAlgorithms::CompareTwoSolsAndReplace(SCHCLASS& lhs, SCHCLASS& rhs, int NeiOperatorId)
+{
+	//Compare the left hand side and the right hand side solutions 
+	//if the right hand side is better 
+	//then replace the lhs solution with the right hand solutions 
+	//return true, if the rhs hand side is better
+	bool isBetter = false;
+	if (rhs.Fitness < lhs.Fitness)
+	{
+		cout << rhs.Fitness << " is less than" << lhs.Fitness << endl;
+		rhs.print();
+		lhs = rhs;
+		isBetter = true;
+		if (rhs.Fitness < GlobalBest.Fitness) GlobalBest = rhs;
+	}
+
+	return isBetter;
+
+}
+
 void ABCAlgorithms::EmployBeePhase()
 {
 	for (int i = 0; i < NumEmployedBee; i++)
 	{
-		cout << "******Employed Bee = " << i << "**************"<<endl;
+		cout << "******Employed Bee = " << i << "**************" << endl;
 		SCHCLASS Nei(this->Sols.at(i));
+		bool isImproved = false;
 		cout << "Eb = " << i << endl;
-		if (i == 2)
+		//if (i == 2)
 			cout << "wtf" << endl;
-		this->Sols.at(i).GenNei(Nei, *Graph, FailureLinks, ResourceCap);
-		if (Nei.Fitness < this->Sols.at(i).Fitness)
-		{
-			cout << this->Sols.at(i).Fitness << "," << Nei.Fitness << endl;
-			Nei.print();
-			this->Sols.at(i).print();
-			this->Sols.at(i) = Nei;
-		}
-		else
-		{
-			ScountCounter.at(i)++;
-		}
-		if (Nei.Fitness < GlobalBest.Fitness) GlobalBest = Nei;
+		int OpId = -1;
+		this->Sols.at(i).GenNei(Nei, *Graph, OpId, FailureLinks, ResourceCap);
+		isImproved = CompareTwoSolsAndReplace(this->Sols.at(i), Nei, OpId);
+		if (isImproved) ScountCounter.at(i) = 0;
+		else ScountCounter.at(i)++;
+		UpdateOperatorMeaures(OpId, isImproved);
 	}
 }
 
@@ -145,30 +175,20 @@ void ABCAlgorithms::OnlookerPhase()
 {
 	for (int i = 0; i < NumOnlookers; i++)
 	{
-
-		cout << "******Onlooker Bee = " << i << "**************"<<endl;
+		cout << "******Onlooker Bee = " << i << "**************" << endl;
 		size_t Selected = Select_Basedon_Prob();
-		cout << "******Selected Bee = " << Selected << "**************"<<endl;
-		if (i == 4 && Selected == 2)
-		{
-			cout << "wtf" << endl;
-			wtf = true;
-		}
+		cout << "******Selected Bee = " << Selected << "**************" << endl;
+		//if (i == 4 && Selected == 2)
+		//{
+		//	cout << "wtf" << endl;
+		//	wtf = true;
+		//}
 		SCHCLASS Nei(this->Sols.at(Selected));
-		this->Sols.at(Selected).GenNei(Nei, *Graph, FailureLinks, ResourceCap);
-
-		if (Nei.Fitness < this->Sols.at(Selected).Fitness)
-		{
-			cout << this->Sols.at(Selected).Fitness << "," << Nei.Fitness << endl;
-			Nei.print();
-			this->Sols.at(Selected).print();
-			this->Sols.at(Selected) = Nei;
-		}
-		else
-		{
-			ScountCounter.at(Selected)++;
-		}
-		if (Nei.Fitness < GlobalBest.Fitness) GlobalBest = Nei;
+		int OpId = -1;
+		this->Sols.at(Selected).GenNei(Nei, *Graph, OpId, FailureLinks, ResourceCap);
+		bool isImproved = false;
+		isImproved = CompareTwoSolsAndReplace(this->Sols.at(Selected), Nei, OpId);
+		UpdateOperatorMeaures(OpId, isImproved);
 	}
 }
 
@@ -179,7 +199,7 @@ void ABCAlgorithms::ScoutPhase()
 		if (ScountCounter.at(t) > MaxScountCount)
 		{
 
-			cout << "******Scout selected employed bee = " << t << "**************"<<endl;
+			cout << "******Scout selected employed bee = " << t << "**************" << endl;
 			this->Sols.at(t).GenerateIniSch(*Graph, FailureLinks);
 			this->Sols.at(t).AlignStartTime(ResourceCap);
 			this->Sols.at(t).Evaluate(*Graph);
@@ -222,11 +242,11 @@ size_t ABCAlgorithms::Select_Basedon_Prob()
 	return selected;
 }
 
-void ABCAlgorithms::ReadData(GRAPH &g)
+void ABCAlgorithms::ReadData(GRAPH& g)
 {
 	this->Graph = &g;
 
-	ifstream fin, fabc,fl;
+	ifstream fin, fabc, fl;
 	FILE* fseedin;
 	if (ModelIndex == 1)
 	{
@@ -290,7 +310,7 @@ void ABCAlgorithms::ReadData(GRAPH &g)
 	cout << "OneDimEsp = " << OneDimEsp << endl;
 	fin.close();
 
-	
+
 	cout << "complete to read para" << endl;
 	cout << "start to read abc para" << endl;
 	while (getline(fabc, line))
@@ -325,11 +345,11 @@ void ABCAlgorithms::ReadData(GRAPH &g)
 				ResourceCap.assign(MaxNumOfSchPeriod, stoi(fields[1]));
 			}
 			else
-				cout<<"ERR: Read failure links warning"<<endl;
+				cout << "ERR: Read failure links warning" << endl;
 		}
 		else
-			cout<<"ERR: Read failure links warning"<<endl;
-	
+			cout << "ERR: Read failure links warning" << endl;
+
 	}
 	fl.close();
 
@@ -369,10 +389,37 @@ void ABCAlgorithms::PrintFinal(int sd)
 
 	sf.open("..//OutPut//PrintPeriod.txt", ios::app);
 
-	for (size_t t = 0;t<GlobalBest.TravelTime.size();t++)
+	for (size_t t = 0; t < GlobalBest.TravelTime.size(); t++)
 	{
 		sf << sd << "," << t << "," << GlobalBest.TravelTime.at(t) << endl;
 	}
 	sf.close();
+}
+OperatorClass::OperatorClass()
+{
+	id = -1; CounterSum = 0; CounterBad = 0; CounterGood = 0;
+}
+OperatorClass::~OperatorClass()
+{
+	id = -1; CounterSum = 0; CounterBad = 0; CounterGood = 0;
+}
 
+/// <summary>
+///  print the summary of the operators
+/// </summary>
+void ABCAlgorithms::PrintOperator(int seedid)
+{
+	ofstream OutFile;
+	OutFile.open("..//OutPut//OperatorsMeasure.txt", ios::app);
+	for (int i = 0; i < NumOperators; ++i)
+	{
+		assert(Operators.at(i).CounterSum > 0);
+		OutFile << seedid<< ",";
+		OutFile << i<< ",";
+		OutFile << Operators.at(i).CounterGood << ",";
+		OutFile << Operators.at(i).CounterBad << ",";
+		OutFile << Operators.at(i).CounterSum << ",";
+		OutFile << double(Operators.at(i).CounterGood)/ double(Operators.at(i).CounterSum) << ",";
+		OutFile << double(Operators.at(i).CounterBad)/double(Operators.at(i).CounterSum)<<endl;
+	}
 }
