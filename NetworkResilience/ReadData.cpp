@@ -132,7 +132,8 @@ bool ReadModelParas(){
 	else if (ModelIndex == 3)
 	{
 		fin.open("..//InPut//SiouxFallsNetwork//Para.txt");
-		fga.open("..//InPut//SiouxFallsNetwork//GAPara.txt");
+		//fga.open("..//InPut//SiouxFallsNetwork//GAPara.txt");
+		fabc.open("..//InPut//SiouxFallsNetwork//ABCPara.txt");
 	}
 	else if (ModelIndex == 4)
 	{

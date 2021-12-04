@@ -359,10 +359,12 @@ void ABCAlgorithms::ReadData(GRAPH& g)
 	}
 	else if (ModelIndex == 3)
 	{
-		cout << "Model Index is not specified" << endl;
-		system("Pause");
-		//fin.open("..//InPut//SiouxFallsNetwork//Para.txt");
-		//fga.open("..//InPut//SiouxFallsNetwork//GAPara.txt");
+		//cout << "Model Index is not specified" << endl;
+		//system("Pause");
+		fabc.open("..//InPut//SiouxFallsNetwork//ABCPara.txt");
+		fl.open("..//InPut//SiouxFallsNetwork//FailureLinks.txt");
+		fopen_s(&fseedin, "..//Input//SiouxFallsNetwork//Seed.txt", "r");
+		if (!ReadSeedVec(SeedVecVal, fseedin)) TRACE("Read Seed File Fails \n");
 	}
 	else if (ModelIndex == 4)
 	{

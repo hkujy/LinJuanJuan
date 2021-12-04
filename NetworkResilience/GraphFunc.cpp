@@ -190,8 +190,7 @@ void GRAPH::ReadGraphData()
 	}
 	else if (ModelIndex == 3)
 	{
-		fin.open("..//Input//Nagureny2009Network//DeamdData.txt");
-		//fopen_s(&fin, "..//Input//Nagureny2009Network//DeamdData.txt", "r");
+		fin.open("..//Input//SiouxFallsNetwork//DeamdData.txt");
 	}
 	else if (ModelIndex == 4)
 	{

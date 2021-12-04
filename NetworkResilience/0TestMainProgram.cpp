@@ -33,8 +33,9 @@ void ReadModelPara()
 	}
 	else if (ModelIndex == 3)
 	{
-		cout << "Model Index is not specified" << endl;
-		system("Pause");
+		fin.open("..//InPut//SiouxFallsNetwork//Para.txt");
+		//cout << "Model Index is not specified" << endl;
+		//system("Pause");
 		//fin.open("..//InPut//SiouxFallsNetwork//Para.txt");
 		//fga.open("..//InPut//SiouxFallsNetwork//GAPara.txt");
 	}
@@ -90,8 +91,9 @@ int main(int argc, char* argv[])
 {
 	wtf = false;
 	isWriteConverge = true;
+	ModelIndex = 3;   //Sioux Fall Network
 	//ModelIndex = 4; //Paradox network
-	ModelIndex = 5; //Wang David network
+	//ModelIndex = 5; //Wang David network
 	OpenAndCleanFiles();
 	ReadModelPara();
 	ABCAlgorithms MainAlgo;
@@ -105,6 +107,7 @@ int main(int argc, char* argv[])
 	UEeps = 0.01;
 	Zero = 1.0e-6f;
 	UEmaxIter = 500;
+	BaseGraph.EvaluteGraph();
 	//ReproduceWang(BaseGraph);
 	MainAlgo.ABCMain();
 	//ofstream RemarkFile;

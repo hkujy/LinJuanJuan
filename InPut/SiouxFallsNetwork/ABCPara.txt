@@ -1,0 +1,9 @@
+NumEmployBee,10
+NumOnlookerBee,10
+MaxScountCount,50
+MaxABCIter,500
+RewardImproveGlobal,20
+RewardImproveLocal,10
+RewardWorse,0
+ReactionFactor,0.5
+SelectOperator,ALNS

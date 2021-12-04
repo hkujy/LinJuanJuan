@@ -1,5 +1,8 @@
+# Test in progress
+1. compare different distribution between uni      
 # TODO 
 1. write the solution to update the neighbour operators 
+2. create the example of sioux fall network
 
 
 # Remarks
