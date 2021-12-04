@@ -13,11 +13,15 @@ class OperatorClass
 {
 public:
 	int id;
-	int CounterGood;  // number of calls improve
-	int CounterBad; // number of counters drops
-	int CounterSum; // Total number of counters 
+	int TotalCounterGood;  // number of calls improve
+	int TotalCounterBad; // number of counters drops
+	int TotalCounterSum; // Total number of counters 
+	double Score;
+	double Prob;
+	double Weight;
 	OperatorClass();
 	~OperatorClass();
+	void calWeight(double r);
 };
 
 
@@ -35,22 +39,30 @@ public:
 	int MaxScountCount;
 	std::vector<double> ResourceCap;  // Capacity of the resources
 	std::vector<int> FailureLinks;
-	vector<double> Prob; // probability for the onlookers
+	vector<double> CumProbForSelectOnlooker; // probability for the onlookers
+	vector<double> CumProbForSelectNei; // probability for the onlookers
 	SCHCLASS GlobalBest;
 	vector<double> ConvergeMeasure;
 	vector<OperatorClass> Operators;
+	double RewardImproveGlobal;
+	double RewardImproveLocal;
+	double RewardWorse;
+	double ReactionFactor;
+	SelectOperatorType SelectOp;
 	ABCAlgorithms() {
 		MaxFitValue = -99999999999999; MinFitValue = 999999999999999;
 		NumEmployedBee = -1; NumOnlookers = -1; MaxScountCount = -1; MaxIter = -1;
-		ScountCounter.reserve(100); ResourceCap.reserve(100); FailureLinks.reserve(100); Prob.reserve(100);
+		ScountCounter.reserve(100); ResourceCap.reserve(100); FailureLinks.reserve(100);
+		CumProbForSelectOnlooker.reserve(100);
+		CumProbForSelectNei.reserve(100);
 		Graph = new GRAPH;
+		RewardImproveGlobal = 0.0;
+		RewardImproveLocal = 0.0;
+		ReactionFactor = 0.0;
 		for (int i=0;i<NumOperators;i++)
 		{
 			Operators.push_back(OperatorClass());
 			Operators.back().id = i;
-			Operators.back().CounterBad = 0;
-			Operators.back().CounterGood = 0;
-			Operators.back().CounterSum = 0;
 		}
 	};
 	~ABCAlgorithms() { Graph = nullptr; };
@@ -62,12 +74,22 @@ public:
 	void ScoutPhase();
 	void GetProb();
 	void ReadData(GRAPH& Graph);
-	size_t Select_Basedon_Prob();
+	size_t SelectOnLookerBasedonProb();
 	void PrintFinal(int sd);
 	void UpdateOperatorMeaures(int _id, bool isImproved);
 	bool CompareTwoSolsAndReplace(SCHCLASS& lhs, SCHCLASS& rhs, int NeiOperatorId);
 	void PrintOperator(int seedid);
+	void UpdateOperatorProb();
+	void IniOperatorProb();
+	void UpdateOperatorWeight();
+	int SelectOperIndex();
+	void UpdateOperatorScore(int OpId, double ResultFit, double LocalFit, double GlobalFit);
 
+	void UpdateOperatorProb_ALNS();
+	void UpdateOperatorScore_ALNS(int OpId, double ResultFit, double LocalFit, double GlobalFit);
+	void UpdateOperatorWeight_ALNS();
+	int SelectOperator_ALNS();
+	void IniOperatorProb_ANLS();
 };
 
 

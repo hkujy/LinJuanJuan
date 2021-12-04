@@ -14,4 +14,8 @@ enum AlgorithmType
 {
 	CSA, GA
 };
+enum SelectOperatorType
+{
+	Uniform, ALNS
+};
 #endif // !PARA

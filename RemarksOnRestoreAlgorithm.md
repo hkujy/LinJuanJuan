@@ -3,8 +3,9 @@
 
 
 # Remarks
-1. I can reproduce Wang's work, however, there may be some accuracy issue
+1. I can reproduce Wang's work. However, there may be some accuracy issue
 2. Remark: even for the link with one failure links the recover secquence is not the same
+3. To avoid zero denominator, I set the sum of the total count for each operator to be 1
 # Todo list 
 1. add a variable to check the performance of each operators
 2. check whether is improved or not
@@ -42,7 +43,7 @@
     - set origin to be the tail node of one link and dest to be the head node of the other link 
     - then run the shortest path method, to see whether, the distance is changed 
     - I can make this greedy ?
-
+5. Different method for updating the adaptive score 
 ### Other ideas
 1. I can design a construction algorithm
 - first align all the projects to the same period

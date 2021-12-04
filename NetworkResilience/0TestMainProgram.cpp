@@ -5,7 +5,7 @@
 using namespace std;
 //TODO: Test the operator performance
 // ---- I can either use a online or offline version 
-// ---- offline version combine the histortical case using different cases
+// ---- offline version combine the historical case using different cases
 //int TestMedium();
 //int TestAlgorithmPara();
 //int TestCSAandGA();
@@ -102,7 +102,7 @@ int main(int argc, char* argv[])
 	cout << "# start to read algo data" << endl;
 	MainAlgo.ReadData(BaseGraph);
 	cout << "# complete read graph data" << endl;
-	UEeps = 0.0001;
+	UEeps = 0.01;
 	Zero = 1.0e-6f;
 	UEmaxIter = 500;
 	//ReproduceWang(BaseGraph);

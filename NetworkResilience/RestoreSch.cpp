@@ -160,7 +160,7 @@ void SCHCLASS::GenerateIniSch(GRAPH& g, const vector<int>& FailureLinks)
 	{
 		int linkNum = GenRandomInt(FailureLinks);
 		int pos = FindValIndex(FailureLinks, linkNum);
-		cout << "Link = " << linkNum << ", pos=" << pos << endl;
+		//cout << "Link = " << linkNum << ", pos=" << pos << endl;
 		if (!isSelected.at(pos))
 		{
 			this->Links.push_back(new LINK());
@@ -183,7 +183,9 @@ void SCHCLASS::GenerateIniSch(GRAPH& g, const vector<int>& FailureLinks)
 	}
 	SortStartTime(StartTime);
 	updateEndTime();
+#ifdef _DEBUG
 	this->print();
+#endif // _DEBUG
 }
 
 vector<size_t> SCHCLASS::getNewReadyLinks(int tau)
@@ -232,10 +234,9 @@ void SCHCLASS::Evaluate(GRAPH& g)
 	// step 2: compute the time in each period
 	for (int t = 0; t < GetLastPeriod() + 1; t++)
 	{
-		cout << "time = " << t << endl;
 		vector<size_t> NewReady = getNewReadyLinks(t);
-		for (auto v : NewReady) cout << v << ",";
-		cout << endl;
+		//for (auto v : NewReady) cout << v << ",";
+		//cout << endl;
 		// case 1: at the begin, there is not other links
 		if (NewReady.size() == 0)
 		{
@@ -244,13 +245,16 @@ void SCHCLASS::Evaluate(GRAPH& g)
 			{
 				TravelTime.at(t) = TravelTime.at(t - 1);
 			}
+#ifdef _DEBUG
 			cout << "---Period = " << t << ", no link is added" << endl;
+#endif // _DEBUG
 		}
 		else
 		{
-			for (auto l : NewReady) 
-				Links.at(l)->IniCap();
+			for (auto l : NewReady) Links.at(l)->IniCap();
+#ifdef _DEBUG
 			cout << "---Period = " << t << "," << NewReady.size() << " link is added" << endl;
+#endif // _DEBUG
 			g.EvaluteGraph();
 			CumulativeReadyLinks.insert(CumulativeReadyLinks.end(), NewReady.begin(), NewReady.end());
 			if (t == GetLastPeriod())
@@ -263,13 +267,16 @@ void SCHCLASS::Evaluate(GRAPH& g)
 			}
 		}
 	}
+
+	this->Fitness = std::accumulate(TravelTime.begin(), TravelTime.end(), 0.0);
+#ifdef _DEBUG
 	cout << "-------summary of travel time----------" << endl;
 	cout << "Last end time = " << GetLastPeriod() << endl;
 	for (int t = 0; t < TravelTime.size(); t++)
 	{
 		cout << "t = " << t << ", TravelTime = " << TravelTime.at(t) << endl;
 	}
-	this->Fitness = std::accumulate(TravelTime.begin(), TravelTime.end(), 0.0);
 	cout << "total cost = " << this->Fitness << endl;
+#endif // _DEBUG
 }
 

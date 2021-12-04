@@ -23,7 +23,7 @@ def plot_converge(_ps,_file):
     for s in range(0,num_of_seed):
         g = []
         for i in range(0,_ps.para["MaxABCIter"]):
-            g.append(data[2][row])
+            g.append(float(data[2][row]))
             row = row + 1
         print(g)
         plt.plot(g,label="seed"+str(s))
@@ -36,9 +36,9 @@ def plot_converge(_ps,_file):
     
     ave = []
     for i in range(0,_ps.para["MaxABCIter"]):
-        val = 0
+        val = 0.0
         for s in range(0,num_of_seed):
-            val = val + gap[s][i]
+            val = val + float(gap[s][i])
         val = val/num_of_seed
         ave.append(val)
     plt.plot(ave,label="ave gap")

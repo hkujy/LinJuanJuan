@@ -47,7 +47,7 @@ void OpenAndCleanFiles(){
 
 
 	OutFile.open("..//OutPut//OperatorsMeasure.txt", ios::trunc);
-	OutFile << "seed,id,good,bad,sum,gp,bp" << endl;
+	OutFile << "seed,id,good,bad,sum,gp,bp,prob,score,weight" << endl;
 	OutFile.close();
 }
 //void WriteFileCaseHead(){

@@ -7,23 +7,23 @@
 
 int Select_One_Nei()
 {
-	return GenRandomInt(1, NumOperators);
+	return GenRandomInt(0, NumOperators-1);
 }
 
 //main fun for generate a neighborhoods operator
 void SCHCLASS::GenNei(SCHCLASS& Nei, GRAPH& g, int &OpId,const vector<int>& FailureLinkSet, const vector<double>& ResCap)
 {
-	OpId = Select_One_Nei();
+	//OpId = Select_One_Nei();
 	//NeighourOperatorIndex = 6;
 	cout << ".......selected neighbor index = " << OpId <<"........."<<endl;
 	switch (OpId)
 	{
-		case(1): Nei_Swap(Nei); break;
-		case(2): Nei_CrossOver_OnePoint(Nei); break;
-		case(3): Nei_Move_One_To_Left(Nei); break;
-		case(4): Nei_Move_One_To_Right(Nei); break;
-		case(5): Nei_Insert_One_Random_To_Left(Nei); break;
-		case(6): Nei_Insert_One_Random_To_Right(Nei); break;
+		case(0): Nei_Swap(Nei); break;
+		case(1): Nei_CrossOver_OnePoint(Nei); break;
+		case(2): Nei_Move_One_To_Left(Nei); break;
+		case(3): Nei_Move_One_To_Right(Nei); break;
+		case(4): Nei_Insert_One_Random_To_Left(Nei); break;
+		case(5): Nei_Insert_One_Random_To_Right(Nei); break;
 	default:
 		cout << "Neighbor operator index is properly set" << endl;
 		system("PAUSE");
@@ -44,24 +44,29 @@ void SCHCLASS::GenNei(SCHCLASS& Nei, GRAPH& g, int &OpId,const vector<int>& Fail
 void SCHCLASS::Nei_Swap(SCHCLASS& NewSol) {
 	// step 1: randomly generate two locations
 	cout << "------------Start Swap-----------" << endl;
-	size_t locA = GenRandomInt(0, Links.size() - 1);
-	size_t locB = GenRandomInt(0, Links.size() - 1);
+	int locA = GenRandomInt(0, int(Links.size() - 1));
+	int locB = GenRandomInt(0, int(Links.size() - 1));
 	int whileCounter = 0;
 	while (locA == locB)
 	{
-		locB = GenRandomInt(0, Links.size() - 1);
+		locB = GenRandomInt(0, int(Links.size() - 1));
 		++whileCounter;
 		if (whileCounter > 100)
 		{
 			cout << "ERR: find random swap has err in counter" << endl;
 		}
 	}
+#ifdef _DEBUG
 	cout << "Before Swap: LocA = " << NewSol.Links.at(locA)->ID;
 	cout << ",locB = " << NewSol.Links.at(locB)->ID << endl;
+#endif // _DEBUG
 	NewSol.Links.at(locA) = Links.at(locB);
 	NewSol.Links.at(locB) = Links.at(locA);
+
+#ifdef _DEBUG
 	cout << "After Swap: LocA = " << NewSol.Links.at(locA)->ID;
 	cout << ", LocB = " << NewSol.Links.at(locB)->ID << endl;
+#endif
 	cout << "-----------End Swap-----------" << endl;
 }
 
@@ -70,14 +75,18 @@ void SCHCLASS::Nei_Move_One_To_Left(SCHCLASS& NewSol)
 {
 
 	cout << "------------Start Move One To Left-----------" << endl;
-	size_t locA = GenRandomInt(1, Links.size() - 1);
-	size_t locB = locA - 1;
+	int locA = GenRandomInt(1, int(Links.size() - 1));
+	int locB = locA - 1;
+#ifdef _DEBUG
 	cout << "Before Nei_Order_to_left: LocA = " << NewSol.Links.at(locA)->ID;
 	cout << ",locB = " << NewSol.Links.at(locB)->ID << endl;
+#endif // _DEBUG
 	NewSol.Links.at(locA) = Links.at(locB);
 	NewSol.Links.at(locB) = Links.at(locA);
+#ifdef _DEBUG
 	cout << "After Swap: LocA = " << NewSol.Links.at(locA)->ID;
 	cout << ", LocB = " << NewSol.Links.at(locB)->ID << endl;
+#endif // _DEBUG
 	cout << "-----------End Move One To Left-----------" << endl;
 }
 
@@ -85,14 +94,18 @@ void SCHCLASS::Nei_Move_One_To_Left(SCHCLASS& NewSol)
 void SCHCLASS::Nei_Move_One_To_Right(SCHCLASS& NewSol)
 {
 	cout << "------------Start Move One To Right-----------" << endl;
-	size_t locA = GenRandomInt(0, Links.size() - 2);
-	size_t locB = locA + 1;
+	int locA = GenRandomInt(0, int(Links.size() - 2));
+	int locB = locA + 1;
+#ifdef _DEBUG
 	cout << "Before Nei_Order_to_right: LocA = " << NewSol.Links.at(locA)->ID;
 	cout << ",locB = " << NewSol.Links.at(locB)->ID << endl;
+#endif // _DEBUG
 	NewSol.Links.at(locA) = Links.at(locB);
 	NewSol.Links.at(locB) = Links.at(locA);
+#ifdef _DEBUG
 	cout << "After Swap: LocA = " << NewSol.Links.at(locA)->ID;
 	cout << ", LocB = " << NewSol.Links.at(locB)->ID << endl;
+#endif // _DEBUG
 	cout << "-----------End Move One To Right-----------" << endl;
 }
 
@@ -100,10 +113,10 @@ void SCHCLASS::Nei_Move_One_To_Right(SCHCLASS& NewSol)
 void SCHCLASS::Nei_CrossOver_OnePoint(SCHCLASS& NewSol)
 {
 	cout << "-----------------Start One Point CrossOver---------" << endl;
-	size_t locA = GenRandomInt(0, Links.size() - 1);
+	int locA = GenRandomInt(0, int(Links.size() - 1));
 	cout << "Cut Point = " << locA << endl;
-	size_t RightCount = Links.size() - locA;
-	size_t LeftCount = locA;
+	int RightCount = int(Links.size()) - locA;
+	int LeftCount = locA;
 
 	for (size_t i = 0; i < RightCount; i++)
 	{
@@ -113,7 +126,7 @@ void SCHCLASS::Nei_CrossOver_OnePoint(SCHCLASS& NewSol)
 	{
 		NewSol.Links.at(RightCount + i) = this->Links.at(i);
 	}
-
+#ifdef _DEBUG
 	cout << "-----before one point cross over" << endl;
 	for (size_t i = 0; i < Links.size() - 1; i++)
 	{
@@ -128,6 +141,7 @@ void SCHCLASS::Nei_CrossOver_OnePoint(SCHCLASS& NewSol)
 	}
 	cout << NewSol.Links.back()->ID << endl;
 
+#endif // _DEBUG
 	cout << "------------End One Point Cross Over---------------------------" << endl;
 
 }
@@ -151,12 +165,12 @@ void SCHCLASS::Nei_New(SCHCLASS& NewSol, GRAPH& g,
 void SCHCLASS::Nei_Insert_One_Random_To_Right(SCHCLASS& NewSol) // randomly insert to a position
 {
 	cout << "-----------------Nei Insert One Random To Right is called------------" << endl;
-	size_t cp = GenRandomInt(0, Links.size() - 2);
-	size_t dest = GenRandomInt(cp, Links.size() - 1);
+	int cp = GenRandomInt(0, int(Links.size() - 2));
+	int dest = GenRandomInt(cp,int(Links.size() - 1));
 	int whileCounter = 0;
 	while (dest == cp)
 	{
-		dest = GenRandomInt(cp, Links.size() - 1);
+		dest = GenRandomInt(cp, int(Links.size() - 1));
 		++whileCounter;
 		if (whileCounter > 100)
 		{
@@ -178,19 +192,22 @@ void SCHCLASS::Nei_Insert_One_Random_To_Right(SCHCLASS& NewSol) // randomly inse
 	{
 		NewSol.Links.at(t) = Links.at(t);
 	}
+
+#ifdef _DEBUG
 	cout << "***before***" << endl;
 	for (auto l : Links) cout << l->ID << endl;
 	cout << "Selected CP = " << cp << ", Dest = " << dest << endl;
 	cout << "***after***" << endl;
 	for (auto l : NewSol.Links) cout << l->ID << endl;
 	cout << "-----------------Complete random To Right------------" << endl;
+#endif // _DEBUG
 }
 
 void SCHCLASS::Nei_Insert_One_Random_To_Left(SCHCLASS& NewSol)
 {
 	cout << "-----------------Nei Insert One Random To Left is called------------" << endl;
-	size_t cp = GenRandomInt(1, Links.size() - 1); // selected candidate not position
-	size_t dest = GenRandomInt(0, cp);
+	int cp = GenRandomInt(1, int(Links.size() - 1)); // selected candidate not position
+	int dest = GenRandomInt(0, cp);
 	int whileCounter = 0;
 	while (dest == cp)
 	{
@@ -214,12 +231,14 @@ void SCHCLASS::Nei_Insert_One_Random_To_Left(SCHCLASS& NewSol)
 	{
 		NewSol.Links.at(t) = Links.at(t);
 	}
+#ifdef _DEBUG
 	cout << "***before***" << endl;
 	for (auto l : Links) cout << l->ID << endl;
 	cout << "Selected CP = " << cp << ", Dest = " << dest << endl;
 	cout << "***after***" << endl;
 	for (auto l : NewSol.Links) cout << l->ID << endl;
 	cout << "-----------------Complete Random To Left------------" << endl;
+#endif // _DEBUG
 
 
 }

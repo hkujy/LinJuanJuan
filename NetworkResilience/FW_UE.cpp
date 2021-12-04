@@ -106,9 +106,9 @@ void Assign(const std::vector<OriginBasedOD>& Oset,
 				int k = PreLinks[(*od)->Orign][CurrentNode];
 				if (k < 0)
 				{
-					cout << "k="<<k << endl;
-					cout << "origin = " << o->Onode << ", dest = " << (*od)->Dest << endl;
-					cout <<  "This OD pair may not be connected" << endl;
+					std::cout << "k="<<k << endl;
+					std::cout << "origin = " << o->Onode << ", dest = " << (*od)->Dest << endl;
+					std::cout <<  "This OD pair may not be connected" << endl;
 				}
 
 #ifdef __DEBUG__ 
@@ -225,8 +225,9 @@ int GRAPH::FW_UE() {
 
 		if (Err > UEeps && NumIter < UEmaxIter)
 		{
+#ifdef _DEBUG
 			cout << NumIter<<"\t"<<Err << endl;
-			//assert(PrintConverge(NumIter, Err, AssertLog));
+#endif // _DEBUG
 			goto UeLop;
 		}
 		for (auto l = this->Links.begin(); l != this->Links.end(); l++)
@@ -234,7 +235,9 @@ int GRAPH::FW_UE() {
 			l->Cost = l->BPRCost();
 		}
 		StatusMsg = this->FindMinCostRoutes();
-		cout << "UE No. of Iter " << NumIter << "\t, Converge Gap Value is" << Err << endl;
+#ifdef _DEBUG
+		cout << "UE No. of Iter = " << NumIter << ",Converge Gap Value =" << Err << endl;
+#endif // _DEBUG
 
 		//assert(PrintConverge(NumIter, Err, AssertLog));
 		return 1;
