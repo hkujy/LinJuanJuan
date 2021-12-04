@@ -49,6 +49,10 @@ if __name__ == "__main__":
  
     para.Copy_input_and_test_files(mf)
     adjust_para = {
+        "NumEmployBee": 10,
+        "NumOnlookerBee": 10,
+        "MaxScountCount": 50,
+        "MaxABCIter": 1000,
         "RewardImproveGlobal": 20,
         "RewardImproveLocal": 10,
         "RewardWorse": 0,
