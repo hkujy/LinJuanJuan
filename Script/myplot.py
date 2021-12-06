@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import logging
 
 
-def plot_converge(_ps, _file,_numOfiter,algName):
+def plot_converge(_ps, _file, _numOfiter, algName):
     """
         plot the convergence of different seed 
     """
@@ -27,15 +27,15 @@ def plot_converge(_ps, _file,_numOfiter,algName):
         for i in range(0, _numOfiter):
             g.append(float(data[2][row]))
             row = row + 1
-        print(g)
+        # print(g)
         plt.plot(g, label="seed"+str(s))
         gap.append(g)
     plt.ion()
     plt.legend()
     plt.pause(1)
-    plt.savefig("..//Output//"+algName+"_Converge_seed.png", bbox_inches='tight', dpi=600)
+    plt.savefig("..//Output//"+algName+"_Converge_seed.png",
+                bbox_inches='tight', dpi=600)
     plt.close()
-
 
     ave = []
     # for i in range(0, _ps.para["MaxABCIter"]):
@@ -48,11 +48,13 @@ def plot_converge(_ps, _file,_numOfiter,algName):
     plt.plot(ave, label="ave gap")
     plt.ion()
     plt.legend()
-    plt.pause(1)
+    plt.pause(2)
     # plt.savefig("..//Output//Converge_ave.png", bbox_inches='tight', dpi=600)
-    plt.savefig("..//Output//"+algName+"_Converge_ave.png", bbox_inches='tight', dpi=600)
+    plt.savefig("..//Output//"+algName+"_Converge_ave.png",
+                bbox_inches='tight', dpi=600)
     plt.close()
+
     # with open("..//Output//Converge_ave.txt", "w+") as f:
-    with open("..//Output//"+ algName+"_Converge_ave.txt", "w+") as f:
+    with open("..//Output//" + algName+"_Converge_ave.txt", "w+") as f:
         for i in range(0, len(ave)):
-            print({"{0},{1}".format(i, ave[i])}, file=f)
+            print("{0},{1}".format(i, ave[i]), file=f)

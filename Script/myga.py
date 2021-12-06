@@ -80,13 +80,13 @@ def gamain(_mf,_ps):
     """
     main procedure for the ga 
     """
-    GaIter = 5 
+    GaIter = _ps.para['MaxGAIter']
     file = ""
-    if _ps.para["ModelIndex"] == 3:
+    if _ps.para["NetworkIndex"] == 3:
         file = "..//InPut//SiouxFallsNetwork//FailureLinks.txt"
-    elif _ps.para["ModelIndex"] == 4:
+    elif _ps.para["NetworkIndex"] == 4:
         file = "..//InPut//ParadoxNet//FailureLinks.txt"
-    elif _ps.para["ModelIndex"] == 5:
+    elif _ps.para["NetworkIndex"] == 5:
         file = "..//InPut//WangNetwork//FailureLinks.txt"
     else:
         print("failure input file is not specified")
@@ -96,12 +96,11 @@ def gamain(_mf,_ps):
     links = []
     for i in range(0, row-1):
         links.append(int(data[0][i]))
-    seed =[1]
     with open (_mf.root_folder+"LinJuanJuan\\OutPut\\GaPrintSol.txt","w+") as sf:
         print("Seed,Link,St,Et",file=sf)
         with open (_mf.root_folder + "LinJuanJuan\\Output\\GAConverge.txt","w+") as f:
-            for i in range(0, len(seed)):
-                (gap, best) = gafun(num_links=len(links), seed_val=seed[i],iter=GaIter)
+            for i in range(0, para.NumOfTestSeed):
+                (gap, best) = gafun(num_links=len(links), seed_val=para.SeedPool[i],iter=GaIter)
                 sd = deCode(best)
                 vec = []
                 for e in range(0, len(sd)):

@@ -5,7 +5,6 @@
 #include <random>
 #include <fstream>
 //define global
-bool wtf;
 double Zero;
 int NumOrig;
 int NumDest;
@@ -17,8 +16,7 @@ double  UEeps;
 int	   UEmaxIter;
 std::default_random_engine GenRan;
 int MaxCsaIter;
-int ModelIndex;
-std::ofstream  AssertLog;
+int NetworkIndex;
 int CsaNumPop;
 double CsaCloneBeta;
 double CsaRepRatio;

@@ -71,7 +71,13 @@ void ABCAlgorithms::IniOperatorProb_ANLS()
 void ABCAlgorithms::IniOperatorProb()
 {
 	CumProbForSelectNei.assign(NumOperators, 0.0);
-	IniOperatorProb_ANLS();
+	if (SelectOp == SelectOperatorType::ALNS) IniOperatorProb_ANLS();
+	else if (SelectOp == SelectOperatorType::Uniform) { ; }
+	else 
+	{
+		cout << "C++ Warning: iniOperatorProb type is not defined" << endl;
+	}
+
 }
 
 void ABCAlgorithms::ABCMain()
@@ -92,38 +98,40 @@ void ABCAlgorithms::ABCMain()
 		for (int i = 0; i < MaxIter; i++)
 		{
 			if (SelectOp!=SelectOperatorType::Uniform) UpdateOperatorProb();
-
+#ifdef _DEBUG
 			cout << "---------------------ABC iter = " << i << "--------------" << endl;
+#endif // _DEBUG
 			EmployBeePhase();
+#ifdef _DEBUG
 			cout << "---------------------ABC iter" << i << " complete employed bee phase" << endl;
+#endif // _DEBUG
 			GetProb();
+#ifdef _DEBUG
 			cout << "---------------------ABC iter" << i << " complete get prob" << endl;
+#endif // _DEBUG
 			OnlookerPhase();
+#ifdef _DEBUG
 			cout << "---------------------ABC iter" << i << " complete on looker phase" << endl;
+#endif // _DEBUG
 			ScoutPhase();
+#ifdef _DEBUG
 			cout << "---------------------ABC iter" << i << " complete on scout phase" << endl;
+#endif // _DEBUG
 			//ConvergeMeasure.at(i) = GlobalBest.Fitness;
 			ConvergeMeasure.push_back(GlobalBest.Fitness);
-			if (ConvergeMeasure.back() > std::numeric_limits<double>::max() - 1)
-			{
-				cout << "wtf: can not find a feasible?" << endl;
-				system("Pause");
-			}
-			if (isWriteConverge)
-			{
-				ConvergeFile << s << "," << i << "," << fixed << setprecision(2) << ConvergeMeasure.back() << endl;
-			}
+			if (isWriteConverge) ConvergeFile << s << "," << i << "," << fixed << setprecision(2) << ConvergeMeasure.back() << endl;
 			if (SelectOp!=SelectOperatorType::Uniform) UpdateOperatorWeight();
 		}
-		this->PrintFinal(s);
-		PrintOperator(s);
+		this->PrintFinal(s); PrintOperator(s);
 	}
 
+#ifdef _DEBUG
 	cout << "*************************ABC completes**************************" << endl;
 	cout << "Print Global Best Sol" << endl;
 	GlobalBest.print();
 	cout << "Total Cost = " << GlobalBest.Fitness << endl;
 	cout << "*************************Done**************************" << endl;
+#endif // _DEBUG
 }
 
 void ABCAlgorithms::GenerateIni()
@@ -131,11 +139,12 @@ void ABCAlgorithms::GenerateIni()
 	// improve the solutions
 	for (int i = 0; i < NumEmployedBee; i++)
 	{
+#ifdef _DEBUG
 		cout << "-----------------------Generate Ini Sol= " << i << "-------------------" << endl;
-		//SCHCLASS news;
+#endif // _DEBUG
 		Sols.push_back(SCHCLASS(i));
-		Sols.back().GenerateIniSch(*Graph, FailureLinks);
-		Sols.back().AlignStartTime(ResourceCap);
+		Sols.back().GenerateIniSch(*Graph, setOfFailureLinks);
+		Sols.back().AlignStartTime(setResourceCap);
 #ifdef _DEBUG
 		cout << "----------Print solution after solution alignment--------" << endl;
 		Sols.back().print();
@@ -211,13 +220,15 @@ void ABCAlgorithms::EmployBeePhase()
 {
 	for (int i = 0; i < NumEmployedBee; i++)
 	{
-		cout << "******Employed Bee = " << i << "**************" << endl;
 		SCHCLASS Nei(this->Sols.at(i));
 		bool isImproved = false;
+#ifdef _DEBUG
+		cout << "******Employed Bee = " << i << "**************" << endl;
 		cout << "Eb = " << i << endl;
+#endif // _DEBUG
 		//if (i == 2)
 		int OpId = SelectOperIndex();
-		this->Sols.at(i).GenNei(Nei, *Graph, OpId, FailureLinks, ResourceCap);
+		this->Sols.at(i).GenNei(Nei, *Graph, OpId, setOfFailureLinks, setResourceCap);
 		if (SelectOp!=SelectOperatorType::Uniform) UpdateOperatorScore(OpId, Nei.Fitness, this->Sols.at(i).Fitness, GlobalBest.Fitness);
 		isImproved = CompareTwoSolsAndReplace(this->Sols.at(i), Nei, OpId);
 		if (isImproved) ScountCounter.at(i) = 0;
@@ -230,12 +241,14 @@ void ABCAlgorithms::OnlookerPhase()
 {
 	for (int i = 0; i < NumOnlookers; i++)
 	{
-		cout << "******Onlooker Bee = " << i << "**************" << endl;
 		size_t Selected = SelectOnLookerBasedonProb();
+#ifdef _DEBUG
+		cout << "******Onlooker Bee = " << i << "**************" << endl;
 		cout << "******Selected Bee = " << Selected << "**************" << endl;
+#endif // _DEBUG
 		SCHCLASS Nei(this->Sols.at(Selected));
 		int OpId = SelectOperIndex();
-		this->Sols.at(Selected).GenNei(Nei, *Graph, OpId, FailureLinks, ResourceCap);
+		this->Sols.at(Selected).GenNei(Nei, *Graph, OpId, setOfFailureLinks, setResourceCap);
 		bool isImproved = false;
 		if (SelectOp!=SelectOperatorType::Uniform) UpdateOperatorScore(OpId, Nei.Fitness, this->Sols.at(SelectOp).Fitness, GlobalBest.Fitness);
 		isImproved = CompareTwoSolsAndReplace(this->Sols.at(Selected), Nei, OpId);
@@ -249,10 +262,11 @@ void ABCAlgorithms::ScoutPhase()
 	{
 		if (ScountCounter.at(t) > MaxScountCount)
 		{
-
+#ifdef _DEBUG
 			cout << "******Scout selected employed bee = " << t << "**************" << endl;
-			this->Sols.at(t).GenerateIniSch(*Graph, FailureLinks);
-			this->Sols.at(t).AlignStartTime(ResourceCap);
+#endif // _DEBUG
+			this->Sols.at(t).GenerateIniSch(*Graph, setOfFailureLinks);
+			this->Sols.at(t).AlignStartTime(setResourceCap);
 			this->Sols.at(t).Evaluate(*Graph);
 			if (this->Sols.at(t).Fitness < GlobalBest.Fitness)
 			{
@@ -278,7 +292,11 @@ void ABCAlgorithms::GetProb()  // compute probability based on the fitness value
 
 void ABCAlgorithms::UpdateOperatorProb()
 {
-	UpdateOperatorProb_ALNS();
+	if (SelectOp == SelectOperatorType::ALNS)
+	{
+		UpdateOperatorProb_ALNS();
+	}
+	else { cout << "C++ Warning: UpdateOperator Type is not specified" << endl; }
 }
 
 void ABCAlgorithms::UpdateOperatorProb_ALNS()
@@ -328,65 +346,52 @@ int ABCAlgorithms::SelectOperator_ALNS()
 void ABCAlgorithms::UpdateOperatorScore(int OpId, double ResultFit, double LocalFit, double GlobalFit)
 {
 	UpdateOperatorScore_ALNS(OpId, ResultFit, LocalFit, GlobalFit);
+
 }
 
 size_t ABCAlgorithms::SelectOnLookerBasedonProb()
 {
 	return RouletteSelect(CumProbForSelectOnlooker);
-	//size_t selected = -1;
-	//double f = GenRandomReal();
-	//for (size_t i = 0; i < CumProbForSelectOnlooker.size() - 1; i++)
-	//{
-	//	if (f >= CumProbForSelectOnlooker.at(i) && f < CumProbForSelectOnlooker.at(i + 1))
-	//	{
-	//		selected = static_cast<int>(i);
-	//		break;
-	//	}
-	//}
-	//if (f >= CumProbForSelectOnlooker.back()) selected = CumProbForSelectOnlooker.size() - 1;
-	//assert(selected >= 0);
-	//return selected;
 }
 
 void ABCAlgorithms::ReadData(GRAPH& g)
 {
 	this->Graph = &g;
-
-	ifstream fin, fabc, fl;
+	ifstream f_ABCpara, f_FailLinks;
 	FILE* fseedin;
-	if (ModelIndex == 1)
+	if (NetworkIndex == 1)
 	{
 		cout << "Model Index is not specified" << endl;
 		system("Pause");
 		//fin.open("..//InPut//MediumNetwork//Para.txt");
 		/*fga.open("..//InPut//SiouxFallsNetwork//GAPara.txt");*/
 	}
-	else if (ModelIndex == 2)
+	else if (NetworkIndex == 2)
 	{
 		cout << "Model Index is not specified" << endl;
 		system("Pause");
 		//fin.open("..//InPut//Nagureny2009Network//Para.txt");
 	}
-	else if (ModelIndex == 3)
+	else if (NetworkIndex == 3)
 	{
 		//cout << "Model Index is not specified" << endl;
 		//system("Pause");
-		fabc.open("..//InPut//SiouxFallsNetwork//ABCPara.txt");
-		fl.open("..//InPut//SiouxFallsNetwork//FailureLinks.txt");
+		f_ABCpara.open("..//InPut//SiouxFallsNetwork//ABCPara.txt");
+		f_FailLinks.open("..//InPut//SiouxFallsNetwork//FailureLinks.txt");
 		fopen_s(&fseedin, "..//Input//Seed.txt", "r");
 		if (!ReadSeedVec(SeedVecVal, fseedin)) TRACE("Read Seed File Fails \n");
 	}
-	else if (ModelIndex == 4)
+	else if (NetworkIndex == 4)
 	{
-		fabc.open("..//InPut//ParadoxNet//ABCPara.txt");
-		fl.open("..//InPut//ParadoxNet//FailureLinks.txt");
+		f_ABCpara.open("..//InPut//ParadoxNet//ABCPara.txt");
+		f_FailLinks.open("..//InPut//ParadoxNet//FailureLinks.txt");
 		fopen_s(&fseedin, "..//Input//Seed.txt", "r");
 		if (!ReadSeedVec(SeedVecVal, fseedin)) TRACE("Read Seed File Fails \n");
 	}
-	else if (ModelIndex == 5)
+	else if (NetworkIndex == 5)
 	{
-		fabc.open("..//InPut//WangNetwork//ABCPara.txt");
-		fl.open("..//InPut//WangNetwork//FailureLinks.txt");
+		f_ABCpara.open("..//InPut//WangNetwork//ABCPara.txt");
+		f_FailLinks.open("..//InPut//WangNetwork//FailureLinks.txt");
 		fopen_s(&fseedin, "..//Input//Seed.txt", "r");
 		if (!ReadSeedVec(SeedVecVal, fseedin)) TRACE("Read Seed File Fails \n");
 	}
@@ -395,37 +400,14 @@ void ABCAlgorithms::ReadData(GRAPH& g)
 		cout << "Model Index is not specified" << endl;
 		system("Pause");
 	}
-
-	cout << "Complte open files" << endl;
+	cout << "Complete open files" << endl;
 	cout << "Start to read para" << endl;
 	string line;
 	vector<string> fields;
-	while (getline(fin, line))
+	while (getline(f_ABCpara, line))
 	{
 		splitf(fields, line, ",");
-		if (fields.size() != 2)
-			continue;
-		//cout << fields[1] << endl;
-		if (fields[0] == "OneDimEsp")	OneDimEsp = stof(fields[1]);
-		if (fields[0] == "UEeps")	UEeps = stof(fields[1]);
-		if (fields[0] == "UEmaxIter")	UEmaxIter = stoi(fields[1]);
-		if (fields[0] == "NumNodes")	NumNodes = stoi(fields[1]);
-		if (fields[0] == "NumOD")	NumOD = stoi(fields[1]);
-		if (fields[0] == "NumLinks")	NumLinks = stoi(fields[1]);
-		//if (fields[0] == "MaxNumSol")	MaxNumSolEval = stoi(fields[1]);
-		//if (fields[0] == "StopCriteria")	StopCriteria = stoi(fields[1]);
-	}
-	cout << "OneDimEsp = " << OneDimEsp << endl;
-	fin.close();
-
-
-	cout << "complete to read para" << endl;
-	cout << "start to read abc para" << endl;
-	while (getline(fabc, line))
-	{
-		splitf(fields, line, ",");
-		if (fields.size() != 2)
-			continue;
+		if (fields.size() != 2) continue;
 		if (fields[0] == "NumEmployBee")	NumEmployedBee = stoi(fields[1]);
 		if (fields[0] == "NumOnlookerBee")	NumOnlookers = stoi(fields[1]);
 		if (fields[0] == "MaxScountCount")	MaxScountCount = stoi(fields[1]);
@@ -442,10 +424,10 @@ void ABCAlgorithms::ReadData(GRAPH& g)
 				SelectOp = SelectOperatorType::Uniform;
 		}
 	}
-	fabc.close();
-	cout << "complete read abc para" << endl;
+	f_ABCpara.close();
+	cout << "complete read ABC para" << endl;
 	cout << "Start to read failure link data" << endl;
-	while (getline(fl, line))
+	while (getline(f_FailLinks, line))
 	{
 		splitf(fields, line, ",");
 		if (fields.size() == 3)
@@ -453,7 +435,7 @@ void ABCAlgorithms::ReadData(GRAPH& g)
 			int linkId = stoi(fields[0]);
 			int length = stoi(fields[1]);
 			int res = stoi(fields[2]);
-			FailureLinks.push_back(linkId);
+			setOfFailureLinks.push_back(linkId);
 			(*Graph).Links.at(linkId).RecoverTime = length;
 			(*Graph).Links.at(linkId).RequiredRes = res;
 		}
@@ -461,7 +443,7 @@ void ABCAlgorithms::ReadData(GRAPH& g)
 		{
 			if (fields[0]._Equal("res"))
 			{
-				ResourceCap.assign(MaxNumOfSchPeriod, stoi(fields[1]));
+				setResourceCap.assign(MaxNumOfSchPeriod, stoi(fields[1]));
 			}
 			else
 				cout << "ERR: Read failure links warning" << endl;
@@ -470,7 +452,7 @@ void ABCAlgorithms::ReadData(GRAPH& g)
 			cout << "ERR: Read failure links warning" << endl;
 
 	}
-	fl.close();
+	f_FailLinks.close();
 
 	cout << "compete read failure link data" << endl;
 
@@ -478,12 +460,10 @@ void ABCAlgorithms::ReadData(GRAPH& g)
 	/// print and check the model parameters input
 	/// </summary>
 	ofstream fout;
-	fout.open("..//OutPut//ModelPara.txt");
+	fout.open("..//OutPut//InputPara.txt");
 	fout << "NumNodes" << "," << NumNodes << endl;
 	fout << "NumOD" << "," << NumOD << endl;
 	fout << "NumLinks" << "," << NumLinks << endl;
-	//fout << "StopCriteria" << "," << StopCriteria << endl;
-	//fout << "MaxNumSol" << "," << MaxNumSolEval << endl;
 	fout << "OneDimEsp" << "," << OneDimEsp << endl;
 	fout << "UEmaxIter" << "," << UEmaxIter << endl;
 	fout << "NumEmployBee" << "," << NumEmployedBee << endl;
@@ -578,7 +558,6 @@ void OperatorClass::calWeight(double r)
 	{
 		Weight = (1 - r) * Weight + r * Score / TotalCounterSum;
 	}
-
 }
 /// <summary>
 /// update the weight of all operators
@@ -617,26 +596,29 @@ void ABCAlgorithms::PrintOperator(int seedid)
 
 void ABCAlgorithms::UpdateOperatorWeight()
 {
-	UpdateOperatorWeight_ALNS();
+	if (SelectOp == SelectOperatorType::ALNS)
+	{
+		UpdateOperatorWeight_ALNS();
+	}
+	else { cout << "C++ Warning: Update Operator weight type is not specified" << endl; }
 }
 
-
+/// <summary>
+/// given a solution from the exe input file then evaluate the solution
+/// </summary>
+/// <param name="vec"></param>
 void ABCAlgorithms::ReadSolAndEvaluate(vector<int> &vec)
 {
 	// step 1: set the solution vector 
 	SCHCLASS sol;
-	for (int l = 0; l < vec.size(); l++)
-	{
-		sol.Links.push_back(&Graph->Links.at(vec[l]));
-	}
-	sol.EndTime.assign(FailureLinks.size(), -1);
-	sol.StartTime.assign(FailureLinks.size(), -1);
-	if (FailureLinks.size() != vec.size())
-	{
+	sol.EndTime.assign(setOfFailureLinks.size(), -1);
+	sol.StartTime.assign(setOfFailureLinks.size(), -1);
+	for (int l = 0; l < vec.size(); l++) sol.Links.push_back(&Graph->Links.at(vec[l]));
+	if (setOfFailureLinks.size() != vec.size()) 
 		cout << "c++: warning: the failure link size does not equal vec size" << endl;
-	}
-	sol.AlignStartTime(ResourceCap);
+	sol.AlignStartTime(setResourceCap);
 	sol.Evaluate(*Graph);
+	//Remark: this is the last line of the exe, so that the results can be read from python
+	//        Do not print the "endl" at the end.
 	cout << sol.Fitness;
-	//cout << "fit = " << sol.Fitness << endl;
 }

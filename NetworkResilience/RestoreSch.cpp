@@ -127,6 +127,8 @@ int SCHCLASS::findEarliestInFeasibleSt(const vector<double>& ResCap) {
 
 void SCHCLASS::AlignStartTime(const vector<double>& ResCap) {
 	// shift the project to the earliest feasible time
+	EndTime.assign(Links.size(), -1);
+	StartTime.assign(Links.size(), -1);
 	this->UsedRes.assign(MaxNumOfSchPeriod, 0.0);
 	for (size_t l = 0; l < Links.size(); l++)
 	{
@@ -160,7 +162,6 @@ void SCHCLASS::GenerateIniSch(GRAPH& g, const vector<int>& FailureLinks)
 	{
 		int linkNum = GenRandomInt(FailureLinks);
 		int pos = FindValIndex(FailureLinks, linkNum);
-		//cout << "Link = " << linkNum << ", pos=" << pos << endl;
 		if (!isSelected.at(pos))
 		{
 			this->Links.push_back(new LINK());
@@ -175,14 +176,14 @@ void SCHCLASS::GenerateIniSch(GRAPH& g, const vector<int>& FailureLinks)
 		}
 	} while (std::find(isSelected.begin(), isSelected.end(), false) != isSelected.end());
 	// step 1 generate ini number of links
-	EndTime.assign(FailureLinks.size(), -1);
-	StartTime.assign(FailureLinks.size(), -1);
-	for (int i = 0; i < FailureLinks.size(); i++)
-	{
-		this->StartTime.at(i) = GenRandomInt(0, MaxNumOfSchPeriod);
-	}
-	SortStartTime(StartTime);
-	updateEndTime();
+	//EndTime.assign(FailureLinks.size(), -1);
+	//StartTime.assign(FailureLinks.size(), -1);
+	//for (int i = 0; i < FailureLinks.size(); i++)
+	//{
+	//	this->StartTime.at(i) = GenRandomInt(0, MaxNumOfSchPeriod);
+	//}
+	//SortStartTime(StartTime);
+	//updateEndTime();
 #ifdef _DEBUG
 	this->print();
 #endif // _DEBUG

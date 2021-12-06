@@ -15,7 +15,9 @@ void SCHCLASS::GenNei(SCHCLASS& Nei, GRAPH& g, int &OpId,const vector<int>& Fail
 {
 	//OpId = Select_One_Nei();
 	//NeighourOperatorIndex = 6;
+#ifdef _DEBUG
 	cout << ".......selected neighbor index = " << OpId <<"........."<<endl;
+#endif // _DEBUG
 	switch (OpId)
 	{
 		case(0): Nei_Swap(Nei); break;
@@ -43,7 +45,9 @@ void SCHCLASS::GenNei(SCHCLASS& Nei, GRAPH& g, int &OpId,const vector<int>& Fail
 //Swap the order of two links
 void SCHCLASS::Nei_Swap(SCHCLASS& NewSol) {
 	// step 1: randomly generate two locations
+#ifdef _DEBUG
 	cout << "------------Start Swap-----------" << endl;
+#endif // _DEBUG
 	int locA = GenRandomInt(0, int(Links.size() - 1));
 	int locB = GenRandomInt(0, int(Links.size() - 1));
 	int whileCounter = 0;
@@ -66,18 +70,17 @@ void SCHCLASS::Nei_Swap(SCHCLASS& NewSol) {
 #ifdef _DEBUG
 	cout << "After Swap: LocA = " << NewSol.Links.at(locA)->ID;
 	cout << ", LocB = " << NewSol.Links.at(locB)->ID << endl;
-#endif
 	cout << "-----------End Swap-----------" << endl;
+#endif
 }
 
 //move one to the left 
 void SCHCLASS::Nei_Move_One_To_Left(SCHCLASS& NewSol)
 {
-
-	cout << "------------Start Move One To Left-----------" << endl;
 	int locA = GenRandomInt(1, int(Links.size() - 1));
 	int locB = locA - 1;
 #ifdef _DEBUG
+	cout << "------------Start Move One To Left-----------" << endl;
 	cout << "Before Nei_Order_to_left: LocA = " << NewSol.Links.at(locA)->ID;
 	cout << ",locB = " << NewSol.Links.at(locB)->ID << endl;
 #endif // _DEBUG
@@ -86,17 +89,17 @@ void SCHCLASS::Nei_Move_One_To_Left(SCHCLASS& NewSol)
 #ifdef _DEBUG
 	cout << "After Swap: LocA = " << NewSol.Links.at(locA)->ID;
 	cout << ", LocB = " << NewSol.Links.at(locB)->ID << endl;
-#endif // _DEBUG
 	cout << "-----------End Move One To Left-----------" << endl;
+#endif // _DEBUG
 }
 
 //move one to the left 
 void SCHCLASS::Nei_Move_One_To_Right(SCHCLASS& NewSol)
 {
-	cout << "------------Start Move One To Right-----------" << endl;
 	int locA = GenRandomInt(0, int(Links.size() - 2));
 	int locB = locA + 1;
 #ifdef _DEBUG
+	cout << "------------Start Move One To Right-----------" << endl;
 	cout << "Before Nei_Order_to_right: LocA = " << NewSol.Links.at(locA)->ID;
 	cout << ",locB = " << NewSol.Links.at(locB)->ID << endl;
 #endif // _DEBUG
@@ -105,16 +108,18 @@ void SCHCLASS::Nei_Move_One_To_Right(SCHCLASS& NewSol)
 #ifdef _DEBUG
 	cout << "After Swap: LocA = " << NewSol.Links.at(locA)->ID;
 	cout << ", LocB = " << NewSol.Links.at(locB)->ID << endl;
-#endif // _DEBUG
 	cout << "-----------End Move One To Right-----------" << endl;
+#endif // _DEBUG
 }
 
 
 void SCHCLASS::Nei_CrossOver_OnePoint(SCHCLASS& NewSol)
 {
-	cout << "-----------------Start One Point CrossOver---------" << endl;
 	int locA = GenRandomInt(0, int(Links.size() - 1));
+#ifdef _DEBUG
+	cout << "-----------------Start One Point CrossOver---------" << endl;
 	cout << "Cut Point = " << locA << endl;
+#endif // _DEBUG
 	int RightCount = int(Links.size()) - locA;
 	int LeftCount = locA;
 
@@ -140,9 +145,8 @@ void SCHCLASS::Nei_CrossOver_OnePoint(SCHCLASS& NewSol)
 		cout << NewSol.Links.at(i)->ID << ",";
 	}
 	cout << NewSol.Links.back()->ID << endl;
-
-#endif // _DEBUG
 	cout << "------------End One Point Cross Over---------------------------" << endl;
+#endif // _DEBUG
 
 }
 
@@ -164,7 +168,9 @@ void SCHCLASS::Nei_New(SCHCLASS& NewSol, GRAPH& g,
 }
 void SCHCLASS::Nei_Insert_One_Random_To_Right(SCHCLASS& NewSol) // randomly insert to a position
 {
+#ifdef _DEBUG
 	cout << "-----------------Nei Insert One Random To Right is called------------" << endl;
+#endif // _DEBUG
 	int cp = GenRandomInt(0, int(Links.size() - 2));
 	int dest = GenRandomInt(cp,int(Links.size() - 1));
 	int whileCounter = 0;
@@ -205,7 +211,9 @@ void SCHCLASS::Nei_Insert_One_Random_To_Right(SCHCLASS& NewSol) // randomly inse
 
 void SCHCLASS::Nei_Insert_One_Random_To_Left(SCHCLASS& NewSol)
 {
+#ifdef _DEBUG
 	cout << "-----------------Nei Insert One Random To Left is called------------" << endl;
+#endif // _DEBUG
 	int cp = GenRandomInt(1, int(Links.size() - 1)); // selected candidate not position
 	int dest = GenRandomInt(0, cp);
 	int whileCounter = 0;

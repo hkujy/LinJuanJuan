@@ -7,7 +7,7 @@ const int NumOperators = 6;
 const double LargeNum = 1.0e+20f;
 const double RemoveLinkCost = 9999999999.0f;
 const double InvalidMinCost = 9999999999.0f;
-const int MaxNumOfSchPeriod = 20;
+const int MaxNumOfSchPeriod = 50;
 //const int NumOfDisruptLinks = 3;
 enum AlgorithmType
 {
@@ -15,6 +15,6 @@ enum AlgorithmType
 };
 enum SelectOperatorType
 {
-	Uniform, ALNS
+	Uniform, ALNS, None
 };
 #endif // !PARA

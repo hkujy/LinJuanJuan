@@ -252,8 +252,8 @@ int GRAPH::FW_UE() {
 void GRAPH::EvaluteGraph() {
 	int StatusMsg = 0;
 	this->TotalSystemCost = 0.0;
-
 	StatusMsg = this->FW_UE();
+
 	for (auto od = this->OdPairs.begin(); od != this->OdPairs.end(); od++)
 	{
 		this->TotalSystemCost += od->Demand * od->MinCost;

@@ -35,10 +35,10 @@ public:
 	int NumEmployedBee;
 	int NumOnlookers;
 	int MaxIter;
-	vector<int> ScountCounter;
+	vector<int> ScountCounter; // record the number of scouts
 	int MaxScountCount;
-	std::vector<double> ResourceCap;  // Capacity of the resources
-	std::vector<int> FailureLinks;
+	std::vector<double> setResourceCap;  // Capacity of the resources
+	std::vector<int> setOfFailureLinks;
 	vector<double> CumProbForSelectOnlooker; // probability for the onlookers
 	vector<double> CumProbForSelectNei; // probability for the onlookers
 	SCHCLASS GlobalBest;
@@ -52,14 +52,16 @@ public:
 	ABCAlgorithms() {
 		MaxFitValue = -99999999999999; MinFitValue = 999999999999999;
 		NumEmployedBee = -1; NumOnlookers = -1; MaxScountCount = -1; MaxIter = -1;
-		ScountCounter.reserve(100); ResourceCap.reserve(100); FailureLinks.reserve(100);
+		ScountCounter.reserve(100); setResourceCap.reserve(100); setOfFailureLinks.reserve(100);
 		CumProbForSelectOnlooker.reserve(100);
 		CumProbForSelectNei.reserve(100);
 		Graph = new GRAPH;
 		RewardImproveGlobal = 0.0;
 		RewardImproveLocal = 0.0;
+		RewardWorse = 0.0;
 		ReactionFactor = 0.0;
-		for (int i=0;i<NumOperators;i++)
+		SelectOp = SelectOperatorType::None;
+		for (int i = 0; i < NumOperators; i++)
 		{
 			Operators.push_back(OperatorClass());
 			Operators.back().id = i;
@@ -67,7 +69,7 @@ public:
 	};
 	~ABCAlgorithms() { Graph = nullptr; };
 	std::vector<SCHCLASS> Sols;
-	void ReadSolAndEvaluate(vector<int> &vec);
+	void ReadSolAndEvaluate(vector<int>& vec);
 	void GenerateIni();
 	void ABCMain();
 	void EmployBeePhase();

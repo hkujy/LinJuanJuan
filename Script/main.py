@@ -12,13 +12,18 @@ import myclass as mc
 import myplot
 import myga
 
+# TODO: Write seed list in python
+
+
 def copy_file(_from, _to):
     copyfile(_from, _to)
+
 
 def copy_folder(_from, _todir):
     if os.path.exists(_todir):
         shutil.rmtree(_todir)
     shutil.copytree(_from, _todir)
+
 
 def TestOneCase(_mf, _adjust, _case_id, _case_name):
     """
@@ -32,17 +37,18 @@ def TestOneCase(_mf, _adjust, _case_id, _case_name):
     print("py:model input para is printed")
     run.run_test(_mf)
     myplot.plot_converge(ps, _mf.root_folder +
-                         "LinJuanJuan\\Output\\ABCConverge.txt", ps.para["MaxABCIter"],"ABC")
+                         "LinJuanJuan\\Output\\ABCConverge.txt", ps.para["MaxABCIter"], "ABC")
     from_folder = _mf.root_folder + "LinJuanJuan\\OutPut"
     to_folder = _mf.root_folder + "LinJuanJuan\\Tests\\" + \
         str(_case_id) + "_" + _case_name
     copy_folder(from_folder, to_folder)
 
+
 def TestGa(_mf):
     """
         call the ga test
     """
-    adjust_para = { 
+    adjust_para = {
         "UseMyOwn": "False",
     }
     ps = para.ParaClass()
@@ -51,28 +57,33 @@ def TestGa(_mf):
     ps.case_name = "TestGA"
     ps.print_para()
     print("ga para setting is write")
-    myga.gamain(_mf,ps)
+    myga.gamain(_mf, ps)
     from_folder = _mf.root_folder + "LinJuanJuan\\OutPut"
     to_folder = _mf.root_folder + "LinJuanJuan\\Tests\\GA"
     copy_folder(from_folder, to_folder)
 
+
 if __name__ == "__main__":
+
+    if len(para.SeedPool) < para.NumOfTestSeed:
+        print("PyWarning: Number of Test Seed is larger than the seed pool")
+        exit()
     mf = mc.FileFolderClass()
     print("Working folder is", mf.root_folder)
     # step 0 print seed
-    with open (mf.root_folder+"LinJuanJuan\\Input\\Seed.txt","w+") as f:
+    with open(mf.root_folder+"LinJuanJuan\\Input\\Seed.txt", "w+") as f:
         for i in range(0, para.NumOfTestSeed):
-            print("{0}".format(para.SeedPool[i]),file=f)
-        print(-1,file=f)
+            print("{0}".format(para.SeedPool[i]), file=f)
+        print(-1, file=f)
     print("Python seed file is printed")
     para.Copy_input_and_test_files(mf)
     adjust_para = {
         "UseMyOwn": "True",
-        "ModelIndex": 5,  # SiouxFall
+        "NetworkIndex": 5,  # WangNet
         "NumEmployBee": 5,
         "NumOnlookerBee": 5,
         "MaxScountCount": 10,
-        "MaxABCIter": 10,
+        "MaxABCIter": 25,
         "RewardImproveGlobal": 20,
         "RewardImproveLocal": 10,
         "RewardWorse": 0,
@@ -80,10 +91,9 @@ if __name__ == "__main__":
         "SelectOperator": "ALNS"
     }
     TestOneCase(mf, adjust_para, _case_id=1, _case_name="ALNS")
-    adjust_para = {"SelectOperator": "Uni"}
+    adjust_para['SelectOperator'] = "Uni"
     TestOneCase(mf, adjust_para, _case_id=2, _case_name="Uni")
 
-    #------------------Test GA Function
+    # ------------------Test GA Function
     # TestGa(mf)
-    #-------------------------------
- 
+    # -------------------------------

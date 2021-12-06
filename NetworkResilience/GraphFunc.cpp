@@ -177,27 +177,27 @@ void GRAPH::ReadGraphData()
 	//FILE * fin;
 	std::ifstream fin;
 	// Read Demand data
-	if (ModelIndex == 1) // Scan
+	if (NetworkIndex == 1) // Scan
 	{
 		//fopen_s(&fin, "..//Input//MediumNetwork//DeamdData.txt", "r");
 		fin.open("..//Input//MediumNetwork//DeamdData.txt");
 		//fopen_s(&fin, "..//Input//MediumNetwork//DeamdData.txt", "r");
 	}
-	else if (ModelIndex == 2)
+	else if (NetworkIndex == 2)
 	{
 		fin.open("..//Input//Nagureny2009Network//DeamdData.txt");
 		//fopen_s(&fin, "..//Input//Nagureny2009Network//DeamdData.txt", "r");
 	}
-	else if (ModelIndex == 3)
+	else if (NetworkIndex == 3)
 	{
 		fin.open("..//Input//SiouxFallsNetwork//DeamdData.txt");
 	}
-	else if (ModelIndex == 4)
+	else if (NetworkIndex == 4)
 	{
 		fin.open("..//Input//ParadoxNet//DeamdData.txt");
 		//fopen_s(&fin, "..//Input//Nagureny2009Network//DeamdData.txt", "r");
 	}
-	else if (ModelIndex ==5)
+	else if (NetworkIndex ==5)
 	{
 		fin.open("..//Input//WangNetwork//DeamdData.txt");
 		//fopen_s(&fin, "..//Input//Nagureny2009Network//DeamdData.txt", "r");
@@ -219,29 +219,29 @@ void GRAPH::ReadGraphData()
 	fin.close();
 
 	// Read link data
-	if (ModelIndex == 1) // Scan
+	if (NetworkIndex == 1) // Scan
 	{
 		fin.open("..//Input//MediumNetwork//LinkData.txt");
 		//fopen_s(&fin, "..//Input//MediumNetwork//LinkData.txt", "r");
 	}
-	else if (ModelIndex == 2)
+	else if (NetworkIndex == 2)
 	{
 		fin.open("..//Input//Nagureny2009Network//LinkData.txt");
 		//fin.open("C://GitCodes//NRI//InPut//Nagureny2009Network//LinkData.txt");
 			//LinkData.txt");
 		//fopen_s(&fin, "..//Input//Nagureny2009Network//LinkData.txt", "r");
 	}
-	else if (ModelIndex == 3)
+	else if (NetworkIndex == 3)
 	{
 		fin.open("..//Input//SiouxFallsNetwork//LinkData.txt");
 		//fopen_s(&fin, "..//Input//SiouxFallsNetwork//LinkData.txt", "r");
 	}
-	else if (ModelIndex == 4)
+	else if (NetworkIndex == 4)
 	{
 		fin.open("..//Input//ParadoxNet//LinkData.txt");
 		//fopen_s(&fin, "..//Input//SiouxFallsNetwork//LinkData.txt", "r");
 	}
-	else if (ModelIndex == 5)
+	else if (NetworkIndex == 5)
 	{
 		fin.open("..//Input//WangNetwork//LinkData.txt");
 		//fopen_s(&fin, "..//Input//SiouxFallsNetwork//LinkData.txt", "r");

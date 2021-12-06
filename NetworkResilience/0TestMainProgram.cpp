@@ -11,17 +11,15 @@ void ReadModelPara()
 	ifstream fin_Model,fin_Net;
 	string line;
 	vector<string> fields;
-
 	fin_Model.open("..//InPut//ModelPara.txt");
 	while (getline(fin_Model, line))
 	{
 		splitf(fields, line, ",");
 		if (fields.size() != 2) continue;
-		//cout << fields[1] << endl;
 		if (fields[0] == "OneDimEsp")	OneDimEsp = stof(fields[1]);
 		if (fields[0] == "UEeps")	UEeps = stof(fields[1]);
 		if (fields[0] == "UEmaxIter")	UEmaxIter = stoi(fields[1]);
-		if (fields[0] == "ModelIndex")	ModelIndex = stoi(fields[1]);
+		if (fields[0] == "NetworkIndex")	NetworkIndex = stoi(fields[1]);
 		if (fields[0] == "UseMyOwn")
 		{
 			if (fields[1] == "True")
@@ -33,26 +31,23 @@ void ReadModelPara()
 				UseMyOwnAlgo = false;
 			}
 		}
-		//if (fields[0] == "MaxNumSol")	MaxNumSolEval = stoi(fields[1]);
-		//if (fields[0] == "StopCriteria")	StopCriteria = stoi(fields[1]);
 	}
-	std::cout << "OneDimEsp = " << OneDimEsp << endl;
 	fin_Model.close();
 
-	if (ModelIndex == 1)
+	if (NetworkIndex == 1)
 	{
 		std::cout << "Model Index is not specified" << endl;
 		system("Pause");
 		//fin.open("..//InPut//MediumNetwork//Para.txt");
 		/*fga.open("..//InPut//SiouxFallsNetwork//GAPara.txt");*/
 	}
-	else if (ModelIndex == 2)
+	else if (NetworkIndex == 2)
 	{
 		cout << "Model Index is not specified" << endl;
 		system("Pause");
 		//fin.open("..//InPut//Nagureny2009Network//Para.txt");
 	}
-	else if (ModelIndex == 3)
+	else if (NetworkIndex == 3)
 	{
 		fin_Net.open("..//InPut//SiouxFallsNetwork//NetPara.txt");
 		//cout << "Model Index is not specified" << endl;
@@ -60,11 +55,11 @@ void ReadModelPara()
 		//fin.open("..//InPut//SiouxFallsNetwork//Para.txt");
 		//fga.open("..//InPut//SiouxFallsNetwork//GAPara.txt");
 	}
-	else if (ModelIndex == 4)
+	else if (NetworkIndex == 4)
 	{
 		fin_Net.open("..//InPut//ParadoxNet//NetPara.txt");
 	}
-	else if (ModelIndex == 5)
+	else if (NetworkIndex == 5)
 	{
 		fin_Net.open("..//InPut//WangNetwork//NetPara.txt");
 	}
@@ -77,18 +72,20 @@ void ReadModelPara()
 	while (getline(fin_Net, line))
 	{
 		splitf(fields, line, ",");
-		if (fields.size() != 2)
-			continue;
-		//cout << fields[1] << endl;
+		if (fields.size() != 2) continue;
 		if (fields[0] == "NumNodes")	NumNodes = stoi(fields[1]);
 		if (fields[0] == "NumOD")	NumOD = stoi(fields[1]);
 		if (fields[0] == "NumLinks")	NumLinks = stoi(fields[1]);
 	}
-	fin_Model.close();
+	fin_Net.close();
 }
+/// <summary>
+/// Code to reporduce Wang's results
+/// </summary>
+/// <param name="g"></param>
 void ReproduceWang(GRAPH& g)
 {
-	if (ModelIndex != 5)
+	if (NetworkIndex != 5)
 		cout << "Warning: reproduce Wang's work need to set the model index to be 5" << endl;
 	cout << "--Start Reproduce David Work--- " << endl;
 	Scenario s;
@@ -103,25 +100,29 @@ void ReproduceWang(GRAPH& g)
 
 int main(int argc, char* argv[])
 {	
-	wtf = false;
+	//TOOD: Change NetworkIndex to NetIndex
+	/* remarks on the network model index
+	* NetworkIndex = 3;  //Sioux Fall Network
+	  NetworkIndex = 4; //Paradox network
+	  NetworkIndex = 5; //Wang David network
+	*/
+	Zero = 1.0e-6f;
+	cout << "Remarks: Maximum Restore Periods is " << MaxNumOfSchPeriod << endl;
 	isWriteConverge = true;
-	//ModelIndex = 3;  //Sioux Fall Network
-	//ModelIndex = 4; //Paradox network
-	//ModelIndex = 5; //Wang David network
 	OpenAndCleanFiles();
 	ReadModelPara();
+#ifdef _DEBUG
+	cout << "c++:Read Model Para Complete" << endl;
+#endif // _DEBUG
 	ABCAlgorithms MainAlgo;
 	GRAPH BaseGraph;
 	std::cout << "# start to read graph data" << endl;
 	BaseGraph.ReadDataMain();
 	std::cout << "# complete read graph data" << endl;
-	std::cout << "# start to read algo data" << endl;
+	std::cout << "# start to read algorithm data" << endl;
 	MainAlgo.ReadData(BaseGraph);
 	std::cout << "# complete read graph data" << endl;
-	UEeps = 0.01;
-	Zero = 1.0e-6f;
-	UEmaxIter = 500;
-	BaseGraph.EvaluteGraph();
+	//BaseGraph.EvaluteGraph();
 	if (!UseMyOwnAlgo)
 	{
 		vector<int> InputVec;
@@ -129,13 +130,12 @@ int main(int argc, char* argv[])
 		{
 			for (int i = 1; i < argc; i++)
 			{
-				//cout<< "i="<<i<<","<<atoi(argv[i]) << endl;
-				InputVec.push_back(MainAlgo.FailureLinks.at(atoi(argv[i])));
+				InputVec.push_back(MainAlgo.setOfFailureLinks.at(atoi(argv[i])));
 			}
 		}
 		if (UseMyOwnAlgo)
 		{
-			std::cout << "c++: Warning: Use My Own Algo is not well defined" << endl;
+			std::cout << "c++: Warning: Use My Own Algorithm is not well defined" << endl;
 		}
 		MainAlgo.ReadSolAndEvaluate(InputVec);
 	}
@@ -144,12 +144,6 @@ int main(int argc, char* argv[])
 		//ReproduceWang(BaseGraph); // This function is for reproducing Wang's work
 		MainAlgo.ABCMain();
 	}
-
-	//ofstream RemarkFile;
-	//RemarkFile.open("..//OutPut//TestRemark.txt", ios::trunc);
-	////if (!ReadModelParas()) cerr << "Read Model Fails" << endl;// Must before 
-	//UEeps = 0.01;
-	//BaseGraph.EvaluteGraph();
-	//cout << "BaseGraph Without Failure = " << BaseGraph.TotalSystemCost << endl;
+	CloseFiles();
 	return 0;
 }
