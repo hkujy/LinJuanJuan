@@ -26,13 +26,14 @@ extern double CsaRepRatio;
 extern int MaxGAIter;
 extern int GANumPop;
 extern int GANumChild;
-extern int MaxNumSolEval;
+//extern int MaxNumSolEval;
 extern bool isWriteConverge;
-extern int StopCriteria;  
+//extern int StopCriteria;  
 extern int CSACloneMethod;
 extern double GaMutationRate;
 extern int SeedRunCount;
 extern std::vector<int> SeedVecVal;
-// stop criteria =1: based on number of solution evalueated
+extern bool UseMyOwnAlgo;
+// stop criteria =1: based on number of solution evaluated
 // stop criteria =0: normal : based on number of iterations
 #endif

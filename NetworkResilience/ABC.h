@@ -67,6 +67,7 @@ public:
 	};
 	~ABCAlgorithms() { Graph = nullptr; };
 	std::vector<SCHCLASS> Sols;
+	void ReadSolAndEvaluate(vector<int> &vec);
 	void GenerateIni();
 	void ABCMain();
 	void EmployBeePhase();
@@ -90,6 +91,8 @@ public:
 	void UpdateOperatorWeight_ALNS();
 	int SelectOperator_ALNS();
 	void IniOperatorProb_ANLS();
+
+
 };
 
 

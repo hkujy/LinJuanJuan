@@ -1,0 +1,3 @@
+NumNodes,6
+NumOD,2
+NumLinks,16

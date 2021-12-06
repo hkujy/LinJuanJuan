@@ -18,5 +18,6 @@
 #include <stdio.h>
 #include <random>
 #include <stdlib.h>
+#include <numeric>
 
 #endif

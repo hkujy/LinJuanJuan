@@ -43,6 +43,16 @@ bool ReadSeedVec(std::vector<int>& SeedVec,
 			}
 		}
 	}
+
+	ofstream fout;
+	fout.open("..//OutPut//CheckSeed.txt");
+	for (int i = 0; i < SeedVec.size(); i++)
+	{
+		fout << SeedVec.at(i) << endl;
+	}
+
+	fout.close();
+
 	return true;
 }
 void ABCAlgorithms::IniOperatorProb_ANLS()
@@ -363,21 +373,21 @@ void ABCAlgorithms::ReadData(GRAPH& g)
 		//system("Pause");
 		fabc.open("..//InPut//SiouxFallsNetwork//ABCPara.txt");
 		fl.open("..//InPut//SiouxFallsNetwork//FailureLinks.txt");
-		fopen_s(&fseedin, "..//Input//SiouxFallsNetwork//Seed.txt", "r");
+		fopen_s(&fseedin, "..//Input//Seed.txt", "r");
 		if (!ReadSeedVec(SeedVecVal, fseedin)) TRACE("Read Seed File Fails \n");
 	}
 	else if (ModelIndex == 4)
 	{
 		fabc.open("..//InPut//ParadoxNet//ABCPara.txt");
 		fl.open("..//InPut//ParadoxNet//FailureLinks.txt");
-		fopen_s(&fseedin, "..//Input//ParadoxNet//Seed.txt", "r");
+		fopen_s(&fseedin, "..//Input//Seed.txt", "r");
 		if (!ReadSeedVec(SeedVecVal, fseedin)) TRACE("Read Seed File Fails \n");
 	}
 	else if (ModelIndex == 5)
 	{
 		fabc.open("..//InPut//WangNetwork//ABCPara.txt");
 		fl.open("..//InPut//WangNetwork//FailureLinks.txt");
-		fopen_s(&fseedin, "..//Input//WangNetwork//Seed.txt", "r");
+		fopen_s(&fseedin, "..//Input//Seed.txt", "r");
 		if (!ReadSeedVec(SeedVecVal, fseedin)) TRACE("Read Seed File Fails \n");
 	}
 	else
@@ -402,8 +412,8 @@ void ABCAlgorithms::ReadData(GRAPH& g)
 		if (fields[0] == "NumNodes")	NumNodes = stoi(fields[1]);
 		if (fields[0] == "NumOD")	NumOD = stoi(fields[1]);
 		if (fields[0] == "NumLinks")	NumLinks = stoi(fields[1]);
-		if (fields[0] == "MaxNumSol")	MaxNumSolEval = stoi(fields[1]);
-		if (fields[0] == "StopCriteria")	StopCriteria = stoi(fields[1]);
+		//if (fields[0] == "MaxNumSol")	MaxNumSolEval = stoi(fields[1]);
+		//if (fields[0] == "StopCriteria")	StopCriteria = stoi(fields[1]);
 	}
 	cout << "OneDimEsp = " << OneDimEsp << endl;
 	fin.close();
@@ -472,8 +482,8 @@ void ABCAlgorithms::ReadData(GRAPH& g)
 	fout << "NumNodes" << "," << NumNodes << endl;
 	fout << "NumOD" << "," << NumOD << endl;
 	fout << "NumLinks" << "," << NumLinks << endl;
-	fout << "StopCriteria" << "," << StopCriteria << endl;
-	fout << "MaxNumSol" << "," << MaxNumSolEval << endl;
+	//fout << "StopCriteria" << "," << StopCriteria << endl;
+	//fout << "MaxNumSol" << "," << MaxNumSolEval << endl;
 	fout << "OneDimEsp" << "," << OneDimEsp << endl;
 	fout << "UEmaxIter" << "," << UEmaxIter << endl;
 	fout << "NumEmployBee" << "," << NumEmployedBee << endl;
@@ -608,4 +618,25 @@ void ABCAlgorithms::PrintOperator(int seedid)
 void ABCAlgorithms::UpdateOperatorWeight()
 {
 	UpdateOperatorWeight_ALNS();
+}
+
+
+void ABCAlgorithms::ReadSolAndEvaluate(vector<int> &vec)
+{
+	// step 1: set the solution vector 
+	SCHCLASS sol;
+	for (int l = 0; l < vec.size(); l++)
+	{
+		sol.Links.push_back(&Graph->Links.at(vec[l]));
+	}
+	sol.EndTime.assign(FailureLinks.size(), -1);
+	sol.StartTime.assign(FailureLinks.size(), -1);
+	if (FailureLinks.size() != vec.size())
+	{
+		cout << "c++: warning: the failure link size does not equal vec size" << endl;
+	}
+	sol.AlignStartTime(ResourceCap);
+	sol.Evaluate(*Graph);
+	cout << sol.Fitness;
+	//cout << "fit = " << sol.Fitness << endl;
 }

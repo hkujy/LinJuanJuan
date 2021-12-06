@@ -97,8 +97,8 @@ bool PrintModelParas(){
 	fout << "NumNodes" << "," << NumNodes << endl;
 	fout << "NumOD" << "," << NumOD << endl;
 	fout << "NumLinks" << "," << NumLinks << endl;
-	fout << "StopCriteria" << "," << StopCriteria << endl;
-	fout << "MaxNumSol" << "," << MaxNumSolEval << endl;
+	//fout << "StopCriteria" << "," << StopCriteria << endl;
+	//fout << "MaxNumSol" << "," << MaxNumSolEval << endl;
 
 	fout << "OneDimEsp" << "," << OneDimEsp << endl;
 	fout << "UEmaxIter" << "," << UEmaxIter << endl;
@@ -161,8 +161,8 @@ bool ReadModelParas(){
 		if (fields[0] == "NumNodes")	NumNodes = stoi(fields[1]);
 		if (fields[0] == "NumOD")	NumOD = stoi(fields[1]);
 		if (fields[0] == "NumLinks")	NumLinks = stoi(fields[1]);
-		if (fields[0] == "MaxNumSol")	MaxNumSolEval = stoi(fields[1]);
-		if (fields[0] == "StopCriteria")	StopCriteria = stoi(fields[1]);
+		//if (fields[0] == "MaxNumSol")	MaxNumSolEval = stoi(fields[1]);
+		//if (fields[0] == "StopCriteria")	StopCriteria = stoi(fields[1]);
 	}
 	cout << "OneDimEsp = " << OneDimEsp << endl;
 	fin.close();

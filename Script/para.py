@@ -11,6 +11,10 @@ isRunTest = True
 # isDebug = True
 isDebug = False
 
+NumOfTestSeed = 2
+SeedPool = [4601, 6677, 2887, 6421, 8471, 512, 3547, 2614, 8146,
+            9629, 8266, 3045, 9770, 3048, 6705, 9591, 7905, 8223, 9044, 1091]
+
 
 class ParaClass(object):
     """parameter class
@@ -19,29 +23,54 @@ class ParaClass(object):
     def __init__(self):
         self.caes_id = 0
         self.case_name = "null"
-        self.para = {"NumEmployBee": 10,
-                     "NumOnlookerBee": 10,
-                     "MaxScountCount": 50,
-                     "MaxABCIter": 500,
-                     "RewardImproveGlobal": 10,
-                     "RewardImproveLocal": 10,
-                     "RewardWorse": 0,
-                     "ReactionFactor": 0.5,
-					 "SelectOperator":"ALNS"
-					#  "SelectOperator":"Uni"
-                     }
+        self.para = {
+            "UseMyOwn": "True",
+            "ModelIndex": 3,   # SiouxFall
+            # "ModelIndex":4,   # Paradox
+            # "ModelIndex":5,   # Wang
+            #  "UseMyOwn": "False",
+            "NumEmployBee": 10,
+            "NumOnlookerBee": 10,
+            "MaxScountCount": 50,
+            "MaxABCIter": 500,
+            "RewardImproveGlobal": 10,
+            "RewardImproveLocal": 10,
+            "RewardWorse": 0,
+            "ReactionFactor": 0.5,
+            "SelectOperator": "ALNS",
+            "OneDimEsp": 0.0000001,
+            "UEeps": 0.01,
+            "UEmaxIter": 100
+        }
 
-    def print_abc_para(self, net=""):
+    def print_para(self):
         """
         """
-        if net is "Wang":
+        if self.para["ModelIndex"] == 3:
+            with open("..//InPut//SiouxFallsNetwork//ABCPara.txt", "w+") as f:
+                for key, value in self.para.items():
+                    print("{0},{1}".format(key, value), file=f)
+        elif self.para["ModelIndex"] == 4:
+            with open("..//InPut//ParadoxNet//ABCPara.txt", "w+") as f:
+                for key, value in self.para.items():
+                    print("{0},{1}".format(key, value), file=f)
+        elif self.para["ModelIndex"] == 5:
             with open("..//InPut//WangNetwork//ABCPara.txt", "w+") as f:
                 for key, value in self.para.items():
                     print("{0},{1}".format(key, value), file=f)
-        else:
-            logging.debug("Input network is not specified for print ABC para")
 
-    def adjust_abc_para(self, _adjust):
+        else:
+            logging.debug(
+                "Input network and model index is not specified for printing ABC parameters")
+
+        with open("..//InPut//ModelPara.txt", "w+") as f:
+            print("ModelIndex,{0}".format(self.para["ModelIndex"]), file=f)
+            print("UseMyOwn,{0}".format(self.para["UseMyOwn"]), file=f)
+            print("OneDimEsp,{0}".format(self.para["OneDimEsp"]), file=f)
+            print("UEeps,{0}".format(self.para["UEeps"]), file=f)
+            print("UEmaxIter,{0}".format(self.para["UEmaxIter"]), file=f)
+
+    def adjust_para(self, _adjust):
         """
             adjust the default parameters
         """

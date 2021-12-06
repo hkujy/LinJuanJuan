@@ -1,0 +1,3 @@
+NumNodes,24
+NumOD,585
+NumLinks,76

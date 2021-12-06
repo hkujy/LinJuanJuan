@@ -3,6 +3,8 @@
 # TODO 
 1. write the solution to update the neighbour operators 
 2. create the example of sioux fall network
+3. print the two ave converge in one figure or just print the ave results in a txt file
+4. create a realse mode for ga
 
 
 # Remarks
@@ -47,6 +49,8 @@
     - then run the shortest path method, to see whether, the distance is changed 
     - I can make this greedy ?
 5. Different method for updating the adaptive score 
+6. Test the operator performance
+    - 1. I think only online version test is fine
 ### Other ideas
 1. I can design a construction algorithm
 - first align all the projects to the same period

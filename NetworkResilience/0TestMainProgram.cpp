@@ -3,24 +3,45 @@
 #include "RestoreSchClass.h"
 #include "ABC.h"
 using namespace std;
-//TODO: Test the operator performance
-// ---- I can either use a online or offline version 
-// ---- offline version combine the historical case using different cases
-//int TestMedium();
-//int TestAlgorithmPara();
-//int TestCSAandGA();
-//void ReadDataMain(GRAPH& BaseGraph, NODEPROMATRIX& Pmatrix, LINKPROMATRIX& LinkPmatrix);
-//void ReadDataMain(GRAPH& BaseGraph, NODEPROMATRIX& Pmatrix);
-//void ReadDataMain(GRAPH& BaseGraph);
 void OpenAndCleanFiles();
 bool ReadModelParas();
 void CloseFiles();
 void ReadModelPara()
 {
-	ifstream fin;
+	ifstream fin_Model,fin_Net;
+	string line;
+	vector<string> fields;
+
+	fin_Model.open("..//InPut//ModelPara.txt");
+	while (getline(fin_Model, line))
+	{
+		splitf(fields, line, ",");
+		if (fields.size() != 2) continue;
+		//cout << fields[1] << endl;
+		if (fields[0] == "OneDimEsp")	OneDimEsp = stof(fields[1]);
+		if (fields[0] == "UEeps")	UEeps = stof(fields[1]);
+		if (fields[0] == "UEmaxIter")	UEmaxIter = stoi(fields[1]);
+		if (fields[0] == "ModelIndex")	ModelIndex = stoi(fields[1]);
+		if (fields[0] == "UseMyOwn")
+		{
+			if (fields[1] == "True")
+			{
+				UseMyOwnAlgo = true;
+			}
+			else if (fields[1] == "False")
+			{
+				UseMyOwnAlgo = false;
+			}
+		}
+		//if (fields[0] == "MaxNumSol")	MaxNumSolEval = stoi(fields[1]);
+		//if (fields[0] == "StopCriteria")	StopCriteria = stoi(fields[1]);
+	}
+	std::cout << "OneDimEsp = " << OneDimEsp << endl;
+	fin_Model.close();
+
 	if (ModelIndex == 1)
 	{
-		cout << "Model Index is not specified" << endl;
+		std::cout << "Model Index is not specified" << endl;
 		system("Pause");
 		//fin.open("..//InPut//MediumNetwork//Para.txt");
 		/*fga.open("..//InPut//SiouxFallsNetwork//GAPara.txt");*/
@@ -33,7 +54,7 @@ void ReadModelPara()
 	}
 	else if (ModelIndex == 3)
 	{
-		fin.open("..//InPut//SiouxFallsNetwork//Para.txt");
+		fin_Net.open("..//InPut//SiouxFallsNetwork//NetPara.txt");
 		//cout << "Model Index is not specified" << endl;
 		//system("Pause");
 		//fin.open("..//InPut//SiouxFallsNetwork//Para.txt");
@@ -41,36 +62,29 @@ void ReadModelPara()
 	}
 	else if (ModelIndex == 4)
 	{
-		fin.open("..//InPut//ParadoxNet//Para.txt");
+		fin_Net.open("..//InPut//ParadoxNet//NetPara.txt");
 	}
 	else if (ModelIndex == 5)
 	{
-		fin.open("..//InPut//WangNetwork//Para.txt");
+		fin_Net.open("..//InPut//WangNetwork//NetPara.txt");
 	}
 	else
 	{
-		cout << "Model Index is not specified" << endl;
+		std::cout << "Model Index is not specified" << endl;
 		system("Pause");
 	}
-	string line;
-	vector<string> fields;
-	while (getline(fin, line))
+
+	while (getline(fin_Net, line))
 	{
 		splitf(fields, line, ",");
 		if (fields.size() != 2)
 			continue;
 		//cout << fields[1] << endl;
-		if (fields[0] == "OneDimEsp")	OneDimEsp = stof(fields[1]);
-		if (fields[0] == "UEeps")	UEeps = stof(fields[1]);
-		if (fields[0] == "UEmaxIter")	UEmaxIter = stoi(fields[1]);
 		if (fields[0] == "NumNodes")	NumNodes = stoi(fields[1]);
 		if (fields[0] == "NumOD")	NumOD = stoi(fields[1]);
 		if (fields[0] == "NumLinks")	NumLinks = stoi(fields[1]);
-		if (fields[0] == "MaxNumSol")	MaxNumSolEval = stoi(fields[1]);
-		if (fields[0] == "StopCriteria")	StopCriteria = stoi(fields[1]);
 	}
-	cout << "OneDimEsp = " << OneDimEsp << endl;
-	fin.close();
+	fin_Model.close();
 }
 void ReproduceWang(GRAPH& g)
 {
@@ -88,30 +102,50 @@ void ReproduceWang(GRAPH& g)
 }
 
 int main(int argc, char* argv[])
-{
+{	
 	wtf = false;
 	isWriteConverge = true;
-	ModelIndex = 3;   //Sioux Fall Network
+	//ModelIndex = 3;  //Sioux Fall Network
 	//ModelIndex = 4; //Paradox network
 	//ModelIndex = 5; //Wang David network
 	OpenAndCleanFiles();
 	ReadModelPara();
 	ABCAlgorithms MainAlgo;
 	GRAPH BaseGraph;
-	cout << "# start to read graph data" << endl;
+	std::cout << "# start to read graph data" << endl;
 	BaseGraph.ReadDataMain();
-	cout << "# complete read graph data" << endl;
-	cout << "# start to read algo data" << endl;
+	std::cout << "# complete read graph data" << endl;
+	std::cout << "# start to read algo data" << endl;
 	MainAlgo.ReadData(BaseGraph);
-	cout << "# complete read graph data" << endl;
+	std::cout << "# complete read graph data" << endl;
 	UEeps = 0.01;
 	Zero = 1.0e-6f;
 	UEmaxIter = 500;
 	BaseGraph.EvaluteGraph();
-	//ReproduceWang(BaseGraph);
-	MainAlgo.ABCMain();
+	if (!UseMyOwnAlgo)
+	{
+		vector<int> InputVec;
+		if (argc > 1)
+		{
+			for (int i = 1; i < argc; i++)
+			{
+				//cout<< "i="<<i<<","<<atoi(argv[i]) << endl;
+				InputVec.push_back(MainAlgo.FailureLinks.at(atoi(argv[i])));
+			}
+		}
+		if (UseMyOwnAlgo)
+		{
+			std::cout << "c++: Warning: Use My Own Algo is not well defined" << endl;
+		}
+		MainAlgo.ReadSolAndEvaluate(InputVec);
+	}
+	else
+	{
+		//ReproduceWang(BaseGraph); // This function is for reproducing Wang's work
+		MainAlgo.ABCMain();
+	}
+
 	//ofstream RemarkFile;
-	//AssertLog.open("..//OutPut//AssertLog.txt", ios::trunc);
 	//RemarkFile.open("..//OutPut//TestRemark.txt", ios::trunc);
 	////if (!ReadModelParas()) cerr << "Read Model Fails" << endl;// Must before 
 	//UEeps = 0.01;

@@ -32,5 +32,7 @@ int CSACloneMethod;
 double GaMutationRate;
 int SeedRunCount;
 std::vector<int> SeedVecVal;
+bool UseMyOwnAlgo;
+
 
 #endif
