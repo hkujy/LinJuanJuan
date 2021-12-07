@@ -4,11 +4,12 @@
 #include <vector>
 #include <algorithm>
 #include <numeric>
-
-int Select_One_Nei()
-{
-	return GenRandomInt(0, NumOperators-1);
-}
+#include <map>
+//
+//int Select_One_Nei()
+//{
+//	return GenRandomInt(0, NumOperators-1);
+//}
 
 //main fun for generate a neighborhoods operator
 void SCHCLASS::GenNei(SCHCLASS& Nei, GRAPH& g, int &OpId,const vector<int>& FailureLinkSet, const vector<double>& ResCap)
@@ -26,6 +27,7 @@ void SCHCLASS::GenNei(SCHCLASS& Nei, GRAPH& g, int &OpId,const vector<int>& Fail
 		case(3): Nei_Move_One_To_Right(Nei); break;
 		case(4): Nei_Insert_One_Random_To_Left(Nei); break;
 		case(5): Nei_Insert_One_Random_To_Right(Nei); break;
+		case(6): Nei_Greedy_MaxEI(Nei, g); break;
 	default:
 		cout << "Neighbor operator index is properly set" << endl;
 		system("PAUSE");
@@ -247,6 +249,69 @@ void SCHCLASS::Nei_Insert_One_Random_To_Left(SCHCLASS& NewSol)
 	for (auto l : NewSol.Links) cout << l->ID << endl;
 	cout << "-----------------Complete Random To Left------------" << endl;
 #endif // _DEBUG
+}
 
+template<typename KeyType, typename ValueType>
+std::pair<KeyType, ValueType> get_max(const std::map<KeyType, ValueType>& x) {
+	using pairtype = std::pair<KeyType, ValueType>;
+	return *std::max_element(x.begin(), x.end(), [](const pairtype& p1, const pairtype& p2) {
+		return p1.second < p2.second;
+		});
+}
+void SCHCLASS::Nei_Greedy_MaxEI(SCHCLASS& NewSol, GRAPH& g)
+{
+	// step: random select a location
+	int stp= GenRandomInt(0, int(Links.size() - 1));
+#ifdef _DEBUG
+	cout << "-----------Nei_Greedy_MaxEI is called--------" << endl;
+	cout << "selected random start location value is " << stp << endl;
+#endif // _DEBUG
+	// copy the first stp element 
+	vector<bool> InsertedFlag; InsertedFlag.assign(Links.size(), false);
+	for (int i = 0; i < stp; i++)
+	{
+		NewSol.Links.at(i) = Links.at(i);
+		InsertedFlag[i] = true;
+	}
+	// step 2: set the conditional graph 
+	for (int i = stp; i < Links.size(); i++)
+	{
+		(*Links.at(i)).Cost = RemoveLinkCost;
+	}
+	for (int i=stp;i<Links.size();i++)
+	{
+		std::map<int, double> LinkEIs;
+		// step 1 create a candidate set
+		for (int j = stp; j < Links.size(); j++)
+		{
+			if (false == InsertedFlag[j])
+			{
+				(*Links.at(j)).Cost = (*Links.at(j)).IniCost();
+				double ev = g.CalRelSpChange((*Links[j]).ID);
+				LinkEIs.insert(make_pair((*Links[j]).ID, ev));
+				(*Links.at(j)).Cost = RemoveLinkCost;
+			}
+		}
+		cout << "max ei element is " << get_max(LinkEIs).first << endl;
+		int lid = get_max(LinkEIs).first;
+		//NewSol.Links.at(i) = Links.at(lid);
+		NewSol.Links.at(i) = &g.Links.at(lid);
+		for (int j = stp; j < Links.size(); j++)
+		{
+			if (Links.at(j)->ID == lid) 
+			{
+				InsertedFlag.at(j) = true;
+				(*Links.at(j)).Cost = (*Links.at(j)).IniCost();
+			}
+		}
+	}
+
+#ifdef _DEBUG
+	cout << "***before***" << endl;
+	for (auto l : Links) cout << l->ID << endl;
+	cout << "***after***" << endl;
+	for (auto l : NewSol.Links) cout << l->ID << endl;
+	cout << "-----------------Complete Greedy MaxEI------------" << endl;
+#endif // _DEBUG
 
 }

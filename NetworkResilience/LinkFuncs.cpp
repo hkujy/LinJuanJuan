@@ -28,6 +28,9 @@ LINK::LINK(const LINK& OtherLink){
 	this->Cost = OtherLink.Cost;
 	this->RecoverTime = OtherLink.RecoverTime;
 	this->RequiredRes = OtherLink.RequiredRes;
+	this->EI = 0.0;
+	this->AlphaBpr = 0.15;
+	this->BetaBBpr = 4;
 }
 
 LINK::LINK(){
@@ -39,6 +42,7 @@ LINK::LINK(){
 	CaRevise = InvaildFloat;
 	CaInput = InvaildFloat;
 	T0 = InvaildFloat;
+	EI = 0;
 }
 LINK::~LINK(){
 	//do sth

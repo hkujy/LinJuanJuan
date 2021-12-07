@@ -28,6 +28,9 @@ void OpenAndCleanFiles(){
 	OutFile.open("..//OutPut//OperatorsMeasure.txt", ios::trunc);
 	OutFile << "seed,id,good,bad,sum,gp,bp,prob,score,weight" << endl;
 	OutFile.close();
+	OutFile.open("..//OutPut/LinkEI.txt", ios::trunc);
+	OutFile << "LinkId,EI" << endl;
+	OutFile.close();
 }
 void CloseFiles(){
 	Log.close();

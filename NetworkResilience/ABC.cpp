@@ -13,6 +13,7 @@ using namespace std;
 
 int ABCAlgorithms::SelectOperIndex()
 {
+	return 6;
 	if (this->SelectOp == SelectOperatorType::Uniform)
 	{
 		return GenRandomInt(0, NumOperators-1);
@@ -638,3 +639,26 @@ void ABCAlgorithms::ReadSolAndEvaluate(vector<int> &vec)
 	//        Do not print the "endl" at the end.
 	std::cout << sol.Fitness;
 }
+
+/// <summary>
+/// Compute the efficiency index for each link
+/// </summary>
+void ABCAlgorithms::ComputeFailureLinkEI()
+{
+	for (int l = 0; l < setOfFailureLinks.size(); l++)
+	{
+		Graph->Links.at(setOfFailureLinks[l]).EI = Graph->CalRelSpChange(setOfFailureLinks[l]);
+	}
+}
+
+void ABCAlgorithms::printLinkEI()
+{
+	ofstream  OutFile;
+	OutFile.open("..//OutPut/LinkEI.txt", ios::app);
+	for (int l = 0; l < setOfFailureLinks.size(); l++)
+	{
+		OutFile << setOfFailureLinks[l] << "," << Graph->Links.at(setOfFailureLinks[l]).EI << endl;
+	}
+	OutFile.close();
+}
+

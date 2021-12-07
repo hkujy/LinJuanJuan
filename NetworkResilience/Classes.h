@@ -23,6 +23,7 @@ public:
 	double Flow;
 	double AlphaBpr; // parameter in the BPR  // 0.15
 	double BetaBBpr; // parameter in the BPR  // 4.0
+	double EI; // Efficiency Index
 	double CleanLinkFlow();
 	double BPRCost();
 	double IniCost();
@@ -74,6 +75,8 @@ public:
 	int Dest;
 	double Demand;
 	double MinCost;
+	double BeforeRemoveSpDist;
+	double AfterRemoveSpDist;
 	bool isConnected;
 	OD(){
 		ID = -1;
@@ -82,6 +85,8 @@ public:
 		isConnected = false;
 		Demand = InvaildFloat;
 		MinCost = InvaildFloat;
+		BeforeRemoveSpDist = InvaildFloat;
+		AfterRemoveSpDist = InvaildFloat;
 	}
 	~OD(){
 		Orign = InvaildInt;
@@ -89,6 +94,8 @@ public:
 		isConnected = false;
 		Demand = InvaildFloat;
 		MinCost = InvaildFloat;
+		BeforeRemoveSpDist = InvaildFloat;
+		AfterRemoveSpDist = InvaildFloat;
 	}
 };
 
@@ -165,6 +172,7 @@ public:
 		PrintOD(OutPutFile);
 		OutPutFile.close();
 	}
+	double CalRelSpChange(int LinkID);
 };
 
 

@@ -459,4 +459,85 @@ void GRAPH::RevertFailureScenarios(const Scenario& s)
 	cout << "------End Restore Link Cap-----------------------" << endl;
 }
 
+/// <summary>
+/// compute the relative changes for the graph with and without the link
+/// </summary>
+/// <param name="link"></param>
+double GRAPH::CalRelSpChange(int LinkID)
+{
+	// Step 0: Compute the Sp labels before remove the links
+	int StatusMsg;
+	for (int i = 0; i < Links.size(); i++)
+	{
+		Links.at(i).Cost= Links.at(i).IniCost();
+	}
+	std::vector<double> Lable;
+	for (auto o = this->OriginSet.begin(); o != this->OriginSet.end(); o++)
+	{
+		int Orig = o->Onode;
+		if (Orig < 0) continue;
+		StatusMsg = this->SP(o->Onode, Lable);// shortest path
+		assert(StatusMsg);
+		//printf("Find min tree for Onode = %d \n", Orig);
+		//Minpath(Orig, MinPathPredLink[Orig], Lable, Nodes, Links, ModeType);
+		for (auto d = o->ODset.begin(); d != o->ODset.end(); d++)
+		{
+			int Dest = (*d)->Dest;
+#ifdef __DEBUG__ 
+			if (isnan(Lable[Dest])) DEBUG("Od Pair %d,min cost is NaN", *d);
+#endif	
+			this->OdPairs.at((*d)->ID).BeforeRemoveSpDist = Lable[Dest];
+			//ODPairs.at(*d).MinCost.at(ModeType) = Lable[Dest];
+			if (this->OdPairs.at((*d)->ID).BeforeRemoveSpDist < InvalidMinCost)
+			{
+				this->OdPairs.at((*d)->ID).BeforeRemoveSpDist = true;
+			}
+			/*if (ODPairs.at(*d).MinCost.at(ModeType) < InvalidMinCost)
+				ODPairs.at(*d).isConnected = true;*/
+		}
+	}
 
+	//////////////////////////////////////////////////////////////////////////
+	//Step 1: Remove the link in the current network
+	this->Links.at(LinkID).Cost = RemoveLinkCost;
+	//////////////////////////////////////////////////////////////////////////
+	for (auto o = this->OriginSet.begin(); o != this->OriginSet.end(); o++)
+	{
+		int Orig = o->Onode;
+		if (Orig < 0) continue;
+		StatusMsg = this->SP(o->Onode, Lable);// shortest path
+		assert(StatusMsg);
+		//printf("Find min tree for Onode = %d \n", Orig);
+		//Minpath(Orig, MinPathPredLink[Orig], Lable, Nodes, Links, ModeType);
+		for (auto d = o->ODset.begin(); d != o->ODset.end(); d++)
+		{
+			int Dest = (*d)->Dest;
+#ifdef __DEBUG__ 
+			if (isnan(Lable[Dest])) DEBUG("Od Pair %d,min cost is NaN", *d);
+#endif	
+			this->OdPairs.at((*d)->ID).AfterRemoveSpDist = Lable[Dest];
+			//ODPairs.at(*d).MinCost.at(ModeType) = Lable[Dest];
+			if (this->OdPairs.at((*d)->ID).AfterRemoveSpDist < InvalidMinCost)
+			{
+				this->OdPairs.at((*d)->ID).isConnected = true;
+			}
+			/*if (ODPairs.at(*d).MinCost.at(ModeType) < InvalidMinCost)
+				ODPairs.at(*d).isConnected = true;*/
+		}
+	}
+	
+	double EIvalue = 0.0;
+	for (auto o:OdPairs)
+	{
+#ifdef _DEBUG
+		assert(o.AfterRemoveSpDist > 0);
+		assert(o.BeforeRemoveSpDist > 0);
+#endif // _DEBUG
+		EIvalue += (1/ o.BeforeRemoveSpDist- 1 / o.AfterRemoveSpDist);
+	}
+
+	//Final step add back the link
+	this->Links.at(LinkID).Cost = this->Links.at(LinkID).IniCost();
+
+	return EIvalue;
+}

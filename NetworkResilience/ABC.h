@@ -69,6 +69,8 @@ public:
 	};
 	~ABCAlgorithms() { Graph = nullptr; };
 	std::vector<SCHCLASS> Sols;
+	void ComputeFailureLinkEI();
+	void printLinkEI();
 	void ReadSolAndEvaluate(vector<int>& vec);
 	void GenerateIni();
 	void ABCMain();
