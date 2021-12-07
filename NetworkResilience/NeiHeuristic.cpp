@@ -346,14 +346,16 @@ void SCHCLASS::Nei_Greedy_EI_Based(SCHCLASS& NewSol, GRAPH& g, string sType)
 		if (sType._Equal("Max"))
 		{
 			lid = get_max(LinkEIs).first;
+#ifdef _DEBUG
 			cout << "max ei element is " << get_max(LinkEIs).first << endl;
+#endif // _DEBUG
 		}
 		else if (sType._Equal("Prob"))
 		{
 			lid = SectOneFromMap(LinkEIs);
+#ifdef _DEBUG
 			cout << "selected prob ei element is " << lid << endl;
-			if (lid == 2)
-				cout << "wtf" << endl;
+#endif // _DEBUG
 		}
 		else
 			cout << "need to specific the input of sType for EI based operator" << endl;

@@ -31,6 +31,8 @@ double GaMutationRate;
 int SeedRunCount;
 std::vector<int> SeedVecVal;
 bool UseMyOwnAlgo;
+bool isTestSingleOperator;
+int TestSingleOpIndex;
 
 
 #endif

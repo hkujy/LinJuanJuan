@@ -20,6 +20,22 @@ void ReadModelPara()
 		if (fields[0] == "UEeps")	UEeps = stof(fields[1]);
 		if (fields[0] == "UEmaxIter")	UEmaxIter = stoi(fields[1]);
 		if (fields[0] == "NetworkIndex")	NetworkIndex = stoi(fields[1]);
+		if (fields[0] == "SingleOpIndex") TestSingleOpIndex = stoi(fields[1]);
+		if (fields[0] == "isTestSingleOp")
+		{
+			if (fields[1]._Equal("True"))
+			{
+				isTestSingleOperator = true;
+			}
+			else if (fields[1]._Equal("False"))
+			{
+				isTestSingleOperator = false;
+			}
+			else
+			{
+				cout << "C++: Warning:isTestSingleOperator is not read properly" << endl;
+			}
+		}
 		if (fields[0] == "UseMyOwn")
 		{
 			if (fields[1] == "True")

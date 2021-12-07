@@ -13,7 +13,7 @@ using namespace std;
 
 int ABCAlgorithms::SelectOperIndex()
 {
-	return 7;
+	if (isTestSingleOperator) return TestSingleOpIndex;
 	if (this->SelectOp == SelectOperatorType::Uniform)
 	{
 		return GenRandomInt(0, NumOperators-1);
@@ -127,7 +127,7 @@ void ABCAlgorithms::ABCMain()
 
 		}
 		Et = clock();
-		CpuTimes.push_back((double)(Et - St) / CLOCKS_PER_SEC); // time unit is second
+		CpuTimes.push_back((double)((Et - St)/CLOCKS_PER_SEC)); // time unit is second
 		this->PrintFinal(s); 
 		PrintOperator(s);
 	}
@@ -136,7 +136,7 @@ void ABCAlgorithms::ABCMain()
 	CpuTimeFile << "Seed,Time" << endl;
 	for (int s= 0;s< SeedVecVal.size();s++)
 	{
-		CpuTimeFile << s << "," << SeedVecVal[s] << endl;
+		CpuTimeFile << s << "," << fixed << setprecision(2) <<CpuTimes[s]<< endl;
 	}
 	CpuTimeFile.close();
 
@@ -585,7 +585,6 @@ void ABCAlgorithms::UpdateOperatorWeight_ALNS()
 		Operators.at(i).calWeight(ReactionFactor);
 	}
 }
-
 /// <summary>
 ///  print the summary of the operators
 /// </summary>
@@ -595,14 +594,13 @@ void ABCAlgorithms::PrintOperator(int seedid)
 	OutFile.open("..//OutPut//OperatorsMeasure.txt", ios::app);
 	for (int i = 0; i < NumOperators; ++i)
 	{
-		assert(Operators.at(i).TotalCounterSum > 0);
 		OutFile << seedid<< ",";
 		OutFile << i<< ",";
 		OutFile << Operators.at(i).TotalCounterGood << ",";
 		OutFile << Operators.at(i).TotalCounterBad << ",";
 		OutFile << Operators.at(i).TotalCounterSum << ",";
-		OutFile << double(Operators.at(i).TotalCounterGood)/ double(Operators.at(i).TotalCounterSum) << ",";
-		OutFile << double(Operators.at(i).TotalCounterBad)/double(Operators.at(i).TotalCounterSum)<<",";
+		OutFile << double(Operators.at(i).TotalCounterGood)/max(1.0, double(Operators.at(i).TotalCounterSum)) << ",";
+		OutFile << double(Operators.at(i).TotalCounterBad)/max(1.0,double(Operators.at(i).TotalCounterSum))<<",";
 		OutFile << Operators.at(i).Prob <<",";
 		OutFile << Operators.at(i).Score << ",";
 		OutFile << Operators.at(i).Weight;

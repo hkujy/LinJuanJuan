@@ -62,9 +62,55 @@ def TestGa(_mf):
     to_folder = _mf.root_folder + "LinJuanJuan\\Tests\\GA"
     copy_folder(from_folder, to_folder)
 
+def TestSingleOperator(mf):
+    """Function for test single operator effect
+    """
+    for i in range(0,8):
+        adjust_para = {
+            "UseMyOwn": "True",
+            # "NetworkIndex": 5,  # WangNet
+            "NetworkIndex": 3,  # SiouxFall
+            "isTestSingleOp": "True",
+            "SingleOpIndex": i,
+            # "NumEmployBee": 10,
+            # "NumOnlookerBee": 10,
+            # "MaxScountCount": 50,
+            # "MaxABCIter": 200,
+            "RewardImproveGlobal": 20,
+            "RewardImproveLocal": 10,
+            "RewardWorse": 0,
+            "ReactionFactor": 0.5,
+            "SelectOperator": "Uni"
+        }
+        para.global_case_id=para.global_case_id + 1
+        TestOneCase(mf, adjust_para, _case_id=para.global_case_id, _case_name="TestOp_"+str(i))
+
+def TestDifferntOpSelect(mf):
+    """
+        select different operator
+    """
+    adjust_para = {
+        "UseMyOwn": "True",
+        # "NetworkIndex": 5,  # WangNet
+        "NetworkIndex": 3,  # SiouxFall
+        # "NumEmployBee": 10,
+        # "NumOnlookerBee":10,
+        # "MaxScountCount": 50,
+        # "MaxABCIter": 200,
+        "RewardImproveGlobal": 20,
+        "RewardImproveLocal": 10,
+        "RewardWorse": 0,
+        "ReactionFactor": 0.5,
+        "SelectOperator": "ALNS"
+    }
+    para.global_case_id = para.global_case_id + 1
+    TestOneCase(mf, adjust_para, _case_id=para.global_case_id, _case_name="ALNS")
+    adjust_para['SelectOperator'] = "Uni"
+    para.global_case_id = para.global_case_id + 1
+    TestOneCase(mf, adjust_para, _case_id=para.global_case_id, _case_name="Uni")
 
 if __name__ == "__main__":
-
+    para.global_case_id = -1
     if len(para.SeedPool) < para.NumOfTestSeed:
         print("PyWarning: Number of Test Seed is larger than the seed pool")
         exit()
@@ -77,23 +123,9 @@ if __name__ == "__main__":
         print(-1, file=f)
     print("Python seed file is printed")
     para.Copy_input_and_test_files(mf)
-    adjust_para = {
-        "UseMyOwn": "True",
-        # "NetworkIndex": 5,  # WangNet
-        "NetworkIndex": 3,  # SiouxFall
-        "NumEmployBee": 5,
-        "NumOnlookerBee": 5,
-        "MaxScountCount": 10,
-        "MaxABCIter": 25,
-        "RewardImproveGlobal": 20,
-        "RewardImproveLocal": 10,
-        "RewardWorse": 0,
-        "ReactionFactor": 0.5,
-        "SelectOperator": "ALNS"
-    }
-    TestOneCase(mf, adjust_para, _case_id=1, _case_name="ALNS")
-    adjust_para['SelectOperator'] = "Uni"
-    TestOneCase(mf, adjust_para, _case_id=2, _case_name="Uni")
+
+    TestSingleOperator(mf)
+    TestDifferntOpSelect(mf)
 
     # ------------------Test GA Function
     # TestGa(mf)

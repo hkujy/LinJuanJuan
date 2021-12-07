@@ -10,10 +10,11 @@ isRunTest = True
 # isRunTest = False
 # isDebug = True
 isDebug = False
-NumOfTestSeed = 1
+NumOfTestSeed = 2
 SeedPool = [4601, 6677, 2887, 6421, 8471, 512, 3547, 2614, 8146,
             9629, 8266, 3045, 9770, 3048, 6705, 9591, 7905, 8223, 9044, 1091]
 
+global_case_id = 0
 
 class ParaClass(object):
     """parameter class
@@ -26,13 +27,15 @@ class ParaClass(object):
             "UseMyOwn": "True",
             # "NetworkIndex": 3,   # SiouxFall
             # "NetworkIndex":4,   # Paradox
-            "NetworkIndex":5,   # Wang
+            "NetworkIndex": 5,   # Wang
             #  "UseMyOwn": "False",
-            "NumEmployBee": 10,
-            "NumOnlookerBee": 10,
-            "MaxScountCount": 50,
-            "MaxABCIter": 100,
-            "MaxGAIter":5,
+            "isTestSingleOp": "False",
+            "SingleOpIndex": -1,
+            "NumEmployBee": 5,
+            "NumOnlookerBee": 5,
+            "MaxScountCount": 5,
+            "MaxABCIter": 10,
+            "MaxGAIter": 5,
             "RewardImproveGlobal": 10,
             "RewardImproveLocal": 10,
             "RewardWorse": 0,
@@ -65,6 +68,8 @@ class ParaClass(object):
 
         with open("..//InPut//ModelPara.txt", "w+") as f:
             print("NetworkIndex,{0}".format(self.para["NetworkIndex"]), file=f)
+            print("isTestSingleOp,{0}".format( self.para['isTestSingleOp']), file=f)
+            print("SingleOpIndex,{0}".format(self.para['SingleOpIndex']),file=f)
             print("UseMyOwn,{0}".format(self.para["UseMyOwn"]), file=f)
             print("OneDimEsp,{0}".format(self.para["OneDimEsp"]), file=f)
             print("UEeps,{0}".format(self.para["UEeps"]), file=f)

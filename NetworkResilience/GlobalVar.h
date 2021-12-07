@@ -4,6 +4,8 @@
 #include <fstream>
 #include <random>
 //Constant
+extern bool isTestSingleOperator;
+extern int TestSingleOpIndex;
 extern double Zero;
 extern int NumOrig;
 extern int NumDest;

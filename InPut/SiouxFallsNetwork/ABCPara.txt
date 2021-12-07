@@ -1,9 +1,11 @@
 UseMyOwn,True
 NetworkIndex,3
+isTestSingleOp,False
+SingleOpIndex,-1
 NumEmployBee,5
 NumOnlookerBee,5
-MaxScountCount,10
-MaxABCIter,25
+MaxScountCount,5
+MaxABCIter,10
 MaxGAIter,5
 RewardImproveGlobal,20
 RewardImproveLocal,10
