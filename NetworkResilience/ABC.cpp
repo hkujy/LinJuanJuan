@@ -13,7 +13,7 @@ using namespace std;
 
 int ABCAlgorithms::SelectOperIndex()
 {
-	return 6;
+	return 7;
 	if (this->SelectOp == SelectOperatorType::Uniform)
 	{
 		return GenRandomInt(0, NumOperators-1);
@@ -78,7 +78,6 @@ void ABCAlgorithms::IniOperatorProb()
 	{
 		std::cout << "C++ Warning: iniOperatorProb type is not defined" << endl;
 	}
-
 }
 
 void ABCAlgorithms::ABCMain()
@@ -331,7 +330,7 @@ void ABCAlgorithms::UpdateOperatorProb_ALNS()
 	}
 }
 
-int RouletteSelect(vector<double> cumProb)
+int RouletteSelect(const vector<double> &cumProb)
 {
 	int selected = -1;
 	double f = GenRandomReal();

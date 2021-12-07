@@ -75,7 +75,8 @@ public:
 	void Nei_Insert_One_Random_To_Right(SCHCLASS& NewSol);
 	void Nei_Insert_One_Random_To_Left(SCHCLASS& NewSol);
 	void Nei_CrossOver_OnePoint(SCHCLASS& NewSol);
-	void Nei_Greedy_MaxEI(SCHCLASS& NewSol, GRAPH& g);
+	void Nei_Greedy_EI_Based(SCHCLASS& NewSol, GRAPH& g, string sType);
+	void Nei_Prob_EI(SCHCLASS& NewSol, GRAPH& g);
 
 	void GenerateTimeFromOrder(const vector<double>& ResCap);
 	void Repair_Delay();

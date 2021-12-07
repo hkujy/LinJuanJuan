@@ -27,7 +27,8 @@ void SCHCLASS::GenNei(SCHCLASS& Nei, GRAPH& g, int &OpId,const vector<int>& Fail
 		case(3): Nei_Move_One_To_Right(Nei); break;
 		case(4): Nei_Insert_One_Random_To_Left(Nei); break;
 		case(5): Nei_Insert_One_Random_To_Right(Nei); break;
-		case(6): Nei_Greedy_MaxEI(Nei, g); break;
+		case(6): Nei_Greedy_EI_Based(Nei, g,"Max"); break;
+		case(7): Nei_Greedy_EI_Based(Nei, g,"Prob"); break;
 	default:
 		cout << "Neighbor operator index is properly set" << endl;
 		system("PAUSE");
@@ -258,7 +259,56 @@ std::pair<KeyType, ValueType> get_max(const std::map<KeyType, ValueType>& x) {
 		return p1.second < p2.second;
 		});
 }
-void SCHCLASS::Nei_Greedy_MaxEI(SCHCLASS& NewSol, GRAPH& g)
+
+int RouletteSelect(const vector<double> &cumProb);
+/// <summary>
+/// return the first element of selected map value
+/// </summary>
+/// <param name="m_Lid2EI"></param>
+/// <returns></returns>
+int SectOneFromMap(const std::map<int, double> &m_Lid2EI)
+{
+	if (m_Lid2EI.size() == 1) // if it equals one
+	{
+		return m_Lid2EI.begin()->first;
+	}
+	vector<double> pro(m_Lid2EI.size(), 0.0);
+	vector<double> cumProb(m_Lid2EI.size(), 0.0);// ini the cumulate pro
+	double sum = 0;
+	for (auto it : m_Lid2EI) {
+		sum += it.second;
+	}
+	int counter = 0;
+	for (auto it : m_Lid2EI) {
+		pro.at(counter) = it.second / sum;
+		counter++;
+	}
+	cumProb.at(0) = 0.0;
+    std::map<int, double>::iterator itr;
+	counter = 0;
+	for (auto itr:m_Lid2EI)
+	{
+		cumProb[counter + 1] = cumProb[counter] + pro[counter];
+		counter++;
+		if (counter == m_Lid2EI.size() - 1) break;
+	}
+	int SelectedNum = -1;
+	SelectedNum = RouletteSelect(cumProb);
+	counter = 0;
+
+	for (auto itr : m_Lid2EI)
+	{
+		if (counter == SelectedNum)
+		{
+			return itr.first;
+		}
+		counter++;
+	}
+	cout << "C++ Warning: can not find a number from SectOneFromMap" << endl;
+	return -1;
+}
+
+void SCHCLASS::Nei_Greedy_EI_Based(SCHCLASS& NewSol, GRAPH& g, string sType)
 {
 	// step: random select a location
 	int stp= GenRandomInt(0, int(Links.size() - 1));
@@ -292,8 +342,21 @@ void SCHCLASS::Nei_Greedy_MaxEI(SCHCLASS& NewSol, GRAPH& g)
 				(*Links.at(j)).Cost = RemoveLinkCost;
 			}
 		}
-		cout << "max ei element is " << get_max(LinkEIs).first << endl;
-		int lid = get_max(LinkEIs).first;
+		int lid = -1;
+		if (sType._Equal("Max"))
+		{
+			lid = get_max(LinkEIs).first;
+			cout << "max ei element is " << get_max(LinkEIs).first << endl;
+		}
+		else if (sType._Equal("Prob"))
+		{
+			lid = SectOneFromMap(LinkEIs);
+			cout << "selected prob ei element is " << lid << endl;
+			if (lid == 2)
+				cout << "wtf" << endl;
+		}
+		else
+			cout << "need to specific the input of sType for EI based operator" << endl;
 		//NewSol.Links.at(i) = Links.at(lid);
 		NewSol.Links.at(i) = &g.Links.at(lid);
 		for (int j = stp; j < Links.size(); j++)

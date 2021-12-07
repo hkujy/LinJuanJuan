@@ -122,7 +122,6 @@ int main(int argc, char* argv[])
 	std::cout << "# start to read algorithm data" << endl;
 	MainAlgo.ReadData(BaseGraph);
 	std::cout << "# complete read graph data" << endl;
-
 	MainAlgo.ComputeFailureLinkEI();
 	MainAlgo.printLinkEI();
 
