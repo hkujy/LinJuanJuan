@@ -39,6 +39,7 @@ GRAPH::GRAPH(){
 	this->OriginSet.reserve(NumNodes);
 	this->Nodes.reserve(NumNodes + 1);
 	this->Links.reserve(NumLinks + 1);
+	TotalSystemCost = 0.0;
 	//int** MinPathPredLink;
 	if (NumNodes==0)
 	{
@@ -128,7 +129,7 @@ void GRAPH::CreateOriginSet()
 }
 
 void GRAPH::CreateNodes(){
-	cout << this->Links.size() << endl;
+	cout <<"Read Number of Nodes in the network is"<<this->Links.size() << endl;
 	assert(this->Links.size() > 0);
 	NODE tnode;
 	for (int i = 0; i < NumNodes; i++)

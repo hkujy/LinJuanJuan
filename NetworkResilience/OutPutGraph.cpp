@@ -15,9 +15,9 @@ void OutPutGraph(GRAPH &Graph){
 void OutputSummary(vector<CHROME> &BestSol,GRAPH &Graph,vector<double> &CpuTime){
 	std::ofstream  foutLink,foutOD,fSummay,fsol;
 	fSummay.open("..//OutPut//Summary.txt", ios::app);
-	double BaseUNPM;
+	//double BaseUNPM;
 	Graph.EvaluteGraph();
-	BaseUNPM = Graph.UNPM;
+	//BaseUNPM = Graph.UNPM;
 	
 	foutLink.open("..//OutPut//BestSolLink.txt", ios::app);
 	foutOD.open("..//OutPut//BestSolOD.txt", ios::app);

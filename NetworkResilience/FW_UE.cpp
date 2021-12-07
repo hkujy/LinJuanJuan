@@ -259,7 +259,7 @@ void GRAPH::EvaluteGraph() {
 		this->TotalSystemCost += od->Demand * od->MinCost;
 	}
 	assert(StatusMsg);
-	this->UNPM = 0.0f;
+	//this->UNPM = 0.0f;
 	for (auto od = this->OdPairs.begin(); od != this->OdPairs.end(); od++)
 	{
 		assert(od->MinCost >= 0.0f);
@@ -267,10 +267,10 @@ void GRAPH::EvaluteGraph() {
 		{
 			TRACE("od->MinCost <Zeor\n");
 		}
-		this->UNPM +=
-			od->Demand / od->MinCost;
+		//this->UNPM +=
+		//	od->Demand / od->MinCost;
 	}
-	this->UNPM = this->UNPM / (double)this->OdPairs.size();
+	//this->UNPM = this->UNPM / (double)this->OdPairs.size();
 #if DEBUG
 	cout << "Print Detail solution" << endl;
 	std::ofstream BaseSolutionOutput;

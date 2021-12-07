@@ -135,7 +135,7 @@ public:
 	std::vector<LINK> Links;
 	std::vector<NODE> Nodes;
 	std::vector<OriginBasedOD> OriginSet;
-	double UNPM;
+	//double UNPM;
 	double TotalSystemCost;
 	int **MinPathPredLink;
 	GRAPH();

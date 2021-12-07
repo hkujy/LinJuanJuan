@@ -75,7 +75,7 @@ void ABCAlgorithms::IniOperatorProb()
 	else if (SelectOp == SelectOperatorType::Uniform) { ; }
 	else 
 	{
-		cout << "C++ Warning: iniOperatorProb type is not defined" << endl;
+		std::cout << "C++ Warning: iniOperatorProb type is not defined" << endl;
 	}
 
 }
@@ -84,8 +84,11 @@ void ABCAlgorithms::ABCMain()
 {
 	ofstream ConvergeFile;
 	ConvergeFile.open("..//OutPut//ABCConverge.txt", ios::app);
+	vector<double> CpuTimes;
+	clock_t St, Et;
 	for (int s = 0; s < SeedVecVal.size(); s++)
 	{
+		St = clock();
 		GenRan.seed((unsigned)SeedVecVal.at(s));
 		// start the process of one seed operation
 		ConvergeMeasure.clear();
@@ -121,9 +124,21 @@ void ABCAlgorithms::ABCMain()
 			ConvergeMeasure.push_back(GlobalBest.Fitness);
 			if (isWriteConverge) ConvergeFile << s << "," << i << "," << fixed << setprecision(2) << ConvergeMeasure.back() << endl;
 			if (SelectOp!=SelectOperatorType::Uniform) UpdateOperatorWeight();
+
 		}
-		this->PrintFinal(s); PrintOperator(s);
+		Et = clock();
+		CpuTimes.push_back((double)(Et - St) / CLOCKS_PER_SEC); // time unit is second
+		this->PrintFinal(s); 
+		PrintOperator(s);
 	}
+	ofstream CpuTimeFile;
+	CpuTimeFile.open("..//OutPut//CpuTime.txt", ios::trunc);
+	CpuTimeFile << "Seed,Time" << endl;
+	for (int s= 0;s< SeedVecVal.size();s++)
+	{
+		CpuTimeFile << s << "," << SeedVecVal[s] << endl;
+	}
+	CpuTimeFile.close();
 
 #ifdef _DEBUG
 	cout << "*************************ABC completes**************************" << endl;
@@ -296,7 +311,7 @@ void ABCAlgorithms::UpdateOperatorProb()
 	{
 		UpdateOperatorProb_ALNS();
 	}
-	else { cout << "C++ Warning: UpdateOperator Type is not specified" << endl; }
+	else { std::cout << "C++ Warning: UpdateOperator Type is not specified" << endl; }
 }
 
 void ABCAlgorithms::UpdateOperatorProb_ALNS()
@@ -330,9 +345,10 @@ int RouletteSelect(vector<double> cumProb)
 	if (f >= cumProb.back()) selected = static_cast<int>(cumProb.size() - 1);
 	if (selected < 0)
 	{
-		cout << f << endl;
-		for (auto v : cumProb) cout << v << endl;
-		cout << "wtf" << endl;
+		std::cout << "C++ Warning: RouletteSelect does not select a proper val" << endl;
+		std::cout << f << endl;
+		for (auto v : cumProb) std::cout << v << endl;
+		std::cout << "wtf" << endl;
 	}
 	assert(selected >= 0);
 	return selected;
@@ -361,14 +377,14 @@ void ABCAlgorithms::ReadData(GRAPH& g)
 	FILE* fseedin;
 	if (NetworkIndex == 1)
 	{
-		cout << "Model Index is not specified" << endl;
+		std::cout << "Model Index is not specified" << endl;
 		system("Pause");
 		//fin.open("..//InPut//MediumNetwork//Para.txt");
 		/*fga.open("..//InPut//SiouxFallsNetwork//GAPara.txt");*/
 	}
 	else if (NetworkIndex == 2)
 	{
-		cout << "Model Index is not specified" << endl;
+		std::cout << "Model Index is not specified" << endl;
 		system("Pause");
 		//fin.open("..//InPut//Nagureny2009Network//Para.txt");
 	}
@@ -397,11 +413,11 @@ void ABCAlgorithms::ReadData(GRAPH& g)
 	}
 	else
 	{
-		cout << "Model Index is not specified" << endl;
+		std::cout << "Model Index is not specified" << endl;
 		system("Pause");
 	}
-	cout << "Complete open files" << endl;
-	cout << "Start to read para" << endl;
+	std::cout << "Complete open files" << endl;
+	std::cout << "Start to read para" << endl;
 	string line;
 	vector<string> fields;
 	while (getline(f_ABCpara, line))
@@ -425,8 +441,8 @@ void ABCAlgorithms::ReadData(GRAPH& g)
 		}
 	}
 	f_ABCpara.close();
-	cout << "complete read ABC para" << endl;
-	cout << "Start to read failure link data" << endl;
+	std::cout << "complete read ABC para" << endl;
+	std::cout << "Start to read failure link data" << endl;
 	while (getline(f_FailLinks, line))
 	{
 		splitf(fields, line, ",");
@@ -446,15 +462,15 @@ void ABCAlgorithms::ReadData(GRAPH& g)
 				setResourceCap.assign(MaxNumOfSchPeriod, stoi(fields[1]));
 			}
 			else
-				cout << "ERR: Read failure links warning" << endl;
+				std::cout << "ERR: Read failure links warning" << endl;
 		}
 		else
-			cout << "ERR: Read failure links warning" << endl;
+			std::cout << "ERR: Read failure links warning" << endl;
 
 	}
 	f_FailLinks.close();
 
-	cout << "compete read failure link data" << endl;
+	std::cout << "compete read failure link data" << endl;
 
 	/// <summary>
 	/// print and check the model parameters input
@@ -484,7 +500,7 @@ void ABCAlgorithms::ReadData(GRAPH& g)
 	}
 	else
 	{
-		cout << "Warning: SelectOp does not properly" << endl;
+		std::cout << "Warning: SelectOp does not properly" << endl;
 	}
 	fout.close();
 }
@@ -600,7 +616,7 @@ void ABCAlgorithms::UpdateOperatorWeight()
 	{
 		UpdateOperatorWeight_ALNS();
 	}
-	else { cout << "C++ Warning: Update Operator weight type is not specified" << endl; }
+	else { std::cout << "C++ Warning: Update Operator weight type is not specified" << endl; }
 }
 
 /// <summary>
@@ -615,10 +631,10 @@ void ABCAlgorithms::ReadSolAndEvaluate(vector<int> &vec)
 	sol.StartTime.assign(setOfFailureLinks.size(), -1);
 	for (int l = 0; l < vec.size(); l++) sol.Links.push_back(&Graph->Links.at(vec[l]));
 	if (setOfFailureLinks.size() != vec.size()) 
-		cout << "c++: warning: the failure link size does not equal vec size" << endl;
+		std::cout << "c++: warning: the failure link size does not equal vec size" << endl;
 	sol.AlignStartTime(setResourceCap);
 	sol.Evaluate(*Graph);
 	//Remark: this is the last line of the exe, so that the results can be read from python
 	//        Do not print the "endl" at the end.
-	cout << sol.Fitness;
+	std::cout << sol.Fitness;
 }

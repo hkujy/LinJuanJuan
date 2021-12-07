@@ -55,3 +55,7 @@
 1. I can design a construction algorithm
 - first align all the projects to the same period
 - then using some greedy method to move the project starting time
+2. Extend to multi modal 
+3. In the future, could change it other other objectives 
+   1. unpm
+   2. equity 

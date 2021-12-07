@@ -79,7 +79,8 @@ if __name__ == "__main__":
     para.Copy_input_and_test_files(mf)
     adjust_para = {
         "UseMyOwn": "True",
-        "NetworkIndex": 5,  # WangNet
+        # "NetworkIndex": 5,  # WangNet
+        "NetworkIndex": 3,  # SiouxFall
         "NumEmployBee": 5,
         "NumOnlookerBee": 5,
         "MaxScountCount": 10,
