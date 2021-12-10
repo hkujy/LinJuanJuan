@@ -136,7 +136,8 @@ int main(int argc, char* argv[])
 	BaseGraph.ReadDataMain();
 	std::cout << "# complete read graph data" << endl;
 	std::cout << "# start to read algorithm data" << endl;
-	MainAlgo.ReadData(BaseGraph);
+	MainAlgo.Ini(BaseGraph); //contains all the ini procedure for the algorithm
+	//MainAlgo.ReadData(BaseGraph);
 	std::cout << "# complete read graph data" << endl;
 	MainAlgo.ComputeFailureLinkEI();
 	MainAlgo.printLinkEI();

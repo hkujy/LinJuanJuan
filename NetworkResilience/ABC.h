@@ -24,6 +24,19 @@ public:
 	void calWeight(double r);
 };
 
+class PatternClass
+{
+public:
+	int id;
+	int LinkId;
+	vector<double> Score;
+	vector<double> Prob;
+	vector<int> next;
+	PatternClass() { id = -1; LinkId = -1; Score.reserve(100); Prob.reserve(100); }
+	~PatternClass() { Score.clear(); Prob.clear(); id = -1; LinkId = -1; }
+	void updateProb();
+};
+
 
 class ABCAlgorithms // to begin with use ABC algorithm
 {
@@ -44,11 +57,13 @@ public:
 	SCHCLASS GlobalBest;
 	vector<double> ConvergeMeasure;
 	vector<OperatorClass> Operators;
+	vector<PatternClass> Pattern;
 	double RewardImproveGlobal;
 	double RewardImproveLocal;
 	double RewardWorse;
 	double ReactionFactor;
 	SelectOperatorType SelectOp;
+	void Ini(GRAPH& g);
 	ABCAlgorithms() {
 		MaxFitValue = -99999999999999; MinFitValue = 999999999999999;
 		NumEmployedBee = -1; NumOnlookers = -1; MaxScountCount = -1; MaxIter = -1;
@@ -60,6 +75,7 @@ public:
 		RewardImproveLocal = 0.0;
 		RewardWorse = 0.0;
 		ReactionFactor = 0.0;
+		Pattern.reserve(100);
 		SelectOp = SelectOperatorType::None;
 		for (int i = 0; i < NumOperators; i++)
 		{
@@ -83,6 +99,8 @@ public:
 	void PrintFinal(int sd);
 	void UpdateOperatorMeaures(int _id, bool isImproved);
 	bool CompareTwoSolsAndReplace(SCHCLASS& lhs, SCHCLASS& rhs, int NeiOperatorId);
+	void updatePatternScore(const SCHCLASS& sol, bool isGloablImprove);
+	size_t findPatternIndex(int lid);
 	void PrintOperator(int seedid);
 	void UpdateOperatorProb();
 	void IniOperatorProb();
@@ -95,6 +113,7 @@ public:
 	void UpdateOperatorWeight_ALNS();
 	int SelectOperator_ALNS();
 	void IniOperatorProb_ANLS();
+	void printPattern(int seedid);
 
 
 };

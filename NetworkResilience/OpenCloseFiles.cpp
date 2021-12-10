@@ -26,11 +26,15 @@ void OpenAndCleanFiles(){
 	OutFile.open("..//OutPut//ABCConverge.txt", ios::trunc);
 	OutFile.close();
 	OutFile.open("..//OutPut//OperatorsMeasure.txt", ios::trunc);
-	OutFile << "seed,id,good,bad,sum,gp,bp,prob,score,weight" << endl;
+	OutFile << "Seed,Id,Good,Bad,Sum,Gp,Bp,Prob,Score,Weight" << endl;
 	OutFile.close();
 	OutFile.open("..//OutPut/LinkEI.txt", ios::trunc);
 	OutFile << "LinkId,EI" << endl;
 	OutFile.close();
+	OutFile.open("..//OutPut//PrintPatternScore.txt", ios::trunc);
+	OutFile << "Seed,First,Second,Score,Prob" << endl;
+	OutFile.close();
+
 }
 void CloseFiles(){
 	Log.close();

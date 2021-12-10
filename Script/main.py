@@ -69,7 +69,7 @@ def TestSingleOperator(mf):
         adjust_para = {
             "UseMyOwn": "True",
             # "NetworkIndex": 5,  # WangNet
-            "NetworkIndex": 3,  # SiouxFall
+            # "NetworkIndex": 3,  # SiouxFall
             "isTestSingleOp": "True",
             "SingleOpIndex": i,
             # "NumEmployBee": 10,
@@ -92,7 +92,7 @@ def TestDifferntOpSelect(mf):
     adjust_para = {
         "UseMyOwn": "True",
         # "NetworkIndex": 5,  # WangNet
-        "NetworkIndex": 3,  # SiouxFall
+        # "NetworkIndex": 3,  # SiouxFall
         # "NumEmployBee": 10,
         # "NumOnlookerBee":10,
         # "MaxScountCount": 50,
@@ -124,7 +124,7 @@ if __name__ == "__main__":
     print("Python seed file is printed")
     para.Copy_input_and_test_files(mf)
 
-    TestSingleOperator(mf)
+    # TestSingleOperator(mf)
     TestDifferntOpSelect(mf)
 
     # ------------------Test GA Function

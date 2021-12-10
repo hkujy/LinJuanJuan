@@ -8,6 +8,8 @@ const double LargeNum = 1.0e+20f;
 const double RemoveLinkCost = 9999999999.0f;
 const double InvalidMinCost = 9999999999.0f;
 const int MaxNumOfSchPeriod = 50;
+const int PatternLocalImproveScore = 1;
+const int PatternGlobalImproveScore = 5;
 //const int NumOfDisruptLinks = 3;
 enum AlgorithmType
 {

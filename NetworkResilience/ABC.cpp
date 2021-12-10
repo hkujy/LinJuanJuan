@@ -14,7 +14,6 @@ using namespace std;
 int ABCAlgorithms::SelectOperIndex()
 {
 	if (isTestSingleOperator) return TestSingleOpIndex;
-
 	if (this->SelectOp == SelectOperatorType::Uniform)
 	{
 		return GenRandomInt(0, NumOperators-1);
@@ -129,8 +128,10 @@ void ABCAlgorithms::ABCMain()
 		}
 		Et = clock();
 		CpuTimes.push_back((double)((Et - St)/CLOCKS_PER_SEC)); // time unit is second
-		this->PrintFinal(s); 
+		PrintFinal(s); 
 		PrintOperator(s);
+		printPattern(s);
+
 	}
 	ofstream CpuTimeFile;
 	CpuTimeFile.open("..//OutPut//CpuTime.txt", ios::trunc);
@@ -226,10 +227,17 @@ bool ABCAlgorithms::CompareTwoSolsAndReplace(SCHCLASS& lhs, SCHCLASS& rhs, int N
 #endif // _DEBUG
 		lhs = rhs;
 		isBetter = true;
-		if (rhs.Fitness < GlobalBest.Fitness) GlobalBest = rhs;
+		if (rhs.Fitness < GlobalBest.Fitness)
+		{
+			GlobalBest = rhs;
+			updatePatternScore(GlobalBest, true);
+		}
+		else
+		{
+			updatePatternScore(rhs, false);
+		}
 	}
 	return isBetter;
-
 }
 
 void ABCAlgorithms::EmployBeePhase()
@@ -268,6 +276,8 @@ void ABCAlgorithms::OnlookerPhase()
 		bool isImproved = false;
 		if (SelectOp!=SelectOperatorType::Uniform) UpdateOperatorScore(OpId, Nei.Fitness, this->Sols.at(SelectOp).Fitness, GlobalBest.Fitness);
 		isImproved = CompareTwoSolsAndReplace(this->Sols.at(Selected), Nei, OpId);
+		if (isImproved) ScountCounter.at(Selected) = 0;
+		else ScountCounter.at(Selected)++;
 		UpdateOperatorMeaures(OpId, isImproved);
 	}
 }
@@ -287,6 +297,7 @@ void ABCAlgorithms::ScoutPhase()
 			if (this->Sols.at(t).Fitness < GlobalBest.Fitness)
 			{
 				GlobalBest = this->Sols.at(t);
+				updatePatternScore(GlobalBest, true);
 			}
 			ScountCounter.at(t) = 0;
 		}
@@ -369,6 +380,24 @@ void ABCAlgorithms::UpdateOperatorScore(int OpId, double ResultFit, double Local
 size_t ABCAlgorithms::SelectOnLookerBasedonProb()
 {
 	return RouletteSelect(CumProbForSelectOnlooker);
+}
+
+
+void ABCAlgorithms::Ini(GRAPH& g)
+{
+	ReadData(g);
+	for (int l = 0; l < setOfFailureLinks.size(); l++)
+	{
+		Pattern.push_back(PatternClass());
+		Pattern.back().id = l;
+		Pattern.back().LinkId = setOfFailureLinks.at(l);
+		for (int k =0;k<setOfFailureLinks.size();k++)
+		{
+			Pattern.back().next.push_back(setOfFailureLinks.at(k));
+		}
+		Pattern.back().Prob.assign(setOfFailureLinks.size(), 0.0);
+		Pattern.back().Score.assign(setOfFailureLinks.size(), 1.0);
+	}
 }
 
 void ABCAlgorithms::ReadData(GRAPH& g)
@@ -536,7 +565,7 @@ void ABCAlgorithms::UpdateOperatorScore_ALNS(int OpId, double ResultFit, double 
 {
 	//TODO: write function to read reward 
 	//      change the prob for selecting nei
-	//      write python to read paramemter 
+	//      write python to read parameter 
 	//      and select which nei select method is used 
 	assert(OpId >= 0); assert(OpId <= NumOperators-1);
 	if (ResultFit<GlobalFit)
@@ -660,3 +689,79 @@ void ABCAlgorithms::printLinkEI()
 	OutFile.close();
 }
 
+//based the score value update the patten prob
+void PatternClass::updateProb()
+{
+	assert(Score.size() > 0);
+	assert(Prob.size() > 0);
+	double sum = std::accumulate(Score.begin(), Score.end(), 0.0);
+	for (int p = 0; p < Prob.size(); p++)
+	{
+		Prob[p] = Score[p] / sum;
+	}
+}
+
+
+// return the location of the vector
+size_t ABCAlgorithms::findPatternIndex(int lid)
+{
+	assert(lid >= 0);
+	for (size_t i = 0;i<Pattern.size();i++)
+	{
+		if (Pattern[i].LinkId == lid) return i;
+	}
+	cout << "C++ Warning: Can not find pattern index" << endl;
+	return  -1;
+
+}
+
+
+int FindValIndex(const vector<int>& vec, int key);
+// update the score based on the input solution 
+// only call this when it is improved
+void ABCAlgorithms::updatePatternScore(const SCHCLASS &sol,bool isGloablImprove)
+{
+	//TOOD: update the pattern of the improve solution
+	for (int i = 0; i < sol.Links.size()-1; i++)
+	{
+		int first = (*sol.Links.at(i)).ID;
+		int next = (*sol.Links.at(i+1)).ID;
+		
+		size_t PtLoc = findPatternIndex(first);
+		size_t VecLoc = static_cast<size_t> (FindValIndex(setOfFailureLinks, next));
+		if (isGloablImprove)
+		{
+			Pattern.at(PtLoc).Score.at(VecLoc) += PatternGlobalImproveScore;
+		}
+		else
+		{
+			Pattern.at(PtLoc).Score.at(VecLoc) += PatternLocalImproveScore;
+		}
+	}
+
+	//todo : need to check whether this score is improved
+	for (auto &p:Pattern)
+	{
+		p.updateProb();
+	}
+}
+//print pattern on the file
+void ABCAlgorithms::printPattern(int seedid)
+{
+	ofstream OutFile;
+	OutFile.open("..//OutPut//PrintPatternScore.txt", ios::app);
+	//OutFile << "Seed,First,Second,Score,Prob" << endl;
+	for (auto p : Pattern)
+	{
+		for (int i=0;i<p.next.size();i++)
+		{
+			OutFile << seedid << ",";
+			OutFile << p.LinkId << ",";
+			OutFile << p.next.at(i) << ",";
+			OutFile << p.Score.at(i) << ",";
+			OutFile << p.Prob.at(i) << endl;
+		}
+	}
+	OutFile.close();
+
+}
