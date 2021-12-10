@@ -30,6 +30,7 @@ def plot_converge(_ps, _file, _numOfiter, algName):
         # print(g)
         plt.plot(g, label="seed"+str(s))
         gap.append(g)
+    plt.title(algName)
     plt.ion()
     plt.legend()
     plt.pause(1)
@@ -46,6 +47,7 @@ def plot_converge(_ps, _file, _numOfiter, algName):
         val = val/num_of_seed
         ave.append(val)
     plt.plot(ave, label="ave gap")
+    plt.title(algName)
     plt.ion()
     plt.legend()
     plt.pause(2)

@@ -10,7 +10,6 @@
 //{
 //	return GenRandomInt(0, NumOperators-1);
 //}
-
 //main fun for generate a neighborhoods operator
 void SCHCLASS::GenNei(SCHCLASS& Nei, GRAPH& g, int &OpId,const vector<int>& FailureLinkSet, const vector<double>& ResCap)
 {

@@ -14,6 +14,7 @@ using namespace std;
 int ABCAlgorithms::SelectOperIndex()
 {
 	if (isTestSingleOperator) return TestSingleOpIndex;
+
 	if (this->SelectOp == SelectOperatorType::Uniform)
 	{
 		return GenRandomInt(0, NumOperators-1);

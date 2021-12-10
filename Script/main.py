@@ -10,7 +10,7 @@ import run
 import para
 import myclass as mc
 import myplot
-import myga
+# import myga
 
 # TODO: Write seed list in python
 
