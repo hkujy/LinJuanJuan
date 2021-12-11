@@ -9,6 +9,18 @@
 #include "GlobalVar.h"
 using namespace std;
 
+class PatternClass
+{
+public:
+	int id;
+	int LinkId;
+	vector<double> Score;
+	vector<double> Prob;
+	vector<int> next;
+	PatternClass() { id = -1; LinkId = -1; Score.reserve(100); Prob.reserve(100); }
+	~PatternClass() { Score.clear(); Prob.clear(); id = -1; LinkId = -1; }
+	void updateProb();
+};
 
 class SCHCLASS   // class for the schedule 
 {
@@ -53,6 +65,8 @@ public:
 	void AlignStartTime(const vector<double> &ResCap); // improve the solution itself
 	bool isFeasible(const vector<double> &res);  // check the solution is feasible or not
 	void GenerateIniSch(GRAPH& g, const vector<int>& FailureLinkSet);
+	void GenerateIniBasedOnPattern(GRAPH& g, const vector<int>& FailureLinkSet,
+		const vector<PatternClass> &pat);
 	void print() const;
 	void getRes();
 	void updatePrecedingRes(size_t st,size_t et);
@@ -67,7 +81,8 @@ public:
 	}
 	vector<size_t> getNewReadyLinks(int tau);
 	// write a few neighbor operators
-	void GenNei(SCHCLASS& Nei, GRAPH& g, int& OpId, const vector<int>& FailureLinkSet, const vector<double>& ResCap);
+	void GenNei(SCHCLASS& Nei, GRAPH& g, int& OpId,
+		const vector<int>& FailureLinkSet, const vector<double>& ResCap, const vector<PatternClass>& Pat);
 	void Nei_Swap(SCHCLASS &NewSol);
 	void Nei_New(SCHCLASS& NewSol, GRAPH& g, const vector<int>& FailureLinkSet, const vector<double>& ResCap);
 	void Nei_Move_One_To_Right(SCHCLASS& NewSol);
@@ -76,7 +91,8 @@ public:
 	void Nei_Insert_One_Random_To_Left(SCHCLASS& NewSol);
 	void Nei_CrossOver_OnePoint(SCHCLASS& NewSol);
 	void Nei_Greedy_EI_Based(SCHCLASS& NewSol, GRAPH& g, string sType);
-	void Nei_Prob_EI(SCHCLASS& NewSol, GRAPH& g);
+	void Nei_New_Basedon_Pattern(SCHCLASS& NewSol, GRAPH& g, const vector<int>& FailureLinkSet,
+		const vector<double>& ResCap, const vector<PatternClass> &pat);
 
 	void GenerateTimeFromOrder(const vector<double>& ResCap);
 	void Repair_Delay();

@@ -4,14 +4,18 @@
 #include <vector>
 #include <algorithm>
 #include <numeric>
+#include <assert.h>
 #include <map>
-//
+
+
 //int Select_One_Nei()
 //{
 //	return GenRandomInt(0, NumOperators-1);
 //}
 //main fun for generate a neighborhoods operator
-void SCHCLASS::GenNei(SCHCLASS& Nei, GRAPH& g, int &OpId,const vector<int>& FailureLinkSet, const vector<double>& ResCap)
+void SCHCLASS::GenNei(SCHCLASS& Nei, GRAPH& g, 
+	int &OpId,const vector<int>& FailureLinkSet, const vector<double>& ResCap,
+	const vector<PatternClass> &Pat)
 {
 	//OpId = Select_One_Nei();
 	//NeighourOperatorIndex = 6;
@@ -28,6 +32,7 @@ void SCHCLASS::GenNei(SCHCLASS& Nei, GRAPH& g, int &OpId,const vector<int>& Fail
 		case(5): Nei_Insert_One_Random_To_Right(Nei); break;
 		case(6): Nei_Greedy_EI_Based(Nei, g,"Max"); break;
 		case(7): Nei_Greedy_EI_Based(Nei, g,"Prob"); break;
+		case(8): Nei_New_Basedon_Pattern(Nei,g,FailureLinkSet,ResCap,Pat); break;
 	default:
 		cout << "Neighbor operator index is properly set" << endl;
 		system("PAUSE");
@@ -152,8 +157,6 @@ void SCHCLASS::Nei_CrossOver_OnePoint(SCHCLASS& NewSol)
 
 }
 
-
-
 void SCHCLASS::Repair_Delay() // repair the solution by postpone the repair
 {
 	//
@@ -166,7 +169,6 @@ void SCHCLASS::Nei_New(SCHCLASS& NewSol, GRAPH& g,
 	NewSol.GenerateIniSch(g, FailureLinkSet);
 	NewSol.AlignStartTime(ResCap);
 	NewSol.print();
-
 }
 void SCHCLASS::Nei_Insert_One_Random_To_Right(SCHCLASS& NewSol) // randomly insert to a position
 {
@@ -377,5 +379,18 @@ void SCHCLASS::Nei_Greedy_EI_Based(SCHCLASS& NewSol, GRAPH& g, string sType)
 	for (auto l : NewSol.Links) cout << l->ID << endl;
 	cout << "-----------------Complete Greedy MaxEI------------" << endl;
 #endif // _DEBUG
-
 }
+
+//Generate new solution based on the solution pattern 
+void SCHCLASS::Nei_New_Basedon_Pattern(SCHCLASS& NewSol, GRAPH& g,
+	const vector<int>& FailureLinkSet, const vector<double>& ResCap,
+	const vector<PatternClass>& pat)
+{
+	NewSol.GenerateIniBasedOnPattern(g,FailureLinkSet,pat);
+	NewSol.AlignStartTime(ResCap);
+#ifdef _DEBUG
+	cout << "-------Generate new solution based on pattern finishes and print the sol" << endl;
+	NewSol.print();
+#endif // _DEBUG
+}
+

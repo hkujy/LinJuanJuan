@@ -279,3 +279,52 @@ void SCHCLASS::Evaluate(GRAPH& g)
 #endif // _DEBUG
 }
 
+
+int SelectOneIndexFrom(const vector<int>& candy, const vector<double>& prob);
+//GenerateIniSolutionBasedonthe pattern 
+void SCHCLASS::GenerateIniBasedOnPattern(GRAPH& g, const vector<int>& FailureLinks, 
+	const vector<PatternClass>& pat)
+{
+#ifdef _DEBUG
+	cout << "---------------Generate Ini Based on Pattern is called" << endl;
+#endif // _DEBUG
+	assert(FailureLinks.size() > 0);
+	if (this->Links.size() > 0) { Links.clear(); StartTime.clear(); EndTime.clear(); }
+	// step 1 generate ini number of links
+	vector<bool> isSelected(FailureLinks.size(), false);
+	int CountDoWhile = 0;
+	// step 1: select the first link 
+	int LinkNum = GenRandomInt(FailureLinks);
+	int LocOfFailLinks = FindValIndex(FailureLinks, LinkNum);
+	this->Links.push_back(new LINK());
+	Links.back() = &g.Links.at(LinkNum);
+	isSelected.at(LocOfFailLinks) = true;
+	vector<int> candy;
+	vector<double> prob;
+	int loopCounter = 0;
+	candy.reserve(FailureLinks.size()); prob.reserve(FailureLinks.size());
+	do							 
+	{
+		loopCounter++;
+		if (loopCounter > FailureLinks.size() + 1)
+			cout << "C++ Warning: Generate Ini based on pattern loop" << endl;
+		candy.clear(); prob.clear();
+		// step 1: create a list selected 
+		for (int s = 0;s<isSelected.size();s++)
+		{
+			if (!isSelected.at(s))
+			{
+				candy.push_back(s);
+				prob.push_back(pat[LocOfFailLinks].Prob.at(s));
+			}
+		}
+		int selectedLocOfCandy = SelectOneIndexFrom(candy, prob);
+		LinkNum = FailureLinks.at(candy.at(selectedLocOfCandy));
+		LocOfFailLinks = FindValIndex(FailureLinks, LinkNum);
+		Links.push_back(new LINK());
+		Links.back() = &g.Links.at(LinkNum);
+		isSelected.at(LocOfFailLinks) = true;
+	} while (std::find(isSelected.begin(), isSelected.end(), false) != isSelected.end());
+
+	cout << "------Complete Generate Ini Based on Pattern is called" << endl;
+}

@@ -25,7 +25,6 @@
     <ClInclude Include="Debug.h" />
     <ClInclude Include="DefGloVar.h" />
     <ClInclude Include="GlobalVar.h" />
-    <ClInclude Include="MutationFuncHeader.h" />
     <ClInclude Include="Parameters.h" />
     <ClInclude Include="RandomFuncs.h" />
     <ClInclude Include="RestoreSchClass.h" />
@@ -47,6 +46,7 @@
     <ClCompile Include="RandomValue.cpp" />
     <ClCompile Include="ReadData.cpp" />
     <ClCompile Include="ChromFuncs.cpp" />
+    <ClCompile Include="RouletteSelect.cpp" />
     <ClCompile Include="SP.cpp" />
   </ItemGroup>
   <ItemGroup>

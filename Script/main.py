@@ -65,7 +65,7 @@ def TestGa(_mf):
 def TestSingleOperator(mf):
     """Function for test single operator effect
     """
-    for i in range(0,8):
+    for i in range(0,9):
         adjust_para = {
             "UseMyOwn": "True",
             # "NetworkIndex": 5,  # WangNet
@@ -124,7 +124,7 @@ if __name__ == "__main__":
     print("Python seed file is printed")
     para.Copy_input_and_test_files(mf)
 
-    # TestSingleOperator(mf)
+    TestSingleOperator(mf)
     TestDifferntOpSelect(mf)
 
     # ------------------Test GA Function

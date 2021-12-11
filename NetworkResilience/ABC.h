@@ -24,19 +24,6 @@ public:
 	void calWeight(double r);
 };
 
-class PatternClass
-{
-public:
-	int id;
-	int LinkId;
-	vector<double> Score;
-	vector<double> Prob;
-	vector<int> next;
-	PatternClass() { id = -1; LinkId = -1; Score.reserve(100); Prob.reserve(100); }
-	~PatternClass() { Score.clear(); Prob.clear(); id = -1; LinkId = -1; }
-	void updateProb();
-};
-
 
 class ABCAlgorithms // to begin with use ABC algorithm
 {

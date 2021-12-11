@@ -13,6 +13,7 @@ using namespace std;
 
 int ABCAlgorithms::SelectOperIndex()
 {
+	//return 8;
 	if (isTestSingleOperator) return TestSingleOpIndex;
 	if (this->SelectOp == SelectOperatorType::Uniform)
 	{
@@ -252,7 +253,7 @@ void ABCAlgorithms::EmployBeePhase()
 #endif // _DEBUG
 		//if (i == 2)
 		int OpId = SelectOperIndex();
-		this->Sols.at(i).GenNei(Nei, *Graph, OpId, setOfFailureLinks, setResourceCap);
+		this->Sols.at(i).GenNei(Nei, *Graph, OpId, setOfFailureLinks, setResourceCap,Pattern);
 		if (SelectOp!=SelectOperatorType::Uniform) UpdateOperatorScore(OpId, Nei.Fitness, this->Sols.at(i).Fitness, GlobalBest.Fitness);
 		isImproved = CompareTwoSolsAndReplace(this->Sols.at(i), Nei, OpId);
 		if (isImproved) ScountCounter.at(i) = 0;
@@ -272,7 +273,7 @@ void ABCAlgorithms::OnlookerPhase()
 #endif // _DEBUG
 		SCHCLASS Nei(this->Sols.at(Selected));
 		int OpId = SelectOperIndex();
-		this->Sols.at(Selected).GenNei(Nei, *Graph, OpId, setOfFailureLinks, setResourceCap);
+		this->Sols.at(Selected).GenNei(Nei, *Graph, OpId, setOfFailureLinks, setResourceCap,Pattern);
 		bool isImproved = false;
 		if (SelectOp!=SelectOperatorType::Uniform) UpdateOperatorScore(OpId, Nei.Fitness, this->Sols.at(SelectOp).Fitness, GlobalBest.Fitness);
 		isImproved = CompareTwoSolsAndReplace(this->Sols.at(Selected), Nei, OpId);
@@ -341,30 +342,7 @@ void ABCAlgorithms::UpdateOperatorProb_ALNS()
 		CumProbForSelectNei.at(i + 1) = CumProbForSelectNei.at(i) + Operators.at(i).Prob;
 	}
 }
-
-int RouletteSelect(const vector<double> &cumProb)
-{
-	int selected = -1;
-	double f = GenRandomReal();
-	for (size_t i = 0; i < cumProb.size() - 1; i++)
-	{
-		if (f >= cumProb.at(i) && f < cumProb.at(i + 1))
-		{
-			selected = static_cast<int>(i);
-			break;
-		}
-	}
-	if (f >= cumProb.back()) selected = static_cast<int>(cumProb.size() - 1);
-	if (selected < 0)
-	{
-		std::cout << "C++ Warning: RouletteSelect does not select a proper val" << endl;
-		std::cout << f << endl;
-		for (auto v : cumProb) std::cout << v << endl;
-		std::cout << "wtf" << endl;
-	}
-	assert(selected >= 0);
-	return selected;
-}
+int RouletteSelect(const vector<double>& cumProb);
 
 int ABCAlgorithms::SelectOperator_ALNS()
 {
@@ -397,6 +375,10 @@ void ABCAlgorithms::Ini(GRAPH& g)
 		}
 		Pattern.back().Prob.assign(setOfFailureLinks.size(), 0.0);
 		Pattern.back().Score.assign(setOfFailureLinks.size(), 1.0);
+	}
+	for (auto& p : Pattern)
+	{
+		p.updateProb();
 	}
 }
 
