@@ -336,5 +336,9 @@ void SCHCLASS::GenerateIniBasedOnPattern(GRAPH& g, const vector<int>& FailureLin
 		isSelected.at(LocOfFailLinks) = true;
 	} while (std::find(isSelected.begin(), isSelected.end(), false) != isSelected.end());
 
+#ifdef _DEBUG
 	cout << "------Complete Generate Ini Based on Pattern is called" << endl;
+#endif // _DEBUG
+
+
 }

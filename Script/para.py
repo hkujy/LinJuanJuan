@@ -10,7 +10,7 @@ isRunTest = True
 # isRunTest = False
 # isDebug = True
 isDebug = False
-NumOfTestSeed = 1
+NumOfTestSeed = 20
 SeedPool = [4601, 6677, 2887, 6421, 8471, 512, 3547, 2614, 8146,
             9629, 8266, 3045, 9770, 3048, 6705, 9591, 7905, 8223, 9044, 1091]
 

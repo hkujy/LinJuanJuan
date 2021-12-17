@@ -146,8 +146,8 @@ int main(int argc, char* argv[])
 	//MainAlgo.ComputeFailureLinkEI();
 	//MainAlgo.printLinkEI();
 
-	TestBaraess(MainAlgo);
-	return 0;
+	//TestBaraess(MainAlgo);
+	//return 0;
 
 	//BaseGraph.EvaluteGraph();
 	if (!UseMyOwnAlgo)

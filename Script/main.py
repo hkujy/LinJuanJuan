@@ -134,6 +134,10 @@ def BenchmarkParadoxNet(mf):
         "ReactionFactor": 0.5,
         "SelectOperator": "ALNS"
     }
+    
+    print("---------need to check---------")
+    print("1. demand is 6")
+    print("2. the data used is FailureLinks - Case 2.txt")
 
     ps = para.ParaClass()
     ps.adjust_para(adjust_para)
