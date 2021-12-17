@@ -1,0 +1,14 @@
+NumNodes,6
+NumOD,1
+NumLinks,9
+OneDimEsp,1e-06
+UEmaxIter,100
+NumEmployBee,10
+NumOnlookerBee,10
+MaxScountCount,5
+MaxABCIter,100
+RewardImproveGlobal,20
+RewardImproveLocal,10
+RewardWorse,0
+ReactionFactor,0.5
+SelectOperator,ANLS

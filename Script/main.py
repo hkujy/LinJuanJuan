@@ -13,6 +13,8 @@ import myplot
 # import myga
 
 # TODO: Write seed list in python
+# TODO: write the script for a benchmark test of the algorithm
+# Todo: write the formal test for each operator and the overall algorithm
 
 
 def copy_file(_from, _to):
@@ -62,10 +64,11 @@ def TestGa(_mf):
     to_folder = _mf.root_folder + "LinJuanJuan\\Tests\\GA"
     copy_folder(from_folder, to_folder)
 
+
 def TestSingleOperator(mf):
     """Function for test single operator effect
     """
-    for i in range(0,9):
+    for i in range(0, 9):
         adjust_para = {
             "UseMyOwn": "True",
             # "NetworkIndex": 5,  # WangNet
@@ -82,8 +85,10 @@ def TestSingleOperator(mf):
             "ReactionFactor": 0.5,
             "SelectOperator": "Uni"
         }
-        para.global_case_id=para.global_case_id + 1
-        TestOneCase(mf, adjust_para, _case_id=para.global_case_id, _case_name="TestOp_"+str(i))
+        para.global_case_id = para.global_case_id + 1
+        TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
+                    _case_name="TestOp_"+str(i))
+
 
 def TestDifferntOpSelect(mf):
     """
@@ -104,10 +109,43 @@ def TestDifferntOpSelect(mf):
         "SelectOperator": "ALNS"
     }
     para.global_case_id = para.global_case_id + 1
-    TestOneCase(mf, adjust_para, _case_id=para.global_case_id, _case_name="ALNS")
+    TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
+                _case_name="ALNS")
     adjust_para['SelectOperator'] = "Uni"
     para.global_case_id = para.global_case_id + 1
-    TestOneCase(mf, adjust_para, _case_id=para.global_case_id, _case_name="Uni")
+    TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
+                _case_name="Uni")
+
+
+def BenchmarkParadoxNet(mf):
+    """
+    benchmark the algorithm to see whether it gets solution
+    """
+    adjust_para = {
+        "UseMyOwn": "True",
+        "NetworkIndex": 4,  # Paradox
+        "NumEmployBee": 10,
+        "NumOnlookerBee": 10,
+        "MaxScountCount": 50,
+        "MaxABCIter": 200,
+        "RewardImproveGlobal": 20,
+        "RewardImproveLocal": 10,
+        "RewardWorse": 0,
+        "ReactionFactor": 0.5,
+        "SelectOperator": "ALNS"
+    }
+
+    ps = para.ParaClass()
+    ps.adjust_para(adjust_para)
+    ps.print_para()
+
+    # para.global_case_id = para.global_case_id + 1
+    # TestOneCase(mf, adjust_para, _case_id=para.global_case_id, _case_name="ALNS")
+    adjust_para['SelectOperator'] = "Uni"
+    para.global_case_id = para.global_case_id + 1
+    TestOneCase(mf, adjust_para, _case_id = para.global_case_id,
+                _case_name="Uni")
+
 
 if __name__ == "__main__":
     para.global_case_id = -1
@@ -124,8 +162,9 @@ if __name__ == "__main__":
     print("Python seed file is printed")
     para.Copy_input_and_test_files(mf)
 
-    TestSingleOperator(mf)
-    TestDifferntOpSelect(mf)
+    BenchmarkParadoxNet(mf)
+    # TestSingleOperator(mf)
+    # TestDifferntOpSelect(mf)
 
     # ------------------Test GA Function
     # TestGa(mf)

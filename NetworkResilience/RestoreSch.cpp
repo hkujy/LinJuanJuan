@@ -223,6 +223,7 @@ void SCHCLASS::Evaluate(GRAPH& g)
 	Fitness = 0.0;
 	vector<size_t> CumulativeReadyLinks;
 	TravelTime.assign(GetLastPeriod(), 0);
+	UNPM.assign(GetLastPeriod(), 0);
 	// step 1: set all the capacity of failure links to be 0.0 and evalute the total cost in tau = 0
 	for (size_t l = 0; l < Links.size(); l++)
 	{
@@ -239,10 +240,15 @@ void SCHCLASS::Evaluate(GRAPH& g)
 		// case 1: at the begin, there is not other links
 		if (NewReady.size() == 0)
 		{
-			if (t == 0) TravelTime.at(t) = g.TotalSystemCost;
+			if (t == 0)
+			{
+				TravelTime.at(t) = g.TotalSystemCost;
+				UNPM.at(t) = g.UNPM;
+			}
 			else
 			{
 				TravelTime.at(t) = TravelTime.at(t - 1);
+				UNPM.at(t) = UNPM.at(t - 1);
 			}
 #ifdef _DEBUG
 			cout << "---Period = " << t << ", no link is added" << endl;
@@ -251,10 +257,12 @@ void SCHCLASS::Evaluate(GRAPH& g)
 		else
 		{
 			for (auto l : NewReady) Links.at(l)->IniCap();
+
+			g.EvaluteGraph();
 #ifdef _DEBUG
 			cout << "---Period = " << t << "," << NewReady.size() << " link is added" << endl;
+			cout << "---Period = " << t << "," << "min cost = " << g.OdPairs.at(0).MinCost << "unpm=" << g.UNPM << endl;;
 #endif // _DEBUG
-			g.EvaluteGraph();
 			CumulativeReadyLinks.insert(CumulativeReadyLinks.end(), NewReady.begin(), NewReady.end());
 			if (t == GetLastPeriod())
 			{
@@ -263,6 +271,7 @@ void SCHCLASS::Evaluate(GRAPH& g)
 			else
 			{
 				TravelTime.at(t) = g.TotalSystemCost;
+				UNPM.at(t) = g.UNPM;
 			}
 		}
 	}
@@ -273,7 +282,8 @@ void SCHCLASS::Evaluate(GRAPH& g)
 	cout << "Last end time = " << GetLastPeriod() << endl;
 	for (int t = 0; t < TravelTime.size(); t++)
 	{
-		cout << "t = " << t << ", TravelTime = " << TravelTime.at(t) << endl;
+		cout << "t = " << t << ", TravelTime = " << TravelTime.at(t) << ",";
+		cout << "UNPM = " << UNPM.at(t) << endl;
 	}
 	cout << "total cost = " << this->Fitness << endl;
 #endif // _DEBUG

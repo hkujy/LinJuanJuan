@@ -6,6 +6,8 @@ using namespace std;
 void OpenAndCleanFiles();
 bool ReadModelParas();
 void CloseFiles();
+void CompareBaressNet(ABCAlgorithms alg);
+void TestBaraess(ABCAlgorithms alg);
 void ReadModelPara()
 {
 	ifstream fin_Model,fin_Net;
@@ -114,6 +116,8 @@ void ReproduceWang(GRAPH& g)
 	cout << "--Complete Reproduce David Work--- " << endl;
 }
 
+
+
 int main(int argc, char* argv[])
 {	
 	//TOOD: Change NetworkIndex to NetIndex
@@ -122,7 +126,7 @@ int main(int argc, char* argv[])
 	  NetworkIndex = 4; //Paradox network
 	  NetworkIndex = 5; //Wang David network
 	*/
-	Zero = 1.0e-6f;
+	Zero = 1.0e-16f;
 	cout << "Remarks: Maximum Restore Periods is " << MaxNumOfSchPeriod << endl;
 	isWriteConverge = true;
 	OpenAndCleanFiles();
@@ -139,8 +143,11 @@ int main(int argc, char* argv[])
 	MainAlgo.Ini(BaseGraph); //contains all the ini procedure for the algorithm
 	//MainAlgo.ReadData(BaseGraph);
 	std::cout << "# complete read graph data" << endl;
-	MainAlgo.ComputeFailureLinkEI();
-	MainAlgo.printLinkEI();
+	//MainAlgo.ComputeFailureLinkEI();
+	//MainAlgo.printLinkEI();
+
+	TestBaraess(MainAlgo);
+	return 0;
 
 	//BaseGraph.EvaluteGraph();
 	if (!UseMyOwnAlgo)

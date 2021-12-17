@@ -529,12 +529,11 @@ void ABCAlgorithms::PrintFinal(int sd)
 	}
 	sf.close();
 
-
 	sf.open("..//OutPut//PrintPeriod.txt", ios::app);
 
 	for (size_t t = 0; t < GlobalBest.TravelTime.size(); t++)
 	{
-		sf << sd << "," << t << "," << GlobalBest.TravelTime.at(t) << endl;
+		sf << sd << "," << t << "," << GlobalBest.TravelTime.at(t) << ","<<GlobalBest.UNPM.at(t)<<endl;;
 	}
 	sf.close();
 }

@@ -48,6 +48,7 @@
     <ClCompile Include="ChromFuncs.cpp" />
     <ClCompile Include="RouletteSelect.cpp" />
     <ClCompile Include="SP.cpp" />
+    <ClCompile Include="TestParadoxNetExp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

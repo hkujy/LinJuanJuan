@@ -14,7 +14,25 @@ double LINK::BPRCost(){
 	//assert(this->CaRevise > Zero);
 	//return (this->T0*(1.0f + (this->AlphaBpr)*std::pow((this->Flow /std::max(this->CaRevise, Zero)), this->BetaBBpr)));
 	//return (this->T0*(1.0f + 0.15*std::pow((this->Flow /std::max(this->CaRevise, Zero)), 4.0)));
-	return (this->T0*(1.0f + AlphaBpr*std::pow((this->Flow /std::max(this->CaRevise, Zero)),BetaBBpr)));
+	//if (this->ID == 0)
+	//{
+	//	cout << "linkid = 0" << ",";
+	//	cout << "flow = " << Flow << ",";
+	//	cout << "AlphaBpr = " << AlphaBpr << ",";
+	//	cout << "BetaBBpr = " << BetaBBpr << ",";
+	//	cout << "CaRevise = " << CaRevise << ",";
+	//	cout << "Cost = " << (this->T0 * (1.0f + AlphaBpr * std::pow((this->Flow / std::max(this->CaRevise, Zero)), BetaBBpr))) << endl;
+	//}
+	double BPRvalue = this->T0 * (1.0f + AlphaBpr * std::pow((this->Flow / std::max(this->CaRevise, Zero)), BetaBBpr));
+	if (this->CaRevise < 0.01)
+	{
+		return 10000 + BPRvalue;
+	}
+	else
+	{
+		return BPRvalue;
+	}
+	//return (this->T0*(1.0f + AlphaBpr*std::pow((this->Flow /std::max(this->CaRevise, Zero)),BetaBBpr)));
 };
 
 LINK::LINK(const LINK& OtherLink){
