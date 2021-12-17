@@ -126,7 +126,7 @@ int main(int argc, char* argv[])
 	  NetworkIndex = 4; //Paradox network
 	  NetworkIndex = 5; //Wang David network
 	*/
-	Zero = 1.0e-16f;
+	//Zero = 1.0e-16f;
 	cout << "Remarks: Maximum Restore Periods is " << MaxNumOfSchPeriod << endl;
 	isWriteConverge = true;
 	OpenAndCleanFiles();
@@ -168,6 +168,7 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
+		Zero = 1.0e-6f;
 		//ReproduceWang(BaseGraph); // This function is for reproducing Wang's work
 		MainAlgo.ABCMain();
 	}

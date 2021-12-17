@@ -166,9 +166,9 @@ if __name__ == "__main__":
     print("Python seed file is printed")
     para.Copy_input_and_test_files(mf)
 
-    BenchmarkParadoxNet(mf)
-    # TestSingleOperator(mf)
-    # TestDifferntOpSelect(mf)
+    # BenchmarkParadoxNet(mf)
+    TestSingleOperator(mf)
+    TestDifferntOpSelect(mf)
 
     # ------------------Test GA Function
     # TestGa(mf)

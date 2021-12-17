@@ -10,7 +10,7 @@ isRunTest = True
 # isRunTest = False
 # isDebug = True
 isDebug = False
-NumOfTestSeed = 20
+NumOfTestSeed = 2
 SeedPool = [4601, 6677, 2887, 6421, 8471, 512, 3547, 2614, 8146,
             9629, 8266, 3045, 9770, 3048, 6705, 9591, 7905, 8223, 9044, 1091]
 
@@ -25,16 +25,16 @@ class ParaClass(object):
         self.case_name = "null"
         self.para = {
             "UseMyOwn": "True",
-            # "NetworkIndex": 3,   # SiouxFall
+            "NetworkIndex": 3,   # SiouxFall
             # "NetworkIndex":4,   # Paradox
-            "NetworkIndex": 5,   # Wang
+            # "NetworkIndex": 5,   # Wang
             #  "UseMyOwn": "False",
             "isTestSingleOp": "False",
             "SingleOpIndex": -1,
-            "NumEmployBee": 10,
-            "NumOnlookerBee": 10,
-            "MaxScountCount": 5,
-            "MaxABCIter": 100,
+            "NumEmployBee": 4,
+            "NumOnlookerBee": 4,
+            "MaxScountCount": 50,
+            "MaxABCIter": 5,
             "MaxGAIter": 5,
             "RewardImproveGlobal": 10,
             "RewardImproveLocal": 10,
@@ -43,7 +43,7 @@ class ParaClass(object):
             "SelectOperator": "ALNS",
             "OneDimEsp": 0.0000001,
             "UEeps": 0.01,
-            "UEmaxIter": 100
+            "UEmaxIter": 500
         }
 
     def print_para(self):

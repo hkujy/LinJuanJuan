@@ -1,1 +1,0 @@
-Seed,Id,Good,Bad,Sum,Gp,Bp,Prob,Score,Weight

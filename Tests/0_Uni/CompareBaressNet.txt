@@ -1,3 +1,0 @@
-Link,Unpm,Impact,Cost,CostIncr
-Seq:8,5,3,7,6, total cost = 2895.68
-Seq:8,7,5,3,6, total cost = 3025.68

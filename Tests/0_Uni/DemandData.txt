@@ -1,2 +1,0 @@
-ID    ,Origin      ,Dest        ,Demand      ,MinCost     
-0,0,5,6.000000,-999.900024

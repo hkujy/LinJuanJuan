@@ -26,7 +26,7 @@ double LINK::BPRCost(){
 	double BPRvalue = this->T0 * (1.0f + AlphaBpr * std::pow((this->Flow / std::max(this->CaRevise, Zero)), BetaBBpr));
 	if (this->CaRevise < 0.01)
 	{
-		return 10000 + BPRvalue;
+		return 100 + BPRvalue;
 	}
 	else
 	{
