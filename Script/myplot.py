@@ -39,12 +39,16 @@ def plot_converge(_ps, _file, _numOfiter, algName):
     plt.close()
 
     ave = []
+    minv = []
     # for i in range(0, _ps.para["MaxABCIter"]):
     for i in range(0, _numOfiter):
         val = 0.0
+        minval = 9.9e20
         for s in range(0, num_of_seed):
             val = val + float(gap[s][i])
+            minval = min(minval,float(gap[s][i]))
         val = val/num_of_seed
+        minv.append(minval)
         ave.append(val)
     plt.plot(ave, label="ave gap")
     plt.title(algName)
@@ -55,8 +59,19 @@ def plot_converge(_ps, _file, _numOfiter, algName):
     plt.savefig("..//Output//"+algName+"_Converge_ave.png",
                 bbox_inches='tight', dpi=600)
     plt.close()
+    plt.plot(minv,label="min gap")
+    plt.ion()
+    plt.legend()
+    plt.pause(2)
+    # plt.savefig("..//Output//Converge_ave.png", bbox_inches='tight', dpi=600)
+    plt.savefig("..//Output//"+algName+"_Converge_min.png", bbox_inches='tight', dpi=600)
+    plt.close()
+    plt.title(algName)
 
     # with open("..//Output//Converge_ave.txt", "w+") as f:
     with open("..//Output//" + algName+"_Converge_ave.txt", "w+") as f:
         for i in range(0, len(ave)):
             print("{0},{1}".format(i, ave[i]), file=f)
+    with open("..//Output//" + algName+"_Converge_min.txt", "w+") as f:
+        for i in range(0, len(minv)):
+            print("{0},{1}".format(i, minv[i]), file=f)

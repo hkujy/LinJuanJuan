@@ -89,6 +89,23 @@ def TestSingleOperator(mf):
         TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
                     _case_name="TestOp_"+str(i))
 
+def TestRewardVal(mf):
+    """
+        test the combination of reward value 
+    """
+    for j in range(0, 2):
+        for i in range(0, 2):
+            adjust_para = {
+                "UseMyOwn": "True",
+                "RewardImproveGlobal": i + 2,
+                "RewardImproveLocal": i,
+                "RewardWorse": 0,
+                "ReactionFactor": 0.1*(j+1),
+                "SelectOperator": "ALNS"
+            }
+            para.global_case_id = para.global_case_id + 1
+            TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
+                    _case_name="Test_Rect_"+str(j)+"_imporve_"+str(i))
 
 def TestDifferntOpSelect(mf):
     """
@@ -167,8 +184,9 @@ if __name__ == "__main__":
     para.Copy_input_and_test_files(mf)
 
     # BenchmarkParadoxNet(mf)
-    TestSingleOperator(mf)
-    TestDifferntOpSelect(mf)
+    # TestSingleOperator(mf)
+    # TestDifferntOpSelect(mf)
+    TestRewardVal(mf)
 
     # ------------------Test GA Function
     # TestGa(mf)
