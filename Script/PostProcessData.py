@@ -15,7 +15,7 @@ def CompareOneFolder(_folder:str,_name:str):
 # print(df)
 # for d in range(0,len(df)):
 # 	print(df[1][d])
-	NumberOfIter = 200
+	NumberOfIter = 100
 	for fo in range(0, len(dirs)):
 		f = _folder+"\\"+dirs[fo] + "\\ABC_Converge_ave.txt"
 		df = pd.read_csv(f,header=None)
@@ -36,8 +36,10 @@ def CompareOneFolder(_folder:str,_name:str):
 if __name__=='__main__':
 	"""[summary]
 	"""
-	OperatorFolder = r"C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin\SiouxFall_FailureLink_0/EffectOfOperators/"
+	# OperatorFolder = r"C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin\SiouxFall_FailureLink_0/EffectOfOperators/"
+	OperatorFolder = r"C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin\SiouxFall_FailureLink_1/EffectOfOperators/"
 	CompareOneFolder(_folder=OperatorFolder,_name="CompareOperator")
 	# TODO Process the best solution under a certain iterations
-	SelectoFolder = r"C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin\SiouxFall_FailureLink_0/SelectNei/"
+	# SelectoFolder = r"C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin\SiouxFall_FailureLink_0/SelectNei/"
+	SelectoFolder = r"C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin\SiouxFall_FailureLink_1/SelectNei/"
 	CompareOneFolder(_folder=SelectoFolder,_name="CompareSelectNei")

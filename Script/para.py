@@ -10,9 +10,12 @@ isRunTest = True
 # isRunTest = False
 # isDebug = True
 isDebug = False
-NumOfTestSeed = 2
-SeedPool = [4601, 6677, 2887, 6421, 8471, 512, 3547, 2614, 8146,
+SeedPool = [4601, 6677, 2887, 6421, 8471, 512, 3547, 2614, 8146, 
             9629, 8266, 3045, 9770, 3048, 6705, 9591, 7905, 8223, 9044, 1091]
+            # 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,16,18,19,20]
+
+NumOfTestSeed = 20
+# NumOfTestSeed = len(SeedPool)
 
 global_case_id = 0
 
@@ -31,10 +34,10 @@ class ParaClass(object):
             #  "UseMyOwn": "False",
             "isTestSingleOp": "False",
             "SingleOpIndex": -1,
-            "NumEmployBee": 4,
-            "NumOnlookerBee": 4,
+            "NumEmployBee": 10,
+            "NumOnlookerBee": 10,
             "MaxScountCount": 50,
-            "MaxABCIter": 5,
+            "MaxABCIter": 500,
             "MaxGAIter": 5,
             "RewardImproveGlobal": 10,
             "RewardImproveLocal": 10,

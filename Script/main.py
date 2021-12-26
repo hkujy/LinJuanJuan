@@ -93,19 +93,24 @@ def TestRewardVal(mf):
     """
         test the combination of reward value 
     """
-    for j in range(0, 2):
-        for i in range(0, 2):
+    for j in range(0, 9):   # this change to 9
+        for i in range(1, 6):  # this is change to 5
             adjust_para = {
                 "UseMyOwn": "True",
-                "RewardImproveGlobal": i + 2,
+                "RewardImproveGlobal": i,
                 "RewardImproveLocal": i,
                 "RewardWorse": 0,
                 "ReactionFactor": 0.1*(j+1),
+                "NumEmployBee": 10,
+                "NumOnlookerBee": 10,
+                "MaxScountCount": 50,
+                "MaxABCIter": 200,
                 "SelectOperator": "ALNS"
             }
             para.global_case_id = para.global_case_id + 1
             TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
                     _case_name="Test_Rect_"+str(j)+"_imporve_"+str(i))
+
 
 def TestDifferntOpSelect(mf):
     """
@@ -141,10 +146,10 @@ def BenchmarkParadoxNet(mf):
     adjust_para = {
         "UseMyOwn": "True",
         "NetworkIndex": 4,  # Paradox
-        "NumEmployBee": 10,
-        "NumOnlookerBee": 10,
-        "MaxScountCount": 50,
-        "MaxABCIter": 200,
+        # "NumEmployBee": 10,
+        # "NumOnlookerBee": 10,
+        # "MaxScountCount": 50,
+        # "MaxABCIter": 200,
         "RewardImproveGlobal": 20,
         "RewardImproveLocal": 10,
         "RewardWorse": 0,
