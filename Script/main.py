@@ -79,8 +79,8 @@ def TestSingleOperator(mf):
             # "NumOnlookerBee": 10,
             # "MaxScountCount": 50,
             # "MaxABCIter": 200,
-            "RewardImproveGlobal": 20,
-            "RewardImproveLocal": 10,
+            "RewardImproveGlobal": 1,
+            "RewardImproveLocal": 1,
             "RewardWorse": 0,
             "ReactionFactor": 0.5,
             "SelectOperator": "Uni"
@@ -94,17 +94,17 @@ def TestRewardVal(mf):
         test the combination of reward value 
     """
     for j in range(0, 9):   # this change to 9
-        for i in range(1, 6):  # this is change to 5
+        for i in range(1, 11):  # this is change to 5
             adjust_para = {
                 "UseMyOwn": "True",
-                "RewardImproveGlobal": i,
-                "RewardImproveLocal": i,
+                "RewardImproveGlobal": i*0.5,
+                "RewardImproveLocal": i*0.5,
                 "RewardWorse": 0,
                 "ReactionFactor": 0.1*(j+1),
                 "NumEmployBee": 10,
                 "NumOnlookerBee": 10,
                 "MaxScountCount": 50,
-                "MaxABCIter": 200,
+                "MaxABCIter": 500,
                 "SelectOperator": "ALNS"
             }
             para.global_case_id = para.global_case_id + 1
@@ -124,8 +124,8 @@ def TestDifferntOpSelect(mf):
         # "NumOnlookerBee":10,
         # "MaxScountCount": 50,
         # "MaxABCIter": 200,
-        "RewardImproveGlobal": 20,
-        "RewardImproveLocal": 10,
+        "RewardImproveGlobal": 1,
+        "RewardImproveLocal": 1,
         "RewardWorse": 0,
         "ReactionFactor": 0.5,
         "SelectOperator": "ALNS"
@@ -189,8 +189,8 @@ if __name__ == "__main__":
     para.Copy_input_and_test_files(mf)
 
     # BenchmarkParadoxNet(mf)
-    # TestSingleOperator(mf)
-    # TestDifferntOpSelect(mf)
+    TestSingleOperator(mf)
+    TestDifferntOpSelect(mf)
     TestRewardVal(mf)
 
     # ------------------Test GA Function
