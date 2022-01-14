@@ -11,7 +11,7 @@
 using namespace std;
 
 
-int ABCAlgorithms::SelectOperIndex()
+int Algorithm::SelectOperIndex()
 {
 	//return 8;
 	if (isTestSingleOperator) return TestSingleOpIndex;
@@ -57,7 +57,7 @@ bool ReadSeedVec(std::vector<int>& SeedVec,
 
 	return true;
 }
-void ABCAlgorithms::IniOperatorProb_ANLS()
+void Algorithm::IniOperatorProb_ANLS()
 {
 	for (int i = 0; i < Operators.size(); i++)
 	{
@@ -70,7 +70,7 @@ void ABCAlgorithms::IniOperatorProb_ANLS()
 	}
 
 }
-void ABCAlgorithms::IniOperatorProb()
+void Algorithm::IniOperatorProb()
 {
 	CumProbForSelectNei.assign(NumOperators, 0.0);
 	if (SelectOp == SelectOperatorType::ALNS) IniOperatorProb_ANLS();
@@ -81,7 +81,7 @@ void ABCAlgorithms::IniOperatorProb()
 	}
 }
 
-void ABCAlgorithms::ABCMain()
+void Algorithm::ABCMain()
 {
 	ofstream ConvergeFile;
 	ConvergeFile.open("..//OutPut//ABCConverge.txt", ios::app);
@@ -126,13 +126,12 @@ void ABCAlgorithms::ABCMain()
 			if (isWriteConverge) ConvergeFile << s << "," << i << "," << fixed << setprecision(2) << ConvergeMeasure.back() << endl;
 			if (SelectOp!=SelectOperatorType::Uniform) UpdateOperatorWeight();
 
+			PrintOperator(s,i);
 		}
 		Et = clock();
 		CpuTimes.push_back((double)((Et - St)/CLOCKS_PER_SEC)); // time unit is second
 		PrintFinal(s); 
-		PrintOperator(s);
 		printPattern(s);
-
 	}
 	ofstream CpuTimeFile;
 	CpuTimeFile.open("..//OutPut//CpuTime.txt", ios::trunc);
@@ -152,7 +151,7 @@ void ABCAlgorithms::ABCMain()
 #endif // _DEBUG
 }
 
-void ABCAlgorithms::GenerateIni()
+void Algorithm::GenerateIni()
 {
 	// improve the solutions
 	for (int i = 0; i < NumEmployedBee; i++)
@@ -197,7 +196,7 @@ void ABCAlgorithms::GenerateIni()
 	//for (auto s : Sols) cout << s.ID << "," << s.Fitness << endl;
 }
 
-void ABCAlgorithms::UpdateOperatorMeaures(int _id, bool isImproved)
+void Algorithm::UpdateOperatorMeaures(int _id, bool isImproved)
 {
 	//TODO: write the update the counters of the operators
 	assert(_id <= NumOperators-1);
@@ -213,7 +212,7 @@ void ABCAlgorithms::UpdateOperatorMeaures(int _id, bool isImproved)
 	this->Operators.at(_id).TotalCounterSum++;
 }
 
-bool ABCAlgorithms::CompareTwoSolsAndReplace(SCHCLASS& lhs, SCHCLASS& rhs, int NeiOperatorId)
+bool Algorithm::CompareTwoSolsAndReplace(SCHCLASS& lhs, SCHCLASS& rhs, int NeiOperatorId)
 {
 	//Compare the left hand side and the right hand side solutions 
 	//if the right hand side is better 
@@ -241,7 +240,7 @@ bool ABCAlgorithms::CompareTwoSolsAndReplace(SCHCLASS& lhs, SCHCLASS& rhs, int N
 	return isBetter;
 }
 
-void ABCAlgorithms::EmployBeePhase()
+void Algorithm::EmployBeePhase()
 {
 	for (int i = 0; i < NumEmployedBee; i++)
 	{
@@ -262,7 +261,7 @@ void ABCAlgorithms::EmployBeePhase()
 	}
 }
 
-void ABCAlgorithms::OnlookerPhase()
+void Algorithm::OnlookerPhase()
 {
 	for (int i = 0; i < NumOnlookers; i++)
 	{
@@ -283,7 +282,7 @@ void ABCAlgorithms::OnlookerPhase()
 	}
 }
 
-void ABCAlgorithms::ScoutPhase()
+void Algorithm::ScoutPhase()
 {
 	for (size_t t = 0; t < NumEmployedBee; t++)
 	{
@@ -306,7 +305,7 @@ void ABCAlgorithms::ScoutPhase()
 }
 
 //get the fitness probability vector
-void ABCAlgorithms::GetProb()  // compute probability based on the fitness values
+void Algorithm::GetProb()  // compute probability based on the fitness values
 {
 	double sumFit = 0.0;
 	for (auto s : Sols) sumFit += s.Fitness;
@@ -318,7 +317,7 @@ void ABCAlgorithms::GetProb()  // compute probability based on the fitness value
 	}
 }
 
-void ABCAlgorithms::UpdateOperatorProb()
+void Algorithm::UpdateOperatorProb()
 {
 	if (SelectOp == SelectOperatorType::ALNS)
 	{
@@ -327,7 +326,7 @@ void ABCAlgorithms::UpdateOperatorProb()
 	else { std::cout << "C++ Warning: UpdateOperator Type is not specified" << endl; }
 }
 
-void ABCAlgorithms::UpdateOperatorProb_ALNS()
+void Algorithm::UpdateOperatorProb_ALNS()
 {
 	double sumWeight = 0.0;
 	for (auto o : Operators) sumWeight += o.Weight;
@@ -344,24 +343,24 @@ void ABCAlgorithms::UpdateOperatorProb_ALNS()
 }
 int RouletteSelect(const vector<double>& cumProb);
 
-int ABCAlgorithms::SelectOperator_ALNS()
+int Algorithm::SelectOperator_ALNS()
 {
 	return RouletteSelect(CumProbForSelectNei);
 }
 
-void ABCAlgorithms::UpdateOperatorScore(int OpId, double ResultFit, double LocalFit, double GlobalFit)
+void Algorithm::UpdateOperatorScore(int OpId, double ResultFit, double LocalFit, double GlobalFit)
 {
 	UpdateOperatorScore_ALNS(OpId, ResultFit, LocalFit, GlobalFit);
 
 }
 
-size_t ABCAlgorithms::SelectOnLookerBasedonProb()
+size_t Algorithm::SelectOnLookerBasedonProb()
 {
 	return RouletteSelect(CumProbForSelectOnlooker);
 }
 
 
-void ABCAlgorithms::Ini(GRAPH& g)
+void Algorithm::Ini(GRAPH& g)
 {
 	ReadData(g);
 	for (int l = 0; l < setOfFailureLinks.size(); l++)
@@ -375,6 +374,12 @@ void ABCAlgorithms::Ini(GRAPH& g)
 		}
 		Pattern.back().Prob.assign(setOfFailureLinks.size(), 0.0);
 		Pattern.back().Score.assign(setOfFailureLinks.size(), 1.0);
+			
+		// TODO. update the score to set the diagonal vector value =1
+		for (int i = 0; i < setOfFailureLinks.size(); i++)
+		{
+			Pattern.back().Score.at(l) = 0;
+		}
 	}
 	for (auto& p : Pattern)
 	{
@@ -382,7 +387,7 @@ void ABCAlgorithms::Ini(GRAPH& g)
 	}
 }
 
-void ABCAlgorithms::ReadData(GRAPH& g)
+void Algorithm::ReadData(GRAPH& g)
 {
 	this->Graph = &g;
 	ifstream f_ABCpara, f_FailLinks;
@@ -518,10 +523,21 @@ void ABCAlgorithms::ReadData(GRAPH& g)
 }
 
 
-void ABCAlgorithms::PrintFinal(int sd)
+void Algorithm::PrintFinal(int sd)
 {
 	ofstream sf;
-	sf.open("..//OutPut//PrintSols.txt", ios::app);
+	if (name._Equal("ABC"))
+	{
+		sf.open("..//OutPut//ABCPrintSols.txt", ios::app);
+	}
+	else if (name._Equal("HH"))
+	{
+		sf.open("..//OutPut//HHPrintSols.txt", ios::app);
+	}
+	else
+	{
+		TRACE("Name of the algorithm is not specified");
+	}
 	for (size_t t = 0; t < GlobalBest.Links.size(); t++)
 	{
 		sf << sd << "," << GlobalBest.Links.at(t)->ID << "," << GlobalBest.StartTime.at(t) << "," <<
@@ -542,7 +558,7 @@ void ABCAlgorithms::PrintFinal(int sd)
 /// </summary>
 /// <param name="OpId">Id of the operator</param>
 /// <param name="ImprovedFit"> if negative, then it is an improvement</param>
-void ABCAlgorithms::UpdateOperatorScore_ALNS(int OpId, double ResultFit, double LocalFit, double GlobalFit)
+void Algorithm::UpdateOperatorScore_ALNS(int OpId, double ResultFit, double LocalFit, double GlobalFit)
 {
 	//TODO: write function to read reward 
 	//      change the prob for selecting nei
@@ -589,7 +605,7 @@ void OperatorClass::calWeight(double r)
 /// <summary>
 /// update the weight of all operators
 /// </summary>
-void ABCAlgorithms::UpdateOperatorWeight_ALNS()
+void Algorithm::UpdateOperatorWeight_ALNS()
 {
 	for (int i = 0; i < Operators.size(); i++)
 	{
@@ -599,13 +615,26 @@ void ABCAlgorithms::UpdateOperatorWeight_ALNS()
 /// <summary>
 ///  print the summary of the operators
 /// </summary>
-void ABCAlgorithms::PrintOperator(int seedid)
+void Algorithm::PrintOperator(int seedid, int _iter)
 {
 	ofstream OutFile;
-	OutFile.open("..//OutPut//OperatorsMeasure.txt", ios::app);
+	if (name._Equal("HH"))
+	{
+		OutFile.open("..//OutPut//HHOperatorsMeasure.txt", ios::app);
+	}
+	else if (name._Equal("ABC"))
+	{
+		OutFile.open("..//OutPut//ABCOperatorsMeasure.txt", ios::app);
+	}
+	else
+	{
+		TRACE("Name of the algorithm is not specified");
+	}
+	//OutFile << "Seed,Iter,Id,Good,Bad,Sum,Gp,Bp,Prob,Score,Weight" << endl;
 	for (int i = 0; i < NumOperators; ++i)
 	{
 		OutFile << seedid<< ",";
+		OutFile << _iter << ",";
 		OutFile << i<< ",";
 		OutFile << Operators.at(i).TotalCounterGood << ",";
 		OutFile << Operators.at(i).TotalCounterBad << ",";
@@ -619,7 +648,7 @@ void ABCAlgorithms::PrintOperator(int seedid)
 	}
 }
 
-void ABCAlgorithms::UpdateOperatorWeight()
+void Algorithm::UpdateOperatorWeight()
 {
 	if (SelectOp == SelectOperatorType::ALNS)
 	{
@@ -632,7 +661,7 @@ void ABCAlgorithms::UpdateOperatorWeight()
 /// given a solution from the exe input file then evaluate the solution
 /// </summary>
 /// <param name="vec"></param>
-void ABCAlgorithms::ReadSolAndEvaluate(vector<int> &vec)
+void Algorithm::ReadSolAndEvaluate(vector<int> &vec)
 {
 	// step 1: set the solution vector 
 	SCHCLASS sol;
@@ -651,7 +680,7 @@ void ABCAlgorithms::ReadSolAndEvaluate(vector<int> &vec)
 /// <summary>
 /// Compute the efficiency index for each link
 /// </summary>
-void ABCAlgorithms::ComputeFailureLinkEI()
+void Algorithm::ComputeFailureLinkEI()
 {
 	for (int l = 0; l < setOfFailureLinks.size(); l++)
 	{
@@ -659,7 +688,7 @@ void ABCAlgorithms::ComputeFailureLinkEI()
 	}
 }
 
-void ABCAlgorithms::printLinkEI()
+void Algorithm::printLinkEI()
 {
 	ofstream  OutFile;
 	OutFile.open("..//OutPut/LinkEI.txt", ios::app);
@@ -684,7 +713,7 @@ void PatternClass::updateProb()
 
 
 // return the location of the vector
-size_t ABCAlgorithms::findPatternIndex(int lid)
+size_t Algorithm::findPatternIndex(int lid)
 {
 	assert(lid >= 0);
 	for (size_t i = 0;i<Pattern.size();i++)
@@ -700,7 +729,7 @@ size_t ABCAlgorithms::findPatternIndex(int lid)
 int FindValIndex(const vector<int>& vec, int key);
 // update the score based on the input solution 
 // only call this when it is improved
-void ABCAlgorithms::updatePatternScore(const SCHCLASS &sol,bool isGloablImprove)
+void Algorithm::updatePatternScore(const SCHCLASS &sol,bool isGloablImprove)
 {
 	//TOOD: update the pattern of the improve solution
 	for (int i = 0; i < sol.Links.size()-1; i++)
@@ -727,10 +756,17 @@ void ABCAlgorithms::updatePatternScore(const SCHCLASS &sol,bool isGloablImprove)
 	}
 }
 //print pattern on the file
-void ABCAlgorithms::printPattern(int seedid)
+void Algorithm::printPattern(int seedid)
 {
 	ofstream OutFile;
-	OutFile.open("..//OutPut//PrintPatternScore.txt", ios::app);
+	if (name._Equal("ABC"))
+	{
+		OutFile.open("..//OutPut//ABCPrintPatternScore.txt", ios::app);
+	}
+	else if (name._Equal("HH"))
+	{
+		OutFile.open("..//OutPut//HHPrintPatternScore.txt", ios::app);
+	}
 	//OutFile << "Seed,First,Second,Score,Prob" << endl;
 	for (auto p : Pattern)
 	{
@@ -746,3 +782,30 @@ void ABCAlgorithms::printPattern(int seedid)
 	OutFile.close();
 
 }
+
+
+
+void SetAlgoType(std::string _name, AlgorithmType& alot)
+{
+	//TODO
+	//	enum AlgorithmType
+	//{
+	//	CSA = 0, GA = 1, HH = 2, ABC = 3, UnDefined = 4
+	//};
+
+}
+std::string getAlgoTypeName(const AlgorithmType& alot)
+{
+	switch (alot)
+	{
+	case (AlgorithmType::HH):
+		return "HH"; break;
+	case (AlgorithmType::ABC):
+		return "ABC"; break;
+	default:
+		TRACE("Algorithm type is wrong input");
+		break;
+	}
+
+}
+

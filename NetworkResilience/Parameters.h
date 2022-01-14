@@ -1,3 +1,4 @@
+#include <string>
 #ifndef PARA
 #define PARA
 
@@ -13,10 +14,13 @@ const int PatternGlobalImproveScore = 5;
 //const int NumOfDisruptLinks = 3;
 enum AlgorithmType
 {
-	CSA, GA
+	CSA=0, GA=1, HH=2, ABC=3,UnDefined=4
 };
+std::string getAlgoTypeName(const AlgorithmType &alot);
+void SetAlgoType(std::string _name, AlgorithmType& alot);
 enum SelectOperatorType
 {
 	Uniform, ALNS, None
 };
+
 #endif // !PARA

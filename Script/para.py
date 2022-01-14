@@ -14,8 +14,8 @@ isDebug = False
 #             9629, 8266, 3045, 9770, 3048, 6705, 9591, 7905, 8223, 9044, 1091,
 #             1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,16,18,19,20]
 SeedPool = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,16,18,19,20]
-# NumOfTestSeed = 20
-NumOfTestSeed = len(SeedPool)
+# NumOfTestSeed = len(SeedPool)
+NumOfTestSeed = 20
 
 global_case_id = 0
 
@@ -36,11 +36,11 @@ class ParaClass(object):
             "SingleOpIndex": -1,
             "NumEmployBee": 10,
             "NumOnlookerBee": 10,
-            "MaxScountCount": 50,
+            "MaxScountCount": 100,
             "MaxABCIter": 500,
             "MaxGAIter": 5,
-            "RewardImproveGlobal": 10,
-            "RewardImproveLocal": 10,
+            "RewardImproveGlobal": 1,
+            "RewardImproveLocal": 1,
             "RewardWorse": 0,
             "ReactionFactor": 0.5,
             "SelectOperator": "ALNS",

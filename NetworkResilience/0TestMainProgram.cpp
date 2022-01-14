@@ -6,8 +6,9 @@ using namespace std;
 void OpenAndCleanFiles();
 bool ReadModelParas();
 void CloseFiles();
-void CompareBaressNet(ABCAlgorithms alg);
-void TestBaraess(ABCAlgorithms alg);
+void CompareBaressNet(Algorithm alg);
+void TestBaraess(Algorithm alg);
+//bool PrintModelParas();
 void ReadModelPara()
 {
 	ifstream fin_Model,fin_Net;
@@ -96,6 +97,7 @@ void ReadModelPara()
 		if (fields[0] == "NumLinks")	NumLinks = stoi(fields[1]);
 	}
 	fin_Net.close();
+	//bool flag = PrintModelParas();
 }
 /// <summary>
 /// Code to reporduce Wang's results
@@ -117,7 +119,6 @@ void ReproduceWang(GRAPH& g)
 }
 
 
-
 int main(int argc, char* argv[])
 {	
 	//TOOD: Change NetworkIndex to NetIndex
@@ -134,7 +135,7 @@ int main(int argc, char* argv[])
 #ifdef _DEBUG
 	cout << "c++:Read Model Para Complete" << endl;
 #endif // _DEBUG
-	ABCAlgorithms MainAlgo;
+	Algorithm MainAlgo;
 	GRAPH BaseGraph;
 	std::cout << "# start to read graph data" << endl;
 	BaseGraph.ReadDataMain();
@@ -150,8 +151,9 @@ int main(int argc, char* argv[])
 	//return 0;
 
 	//BaseGraph.EvaluteGraph();
-	if (!UseMyOwnAlgo)
+	if (!UseMyOwnAlgo)  // this used for evaluating the method when using python 
 	{
+		
 		vector<int> InputVec;
 		if (argc > 1)
 		{
@@ -169,6 +171,7 @@ int main(int argc, char* argv[])
 	else
 	{
 		Zero = 1.0e-6f;
+		MainAlgo.name = "ABC";
 		//ReproduceWang(BaseGraph); // This function is for reproducing Wang's work
 		MainAlgo.ABCMain();
 	}

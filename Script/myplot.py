@@ -54,19 +54,20 @@ def plot_converge(_ps, _file, _numOfiter, algName):
     plt.title(algName)
     plt.ion()
     plt.legend()
-    plt.pause(2)
+    plt.pause(1)
     # plt.savefig("..//Output//Converge_ave.png", bbox_inches='tight', dpi=600)
     plt.savefig("..//Output//"+algName+"_Converge_ave.png",
                 bbox_inches='tight', dpi=600)
     plt.close()
+    
     plt.plot(minv,label="min gap")
+    plt.title(algName)
     plt.ion()
     plt.legend()
-    plt.pause(2)
+    plt.pause(1)
     # plt.savefig("..//Output//Converge_ave.png", bbox_inches='tight', dpi=600)
     plt.savefig("..//Output//"+algName+"_Converge_min.png", bbox_inches='tight', dpi=600)
     plt.close()
-    plt.title(algName)
 
     # with open("..//Output//Converge_ave.txt", "w+") as f:
     with open("..//Output//" + algName+"_Converge_ave.txt", "w+") as f:

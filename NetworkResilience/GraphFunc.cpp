@@ -525,7 +525,7 @@ double GRAPH::CalRelSpChange(int LinkID)
 				ODPairs.at(*d).isConnected = true;*/
 		}
 	}
-	
+	//TODO: need to update the denominator	
 	double EIvalue = 0.0;
 	for (auto o:OdPairs)
 	{

@@ -7,10 +7,10 @@ NumOnlookerBee,4
 MaxScountCount,50
 MaxABCIter,5
 MaxGAIter,5
-RewardImproveGlobal,3
-RewardImproveLocal,1
+RewardImproveGlobal,4.0
+RewardImproveLocal,4.0
 RewardWorse,0
-ReactionFactor,0.2
+ReactionFactor,0.1
 SelectOperator,ALNS
 OneDimEsp,1e-07
 UEeps,0.01

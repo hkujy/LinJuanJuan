@@ -8,24 +8,18 @@
 #include <map>
 
 
-//int Select_One_Nei()
-//{
-//	return GenRandomInt(0, NumOperators-1);
-//}
 //main fun for generate a neighborhoods operator
 void SCHCLASS::GenNei(SCHCLASS& Nei, GRAPH& g, 
 	int &OpId,const vector<int>& FailureLinkSet, const vector<double>& ResCap,
 	const vector<PatternClass> &Pat)
 {
-	//OpId = Select_One_Nei();
-	//NeighourOperatorIndex = 6;
 #ifdef _DEBUG
 	cout << ".......selected neighbor index = " << OpId <<"........."<<endl;
 #endif // _DEBUG
 	switch (OpId)
 	{
 		case(0): Nei_Swap(Nei); break;
-		case(1): Nei_CrossOver_OnePoint(Nei); break;
+		case(1): Nei_FlipOver_OnePoint(Nei); break;
 		case(2): Nei_Move_One_To_Left(Nei); break;
 		case(3): Nei_Move_One_To_Right(Nei); break;
 		case(4): Nei_Insert_One_Random_To_Left(Nei); break;
@@ -49,9 +43,12 @@ void SCHCLASS::GenNei(SCHCLASS& Nei, GRAPH& g,
 	Nei.Evaluate(g);
 }
 
-//Swap the order of two links
+/// <summary>
+/// randomly select two nodes and swap them
+/// </summary>
+/// <param name="NewSol"></param>
 void SCHCLASS::Nei_Swap(SCHCLASS& NewSol) {
-	// step 1: randomly generate two locations
+	//Step 1: randomly generate two locations
 #ifdef _DEBUG
 	cout << "------------Start Swap-----------" << endl;
 #endif // _DEBUG
@@ -81,7 +78,10 @@ void SCHCLASS::Nei_Swap(SCHCLASS& NewSol) {
 #endif
 }
 
-//move one to the left 
+/// <summary>
+/// advance one node, swap it with its left
+/// </summary>
+/// <param name="NewSol"></param>
 void SCHCLASS::Nei_Move_One_To_Left(SCHCLASS& NewSol)
 {
 	int locA = GenRandomInt(1, int(Links.size() - 1));
@@ -99,8 +99,10 @@ void SCHCLASS::Nei_Move_One_To_Left(SCHCLASS& NewSol)
 	cout << "-----------End Move One To Left-----------" << endl;
 #endif // _DEBUG
 }
-
-//move one to the left 
+/// <summary>
+/// delay one by moving it to its right
+/// </summary>
+/// <param name="NewSol"></param>
 void SCHCLASS::Nei_Move_One_To_Right(SCHCLASS& NewSol)
 {
 	int locA = GenRandomInt(0, int(Links.size() - 2));
@@ -119,8 +121,11 @@ void SCHCLASS::Nei_Move_One_To_Right(SCHCLASS& NewSol)
 #endif // _DEBUG
 }
 
-
-void SCHCLASS::Nei_CrossOver_OnePoint(SCHCLASS& NewSol)
+/// <summary>
+/// flip the solution from one positions
+/// </summary>
+/// <param name="NewSol"></param>
+void SCHCLASS::Nei_FlipOver_OnePoint(SCHCLASS& NewSol)
 {
 	int locA = GenRandomInt(0, int(Links.size() - 1));
 #ifdef _DEBUG
@@ -170,6 +175,10 @@ void SCHCLASS::Nei_New(SCHCLASS& NewSol, GRAPH& g,
 	NewSol.AlignStartTime(ResCap);
 	NewSol.print();
 }
+/// <summary>
+/// randomly move one to its right 
+/// </summary>
+/// <param name="NewSol"></param>
 void SCHCLASS::Nei_Insert_One_Random_To_Right(SCHCLASS& NewSol) // randomly insert to a position
 {
 #ifdef _DEBUG
@@ -212,7 +221,10 @@ void SCHCLASS::Nei_Insert_One_Random_To_Right(SCHCLASS& NewSol) // randomly inse
 	cout << "-----------------Complete random To Right------------" << endl;
 #endif // _DEBUG
 }
-
+/// <summary>
+/// randomly insert it to its left 
+/// </summary>
+/// <param name="NewSol"></param>
 void SCHCLASS::Nei_Insert_One_Random_To_Left(SCHCLASS& NewSol)
 {
 #ifdef _DEBUG
@@ -309,6 +321,14 @@ int SectOneFromMap(const std::map<int, double> &m_Lid2EI)
 	return -1;
 }
 
+/// <summary>
+/// greedy generate the following nodes based on the efficiency index
+/// </summary>
+/// <param name="NewSol"></param>
+/// <param name="g"></param>
+/// <param name="sType">
+/// stype is "max" or "prob", where max is based on the maximu prob and prob is rooleet method 
+/// </param>
 void SCHCLASS::Nei_Greedy_EI_Based(SCHCLASS& NewSol, GRAPH& g, string sType)
 {
 	// step: random select a location
@@ -381,7 +401,14 @@ void SCHCLASS::Nei_Greedy_EI_Based(SCHCLASS& NewSol, GRAPH& g, string sType)
 #endif // _DEBUG
 }
 
-//Generate new solution based on the solution pattern 
+/// <summary>
+/// Generate new solution based on the solution pattern 
+/// </summary>
+/// <param name="NewSol"></param>
+/// <param name="g"></param>
+/// <param name="FailureLinkSet"></param>
+/// <param name="ResCap"></param>
+/// <param name="pat"></param>
 void SCHCLASS::Nei_New_Basedon_Pattern(SCHCLASS& NewSol, GRAPH& g,
 	const vector<int>& FailureLinkSet, const vector<double>& ResCap,
 	const vector<PatternClass>& pat)

@@ -25,16 +25,18 @@ public:
 };
 
 
-class ABCAlgorithms // to begin with use ABC algorithm
+class Algorithm // to begin with use ABC algorithm
 {
 public:
 	double BaseUNPM;
 	GRAPH* Graph;
+
 	double MaxFitValue;
 	double MinFitValue;
 	int NumEmployedBee;
 	int NumOnlookers;
 	int MaxIter;
+	string name;
 	vector<int> ScountCounter; // record the number of scouts
 	int MaxScountCount;
 	std::vector<double> setResourceCap;  // Capacity of the resources
@@ -51,7 +53,8 @@ public:
 	double ReactionFactor;
 	SelectOperatorType SelectOp;
 	void Ini(GRAPH& g);
-	ABCAlgorithms() {
+	Algorithm() {
+		name = "";
 		MaxFitValue = -99999999999999; MinFitValue = 999999999999999;
 		NumEmployedBee = -1; NumOnlookers = -1; MaxScountCount = -1; MaxIter = -1;
 		ScountCounter.reserve(100); setResourceCap.reserve(100); setOfFailureLinks.reserve(100);
@@ -70,13 +73,16 @@ public:
 			Operators.back().id = i;
 		}
 	};
-	~ABCAlgorithms() { Graph = nullptr; };
+	~Algorithm() { Graph = nullptr; };
 	std::vector<SCHCLASS> Sols;
 	void ComputeFailureLinkEI();
 	void printLinkEI();
 	void ReadSolAndEvaluate(vector<int>& vec);
 	void GenerateIni();
 	void ABCMain();
+	void HHMain();
+	void HHGenNewNei();
+	void HHGenIni();
 	void EmployBeePhase();
 	void OnlookerPhase();
 	void ScoutPhase();
@@ -88,20 +94,18 @@ public:
 	bool CompareTwoSolsAndReplace(SCHCLASS& lhs, SCHCLASS& rhs, int NeiOperatorId);
 	void updatePatternScore(const SCHCLASS& sol, bool isGloablImprove);
 	size_t findPatternIndex(int lid);
-	void PrintOperator(int seedid);
+	void PrintOperator(int seedid,int _iter);
 	void UpdateOperatorProb();
 	void IniOperatorProb();
 	void UpdateOperatorWeight();
 	int SelectOperIndex();
 	void UpdateOperatorScore(int OpId, double ResultFit, double LocalFit, double GlobalFit);
-
 	void UpdateOperatorProb_ALNS();
 	void UpdateOperatorScore_ALNS(int OpId, double ResultFit, double LocalFit, double GlobalFit);
 	void UpdateOperatorWeight_ALNS();
 	int SelectOperator_ALNS();
 	void IniOperatorProb_ANLS();
 	void printPattern(int seedid);
-
 
 };
 

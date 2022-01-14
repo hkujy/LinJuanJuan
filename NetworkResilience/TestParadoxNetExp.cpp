@@ -5,7 +5,7 @@
 using namespace std;
 
 //Compute the ranking of different failure links
-void ComputeBaressNetUnpm(ABCAlgorithms alg)
+void ComputeBaressNetUnpm(Algorithm alg)
 {
 	ofstream  OutFile;
 	UEeps = 1.0e-10f;
@@ -40,7 +40,7 @@ void ComputeBaressNetUnpm(ABCAlgorithms alg)
 	OutFile.close();
 }
 // check the combination of solution scenarios 
-void CheckReadSolScenario_2_period(ABCAlgorithms alg)
+void CheckReadSolScenario_2_period(Algorithm alg)
 {
 	UEeps = 1.0e-10f;
 	Zero = 1.0e-20f;
@@ -93,7 +93,7 @@ void CheckReadSolScenario_2_period(ABCAlgorithms alg)
 	fout.close();
 	fin.close();
 }
-void CheckReadSolScenario_1_period(ABCAlgorithms alg)
+void CheckReadSolScenario_1_period(Algorithm alg)
 {
 	UEeps = 1.0e-10f;
 	Zero = 1.0e-20f;
@@ -148,7 +148,7 @@ void CheckReadSolScenario_1_period(ABCAlgorithms alg)
 }
 // compare two solutions, one is based on ranking 
 // the other is based on the optimal solution
-void CompareBaressNet(ABCAlgorithms alg)
+void CompareBaressNet(Algorithm alg)
 {
 	ofstream  OutFile;
 	UEeps = 1.0e-10f;
@@ -194,7 +194,7 @@ void CompareBaressNet(ABCAlgorithms alg)
 	alg.PrintFinal(1);
 	alg.Graph->PrintLinks_onscreen();
 }
-void Check2PeriodSol(ABCAlgorithms alg)
+void Check2PeriodSol(Algorithm alg)
 {
 	//ofstream  OutFile;
 	UEeps = 1.0e-10f;
@@ -238,7 +238,7 @@ void Check2PeriodSol(ABCAlgorithms alg)
 }
 
 
-void TestBaraess(ABCAlgorithms alg)
+void TestBaraess(Algorithm alg)
 {
 	ComputeBaressNetUnpm(alg);
 	//CheckReadSolScenario_2_period(alg);

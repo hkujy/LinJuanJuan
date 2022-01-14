@@ -75,13 +75,6 @@ def TestSingleOperator(mf):
             # "NetworkIndex": 3,  # SiouxFall
             "isTestSingleOp": "True",
             "SingleOpIndex": i,
-            # "NumEmployBee": 10,
-            # "NumOnlookerBee": 10,
-            # "MaxScountCount": 50,
-            # "MaxABCIter": 200,
-            "RewardImproveGlobal": 1,
-            "RewardImproveLocal": 1,
-            "RewardWorse": 0,
             "ReactionFactor": 0.5,
             "SelectOperator": "Uni"
         }
@@ -101,10 +94,6 @@ def TestRewardVal(mf):
                 "RewardImproveLocal": i*0.5,
                 "RewardWorse": 0,
                 "ReactionFactor": 0.1*(j+1),
-                "NumEmployBee": 10,
-                "NumOnlookerBee": 10,
-                "MaxScountCount": 50,
-                "MaxABCIter": 500,
                 "SelectOperator": "ALNS"
             }
             para.global_case_id = para.global_case_id + 1
@@ -130,9 +119,11 @@ def TestDifferntOpSelect(mf):
         "ReactionFactor": 0.5,
         "SelectOperator": "ALNS"
     }
-    para.global_case_id = para.global_case_id + 1
-    TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
-                _case_name="ALNS")
+
+    # para.global_case_id = para.global_case_id + 1
+    # TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
+    #             _case_name="ALNS")
+
     adjust_para['SelectOperator'] = "Uni"
     para.global_case_id = para.global_case_id + 1
     TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
@@ -190,8 +181,8 @@ if __name__ == "__main__":
 
     # BenchmarkParadoxNet(mf)
     TestSingleOperator(mf)
-    TestDifferntOpSelect(mf)
     TestRewardVal(mf)
+    TestDifferntOpSelect(mf)
 
     # ------------------Test GA Function
     # TestGa(mf)

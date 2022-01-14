@@ -93,7 +93,7 @@ public:
 	void Nei_Move_One_To_Left(SCHCLASS& NewSol);
 	void Nei_Insert_One_Random_To_Right(SCHCLASS& NewSol);
 	void Nei_Insert_One_Random_To_Left(SCHCLASS& NewSol);
-	void Nei_CrossOver_OnePoint(SCHCLASS& NewSol);
+	void Nei_FlipOver_OnePoint(SCHCLASS& NewSol);
 	void Nei_Greedy_EI_Based(SCHCLASS& NewSol, GRAPH& g, string sType);
 	void Nei_New_Basedon_Pattern(SCHCLASS& NewSol, GRAPH& g, const vector<int>& FailureLinkSet,
 		const vector<double>& ResCap, const vector<PatternClass> &pat);
