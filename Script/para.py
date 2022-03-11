@@ -64,7 +64,6 @@ class ParaClass(object):
             with open("..//InPut//WangNetwork//ABCPara.txt", "w+") as f:
                 for key, value in self.para.items():
                     print("{0},{1}".format(key, value), file=f)
-
         else:
             logging.debug(
                 "Input network and model index is not specified for printing ABC parameters")

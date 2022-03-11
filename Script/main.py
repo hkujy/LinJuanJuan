@@ -16,6 +16,7 @@ import myplot
 # TODO: write the script for a benchmark test of the algorithm
 # Todo: write the formal test for each operator and the overall algorithm
 
+stop_number = -1
 
 def copy_file(_from, _to):
     copyfile(_from, _to)
@@ -79,8 +80,9 @@ def TestSingleOperator(mf):
             "SelectOperator": "Uni"
         }
         para.global_case_id = para.global_case_id + 1
-        TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
-                    _case_name="TestOp_"+str(i))
+        if para.global_case_id >= stop_number:
+            TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
+            _case_name="TestOp_"+str(i))
 
 def TestRewardVal(mf):
     """
@@ -97,8 +99,9 @@ def TestRewardVal(mf):
                 "SelectOperator": "ALNS"
             }
             para.global_case_id = para.global_case_id + 1
-            TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
-                    _case_name="Test_Rect_"+str(j)+"_imporve_"+str(i))
+            if para.global_case_id>=stop_number:
+                TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
+                        _case_name="Test_Rect_"+str(j)+"_imporve_"+str(i))
 
 
 def TestDifferntOpSelect(mf):
@@ -119,15 +122,17 @@ def TestDifferntOpSelect(mf):
         "ReactionFactor": 0.5,
         "SelectOperator": "ALNS"
     }
-
+    # Notes: 2022 March 2
+    # - it seems I do not need to test the ALNS, as it has been tested in other cases
     # para.global_case_id = para.global_case_id + 1
     # TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
-    #             _case_name="ALNS")
+                # _case_name="ALNS")
 
     adjust_para['SelectOperator'] = "Uni"
     para.global_case_id = para.global_case_id + 1
-    TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
-                _case_name="Uni")
+    if para.global_case_id>=stop_number:
+        TestOneCase(mf, adjust_para, _case_id=para.global_case_id, 
+        _case_name="Uni")
 
 
 def BenchmarkParadoxNet(mf):
