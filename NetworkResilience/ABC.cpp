@@ -8,8 +8,8 @@
 #include "ABC.h"
 #include <assert.h>     /* assert */
 #include <string>
+#include <unordered_map>
 using namespace std;
-
 
 int Algorithm::SelectOperIndex()
 {
@@ -52,7 +52,6 @@ bool ReadSeedVec(std::vector<int>& SeedVec,
 	{
 		fout << SeedVec.at(i) << endl;
 	}
-
 	fout.close();
 
 	return true;
@@ -86,6 +85,7 @@ void Algorithm::ABCMain()
 	ofstream ConvergeFile;
 	ConvergeFile.open("..//OutPut//ABCConverge.txt", ios::app);
 	vector<double> CpuTimes;
+	vector<size_t> sizeOfarchive;
 	clock_t St, Et;
 	for (int s = 0; s < SeedVecVal.size(); s++)
 	{
@@ -96,6 +96,7 @@ void Algorithm::ABCMain()
 		CumProbForSelectOnlooker.assign(NumEmployedBee, 0.0);
 		GlobalBest.Fitness = std::numeric_limits<double>::max();
 		ScountCounter.assign(NumEmployedBee, 0);
+		iniSolArchive();
 		GenerateIni();
 		IniOperatorProb();
 
@@ -128,6 +129,7 @@ void Algorithm::ABCMain()
 
 			PrintOperator(s,i);
 		}
+		sizeOfarchive.push_back(m_str_val_solArchive.size());
 		Et = clock();
 		CpuTimes.push_back((double)((Et - St)/CLOCKS_PER_SEC)); // time unit is second
 		PrintFinal(s); 
@@ -141,6 +143,14 @@ void Algorithm::ABCMain()
 		CpuTimeFile << s << "," << fixed << setprecision(2) <<CpuTimes[s]<< endl;
 	}
 	CpuTimeFile.close();
+	ofstream Archive;
+	Archive.open("..//OutPut//ArchiveSize.txt", ios::trunc);
+	Archive << "Seed,Size" << endl;
+	for (int s = 0; s < SeedVecVal.size(); s++)
+	{
+		Archive << s << "," << sizeOfarchive[s] << endl;
+	}
+	Archive.close();
 
 #ifdef _DEBUG
 	cout << "*************************ABC completes**************************" << endl;
@@ -149,6 +159,24 @@ void Algorithm::ABCMain()
 	cout << "Total Cost = " << GlobalBest.Fitness << endl;
 	cout << "*************************Done**************************" << endl;
 #endif // _DEBUG
+}
+
+//Evaluate solution
+//if it is a new solution, then add to archive 
+//if not, then evaluate the solution
+
+void Algorithm::EvaluteOneSol(SCHCLASS& Sol, GRAPH& g)
+{
+	Sol.key.assign(getMapStrFromSol(Sol));
+	if (isNeedToEvaluateSol(Sol))
+	{
+		Sol.Evaluate(g);
+		m_str_val_solArchive.insert(std::make_pair(Sol.key, Sol.Fitness));
+	}
+	else
+	{
+		Sol.Fitness = m_str_val_solArchive[Sol.key];
+	}
 }
 
 void Algorithm::GenerateIni()
@@ -187,7 +215,10 @@ void Algorithm::GenerateIni()
 		Sols.back().Links.at(3) = &Graph->Links.at(7);
 		Sols.back().Links.at(4) = &Graph->Links.at(6);
 		Sols.back().GenerateTimeFromOrder(ResourceCap);*/
-		Sols.back().Evaluate(*Graph);
+	
+		EvaluteOneSol(Sols[i],*Graph);
+		//Sols.back().Evaluate(*Graph);
+
 		if (Sols.back().Fitness < GlobalBest.Fitness)
 		{
 			GlobalBest = Sols.back();
@@ -253,6 +284,7 @@ void Algorithm::EmployBeePhase()
 		//if (i == 2)
 		int OpId = SelectOperIndex();
 		this->Sols.at(i).GenNei(Nei, *Graph, OpId, setOfFailureLinks, setResourceCap,Pattern);
+		EvaluteOneSol(Nei, *Graph);
 		if (SelectOp!=SelectOperatorType::Uniform) UpdateOperatorScore(OpId, Nei.Fitness, this->Sols.at(i).Fitness, GlobalBest.Fitness);
 		isImproved = CompareTwoSolsAndReplace(this->Sols.at(i), Nei, OpId);
 		if (isImproved) ScountCounter.at(i) = 0;
@@ -273,6 +305,7 @@ void Algorithm::OnlookerPhase()
 		SCHCLASS Nei(this->Sols.at(Selected));
 		int OpId = SelectOperIndex();
 		this->Sols.at(Selected).GenNei(Nei, *Graph, OpId, setOfFailureLinks, setResourceCap,Pattern);
+		EvaluteOneSol(Nei, *Graph);
 		bool isImproved = false;
 		if (SelectOp!=SelectOperatorType::Uniform) UpdateOperatorScore(OpId, Nei.Fitness, this->Sols.at(SelectOp).Fitness, GlobalBest.Fitness);
 		isImproved = CompareTwoSolsAndReplace(this->Sols.at(Selected), Nei, OpId);
@@ -293,7 +326,8 @@ void Algorithm::ScoutPhase()
 #endif // _DEBUG
 			this->Sols.at(t).GenerateIniSch(*Graph, setOfFailureLinks);
 			this->Sols.at(t).AlignStartTime(setResourceCap);
-			this->Sols.at(t).Evaluate(*Graph);
+			EvaluteOneSol(this->Sols.at(t), *Graph);
+			//this->Sols.at(t).Evaluate(*Graph);
 			if (this->Sols.at(t).Fitness < GlobalBest.Fitness)
 			{
 				GlobalBest = this->Sols.at(t);
@@ -806,15 +840,13 @@ std::string getAlgoTypeName(const AlgorithmType& alot)
 		TRACE("Algorithm type is wrong input");
 		break;
 	}
-
+	return "Undefined name and need to debug";
 }
 
 // this is to check whether the solution needs to be evaluated
-bool Algorithm::isNeedToEvaluateSol(const SCHCLASS& Sol)
+bool Algorithm::isNeedToEvaluateSol(const SCHCLASS &Sol)
 {
-	// step 1: get key 
-	string this_key = getMapStrFromSol(Sol);
-	return isAddNewToArchive(this_key);
+	return isAddNewToArchive(Sol.key);
 }
 
 
@@ -832,15 +864,33 @@ bool Algorithm::isAddNewToArchive(const string &_key)
 // TODO: need to test this 
 string Algorithm::getMapStrFromSol(const SCHCLASS &Sol) //get string for the map sol archive
 {
-	string val;
-	for (auto l: Sol.Links)
+	string str_val;
+	for (size_t l=0; l < Sol.Links.size(); l++)
 	{
-		val = std::to_string(l->ID)+val;
+		if (l == 0)
+		{
+			if (Sol.Links[l]->ID == 0) str_val = "0";
+			else str_val = std::to_string(Sol.Links[l]->ID);
+		}
+		else
+		{
+			if (Sol.Links[l]->ID == 0) str_val = str_val + ",0";
+			else str_val = str_val + "," + std::to_string(Sol.Links[l]->ID);
+		}
 	}
 	
 	for (auto l : Sol.Links)
 	{
 		cout << "wtf: link id = " << l->ID << endl;
 	}
-	cout << "converted str = " << val << endl;
+	cout << "converted str = " << str_val << endl;
+	return str_val;
+}
+
+void Algorithm::iniSolArchive()
+{	
+	if (m_str_val_solArchive.size() > 0)
+	{
+		m_str_val_solArchive.clear();
+	}
 }

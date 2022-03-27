@@ -41,7 +41,7 @@ void SCHCLASS::GenNei(SCHCLASS& Nei, GRAPH& g,
 		cout << "need to write repair" << endl;
 		cout << "*************************" << endl;
 	}
-	Nei.Evaluate(g);
+	//Nei.Evaluate(g);
 }
 
 /// <summary>

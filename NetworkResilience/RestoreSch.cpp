@@ -5,6 +5,7 @@
 #include <numeric>
 #include <assert.h>
 
+using namespace std;
 void SortStartTime(vector<int>& st)
 {
 	std::sort(st.begin(), st.end());
@@ -185,7 +186,6 @@ void SCHCLASS::GenerateIniSch(GRAPH& g, const vector<int>& FailureLinks)
 	//SortStartTime(StartTime);
 	//updateEndTime();
 	this->computeKey();
-
 }
 
 vector<size_t> SCHCLASS::getNewReadyLinks(int tau)
@@ -215,14 +215,11 @@ void SCHCLASS::Evaluate(GRAPH& g)
 	{
 		if (l.CaRevise < l.CaInput - 1)
 		{
-			cout << "Warning: the capacity is not set to initial value before the evalute procedure" << endl;
+			std::cout << "Warning: the capacity is not set to initial value before the evalute procedure" << endl;
 			system("PAUSE");
 		}
 	}
 #endif
-
-	// Step 0, check whether the solution has been evaluated before. 
-
 	Fitness = 0.0;
 	vector<size_t> CumulativeReadyLinks;
 	TravelTime.assign(GetLastPeriod(), 0);
@@ -254,7 +251,7 @@ void SCHCLASS::Evaluate(GRAPH& g)
 				UNPM.at(t) = UNPM.at(t - 1);
 			}
 #ifdef _DEBUG
-			cout << "---Period = " << t << ", no link is added" << endl;
+			std::cout << "---Period = " << t << ", no link is added" << endl;
 #endif // _DEBUG
 		}
 		else
@@ -263,7 +260,7 @@ void SCHCLASS::Evaluate(GRAPH& g)
 
 			g.EvaluteGraph();
 #ifdef _DEBUG
-			cout << "---Period = " << t << "," << NewReady.size() << " link is added" << endl;
+			std::cout << "---Period = " << t << "," << NewReady.size() << " link is added" << endl;
 			cout << "---Period = " << t << "," << "min cost = " << g.OdPairs.at(0).MinCost << "unpm=" << g.UNPM << endl;;
 #endif // _DEBUG
 			CumulativeReadyLinks.insert(CumulativeReadyLinks.end(), NewReady.begin(), NewReady.end());

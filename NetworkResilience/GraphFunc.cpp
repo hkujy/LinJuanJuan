@@ -101,6 +101,7 @@ int GRAPH::FindMinCostRoutes(){
 }
 
 void GRAPH::CreateOriginSet()
+
 {
 	OriginBasedOD Oset;
 	vector<bool> isOrign(NumNodes, false);

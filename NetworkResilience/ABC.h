@@ -31,7 +31,7 @@ class Algorithm // to begin with use ABC algorithm
 public:
 	double BaseUNPM;
 	GRAPH* Graph;
-
+	friend class SCHCLASS;
 	double MaxFitValue;
 	double MinFitValue;
 	int NumEmployedBee;
@@ -57,6 +57,7 @@ public:
 	string getMapStrFromSol(const SCHCLASS &Sol); //get string for the map sol archive
 	bool isAddNewToArchive(const string &_key);
 	bool isNeedToEvaluateSol(const SCHCLASS &Sol);
+	void EvaluteOneSol(SCHCLASS &Sch, GRAPH& g);
 	void Ini(GRAPH& g);
 	Algorithm() {
 		name = "";
@@ -80,6 +81,7 @@ public:
 	};
 	~Algorithm() { Graph = nullptr; };
 	std::vector<SCHCLASS> Sols;
+	void iniSolArchive();
 	void ComputeFailureLinkEI();
 	void printLinkEI();
 	void ReadSolAndEvaluate(vector<int>& vec);

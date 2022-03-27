@@ -33,13 +33,14 @@ public:
 	std::vector<double> TravelTime;
 	std::vector<double> UNPM;
 	double Fitness;
-	string key; // map to the string key
+	std::string key; // map to the string key
 	SCHCLASS() {
 		ID = -1; Fitness = -1; Links.reserve(100); StartTime.reserve(100); EndTime.reserve(100); UsedRes.reserve(100); 
 		TravelTime.reserve(100); UNPM.reserve(100);
+		key = "";
 	};
 	SCHCLASS(int _id) {
-		ID = _id; Fitness = -1;
+		ID = _id; Fitness = -1; key = "";
 		Links.reserve(100); StartTime.reserve(100); EndTime.reserve(100); 
 		UsedRes.reserve(100); TravelTime.reserve(100); UNPM.reserve(100);
 	}
@@ -56,6 +57,7 @@ public:
 		this->UNPM.assign(obj.UNPM.begin(), obj.UNPM.end());
 		this->ID = obj.ID;
 		this->Fitness = obj.Fitness;
+		this->key = obj.key;
 	};  // copy constructor
 	~SCHCLASS()
 	{
@@ -63,7 +65,7 @@ public:
 		{
 			Links.clear();
 		}
-		StartTime.clear(); EndTime.clear(); UsedRes.clear(); TravelTime.clear(); UNPM.clear();
+		StartTime.clear(); EndTime.clear(); UsedRes.clear(); TravelTime.clear(); UNPM.clear(); key.clear();
 	}
 	// functions
 	Scenario ConvertToScenario(); // convert sch class to scenario and return 
