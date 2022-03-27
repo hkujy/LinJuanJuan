@@ -96,9 +96,10 @@ void Algorithm::ABCMain()
 		CumProbForSelectOnlooker.assign(NumEmployedBee, 0.0);
 		GlobalBest.Fitness = std::numeric_limits<double>::max();
 		ScountCounter.assign(NumEmployedBee, 0);
-		iniSolArchive();
-		GenerateIni();
 		IniOperatorProb();
+		IniPattern();
+		IniSolArchive();
+		GenerateIniSol();
 
 		for (int i = 0; i < MaxIter; i++)
 		{
@@ -179,8 +180,9 @@ void Algorithm::EvaluteOneSol(SCHCLASS& Sol, GRAPH& g)
 	}
 }
 
-void Algorithm::GenerateIni()
+void Algorithm::GenerateIniSol()
 {
+	clearSols();
 	// improve the solutions
 	for (int i = 0; i < NumEmployedBee; i++)
 	{
@@ -338,7 +340,7 @@ void Algorithm::ScoutPhase()
 	}
 }
 
-//get the fitness probability vector
+//Get the fitness probability vector
 void Algorithm::GetProb()  // compute probability based on the fitness values
 {
 	double sumFit = 0.0;
@@ -393,6 +395,32 @@ size_t Algorithm::SelectOnLookerBasedonProb()
 	return RouletteSelect(CumProbForSelectOnlooker);
 }
 
+void Algorithm::IniPattern()
+{
+	if (Pattern.size() > 0) Pattern.clear();
+	for (int l = 0; l < setOfFailureLinks.size(); l++)
+	{
+		Pattern.push_back(PatternClass());
+		Pattern.back().id = l;
+		Pattern.back().LinkId = setOfFailureLinks.at(l);
+		for (int k = 0; k < setOfFailureLinks.size(); k++)
+		{
+			Pattern.back().next.push_back(setOfFailureLinks.at(k));
+		}
+		Pattern.back().Prob.assign(setOfFailureLinks.size(), 0.0);
+		Pattern.back().Score.assign(setOfFailureLinks.size(), 1.0);
+
+		// TODO. update the score to set the diagonal vector value =1
+		for (int i = 0; i < setOfFailureLinks.size(); i++)
+		{
+			Pattern.back().Score.at(l) = 0;
+		}
+	}
+	for (auto& p : Pattern)
+	{
+		p.updateProb();
+	}
+}
 
 void Algorithm::Ini(GRAPH& g)
 {
@@ -874,20 +902,24 @@ string Algorithm::getMapStrFromSol(const SCHCLASS &Sol) //get string for the map
 		}
 		else
 		{
-			if (Sol.Links[l]->ID == 0) str_val = str_val + ",0";
-			else str_val = str_val + "," + std::to_string(Sol.Links[l]->ID);
+			if (Sol.Links[l]->ID == 0) str_val.append(",0");
+			else
+			{
+				str_val.append(",");str_val.append(std::to_string(Sol.Links[l]->ID));
+			}
 		}
 	}
-	
+#ifdef _DEBUG
 	for (auto l : Sol.Links)
 	{
 		cout << "wtf: link id = " << l->ID << endl;
 	}
 	cout << "converted str = " << str_val << endl;
+#endif
 	return str_val;
 }
 
-void Algorithm::iniSolArchive()
+void Algorithm::IniSolArchive()
 {	
 	if (m_str_val_solArchive.size() > 0)
 	{

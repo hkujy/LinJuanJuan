@@ -8,8 +8,8 @@ import logging
 
 isRunTest = True
 # isRunTest = False
-# isDebug = True
-isDebug = False
+isDebug = True
+# isDebug = False
 # SeedPool = [4601, 6677, 2887, 6421, 8471, 512, 3547, 2614, 8146, 
 #             9629, 8266, 3045, 9770, 3048, 6705, 9591, 7905, 8223, 9044, 1091,
 #             1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,16,18,19,20]
@@ -35,9 +35,9 @@ class ParaClass(object):
             "isTestSingleOp": "False",
             "SingleOpIndex": -1,
             "NumEmployBee": 10,
-            "NumOnlookerBee": 10,
+            "NumOnlookerBee":10,
             "MaxScountCount": 100,
-            "MaxABCIter": 500,
+            "MaxABCIter": 200,
             "MaxGAIter": 5,
             "RewardImproveGlobal": 1,
             "RewardImproveLocal": 1,
@@ -45,7 +45,7 @@ class ParaClass(object):
             "ReactionFactor": 0.5,
             "SelectOperator": "ALNS",
             "OneDimEsp": 0.0000001,
-            "UEeps": 0.01,
+            "UEeps": 0.1,
             "UEmaxIter": 500
         }
 

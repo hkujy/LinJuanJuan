@@ -185,7 +185,7 @@ void SCHCLASS::GenerateIniSch(GRAPH& g, const vector<int>& FailureLinks)
 	//}
 	//SortStartTime(StartTime);
 	//updateEndTime();
-	this->computeKey();
+	//this->computeKey();
 }
 
 vector<size_t> SCHCLASS::getNewReadyLinks(int tau)

@@ -146,14 +146,11 @@ int main(int argc, char* argv[])
 	std::cout << "# complete read graph data" << endl;
 	//MainAlgo.ComputeFailureLinkEI();
 	//MainAlgo.printLinkEI();
-
 	//TestBaraess(MainAlgo);
 	//return 0;
-
 	//BaseGraph.EvaluteGraph();
 	if (!UseMyOwnAlgo)  // this used for evaluating the method when using python 
 	{
-		
 		vector<int> InputVec;
 		if (argc > 1)
 		{

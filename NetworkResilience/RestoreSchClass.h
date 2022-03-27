@@ -59,12 +59,13 @@ public:
 		this->Fitness = obj.Fitness;
 		this->key = obj.key;
 	};  // copy constructor
+	void clear() {
+		if (Links.size() > 0) Links.clear();
+		StartTime.clear(); EndTime.clear(); UsedRes.clear(); TravelTime.clear(); UNPM.clear(); key.clear();
+	}
 	~SCHCLASS()
 	{
-		if (Links.size() > 0)
-		{
-			Links.clear();
-		}
+		if (Links.size() > 0) Links.clear();
 		StartTime.clear(); EndTime.clear(); UsedRes.clear(); TravelTime.clear(); UNPM.clear(); key.clear();
 	}
 	// functions

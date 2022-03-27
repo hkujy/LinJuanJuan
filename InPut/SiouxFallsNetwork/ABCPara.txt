@@ -1,11 +1,11 @@
 UseMyOwn,True
 NetworkIndex,3
 isTestSingleOp,True
-SingleOpIndex,0
+SingleOpIndex,1
 NumEmployBee,10
 NumOnlookerBee,10
 MaxScountCount,100
-MaxABCIter,500
+MaxABCIter,200
 MaxGAIter,5
 RewardImproveGlobal,1
 RewardImproveLocal,1
@@ -13,5 +13,5 @@ RewardWorse,0
 ReactionFactor,0.5
 SelectOperator,Uni
 OneDimEsp,1e-07
-UEeps,0.01
+UEeps,0.1
 UEmaxIter,500

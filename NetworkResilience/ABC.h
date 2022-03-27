@@ -31,7 +31,6 @@ class Algorithm // to begin with use ABC algorithm
 public:
 	double BaseUNPM;
 	GRAPH* Graph;
-	friend class SCHCLASS;
 	double MaxFitValue;
 	double MinFitValue;
 	int NumEmployedBee;
@@ -59,6 +58,7 @@ public:
 	bool isNeedToEvaluateSol(const SCHCLASS &Sol);
 	void EvaluteOneSol(SCHCLASS &Sch, GRAPH& g);
 	void Ini(GRAPH& g);
+	void IniPattern();
 	Algorithm() {
 		name = "";
 		MaxFitValue = -99999999999999; MinFitValue = 999999999999999;
@@ -79,13 +79,15 @@ public:
 			Operators.back().id = i;
 		}
 	};
+
 	~Algorithm() { Graph = nullptr; };
 	std::vector<SCHCLASS> Sols;
-	void iniSolArchive();
+	void clearSols() { if (Sols.size()>0) Sols.clear(); }
+	void IniSolArchive();
 	void ComputeFailureLinkEI();
 	void printLinkEI();
 	void ReadSolAndEvaluate(vector<int>& vec);
-	void GenerateIni();
+	void GenerateIniSol();
 	void ABCMain();
 	void HHMain();
 	void HHGenNewNei();

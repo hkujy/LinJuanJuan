@@ -18,7 +18,7 @@ void Algorithm::HHGenNewNei()
 void Algorithm::HHGenIni()
 {
 	NumEmployedBee = 1;
-	GenerateIni();
+	GenerateIniSol();
 }
 
 
