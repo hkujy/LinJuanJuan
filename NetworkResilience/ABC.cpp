@@ -809,3 +809,38 @@ std::string getAlgoTypeName(const AlgorithmType& alot)
 
 }
 
+// this is to check whether the solution needs to be evaluated
+bool Algorithm::isNeedToEvaluateSol(const SCHCLASS& Sol)
+{
+	// step 1: get key 
+	string this_key = getMapStrFromSol(Sol);
+	return isAddNewToArchive(this_key);
+}
+
+
+// TODO: check whether the link is a new to the archive 
+bool Algorithm::isAddNewToArchive(const string &_key)
+{
+// step 1. get string from so
+	if (m_str_val_solArchive.count(_key) == 0)
+		return true;
+	else
+		return false;
+}
+
+
+// TODO: need to test this 
+string Algorithm::getMapStrFromSol(const SCHCLASS &Sol) //get string for the map sol archive
+{
+	string val;
+	for (auto l: Sol.Links)
+	{
+		val = std::to_string(l->ID)+val;
+	}
+	
+	for (auto l : Sol.Links)
+	{
+		cout << "wtf: link id = " << l->ID << endl;
+	}
+	cout << "converted str = " << val << endl;
+}

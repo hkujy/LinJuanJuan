@@ -32,6 +32,7 @@ void SCHCLASS::GenNei(SCHCLASS& Nei, GRAPH& g,
 		system("PAUSE");
 		break;
 	}
+	Nei.computeKey();
 	Nei.GenerateTimeFromOrder(ResCap);
 	if (!Nei.isFeasible(ResCap))
 	{

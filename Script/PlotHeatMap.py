@@ -92,8 +92,6 @@ std_matrix = np.random.rand(num_nodes, num_nodes)
 fn = "../Output/PrintPatternScore.txt"
 data = pd.read_csv(fn)
 
-
-
 vec =[]  # vector represention of a matrix
 for i in range(0,num_nodes*num_nodes):
     vec.append([])
@@ -119,7 +117,6 @@ for i in range(0, num_nodes):
 # print(std_matrix)
 # print("-------------------")
 # print(ave_matrix)
-
 heatmap(ave_matrix,"ave",nodes)
 heatmap(std_matrix,"std",nodes)
 exit()

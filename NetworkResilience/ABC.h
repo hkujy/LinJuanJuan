@@ -3,6 +3,7 @@
 #define ABCclass
 #include <iostream>
 #include <vector>
+#include <unordered_map>
 #include "Parameters.h"
 #include "TempleteFunc.h"
 #include "GlobalVar.h"
@@ -41,6 +42,7 @@ public:
 	int MaxScountCount;
 	std::vector<double> setResourceCap;  // Capacity of the resources
 	std::vector<int> setOfFailureLinks;
+	std::unordered_map<std::string, double> m_str_val_solArchive;
 	vector<double> CumProbForSelectOnlooker; // probability for the onlookers
 	vector<double> CumProbForSelectNei; // probability for the onlookers
 	SCHCLASS GlobalBest;
@@ -52,6 +54,9 @@ public:
 	double RewardWorse;
 	double ReactionFactor;
 	SelectOperatorType SelectOp;
+	string getMapStrFromSol(const SCHCLASS &Sol); //get string for the map sol archive
+	bool isAddNewToArchive(const string &_key);
+	bool isNeedToEvaluateSol(const SCHCLASS &Sol);
 	void Ini(GRAPH& g);
 	Algorithm() {
 		name = "";
@@ -106,7 +111,6 @@ public:
 	int SelectOperator_ALNS();
 	void IniOperatorProb_ANLS();
 	void printPattern(int seedid);
-
 };
 
 

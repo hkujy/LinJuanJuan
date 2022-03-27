@@ -184,6 +184,7 @@ void SCHCLASS::GenerateIniSch(GRAPH& g, const vector<int>& FailureLinks)
 	//}
 	//SortStartTime(StartTime);
 	//updateEndTime();
+	this->computeKey();
 
 }
 
@@ -219,6 +220,8 @@ void SCHCLASS::Evaluate(GRAPH& g)
 		}
 	}
 #endif
+
+	// Step 0, check whether the solution has been evaluated before. 
 
 	Fitness = 0.0;
 	vector<size_t> CumulativeReadyLinks;
@@ -341,4 +344,19 @@ void SCHCLASS::GenerateIniBasedOnPattern(GRAPH& g, const vector<int>& FailureLin
 #endif // _DEBUG
 
 
+}
+
+// compute the key associated the solution
+void SCHCLASS::computeKey()
+{
+	string val;
+	for (auto l : this->Links)
+	{
+		val = std::to_string(l->ID) + val;
+	}
+	for (auto l : this->Links)
+	{
+		cout << "wtf: link id = " << l->ID << endl;
+	}
+	cout << "converted str = " << val << endl;
 }

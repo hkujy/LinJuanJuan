@@ -103,7 +103,6 @@ def TestRewardVal(mf):
                 TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
                         _case_name="Test_Rect_"+str(j)+"_imporve_"+str(i))
 
-
 def TestDifferntOpSelect(mf):
     """
         select different operator

@@ -33,6 +33,7 @@ public:
 	std::vector<double> TravelTime;
 	std::vector<double> UNPM;
 	double Fitness;
+	string key; // map to the string key
 	SCHCLASS() {
 		ID = -1; Fitness = -1; Links.reserve(100); StartTime.reserve(100); EndTime.reserve(100); UsedRes.reserve(100); 
 		TravelTime.reserve(100); UNPM.reserve(100);
@@ -79,6 +80,7 @@ public:
 	int findEarliestInFeasibleSt(const vector<double>& ResCap);
 	void updateEndTime();
 	void Evaluate(GRAPH& g);
+	void computeKey();
 	int GetLastPeriod()
 	{
 		return *max_element(EndTime.begin(), EndTime.end()); ;
@@ -110,6 +112,7 @@ public:
 		Links.assign(rhs.Links.begin(), rhs.Links.end());
 		TravelTime.assign(rhs.TravelTime.begin(), rhs.TravelTime.end());
 		UNPM.assign(rhs.UNPM.begin(), rhs.UNPM.end());
+		key = rhs.key;
 		return* this;
 	}
 };

@@ -9,12 +9,14 @@ from pylab import mpl
 
 
 # folder = '../Output/'
-folder = 'C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin\SiouxFall_FailureLink_1\SelectNei\9_ALNS/'
+# folder = 'C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin\SiouxFall_FailureLink_1\SelectNei\9_ALNS/'
+
+# folder = 'C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin\Tests2022\SelectNei\'
 file = 'OperatorsMeasure.txt'
 df = pd.read_csv(folder+file)
 print(df)
 
-num_seed = 2
+num_seed = 20
 num_iter = 10
 num_op = 9
 

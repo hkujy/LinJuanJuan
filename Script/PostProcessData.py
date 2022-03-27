@@ -1,10 +1,14 @@
 """Post process the resuls data
 """
+from attr import dataclass
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
 from pandas.core.accessor import PandasDelegate
+
+ 
+root_folder = r"C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin\Tests2022/"
 
 def CompareOneFolder(_folder:str,_name:str):
 	root, dirs, files = next(os.walk(_folder), ([],[],[]))
@@ -37,7 +41,9 @@ def CompareOneFolder(_folder:str,_name:str):
 		d.append([str(i),allGaps[i][NumberOfIter-1]])
 	df = pd.DataFrame(d, columns = ['Exp','MinObj'])
 	with open(_folder+"_ObjTable.txt","w+") as f:
-		print(df,file=f)
+		print("Id,Obj",file=f)
+		for r in range(0,len(df)):
+			print("{0},{1}",df['Exp'][r],df['MinObj'][r],file=f)
 	print(df)
 
 
@@ -54,8 +60,8 @@ def TuneReward():
 	# CompareOneFolder(_folder=improveFolder,_name="improve=3")
 	# exit()
 
-
-	root = r"C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin\\SiouxFall_TunePara\\"
+	root = root_folder
+	# root = r"C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin\\SiouxFall_TunePara\\"
 	folder = root + "j=0\\"
 	CompareOneFolder(_folder=folder,_name="j=0")
 	folder = root + "j=1\\"
@@ -76,9 +82,25 @@ def TuneReward():
 	CompareOneFolder(_folder=folder,_name="j=8")
 
 
+def effect_of_operators():
+	"""test the effect of operators
+	"""
+	print("Now Plot the effect of operatros")
+	OperatorFolder  = root_folder + "Tests2022/EffectOfOperators/"
+	print("Read folder = {0}".format(OperatorFolder))
+	CompareOneFolder(_folder=OperatorFolder,_name="CompareOperator")
+
+def get_files():
+	"""generate the list of files names
+	"""
+	pass	
+
 if __name__=='__main__':
 	"""
 	"""
+	# effect_of_operators()
+	# root_folder = r"C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin/"
+	
 	TuneReward()
 	exit()
 	# OperatorFolder = r"C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin\SiouxFall_FailureLink_0/EffectOfOperators/"
