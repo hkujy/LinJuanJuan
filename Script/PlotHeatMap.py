@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from pylab import mpl
 
 
+
 def heatmap(mat,name:str,nodes):
     mpl.rcParams['font.family'] = 'Times New Roman'
     mpl.rcParams['font.sans-serif'] = 'Times New Roman'
@@ -76,50 +77,53 @@ def get_index(i,j,num_of_nodes):
     """
     return (i*num_of_nodes+j) 
 
-num_nodes = 12
-num_nodes = 12
-num_seed = 2
-nodes = [0, 6, 19, 22, 26, 27, 34, 38, 42, 55,59,73]
-# print("Need to check the input of number of seed and number nodes")
-# sns.set_theme(font='Times New Roman')
 
-ave_matrix = np.random.rand(num_nodes, num_nodes)
-std_matrix = np.random.rand(num_nodes, num_nodes)
-# for i in range(0, num_nodes):
-#     for j in range(0, num_nodes):
-#         mat[i, j] = 0
+def plot_Patten_heat_map(nodes):
+    num_seed = 2
+    num_nodes = 12
+    num_nodes = 12
+    nodes = [0, 6, 19, 22, 26, 27, 34, 38, 42, 55, 59, 73]
+    num_nodes = len(nodes)
+    fn = "../Output/PrintPatternScore.txt"
+    # print("Need to check the input of number of seed and number nodes")
+    # sns.set_theme(font='Times New Roman')
 
-fn = "../Output/PrintPatternScore.txt"
-data = pd.read_csv(fn)
+    ave_matrix = np.random.rand(num_nodes, num_nodes)
+    std_matrix = np.random.rand(num_nodes, num_nodes)
+    # for i in range(0, num_nodes):
+    #     for j in range(0, num_nodes):
+    #         mat[i, j] = 0
 
-vec =[]  # vector represention of a matrix
-for i in range(0,num_nodes*num_nodes):
-    vec.append([])
-# print(data)
-for s in range(0, num_seed):
-    for i in range(0,num_nodes):
-        for j in range(0,num_nodes):
-            row = s*(num_nodes*num_nodes)+i*num_nodes+j
-            first = nodes[i]
-            second =nodes[j]
-            val = data["Prob"][row]
+    data = pd.read_csv(fn)
+
+    vec =[]  # vector represention of a matrix
+    for i in range(0,num_nodes*num_nodes):
+        vec.append([])
+    # print(data)
+    for s in range(0, num_seed):
+        for i in range(0,num_nodes):
+            for j in range(0,num_nodes):
+                row = s*(num_nodes*num_nodes)+i*num_nodes+j
+                first = nodes[i]
+                second =nodes[j]
+                val = data["Prob"][row]
+                loc = get_index(i,j,num_nodes)
+                # print("s={0},i={1},j={2},row={3},val={4}".format(s,first,second,row,val))
+                vec[loc].append(val)
+    # print(vec)       
+
+    for i in range(0, num_nodes):
+        for j in range(0, num_nodes):
             loc = get_index(i,j,num_nodes)
-            # print("s={0},i={1},j={2},row={3},val={4}".format(s,first,second,row,val))
-            vec[loc].append(val)
-# print(vec)       
+            ave_matrix[i,j] = np.average(vec[loc])
+            std_matrix[i,j] = np.std(vec[loc])
 
-for i in range(0, num_nodes):
-    for j in range(0, num_nodes):
-        loc = get_index(i,j,num_nodes)
-        ave_matrix[i,j] = np.average(vec[loc])
-        std_matrix[i,j] = np.std(vec[loc])
-
-# print(std_matrix)
-# print("-------------------")
-# print(ave_matrix)
-heatmap(ave_matrix,"ave",nodes)
-heatmap(std_matrix,"std",nodes)
-exit()
+    # print(std_matrix)
+    # print("-------------------")
+    # print(ave_matrix)
+    heatmap(ave_matrix,"ave",nodes)
+    heatmap(std_matrix,"std",nodes)
+    exit()
 
 
 

@@ -15,6 +15,14 @@ template <typename T>  T **Create2DAarray(const int dim1, const int dim2){
 	return (array);
 }
 
+/*Template for delete a vector/list with pointers*/
+//std::list<T*> list_pts;
+//for (list<T*>::const_iterator itr = list_pts.begin(); itr != list_pts.end(); ++itr) {
+//	delete* itr;
+//}
+//list_pts.clear();
+
+
 template <typename T>
 void Free2DArrey(T **Array, const int dim1) {
 

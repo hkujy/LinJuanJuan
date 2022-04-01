@@ -18,7 +18,7 @@ public:
 	vector<double> Prob;
 	vector<int> next;
 	PatternClass() { id = -1; LinkId = -1; Score.reserve(100); Prob.reserve(100); }
-	~PatternClass() { Score.clear(); Prob.clear(); id = -1; LinkId = -1; }
+	~PatternClass() { Score.clear(); Prob.clear(); id = -1; LinkId = -1; next.clear(); }
 	void updateProb();
 };
 
@@ -65,7 +65,14 @@ public:
 	}
 	~SCHCLASS()
 	{
-		if (Links.size() > 0) Links.clear();
+		//if (Links.size() > 0) Links.clear();
+		//for (vector<LINK*>::iterator itr = Links.begin(); itr != Links.end(); ++itr) {
+		//	LINK* l = *itr;
+		//	delete &l;
+		//	l = NULL;
+		//	//delete* itr;
+		//}
+		Links.clear();
 		StartTime.clear(); EndTime.clear(); UsedRes.clear(); TravelTime.clear(); UNPM.clear(); key.clear();
 	}
 	// functions

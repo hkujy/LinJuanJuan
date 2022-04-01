@@ -100,7 +100,7 @@ void ReadModelPara()
 	//bool flag = PrintModelParas();
 }
 /// <summary>
-/// Code to reporduce Wang's results
+/// Code to reproduce Wang's results
 /// </summary>
 /// <param name="g"></param>
 void ReproduceWang(GRAPH& g)

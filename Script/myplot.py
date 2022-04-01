@@ -3,6 +3,7 @@ from numpy.lib.function_base import append
 import pandas as pd
 import matplotlib.pyplot as plt
 import logging
+import para
 
 
 def plot_converge(_ps, _file, _numOfiter, algName):
@@ -31,9 +32,10 @@ def plot_converge(_ps, _file, _numOfiter, algName):
         plt.plot(g, label="seed"+str(s))
         gap.append(g)
     plt.title(algName)
-    plt.ion()
     plt.legend()
-    plt.pause(1)
+    if para.isShowFig:
+        plt.ion()
+        plt.pause(1)
     plt.savefig("..//Output//"+algName+"_Converge_seed.png",
                 bbox_inches='tight', dpi=600)
     plt.close()
@@ -52,20 +54,20 @@ def plot_converge(_ps, _file, _numOfiter, algName):
         ave.append(val)
     plt.plot(ave, label="ave gap")
     plt.title(algName)
-    plt.ion()
     plt.legend()
-    plt.pause(1)
-    # plt.savefig("..//Output//Converge_ave.png", bbox_inches='tight', dpi=600)
+    if para.isShowFig:
+        plt.ion()
+        plt.pause(1) 
     plt.savefig("..//Output//"+algName+"_Converge_ave.png",
                 bbox_inches='tight', dpi=600)
     plt.close()
     
     plt.plot(minv,label="min gap")
     plt.title(algName)
-    plt.ion()
     plt.legend()
-    plt.pause(1)
-    # plt.savefig("..//Output//Converge_ave.png", bbox_inches='tight', dpi=600)
+    if para.isShowFig:
+        plt.ion()
+        plt.pause(1)
     plt.savefig("..//Output//"+algName+"_Converge_min.png", bbox_inches='tight', dpi=600)
     plt.close()
 

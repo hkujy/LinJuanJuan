@@ -1,0 +1,18 @@
+
+=== Start: [2022/03/31 23:44:49] === 
+Analysis started...
+Result file: C:\GitCodes\LinJuanJuan\NetworkResilience\My Inspector Results - NetworkResilience\r001mi1\r001mi1.inspxe 
+Analysis started for c:\gitcodes\linjuanjuan\x64\release\networkresilience.exe (pid = 18288) 
+Loaded module: c:\gitcodes\linjuanjuan\x64\release\networkresilience.exe, address range [0x7ff7178f0000-0x7ff71792bfff] 
+Loaded module: c:\windows\system32\kernelbase.dll, address range [0x7ff8b5070000-0x7ff8b5337fff], minimal analysis 
+Loaded module: c:\windows\system32\kernel32.dll, address range [0x7ff8b7400000-0x7ff8b74bdfff], minimal analysis 
+Loaded module: c:\windows\system32\ntdll.dll, address range [0x7ff8b7510000-0x7ff8b7704fff], minimal analysis 
+Loaded module: c:\program files (x86)\intel\oneapi\inspector\2021.1.1\bin64\dnclrprofinfo.dll, address range [0x7ff8b0340000-0x7ff8b0368fff] 
+Loaded module: c:\windows\system32\ucrtbase.dll, address range [0x7ff8b4e30000-0x7ff8b4f2ffff] 
+Loaded module: c:\windows\system32\msvcp140.dll, address range [0x7ff8a0100000-0x7ff8a018cfff] 
+Loaded module: c:\windows\system32\vcruntime140_1.dll, address range [0x7ff8a00b0000-0x7ff8a00bbfff] 
+Loaded module: c:\windows\system32\vcruntime140.dll, address range [0x7ff8a35e0000-0x7ff8a35fafff] 
+Application exit code: 1 
+Result file: C:\GitCodes\LinJuanJuan\NetworkResilience\My Inspector Results - NetworkResilience\r001mi1\r001mi1.inspxe 
+Analysis canceled by user
+=== End: [2022/03/31 23:46:30] === 

@@ -165,7 +165,6 @@ void Algorithm::ABCMain()
 //Evaluate solution
 //if it is a new solution, then add to archive 
 //if not, then evaluate the solution
-
 void Algorithm::EvaluteOneSol(SCHCLASS& Sol, GRAPH& g)
 {
 	Sol.key.assign(getMapStrFromSol(Sol));

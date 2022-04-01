@@ -6,6 +6,8 @@ from shutil import copyfile
 import shutil
 import logging
 
+isShowFig = False
+# isShowFig = True
 isRunTest = True
 # isRunTest = False
 isDebug = True

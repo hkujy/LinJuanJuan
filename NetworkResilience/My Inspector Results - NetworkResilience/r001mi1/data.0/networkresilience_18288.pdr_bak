@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<diags major="2" minor="0">
+
+<diag id="1">
+	<type description="ThreadStart">233</type>
+	<message>
+		<thread>
+			<thrname></thrname>
+			<threadid>15324</threadid>
+			<stackstamp>1144629791</stackstamp>
+			<stacktrace>
+			<loc>
+				<mod>c:\gitcodes\linjuanjuan\x64\release\networkresilience.exe</mod>
+				<rva>0x279f8</rva>
+			</loc>
+			</stacktrace>
+		</thread>
+	</message>
+</diag>

@@ -147,6 +147,9 @@ void SCHCLASS::AlignStartTime(const vector<double>& ResCap) {
 	}
 	updateResFor(this->Links.size() - 1);
 }
+/// <summary>
+//
+// To revise I think I donot need to generate the ini solution many times, only once and the for the rest, just clean it
 
 void SCHCLASS::GenerateIniSch(GRAPH& g, const vector<int>& FailureLinks)
 {

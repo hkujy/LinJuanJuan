@@ -42,6 +42,7 @@ public:
 		BetaBBpr = rhs.BetaBBpr;
 		RecoverTime = rhs.RecoverTime;  // recover time
 		RequiredRes=rhs.RequiredRes; // required resources
+		EI = rhs.EI;
 		return*this;
 	}
 
@@ -62,7 +63,13 @@ public:
 		InLinks.reserve(10);
 	}
 	~NODE(){
+	/*	for (vector<const LINK*>::iterator itr = OutLinks.begin(); itr !=OutLinks.end(); ++itr) {
+			delete* itr;
+		}*/
 		OutLinks.clear();
+		//for (vector<const LINK*>::iterator itr = InLinks.begin(); itr !=InLinks.end(); ++itr) {
+		//	delete* itr;
+		//}
 		InLinks.clear();
 	}
 };
@@ -111,6 +118,9 @@ public:
 	};
 	~OriginBasedOD(){
 		Onode = InvaildInt;
+		//for (vector<const OD*>::iterator itr = ODset.begin(); itr != ODset.end(); ++itr) {
+		//	delete* itr;
+		//}
 		ODset.clear();
 	}
 };
