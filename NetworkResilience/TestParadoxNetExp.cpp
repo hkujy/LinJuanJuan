@@ -78,7 +78,8 @@ void CheckReadSolScenario_2_period(Algorithm alg)
 		alg.Sols.push_back(SCHCLASS());
 		for (int i = 0; i < 5; i++)
 		{
-			alg.Sols.back().Links.push_back(&alg.Graph->Links.at(lv.at(i)));
+			//alg.Sols.back().LinkID.push_back(&alg.Graph->Links.at(lv.at(i)));
+			alg.Sols.back().LinkID.push_back(lv.at(i));
 			alg.Sols.back().StartTime.push_back(st.at(i));
 			alg.Sols.back().EndTime.push_back(et.at(i));
 		}
@@ -131,7 +132,8 @@ void CheckReadSolScenario_1_period(Algorithm alg)
 		alg.Sols.push_back(SCHCLASS());
 		for (int i = 0; i < 5; i++)
 		{
-			alg.Sols.back().Links.push_back(&alg.Graph->Links.at(lv.at(i)));
+			//alg.Sols.back().LinkID.push_back(&alg.Graph->Links.at(lv.at(i)));
+			alg.Sols.back().LinkID.push_back(lv.at(i));
 			alg.Sols.back().StartTime.push_back(st.at(i));
 			alg.Sols.back().EndTime.push_back(et.at(i));
 		}
@@ -158,11 +160,11 @@ void CompareBaressNet(Algorithm alg)
 	OutFile << "Link,Unpm,Impact,Cost,CostIncr" << endl;
 	alg.Graph->EvaluteGraph();
 	alg.Sols.push_back(SCHCLASS());
-	alg.Sols.back().Links.push_back(&alg.Graph->Links.at(8));
-	alg.Sols.back().Links.push_back(&alg.Graph->Links.at(3));
-	alg.Sols.back().Links.push_back(&alg.Graph->Links.at(5));
-	alg.Sols.back().Links.push_back(&alg.Graph->Links.at(7));
-	alg.Sols.back().Links.push_back(&alg.Graph->Links.at(6));
+	alg.Sols.back().LinkID.push_back(8);
+	alg.Sols.back().LinkID.push_back(3);
+	alg.Sols.back().LinkID.push_back(5);
+	alg.Sols.back().LinkID.push_back(7);
+	alg.Sols.back().LinkID.push_back(6);
 	vector<int> st = { 1,2,3,4,5 };
 	for (int i = 0; i < 5; i++)
 	{
@@ -177,11 +179,11 @@ void CompareBaressNet(Algorithm alg)
 	OutFile << "Seq:8,5,3,7,6, total cost = " << alg.Sols.back().Fitness << endl;
 
 	alg.Sols.push_back(SCHCLASS());
-	alg.Sols.back().Links.push_back(&alg.Graph->Links.at(5));
-	alg.Sols.back().Links.push_back(&alg.Graph->Links.at(8));
-	alg.Sols.back().Links.push_back(&alg.Graph->Links.at(7));
-	alg.Sols.back().Links.push_back(&alg.Graph->Links.at(3));
-	alg.Sols.back().Links.push_back(&alg.Graph->Links.at(6));
+	alg.Sols.back().LinkID.push_back(5);
+	alg.Sols.back().LinkID.push_back(8);
+	alg.Sols.back().LinkID.push_back(7);
+	alg.Sols.back().LinkID.push_back(3);
+	alg.Sols.back().LinkID.push_back(6);
 	st = { 1,2,3,4,5 };
 	for (int i = 0; i < 5; i++)
 	{
@@ -204,11 +206,11 @@ void Check2PeriodSol(Algorithm alg)
 	//OutFile << "Link,Unpm,Impact,Cost,CostIncr" << endl;
 	//alg.Graph->EvaluteGraph();
 	alg.Sols.push_back(SCHCLASS());
-	alg.Sols.back().Links.push_back(&alg.Graph->Links.at(3));
-	alg.Sols.back().Links.push_back(&alg.Graph->Links.at(5));
-	alg.Sols.back().Links.push_back(&alg.Graph->Links.at(8));
-	alg.Sols.back().Links.push_back(&alg.Graph->Links.at(6));
-	alg.Sols.back().Links.push_back(&alg.Graph->Links.at(7));
+	alg.Sols.back().LinkID.push_back(3);
+	alg.Sols.back().LinkID.push_back(5);
+	alg.Sols.back().LinkID.push_back(8);
+	alg.Sols.back().LinkID.push_back(6);
+	alg.Sols.back().LinkID.push_back(7);
 	vector<int> st = { 1,1,3,5,5 };
 	for (int i = 0; i < 5; i++)
 	{

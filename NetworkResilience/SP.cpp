@@ -95,7 +95,6 @@ try
 			QueueNext.at(now) = WasInQueue;
 			if (QueueLast == now) QueueLast = InvaildInt;
 		}
-
 		return 1;
 	}//try
 	catch (exception& e)

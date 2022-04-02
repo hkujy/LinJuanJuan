@@ -7,8 +7,7 @@ import os
 
 from pandas.core.accessor import PandasDelegate
 
- 
-root_folder = r"C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin\Tests2022/"
+# root_folder = r"C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin\Tests2022/"
 
 def CompareOneFolder(_folder:str,_name:str):
 	root, dirs, files = next(os.walk(_folder), ([],[],[]))
@@ -47,10 +46,6 @@ def CompareOneFolder(_folder:str,_name:str):
 	print(df)
 
 
-
- 
-	
-
 def TuneReward():
 	"""
 		test for tuning the reward parameters
@@ -82,13 +77,15 @@ def TuneReward():
 	CompareOneFolder(_folder=folder,_name="j=8")
 
 
-def effect_of_operators():
+def effect_of_operators(_folder):
 	"""test the effect of operators
 	"""
-	print("Now Plot the effect of operatros")
-	OperatorFolder  = root_folder + "Tests2022/EffectOfOperators/"
-	print("Read folder = {0}".format(OperatorFolder))
+	# print("Now Plot the effect of operatros")
+	# OperatorFolder  = root_folder + "Tests2022/EffectOfOperators/"
+	print("-----Now start to plot the effecct for each operators ------")
+	print("Read folder = {0}".format(_folder))
 	CompareOneFolder(_folder=OperatorFolder,_name="CompareOperator")
+	print("--------------------Complete operator effects--------------------------")
 
 def get_files():
 	"""generate the list of files names

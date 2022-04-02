@@ -1,7 +1,7 @@
 UseMyOwn,True
 NetworkIndex,3
 isTestSingleOp,True
-SingleOpIndex,1
+SingleOpIndex,0
 NumEmployBee,10
 NumOnlookerBee,10
 MaxScountCount,100

@@ -123,9 +123,10 @@ def TestDifferntOpSelect(mf):
     }
     # Notes: 2022 March 2
     # - it seems I do not need to test the ALNS, as it has been tested in other cases
-    # para.global_case_id = para.global_case_id + 1
-    # TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
-                # _case_name="ALNS")
+    adjust_para['SelectOperator'] = "ALNS"
+    para.global_case_id = para.global_case_id + 1
+    TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
+                _case_name="ALNS")
 
     adjust_para['SelectOperator'] = "Uni"
     para.global_case_id = para.global_case_id + 1

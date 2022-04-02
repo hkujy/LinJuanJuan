@@ -10,24 +10,8 @@
 #include <string>
 #include <unordered_map>
 using namespace std;
-
-int Algorithm::SelectOperIndex()
-{
-	//return 8;
-	if (isTestSingleOperator) return TestSingleOpIndex;
-	if (this->SelectOp == SelectOperatorType::Uniform)
-	{
-		return GenRandomInt(0, NumOperators-1);
-	}
-	if (this->SelectOp == SelectOperatorType::ALNS)
-	{
-		return SelectOperator_ALNS();
-	}
-	TRACE("Select Operator does not return an index");
-	return -999;
-}
-bool ReadSeedVec(std::vector<int>& SeedVec,
-	FILE* fin) {
+// read seed vector
+bool ReadSeedVec(std::vector<int>& SeedVec, FILE* fin) {
 	int SeedValue;
 	SeedVec.clear();
 	if (nullptr == fin) {
@@ -45,7 +29,6 @@ bool ReadSeedVec(std::vector<int>& SeedVec,
 			}
 		}
 	}
-
 	ofstream fout;
 	fout.open("..//OutPut//CheckSeed.txt");
 	for (int i = 0; i < SeedVec.size(); i++)
@@ -53,8 +36,23 @@ bool ReadSeedVec(std::vector<int>& SeedVec,
 		fout << SeedVec.at(i) << endl;
 	}
 	fout.close();
-
 	return true;
+}
+
+int Algorithm::SelectOperIndex()
+{
+	//return 8;
+	if (isTestSingleOperator) return TestSingleOpIndex;
+	if (this->SelectOp == SelectOperatorType::Uniform)
+	{
+		return GenRandomInt(0, NumOperators-1);
+	}
+	if (this->SelectOp == SelectOperatorType::ALNS)
+	{
+		return SelectOperator_ALNS();
+	}
+	TRACE("Select Operator does not return an index");
+	return -999;
 }
 void Algorithm::IniOperatorProb_ANLS()
 {
@@ -67,7 +65,6 @@ void Algorithm::IniOperatorProb_ANLS()
 		Operators.at(i).TotalCounterGood = 0;
 		Operators.at(i).TotalCounterSum = 0;
 	}
-
 }
 void Algorithm::IniOperatorProb()
 {
@@ -190,7 +187,7 @@ void Algorithm::GenerateIniSol()
 #endif // _DEBUG
 		Sols.push_back(SCHCLASS(i));
 		Sols.back().GenerateIniSch(*Graph, setOfFailureLinks);
-		Sols.back().AlignStartTime(setResourceCap);
+		Sols.back().AlignStartTime(setResourceCap,*Graph);
 #ifdef _DEBUG
 		cout << "----------Print solution after solution alignment--------" << endl;
 		Sols.back().print();
@@ -326,7 +323,7 @@ void Algorithm::ScoutPhase()
 			cout << "******Scout selected employed bee = " << t << "**************" << endl;
 #endif // _DEBUG
 			this->Sols.at(t).GenerateIniSch(*Graph, setOfFailureLinks);
-			this->Sols.at(t).AlignStartTime(setResourceCap);
+			this->Sols.at(t).AlignStartTime(setResourceCap,*Graph);
 			EvaluteOneSol(this->Sols.at(t), *Graph);
 			//this->Sols.at(t).Evaluate(*Graph);
 			if (this->Sols.at(t).Fitness < GlobalBest.Fitness)
@@ -404,12 +401,11 @@ void Algorithm::IniPattern()
 		Pattern.back().LinkId = setOfFailureLinks.at(l);
 		for (int k = 0; k < setOfFailureLinks.size(); k++)
 		{
-			Pattern.back().next.push_back(setOfFailureLinks.at(k));
+			Pattern.back().Next.push_back(setOfFailureLinks.at(k));
 		}
 		Pattern.back().Prob.assign(setOfFailureLinks.size(), 0.0);
 		Pattern.back().Score.assign(setOfFailureLinks.size(), 1.0);
-
-		// TODO. update the score to set the diagonal vector value =1
+		//Update the score to set the diagonal vector value = 0
 		for (int i = 0; i < setOfFailureLinks.size(); i++)
 		{
 			Pattern.back().Score.at(l) = 0;
@@ -420,7 +416,7 @@ void Algorithm::IniPattern()
 		p.updateProb();
 	}
 }
-
+//Ini Algorithm
 void Algorithm::Ini(GRAPH& g)
 {
 	ReadData(g);
@@ -431,7 +427,7 @@ void Algorithm::Ini(GRAPH& g)
 		Pattern.back().LinkId = setOfFailureLinks.at(l);
 		for (int k =0;k<setOfFailureLinks.size();k++)
 		{
-			Pattern.back().next.push_back(setOfFailureLinks.at(k));
+			Pattern.back().Next.push_back(setOfFailureLinks.at(k));
 		}
 		Pattern.back().Prob.assign(setOfFailureLinks.size(), 0.0);
 		Pattern.back().Score.assign(setOfFailureLinks.size(), 1.0);
@@ -599,9 +595,10 @@ void Algorithm::PrintFinal(int sd)
 	{
 		TRACE("Name of the algorithm is not specified");
 	}
-	for (size_t t = 0; t < GlobalBest.Links.size(); t++)
+	for (size_t t = 0; t < GlobalBest.LinkID.size(); t++)
 	{
-		sf << sd << "," << GlobalBest.Links.at(t)->ID << "," << GlobalBest.StartTime.at(t) << "," <<
+		//sf << sd << "," << GlobalBest.LinkID.at(t)->ID << "," << GlobalBest.StartTime.at(t) << "," <<
+		sf << sd << "," << GlobalBest.LinkID.at(t) << "," << GlobalBest.StartTime.at(t) << "," <<
 			GlobalBest.EndTime.at(t) << endl;
 	}
 	sf.close();
@@ -722,16 +719,17 @@ void Algorithm::UpdateOperatorWeight()
 /// given a solution from the exe input file then evaluate the solution
 /// </summary>
 /// <param name="vec"></param>
-void Algorithm::ReadSolAndEvaluate(vector<int> &vec)
+void Algorithm::ReadSolAndEvaluate(vector<int> &vec,GRAPH &g)
 {
 	// step 1: set the solution vector 
 	SCHCLASS sol;
 	sol.EndTime.assign(setOfFailureLinks.size(), -1);
 	sol.StartTime.assign(setOfFailureLinks.size(), -1);
-	for (int l = 0; l < vec.size(); l++) sol.Links.push_back(&Graph->Links.at(vec[l]));
+	//for (int l = 0; l < vec.size(); l++) sol.LinkID.push_back(&Graph->Links.at(vec[l]));
+	for (int l = 0; l < vec.size(); l++) sol.LinkID.push_back(vec[l]);
 	if (setOfFailureLinks.size() != vec.size()) 
 		std::cout << "c++: warning: the failure link size does not equal vec size" << endl;
-	sol.AlignStartTime(setResourceCap);
+	sol.AlignStartTime(setResourceCap,g);
 	sol.Evaluate(*Graph);
 	//Remark: this is the last line of the exe, so that the results can be read from python
 	//        Do not print the "endl" at the end.
@@ -793,10 +791,11 @@ int FindValIndex(const vector<int>& vec, int key);
 void Algorithm::updatePatternScore(const SCHCLASS &sol,bool isGloablImprove)
 {
 	//TOOD: update the pattern of the improve solution
-	for (int i = 0; i < sol.Links.size()-1; i++)
+	for (int i = 0; i < sol.LinkID.size()-1; i++)
 	{
-		int first = (*sol.Links.at(i)).ID;
-		int next = (*sol.Links.at(i+1)).ID;
+		//int first = (*sol.LinkID.at(i)).ID;
+		int first = sol.LinkID.at(i);
+		int next = sol.LinkID.at(i+1);
 		
 		size_t PtLoc = findPatternIndex(first);
 		size_t VecLoc = static_cast<size_t> (FindValIndex(setOfFailureLinks, next));
@@ -831,11 +830,11 @@ void Algorithm::printPattern(int seedid)
 	//OutFile << "Seed,First,Second,Score,Prob" << endl;
 	for (auto p : Pattern)
 	{
-		for (int i=0;i<p.next.size();i++)
+		for (int i=0;i<p.Next.size();i++)
 		{
 			OutFile << seedid << ",";
 			OutFile << p.LinkId << ",";
-			OutFile << p.next.at(i) << ",";
+			OutFile << p.Next.at(i) << ",";
 			OutFile << p.Score.at(i) << ",";
 			OutFile << p.Prob.at(i) << endl;
 		}
@@ -887,31 +886,34 @@ bool Algorithm::isAddNewToArchive(const string &_key)
 		return false;
 }
 
-
-// TODO: need to test this 
 string Algorithm::getMapStrFromSol(const SCHCLASS &Sol) //get string for the map sol archive
 {
 	string str_val;
-	for (size_t l=0; l < Sol.Links.size(); l++)
+	for (size_t l=0; l < Sol.LinkID.size(); l++)
 	{
 		if (l == 0)
 		{
-			if (Sol.Links[l]->ID == 0) str_val = "0";
-			else str_val = std::to_string(Sol.Links[l]->ID);
+			//if (Sol.LinkID[l]->ID == 0) str_val = "0";
+			if (Sol.LinkID[l]==0) str_val = "0";
+			//else str_val = std::to_string(Sol.LinkID[l]->ID);
+			else str_val = std::to_string(Sol.LinkID[l]);
 		}
 		else
 		{
-			if (Sol.Links[l]->ID == 0) str_val.append(",0");
+			//if (Sol.LinkID[l]->ID == 0) str_val.append(",0");
+			if (Sol.LinkID[l] == 0) str_val.append(",0");
 			else
 			{
-				str_val.append(",");str_val.append(std::to_string(Sol.Links[l]->ID));
+				//str_val.append(",");str_val.append(std::to_string(Sol.LinkID[l]->ID));
+				str_val.append(",");str_val.append(std::to_string(Sol.LinkID[l]));
 			}
 		}
 	}
 #ifdef _DEBUG
-	for (auto l : Sol.Links)
+	for (auto l : Sol.LinkID)
 	{
-		cout << "wtf: link id = " << l->ID << endl;
+		//cout << "wtf: link id = " << l->ID << endl;
+		cout << "wtf: link id = " << l << endl;
 	}
 	cout << "converted str = " << str_val << endl;
 #endif

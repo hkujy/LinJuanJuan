@@ -141,15 +141,17 @@ int main(int argc, char* argv[])
 	BaseGraph.ReadDataMain();
 	std::cout << "# complete read graph data" << endl;
 	std::cout << "# start to read algorithm data" << endl;
-	MainAlgo.Ini(BaseGraph); //contains all the ini procedure for the algorithm
-	//MainAlgo.ReadData(BaseGraph);
+	//contains all the ini procedure for the algorithm
+	MainAlgo.Ini(BaseGraph);
 	std::cout << "# complete read graph data" << endl;
 	//MainAlgo.ComputeFailureLinkEI();
 	//MainAlgo.printLinkEI();
 	//TestBaraess(MainAlgo);
 	//return 0;
 	//BaseGraph.EvaluteGraph();
-	if (!UseMyOwnAlgo)  // this used for evaluating the method when using python 
+
+// this used for evaluating the method when using python
+	if (!UseMyOwnAlgo)   
 	{
 		vector<int> InputVec;
 		if (argc > 1)
@@ -163,7 +165,7 @@ int main(int argc, char* argv[])
 		{
 			std::cout << "c++: Warning: Use My Own Algorithm is not well defined" << endl;
 		}
-		MainAlgo.ReadSolAndEvaluate(InputVec);
+		MainAlgo.ReadSolAndEvaluate(InputVec, BaseGraph);
 	}
 	else
 	{

@@ -86,7 +86,7 @@ public:
 	void IniSolArchive();
 	void ComputeFailureLinkEI();
 	void printLinkEI();
-	void ReadSolAndEvaluate(vector<int>& vec);
+	void ReadSolAndEvaluate(vector<int>& vec,GRAPH &g);
 	void GenerateIniSol();
 	void ABCMain();
 	void HHMain();
