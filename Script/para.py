@@ -38,7 +38,7 @@ class ParaClass(object):
             "SingleOpIndex": -1,
             "NumEmployBee": 10,
             "NumOnlookerBee":10,
-            "MaxScountCount": 100,
+            "MaxScountCount": 50,
             "MaxABCIter": NumofIter,
             "MaxGAIter": 5,
             "RewardImproveGlobal": 1,
