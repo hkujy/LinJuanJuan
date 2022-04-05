@@ -6,13 +6,34 @@ import PlotHeatMap
 import PostProcessDataFuns as psf
 import PlotOperatorConverge
 
-root_folder = r"C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin\Tests2022/"
+# root_folder = r"C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin\Tests2022/"
+root_folder = r'C:/GitCodes/2022Apr3Test/'
 # plot 1 plot the heatmap for the optimal pattern
 
-# convergence the algorithm 
-## each operator 
-OperatorFolder  = root_folder + "/EffectOfOperators/"
-psf.effect_of_operators(OperatorFolder)
+
+def EffectOfOperators():
+    # convergence the algorithm 
+    ## each operator 
+    OperatorFolder  = root_folder + "/Operator/"
+    psf.effect_of_operators(OperatorFolder)
+
+
+def CompareThree():
+    """
+        compare three cases 
+        1: Single operator 2. Uni. 2 adaptive
+    """
+    OperatorFolder  = root_folder + "/CompareThree/"
+    psf.CompareOneFolder(OperatorFolder,"CompareThree")
+
+
+
+if __name__ == "__main__":
+    # EffectOfOperators()
+    CompareThree()
+
+exit()
+
 ## unified prob
 ### Just copy the plot from unfolder
 ## adaptive probability

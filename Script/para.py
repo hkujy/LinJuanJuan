@@ -47,7 +47,7 @@ class ParaClass(object):
             "ReactionFactor": 0.5,
             "SelectOperator": "ALNS",
             "OneDimEsp": 0.0000001,
-            "UEeps": 0.1,
+            "UEeps": 0.01,
             "UEmaxIter": 500
         }
 

@@ -10,7 +10,7 @@ import run
 import para
 import myclass as mc
 import myplot
-import myga
+# import myga
 
 # TODO: Write seed list in python
 # TODO: write the script for a benchmark test of the algorithm
@@ -60,11 +60,10 @@ def TestGa(_mf):
     ps.case_name = "TestGA"
     ps.print_para()
     print("ga para setting is write")
-    myga.gamain(_mf, ps)
+    # myga.gamain(_mf, ps)
     from_folder = _mf.root_folder + "LinJuanJuan\\OutPut"
     to_folder = _mf.root_folder + "LinJuanJuan\\Tests\\GA"
     copy_folder(from_folder, to_folder)
-
 
 def TestSingleOperator(mf):
     """Function for test single operator effect
@@ -88,8 +87,8 @@ def TestRewardVal(mf):
     """
         test the combination of reward value 
     """
-    for j in range(0, 9):   # this change to 9
-        for i in range(1, 11):  # this is change to 5
+    for j in range(4, 6):   # this change to 9
+        for i in range(2, 4):  # this is change to 5
             adjust_para = {
                 "UseMyOwn": "True",
                 "RewardImproveGlobal": i*0.5,
@@ -119,7 +118,7 @@ def TestDifferntOpSelect(mf):
         "RewardImproveLocal": 1,
         "RewardWorse": 0,
         "ReactionFactor": 0.5,
-        "SelectOperator": "ALNS"
+        # "SelectOperator": "ALNS"
     }
     # Notes: 2022 March 2
     # - it seems I do not need to test the ALNS, as it has been tested in other cases
@@ -186,8 +185,8 @@ if __name__ == "__main__":
 
     # BenchmarkParadoxNet(mf)
     # TestSingleOperator(mf)
-    # TestDifferntOpSelect(mf)
     TestRewardVal(mf)
+    TestDifferntOpSelect(mf)
 
     # ------------------Test GA Function
     # TestGa(mf)

@@ -1,6 +1,8 @@
 """Post process the resuls data
 """
-from attr import dataclass
+# from tkinter import font
+# from tkinter.font import _FontDict
+# from tkinter.font import _FontDict
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
@@ -8,6 +10,44 @@ import os
 from pandas.core.accessor import PandasDelegate
 
 # root_folder = r"C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin\Tests2022/"
+
+label_font = {'family': 'Times New Roman', 
+			  'weight': 'bold',
+			  'size': 12
+            }
+
+tick_font = {'family': 'Times New Roman', 
+			  'weight': 'bold',
+			  'size': 10
+            }
+
+
+def updateOperatorName(fn:str):
+	"""
+		Given the folder of name return the oprator number
+		This is applied to test the effect of different operators
+	"""
+	print("input fn ={0}".format(fn))
+	if fn == "0_TestOp_0":
+		return "NH_1"
+	elif fn == "1_TestOp_1":
+		return "NH_2"
+	elif fn == "2_TestOp_2":
+		return "NH_3"
+	elif fn == "3_TestOp_3":
+		return "NH_4"
+	elif fn == "4_TestOp_4":
+		return "NH_5"
+	elif fn == "5_TestOp_5":
+		return "NH_6"
+	elif fn == "6_TestOp_6":
+		return "NH_7"
+	elif fn == "7_TestOp_7":
+		return "NH_8"
+	elif fn == "8_TestOp_8":
+		return "NH_9"
+	else:
+		return fn
 
 def CompareOneFolder(_folder:str,_name:str):
 	root, dirs, files = next(os.walk(_folder), ([],[],[]))
@@ -22,13 +62,23 @@ def CompareOneFolder(_folder:str,_name:str):
 	allGaps = []
 	for fo in range(0, len(dirs)):
 		f = _folder+"\\"+dirs[fo] + "\\ABC_Converge_ave.txt"
+		# f = _folder+"\\"+dirs[fo] + "\\ABC_Converge_min.txt"
 		df = pd.read_csv(f,header=None)
 		gap = []
 		for j in range(0, NumberOfIter):
 			gap.append(df[1][j])
 		allGaps.append(gap)
-		plt.plot(gap, label=dirs[fo]) 
-	
+		# plt.plot(gap, label=dirs[fo]) 
+		this_label=updateOperatorName(dirs[fo])
+		plt.plot(gap, label=this_label) 
+	plt.xlabel("No. of Iterations",fontdict=label_font)
+	plt.ylabel("Objective Value",fontdict=label_font)
+	# axes = plt.gca()
+	# xtick = axes.get_xticks()
+	# axes.set_xticklabels(xtick,font=tick_font)
+	# ytick = axes.get_yticks()
+	# axes.set_yticklabels(ytick,font=tick_font)
+
 	plt.ion()
 	plt.legend()
 	plt.pause(1)
@@ -84,7 +134,7 @@ def effect_of_operators(_folder):
 	# OperatorFolder  = root_folder + "Tests2022/EffectOfOperators/"
 	print("-----Now start to plot the effecct for each operators ------")
 	print("Read folder = {0}".format(_folder))
-	CompareOneFolder(_folder=OperatorFolder,_name="CompareOperator")
+	CompareOneFolder(_folder=_folder,_name="CompareOperator")
 	print("--------------------Complete operator effects--------------------------")
 
 def get_files():
