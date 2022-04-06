@@ -78,16 +78,12 @@ def get_index(i,j,num_of_nodes):
     return (i*num_of_nodes+j) 
 
 
-def plot_Patten_heat_map(nodes):
-    num_seed = 2
-    num_nodes = 12
-    num_nodes = 12
-    nodes = [0, 6, 19, 22, 26, 27, 34, 38, 42, 55, 59, 73]
-    num_nodes = len(nodes)
-    fn = "../Output/PrintPatternScore.txt"
-    # print("Need to check the input of number of seed and number nodes")
+def plot_Patten_heat_map(set_fail_links,num_of_seed,_folder):
+    print("Plot_patter_heat_map, number of test = {0}".format(num_of_seed))
+    num_seed = num_of_seed
+    num_nodes = len(set_fail_links)
+    fn = _folder + "/PrintPatternScore.txt"
     # sns.set_theme(font='Times New Roman')
-
     ave_matrix = np.random.rand(num_nodes, num_nodes)
     std_matrix = np.random.rand(num_nodes, num_nodes)
     # for i in range(0, num_nodes):
@@ -104,8 +100,8 @@ def plot_Patten_heat_map(nodes):
         for i in range(0,num_nodes):
             for j in range(0,num_nodes):
                 row = s*(num_nodes*num_nodes)+i*num_nodes+j
-                first = nodes[i]
-                second =nodes[j]
+                first = set_fail_links[i]
+                second =set_fail_links[j]
                 val = data["Prob"][row]
                 loc = get_index(i,j,num_nodes)
                 # print("s={0},i={1},j={2},row={3},val={4}".format(s,first,second,row,val))
@@ -121,8 +117,8 @@ def plot_Patten_heat_map(nodes):
     # print(std_matrix)
     # print("-------------------")
     # print(ave_matrix)
-    heatmap(ave_matrix,"ave",nodes)
-    heatmap(std_matrix,"std",nodes)
+    heatmap(ave_matrix,"ave",set_fail_links)
+    heatmap(std_matrix,"std",set_fail_links)
     exit()
 
 

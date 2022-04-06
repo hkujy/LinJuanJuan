@@ -14,11 +14,19 @@ class PatternClass
 public:
 	int id;
 	int LinkId;
-	vector<double> Score;
-	vector<double> Prob;
+	vector<double> AbsScore;  // absolute score value
+	vector<double> AbsProb;   // absolute score value
+	vector<int> Count;
+	vector<double> AveScore;
+	vector<double> AveProb;
 	vector<int> Next;
-	PatternClass() { id = -1; LinkId = -1; Score.reserve(100); Prob.reserve(100); }
-	~PatternClass() { Score.clear(); Prob.clear(); id = -1; LinkId = -1; Next.clear(); }
+	PatternClass() { id = -1; LinkId = -1; AbsScore.reserve(100); AbsProb.reserve(100); Count.reserve(100); 
+	AveProb.reserve(100); AveScore.reserve(100); }
+	~PatternClass() { 
+		AbsScore.clear(); AbsProb.clear(); id = -1; LinkId = -1; Next.clear(); 
+		AveScore.clear(); AveProb.clear(); Count.clear(); 
+	}
+
 	void updateProb();
 };
 
@@ -108,9 +116,10 @@ public:
 	void Nei_Insert_One_Random_To_Left(SCHCLASS& NewSol);
 	void Nei_FlipOver_OnePoint(SCHCLASS& NewSol);
 	void Nei_Greedy_EI_Based(SCHCLASS& NewSol, GRAPH& g, string sType);
-	void Nei_New_Basedon_Pattern(SCHCLASS& NewSol, GRAPH& g, const vector<int>& FailureLinkSet,
+	void Nei_New_BasedOn_Pattern(SCHCLASS& NewSol, GRAPH& g, const vector<int>& FailureLinkSet,
 		const vector<double>& ResCap, const vector<PatternClass> &pat);
-
+	void Nei_Swap_BasedOn_Pattern(SCHCLASS& NewSol, GRAPH& g, const vector<int>& FailureLinkSet,
+		const vector<double>& ResCap, const vector<PatternClass> &pat);
 	void GenerateTimeFromOrder(const vector<double>& ResCap,GRAPH &g);
 	void Repair_Delay();
 

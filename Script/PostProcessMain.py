@@ -10,7 +10,7 @@ import PlotOperatorConverge
 root_folder = r'C:/GitCodes/2022Apr3Test/'
 # plot 1 plot the heatmap for the optimal pattern
 
-
+FailureLinks = [0, 6, 19, 22, 26, 27, 34, 38, 42, 55, 59, 73]
 def EffectOfOperators():
     # convergence the algorithm 
     ## each operator 
@@ -30,7 +30,17 @@ def CompareThree():
 
 if __name__ == "__main__":
     # EffectOfOperators()
-    CompareThree()
+    # CompareThree()
+
+    testfolder =  root_folder + "/RemoveOperator/"
+    psf.CompareOneFolder(testfolder,"RemoveOp")
+
+
+    # op_folder = root_folder +"/9_ALNS/"
+    # PlotHeatMap.plot_Patten_heat_map(FailureLinks,num_of_seed=20,_folder=op_folder)
+    # PlotOperatorConverge.change_operator_prob_over_iterations(op_folder,_num_operators=9)
+
+    pass
 
 exit()
 
@@ -43,7 +53,7 @@ exit()
 OperatorCovergeFolder = root_folder +"/9_ALNS/"
 PlotOperatorConverge.change_operator_prob_over_iterations(root_folder)
 # remark: need to set the nodes read
-PlotHeatMap.plot_Patten_heat_map(nodes=[])
+PlotHeatMap.plot_Patten_heat_map(set_fail_links=[])
 
 # project schedule
 ## TODO: plot the gant chart for the general case

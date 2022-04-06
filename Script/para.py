@@ -24,7 +24,6 @@ global_case_id = 0
 class ParaClass(object):
     """parameter class
     """
-
     def __init__(self):
         self.caes_id = 0
         self.case_name = "null"

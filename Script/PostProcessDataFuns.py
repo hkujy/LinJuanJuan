@@ -52,17 +52,13 @@ def updateOperatorName(fn:str):
 def CompareOneFolder(_folder:str,_name:str):
 	root, dirs, files = next(os.walk(_folder), ([],[],[]))
 	print(dirs)
-# step 1: print the gap of operators 
-# f = OperatorFolder+"\\"+dirs[0] + "\\ABC_Converge_ave.txt"
-# df = pd.read_csv(f,header=None)
-# print(df)
-# for d in range(0,len(df)):
-# 	print(df[1][d])
+
+	print("plot one folder case")
+	print("default number of iter is 200, need to check if it is not")
 	NumberOfIter = 200
 	allGaps = []
 	for fo in range(0, len(dirs)):
 		f = _folder+"\\"+dirs[fo] + "\\ABC_Converge_ave.txt"
-		# f = _folder+"\\"+dirs[fo] + "\\ABC_Converge_min.txt"
 		df = pd.read_csv(f,header=None)
 		gap = []
 		for j in range(0, NumberOfIter):
@@ -72,12 +68,7 @@ def CompareOneFolder(_folder:str,_name:str):
 		this_label=updateOperatorName(dirs[fo])
 		plt.plot(gap, label=this_label) 
 	plt.xlabel("No. of Iterations",fontdict=label_font)
-	plt.ylabel("Objective Value",fontdict=label_font)
-	# axes = plt.gca()
-	# xtick = axes.get_xticks()
-	# axes.set_xticklabels(xtick,font=tick_font)
-	# ytick = axes.get_yticks()
-	# axes.set_yticklabels(ytick,font=tick_font)
+	plt.ylabel("Ave. Objective Value",fontdict=label_font)
 
 	plt.ion()
 	plt.legend()
@@ -89,11 +80,31 @@ def CompareOneFolder(_folder:str,_name:str):
 	for i in range(0,len(dirs)):
 		d.append([str(i),allGaps[i][NumberOfIter-1]])
 	df = pd.DataFrame(d, columns = ['Exp','MinObj'])
-	with open(_folder+"_ObjTable.txt","w+") as f:
+	with open(_folder+"min_ObjTable.txt","w+") as f:
 		print("Id,Obj",file=f)
 		for r in range(0,len(df)):
 			print("{0},{1}",df['Exp'][r],df['MinObj'][r],file=f)
 	print(df)
+
+	allGaps = []
+	for fo in range(0, len(dirs)):
+		f = _folder+"\\"+dirs[fo] + "\\ABC_Converge_min.txt"
+		df = pd.read_csv(f,header=None)
+		gap = []
+		for j in range(0, NumberOfIter):
+			gap.append(df[1][j])
+		allGaps.append(gap)
+		# plt.plot(gap, label=dirs[fo]) 
+		this_label=updateOperatorName(dirs[fo])
+		plt.plot(gap, label=this_label) 
+	plt.xlabel("No. of Iterations",fontdict=label_font)
+	plt.ylabel("Min. Objective Value",fontdict=label_font)
+
+	plt.ion()
+	plt.legend()
+	plt.pause(1)
+	plt.savefig(_folder+"\\"+_name+".png", bbox_inches='tight', dpi=600)
+	plt.close()
 
 
 def TuneReward():

@@ -26,8 +26,8 @@ void SCHCLASS::GenNei(SCHCLASS& Nei, GRAPH& g,
 		case(5): Nei_Insert_One_Random_To_Right(Nei); break;
 		case(6): Nei_Greedy_EI_Based(Nei, g,"Max"); break;
 		case(7): Nei_Greedy_EI_Based(Nei, g,"Prob"); break;
-		case(8): Nei_New_Basedon_Pattern(Nei,g,FailureLinkSet,ResCap,Pat); break;
-		case(9): Nei_Swap_BasedOn_Pattern(Nei,g,FailureLinkSet,ResCap,Pat); break;
+		//case(8): Nei_New_BasedOn_Pattern(Nei,g,FailureLinkSet,ResCap,Pat); break;
+		case(8): Nei_Swap_BasedOn_Pattern(Nei,g,FailureLinkSet,ResCap,Pat); break;
 	default:
 		cout << "Neighbor operator index is properly set" << endl;
 		system("PAUSE");
@@ -443,7 +443,7 @@ void SCHCLASS::Nei_Greedy_EI_Based(SCHCLASS& NewSol, GRAPH& g, string sType)
 /// <param name="FailureLinkSet"></param>
 /// <param name="ResCap"></param>
 /// <param name="pat"></param>
-void SCHCLASS::Nei_New_Basedon_Pattern(SCHCLASS& NewSol, GRAPH& g,
+void SCHCLASS::Nei_New_BasedOn_Pattern(SCHCLASS& NewSol, GRAPH& g,
 	const vector<int>& FailureLinkSet, const vector<double>& ResCap,
 	const vector<PatternClass>& pat)
 {
@@ -501,8 +501,8 @@ void SCHCLASS::Nei_Swap_BasedOn_Pattern(SCHCLASS& NewSol, GRAPH& g, const vector
 			int patAloc = getPatLoc(pat, LinkAId);
 			int patBloc = getPatLoc(pat, LinkBId);
 
-			double ScoreA2B = pat[patAloc].Score[patBloc];
-			double ScoreB2A = pat[patBloc].Score[patAloc];
+			double ScoreA2B = pat[patAloc].AbsScore[patBloc];
+			double ScoreB2A = pat[patBloc].AbsScore[patAloc];
 
 			if (locA < locB)   /// A is the first node
 			{

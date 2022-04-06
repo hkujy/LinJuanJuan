@@ -402,12 +402,17 @@ void Algorithm::IniPattern()
 		{
 			Pattern.back().Next.push_back(setOfFailureLinks.at(k));
 		}
-		Pattern.back().Prob.assign(setOfFailureLinks.size(), 0.0);
-		Pattern.back().Score.assign(setOfFailureLinks.size(), 1.0);
+		Pattern.back().AbsProb.assign(setOfFailureLinks.size(), 0.0);
+		Pattern.back().AbsScore.assign(setOfFailureLinks.size(), 1.0);
+
+		Pattern.back().AveProb.assign(setOfFailureLinks.size(), 0.0);
+		Pattern.back().AveScore.assign(setOfFailureLinks.size(), 1.0);
+		Pattern.back().Count.assign(setOfFailureLinks.size(), 0);
 		//Update the score to set the diagonal vector value = 0
 		for (int i = 0; i < setOfFailureLinks.size(); i++)
 		{
-			Pattern.back().Score.at(l) = 0;
+			Pattern.back().AbsScore.at(l) = 0;
+			Pattern.back().AveScore.at(l) = 0;
 		}
 	}
 	for (auto& p : Pattern)
@@ -428,13 +433,18 @@ void Algorithm::Ini(GRAPH& g)
 		{
 			Pattern.back().Next.push_back(setOfFailureLinks.at(k));
 		}
-		Pattern.back().Prob.assign(setOfFailureLinks.size(), 0.0);
-		Pattern.back().Score.assign(setOfFailureLinks.size(), 1.0);
+		Pattern.back().AbsProb.assign(setOfFailureLinks.size(), 0.0);
+		Pattern.back().AbsScore.assign(setOfFailureLinks.size(), 1.0);
+
+		Pattern.back().AveProb.assign(setOfFailureLinks.size(), 0.0);
+		Pattern.back().AveScore.assign(setOfFailureLinks.size(), 1.0);
+		Pattern.back().Count.assign(setOfFailureLinks.size(), 0);
 			
 		// TODO. update the score to set the diagonal vector value =1
 		for (int i = 0; i < setOfFailureLinks.size(); i++)
 		{
-			Pattern.back().Score.at(l) = 0;
+			Pattern.back().AbsScore.at(l) = 0;
+			Pattern.back().AveScore.at(l) = 0;
 		}
 	}
 	for (auto& p : Pattern)
@@ -760,12 +770,21 @@ void Algorithm::printLinkEI()
 //based the score value update the patten prob
 void PatternClass::updateProb()
 {
-	assert(Score.size() > 0);
-	assert(Prob.size() > 0);
-	double sum = std::accumulate(Score.begin(), Score.end(), 0.0);
-	for (int p = 0; p < Prob.size(); p++)
+	// step 1: update the absolute probablity value
+	assert(AbsScore.size() > 0);
+	assert(AbsProb.size() > 0);
+	double sum = std::accumulate(AbsScore.begin(), AbsScore.end(), 0.0);
+	for (int p = 0; p < AbsProb.size(); p++)
 	{
-		Prob[p] = Score[p] / sum;
+		AbsProb[p] = AbsScore[p] / sum;
+	}
+	// step 2: update the average probability value
+	assert(AveScore.size() > 0);
+	assert(AveProb.size() > 0);
+	sum = std::accumulate(AveScore.begin(), AveScore.end(), 0.0);
+	for (int p = 0; p < AveProb.size(); p++)
+	{
+		AveScore[p] = AveScore[p] / sum;
 	}
 }
 
@@ -800,11 +819,15 @@ void Algorithm::updatePatternScore(const SCHCLASS &sol,bool isGloablImprove)
 		size_t VecLoc = static_cast<size_t> (FindValIndex(setOfFailureLinks, next));
 		if (isGloablImprove)
 		{
-			Pattern.at(PtLoc).Score.at(VecLoc) += PatternGlobalImproveScore;
+			Pattern.at(PtLoc).AbsScore.at(VecLoc) += PatternGlobalImproveScore;
+			Pattern.at(PtLoc).Count.at(VecLoc)++;
+			Pattern.at(PtLoc).AveScore.at(VecLoc) += Pattern.at(PtLoc).AbsScore.at(VecLoc) / Pattern.at(PtLoc).Count.at(VecLoc);
 		}
 		else
 		{
-			Pattern.at(PtLoc).Score.at(VecLoc) += PatternLocalImproveScore;
+			Pattern.at(PtLoc).AbsScore.at(VecLoc) += PatternLocalImproveScore;
+			Pattern.at(PtLoc).Count.at(VecLoc)++;
+			Pattern.at(PtLoc).AveScore.at(VecLoc) = Pattern.at(PtLoc).AbsScore.at(VecLoc) / Pattern.at(PtLoc).Count.at(VecLoc);
 		}
 	}
 
@@ -834,8 +857,8 @@ void Algorithm::printPattern(int seedid)
 			OutFile << seedid << ",";
 			OutFile << p.LinkId << ",";
 			OutFile << p.Next.at(i) << ",";
-			OutFile << p.Score.at(i) << ",";
-			OutFile << p.Prob.at(i) << endl;
+			OutFile << p.AbsScore.at(i) << ",";
+			OutFile << p.AbsProb.at(i) << endl;
 		}
 	}
 	OutFile.close();

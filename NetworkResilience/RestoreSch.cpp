@@ -329,7 +329,7 @@ void SCHCLASS::GenerateIniBasedOnPattern(GRAPH& g, const vector<int>& FailureLin
 			if (!isSelected.at(s))
 			{
 				candy.push_back(s);
-				prob.push_back(pat[LocOfFailLinks].Prob.at(s));
+				prob.push_back(pat[LocOfFailLinks].AbsProb.at(s));
 			}
 		}
 		int selectedLocOfCandy = SelectOneIndexFrom(candy, prob);

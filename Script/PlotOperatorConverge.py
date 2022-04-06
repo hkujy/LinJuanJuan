@@ -14,15 +14,16 @@ import para
 
 # folder = 'C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin\Tests2022\SelectNei\'
 
-def change_operator_prob_over_iterations(_folder):
+def change_operator_prob_over_iterations(_folder,_num_operators):
     """
         function relate to the changes in the probability rate over iterations
     """
+    print("Plot_operator_coverge, number of OP = {0}".format(_num_operators))
     print("------Start plot change operator over iter----------")
-    file = 'OperatorsMeasure.txt'
-    df = pd.read_csv(_folder+file)
+    _file = _folder+"/ABCOperatorsMeasure.txt"
+    df = pd.read_csv(_file)
     num_seed = para.NumOfTestSeed
-    num_op = 9
+    num_op = _num_operators
     num_iter = para.NumofIter
     print("Read file = {0}".format(df))
     print("Num of iter = {0}".format(num_iter))
@@ -30,20 +31,27 @@ def change_operator_prob_over_iterations(_folder):
 
     plt.rc('font', family='Times New Roman')
     prob_matrix = np.random.rand(num_op,num_iter)
+    ave_prob_matrix = np.random.rand(num_op,num_iter)
     row = 0
     for s in range(0,num_seed):
         for i in range(0,num_iter):
             for o in range(0, num_op):
-                prob_matrix[o,i] = df['Prob'][row]
+                prob_matrix[o,i] = df['Prob'][row] + prob_matrix[o,i]
                 row = row + 1
-    # print(prob_matrix)
+    for i in range(0,num_iter):
+        for o in range(0, num_op):
+            ave_prob_matrix[o,i] = prob_matrix[o,i] / num_seed
+        
     ave_mat =[0]*num_op
     for o in range(0,num_op):
         ave_mat[o] = np.average(prob_matrix[o])
     print(ave_mat)
 
     for o in range(0,num_op):
-        plt.plot(ave_mat,label="Operator:"+str(o))
+        # plt.plot(ave_mat,label="Operator:"+str(o))
+        # plt.plot(ave_prob_matrix[o,:],label="Operator:"+str(o))
+        plt.plot(prob_matrix[o,:],label="Operator:"+str(o))
+
     plt.legend()
     plt.xlabel("No. of Iterations",fontsize = 12,fontdict={'weight':'bold'})
     plt.ylabel("Probability",fontsize=12,fontdict={'weight':'bold'})

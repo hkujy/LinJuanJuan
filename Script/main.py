@@ -185,7 +185,7 @@ if __name__ == "__main__":
 
     # BenchmarkParadoxNet(mf)
     # TestSingleOperator(mf)
-    TestRewardVal(mf)
+    # TestRewardVal(mf)
     TestDifferntOpSelect(mf)
 
     # ------------------Test GA Function
