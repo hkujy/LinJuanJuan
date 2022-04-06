@@ -383,7 +383,6 @@ int Algorithm::SelectOperator_ALNS()
 void Algorithm::UpdateOperatorScore(int OpId, double ResultFit, double LocalFit, double GlobalFit)
 {
 	UpdateOperatorScore_ALNS(OpId, ResultFit, LocalFit, GlobalFit);
-
 }
 
 size_t Algorithm::SelectOnLookerBasedonProb()

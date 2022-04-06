@@ -7,7 +7,7 @@
 #include <assert.h>
 #include <map>
 
-
+using namespace std;
 //main fun for generate a neighborhoods operator
 void SCHCLASS::GenNei(SCHCLASS& Nei, GRAPH& g, 
 	int &OpId,const vector<int>& FailureLinkSet, const vector<double>& ResCap,
@@ -27,6 +27,7 @@ void SCHCLASS::GenNei(SCHCLASS& Nei, GRAPH& g,
 		case(6): Nei_Greedy_EI_Based(Nei, g,"Max"); break;
 		case(7): Nei_Greedy_EI_Based(Nei, g,"Prob"); break;
 		case(8): Nei_New_Basedon_Pattern(Nei,g,FailureLinkSet,ResCap,Pat); break;
+		case(9): Nei_Swap_BasedOn_Pattern(Nei,g,FailureLinkSet,ResCap,Pat); break;
 	default:
 		cout << "Neighbor operator index is properly set" << endl;
 		system("PAUSE");
@@ -453,4 +454,86 @@ void SCHCLASS::Nei_New_Basedon_Pattern(SCHCLASS& NewSol, GRAPH& g,
 	NewSol.print();
 #endif // _DEBUG
 }
+// input the vector pat and link id 
+// return the location in the pat vector for the corresponding linkid
+int getPatLoc(const vector<PatternClass> &pat, const int lid)
+{
+	for (int l = 0; l < pat.size(); l++)
+	{
+		if (pat[l].LinkId == lid) return l;
+	}
+	return 0;
+}
+
+
+int FindValIndex(const vector<int>& vec, int key);
+//TODO
+//Nei:hybrid with swap and pattern
+//only swap the pattern with higher probability
+void SCHCLASS::Nei_Swap_BasedOn_Pattern(SCHCLASS& NewSol, GRAPH& g, const vector<int>& FailureLinkSet,
+	const vector<double>& ResCap, const vector<PatternClass>& pat)
+{
+		//Step 1: randomly generate two locations
+#ifdef _DEBUG
+		cout << "------------Start Swap-----------" << endl;
+#endif // _DEBUG
+		bool isSwap = false;
+		int swapWhileCounter = 0;
+		int locA = -1;
+		int locB = -1;
+		while (isSwap==false)
+		{
+			locA = GenRandomInt(0, int(LinkID.size() - 1));
+			locB = GenRandomInt(0, int(LinkID.size() - 1));
+			int whileCounter = 0;
+			while (locA == locB)
+			{
+				locB = GenRandomInt(0, int(LinkID.size() - 1));
+				++whileCounter;
+				if (whileCounter > 100)
+				{
+					std::cout << "ERR: find random swap has err in counter" << endl;
+				}
+			}
+			int LinkAId = LinkID[locA];
+			int LinkBId = LinkID[locB];
+
+			int patAloc = getPatLoc(pat, LinkAId);
+			int patBloc = getPatLoc(pat, LinkBId);
+
+			double ScoreA2B = pat[patAloc].Score[patBloc];
+			double ScoreB2A = pat[patBloc].Score[patAloc];
+
+			if (locA < locB)   /// A is the first node
+			{
+				if (ScoreA2B <= ScoreB2A) isSwap = true;
+			}
+			else   // A is the second node after B
+			{
+				if (ScoreA2B >= ScoreB2A) isSwap = true;
+			}
+			swapWhileCounter++;
+			if (swapWhileCounter > 100)
+			{
+				std::cout << "ERR: find random swap based on the pattern value, and there is an err in counter" << endl;
+			}
+		}
+#ifdef _DEBUG
+		//cout << "Before Swap: LocA = " << NewSol.LinkID.at(locA)->ID;
+		cout << "Before Swap: LocA = " << NewSol.LinkID.at(locA);
+		//cout << ",locB = " << NewSol.LinkID.at(locB)->ID << endl;
+		cout << ",locB = " << NewSol.LinkID.at(locB) << endl;
+#endif // _DEBUG
+		NewSol.LinkID.at(locA) = LinkID.at(locB);
+		NewSol.LinkID.at(locB) = LinkID.at(locA);
+
+#ifdef _DEBUG
+		//cout << "After Swap: LocA = " << NewSol.LinkID.at(locA)->ID;
+		cout << "After Swap: LocA = " << NewSol.LinkID.at(locA);
+		//cout << ", LocB = " << NewSol.LinkID.at(locB)->ID << endl;
+		cout << ", LocB = " << NewSol.LinkID.at(locB) << endl;
+		cout << "-----------End Swap-----------" << endl;
+#endif
+	}
+
 
