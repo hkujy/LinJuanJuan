@@ -184,7 +184,7 @@ if __name__ == "__main__":
     para.Copy_input_and_test_files(mf)
 
     # BenchmarkParadoxNet(mf)
-    # TestSingleOperator(mf)
+    TestSingleOperator(mf)
     # TestRewardVal(mf)
     TestDifferntOpSelect(mf)
 
