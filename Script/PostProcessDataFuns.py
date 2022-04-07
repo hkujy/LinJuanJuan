@@ -73,7 +73,7 @@ def CompareOneFolder(_folder:str,_name:str):
 	plt.ion()
 	plt.legend()
 	plt.pause(1)
-	plt.savefig(_folder+"\\"+_name+".png", bbox_inches='tight', dpi=600)
+	plt.savefig(_folder+"\\"+_name+"_ave.png", bbox_inches='tight', dpi=600)
 	plt.close()
 
 	d=[]
@@ -103,7 +103,7 @@ def CompareOneFolder(_folder:str,_name:str):
 	plt.ion()
 	plt.legend()
 	plt.pause(1)
-	plt.savefig(_folder+"\\"+_name+".png", bbox_inches='tight', dpi=600)
+	plt.savefig(_folder+"\\"+_name+"_min.png", bbox_inches='tight', dpi=600)
 	plt.close()
 
 

@@ -7,7 +7,8 @@ import PostProcessDataFuns as psf
 import PlotOperatorConverge
 
 # root_folder = r"C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin\Tests2022/"
-root_folder = r'C:/GitCodes/2022Apr3Test/'
+# root_folder = r'C:/GitCodes/2022Apr3Test/'
+root_folder = r'C:/GitCodes/RandomDemand/'
 # plot 1 plot the heatmap for the optimal pattern
 
 FailureLinks = [0, 6, 19, 22, 26, 27, 34, 38, 42, 55, 59, 73]
@@ -27,13 +28,12 @@ def CompareThree():
     psf.CompareOneFolder(OperatorFolder,"CompareThree")
 
 
-
 if __name__ == "__main__":
     # EffectOfOperators()
-    # CompareThree()
+    CompareThree()
 
-    testfolder =  root_folder + "/RemoveOperator/"
-    psf.CompareOneFolder(testfolder,"RemoveOp")
+    # testfolder =  root_folder + "/RemoveOperator/"
+    # psf.CompareOneFolder(testfolder,"RemoveOp")
 
 
     # op_folder = root_folder +"/9_ALNS/"
