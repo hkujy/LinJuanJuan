@@ -169,12 +169,18 @@ def BenchmarkParadoxNet(mf):
 
 
 if __name__ == "__main__":
+
     para.global_case_id = -1
     if len(para.SeedPool) < para.NumOfTestSeed:
         print("PyWarning: Number of Test Seed is larger than the seed pool")
         exit()
     mf = mc.FileFolderClass()
     print("Working folder is", mf.root_folder)
+    print("# notes on the test")
+    remarks = input()
+    with open(mf.root_folder+"LinJuanJuan\\Output\\TestRemarks.txt", "w+") as f:
+        print(remarks,file=f)
+ 
     # step 0 print seed
     with open(mf.root_folder+"LinJuanJuan\\Input\\Seed.txt", "w+") as f:
         for i in range(0, para.NumOfTestSeed):

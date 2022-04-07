@@ -12,7 +12,7 @@ from pylab import mpl
 
 
 
-def heatmap(mat,name:str,nodes):
+def heatmap(mat,name:str,nodes,_save_folder:str):
     mpl.rcParams['font.family'] = 'Times New Roman'
     mpl.rcParams['font.sans-serif'] = 'Times New Roman'
     font = {'family': 'sans-serif',
@@ -67,7 +67,7 @@ def heatmap(mat,name:str,nodes):
     plt.ion()
     # plt.legend()
     plt.pause(1)
-    plt.savefig("HeatMap_"+name+".png", bbox_inches='tight', dpi=600)
+    plt.savefig(_save_folder+"HeatMap_"+name+".png", bbox_inches='tight', dpi=600)
     plt.close()
  
 
@@ -117,8 +117,8 @@ def plot_Patten_heat_map(set_fail_links,num_of_seed,_folder):
     # print(std_matrix)
     # print("-------------------")
     # print(ave_matrix)
-    heatmap(ave_matrix,"ave",set_fail_links)
-    heatmap(std_matrix,"std",set_fail_links)
+    heatmap(ave_matrix,"ave",set_fail_links,_folder)
+    heatmap(std_matrix,"std",set_fail_links,_folder)
     exit()
 
 
