@@ -155,12 +155,92 @@ def plotGant(Case:str,StartPeriod, TotalLength):
 	# exit()
 
 
+def plot_general_Gant_chart(Case:str):
+	""""
+	plot general gantt chart
+	"""
+	sol = pd.read_csv("./PrintSols.txt")
+	numOfLink = sol.shape[0]
+	st = []
+	et = []
+	for l in range(0, numOfLink):
+		st.append(sol['St'][l]+1)
+		et.append(sol['Et'][l]+1)
+	
+	StartPeriod = min(st)
+	TotalLength = max(et) - StartPeriod
+
+	widthOfEachBar = 3
+	gapBetweenBar = 3
+	yLim = (widthOfEachBar+gapBetweenBar)*numOfLink + gapBetweenBar
+	ylabel = []
+	ytick = []
+	for i in range(0,numOfLink):
+		ylabel.append(str(sol['Link'][i]))
+		ytick.append(2*gapBetweenBar+i*(widthOfEachBar+gapBetweenBar)-0.5*widthOfEachBar)
+	print(ylabel)
+	print(ytick)
+	sns.set_style('darkgrid')
+	
+	# Declaring a figure "gnt"
+	fig, gnt = plt.subplots()
+
+	# Setting Y-axis limits
+	gnt.set_ylim(0, yLim)
+
+	TotalLenthOfX = TotalLength*100
+	NumOfPeriod = TotalLength   # number of recover
+	LengthOfEachPeriod = int(TotalLenthOfX/NumOfPeriod)
+	# Setting X-axis limits
+	gnt.set_xlim(StartPeriod*100, StartPeriod*100+TotalLenthOfX)
+
+	# Setting labels for x-axis and y-axis
+	gnt.set_xlabel('Restoration Period',fontsize=12,fontname='Times New Roman',fontweight='bold')
+	gnt.set_ylabel('Link',fontsize=12,fontname='Times New Roman', fontweight='bold')
+
+	set_xtick = []
+	set_xtick_lable = []
+	for t in range(StartPeriod,StartPeriod+NumOfPeriod+1):
+		set_xtick_lable.append(str(t))
+		set_xtick.append(t*LengthOfEachPeriod)
+	gnt.set_xticks(set_xtick)
+	xmajorFormatter = plt.FormatStrFormatter('%.0f')
+	ymajorFormatter = plt.FormatStrFormatter('%.0f')
+	gnt.xaxis.set_major_formatter(xmajorFormatter)
+	gnt.yaxis.set_major_formatter(ymajorFormatter)
+	# Setting ticks on y-axis
+	gnt.set_yticks(ytick)
+	# Labelling tickes of y-axis
+	gnt.set_yticklabels(ylabel,fontsize=10,fontname='Times New Roman')
+	gnt.set_xticklabels(set_xtick_lable,fontsize=10,fontname='Times New Roman')
+
+	# in the following plot each bar
+	print(sol)
+	for i in range(0,len(sol)):
+		x_start = st[i]*LengthOfEachPeriod
+		x_end = (et[i]-st[i])*LengthOfEachPeriod
+		y_start = ytick[i]-0.5*widthOfEachBar
+		gnt.broken_barh([(x_start, x_end)], (y_start, widthOfEachBar), facecolors =('tab:blue'))
+
+	plt.savefig(Case+'.png',bbox_inches='tight',dpi=600)
+	plt.show()
+	plt.close()
+
+
+
+
+
 if __name__ == '__main__':
 
 	# plotNetworPerformance(opt_sheet_name='objOpt',rank_sheet_name='objRank')
 	# plotGant(Case="PlotCase1",StartPeriod=3,TotalLength=6)
+	#*********************************#
+	# plot gantt chart for the paradox network
 	plotGant(Case="LowDemand",StartPeriod=3,TotalLength=5)
 	plotGant(Case="HighDemand",StartPeriod=3,TotalLength=5)
+	plot_general_Gant_chart("Gantt_SiouxFall")
+	# exit()
+	#*********************************#
 	# plotNetworPerformance(opt_sheet_name='Case1Obj',rank_sheet_name='')
 	# plotNetworPerformance(opt_sheet_name='Case1Obj',rank_sheet_name='Case5Obj')
 ### Notes: the following codes are reference for plot the gant chart
