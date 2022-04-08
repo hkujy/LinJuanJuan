@@ -18,6 +18,10 @@ void OpenAndCleanFiles(){
 	OutFile << "Seed,Link,St,Et" << endl;
 	OutFile.close();
 
+	OutFile.open("..//OutPut//ABCPrintSeedBestSolVal.txt", ios::trunc);
+	OutFile << "Seed,BestVal" << endl;
+	OutFile.close();
+
 	//OutFile.open("..//OutPut//HHPrintSols.txt", ios::trunc);
 	//OutFile << "Seed,Link,St,Et" << endl;
 	//OutFile.close();

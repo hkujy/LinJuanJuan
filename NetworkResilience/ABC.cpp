@@ -84,6 +84,9 @@ void Algorithm::ABCMain()
 	vector<double> CpuTimes;
 	vector<size_t> sizeOfarchive;
 	clock_t St, Et;
+	int BestSeedNum = -1;
+	double BestSeedVal = std::numeric_limits<double>::max();
+
 	for (int s = 0; s < SeedVecVal.size(); s++)
 	{
 		St = clock();
@@ -132,6 +135,12 @@ void Algorithm::ABCMain()
 		CpuTimes.push_back((double)((Et - St)/CLOCKS_PER_SEC)); // time unit is second
 		PrintFinal(s); 
 		printPattern(s);
+
+		if (GlobalBest.Fitness < BestSeedVal)
+		{
+			BestSeedVal = GlobalBest.Fitness;
+			BestSeedNum = s;
+		}
 	}
 	ofstream CpuTimeFile;
 	CpuTimeFile.open("..//OutPut//CpuTime.txt", ios::trunc);
@@ -141,6 +150,7 @@ void Algorithm::ABCMain()
 		CpuTimeFile << s << "," << fixed << setprecision(2) <<CpuTimes[s]<< endl;
 	}
 	CpuTimeFile.close();
+
 	ofstream Archive;
 	Archive.open("..//OutPut//ArchiveSize.txt", ios::trunc);
 	Archive << "Seed,Size" << endl;
@@ -149,6 +159,12 @@ void Algorithm::ABCMain()
 		Archive << s << "," << sizeOfarchive[s] << endl;
 	}
 	Archive.close();
+
+	ofstream bs;
+	bs.open("..//OutPut//BestSeed.txt", ios::trunc);
+	bs << "Seed,Val" << endl;
+	bs << BestSeedNum << "," << BestSeedVal << endl;
+	bs.close();
 
 #ifdef _DEBUG
 	cout << "*************************ABC completes**************************" << endl;
@@ -612,8 +628,12 @@ void Algorithm::PrintFinal(int sd)
 	}
 	sf.close();
 
+	// print the value of best solution
+	sf.open("..//OutPut//ABCPrintSeedBestSolVal.txt", ios::app);
+	sf <<sd<<","<<GlobalBest.Fitness << endl;
+	sf.close();
+	// print the best solution period
 	sf.open("..//OutPut//PrintPeriod.txt", ios::app);
-
 	for (size_t t = 0; t < GlobalBest.TravelTime.size(); t++)
 	{
 		sf << sd << "," << t << "," << GlobalBest.TravelTime.at(t) << ","<<GlobalBest.UNPM.at(t)<<endl;;
