@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <numeric>
 #include <assert.h>
+#include "Debug.h"
 
 using namespace std;
 void SortStartTime(vector<int>& st)
@@ -368,3 +369,61 @@ void SCHCLASS::computeKey()
 	}
 	cout << "converted str = " << val << endl;
 }
+
+
+void RelationClass::UpdateScore(const LinkSchRelations& r,double _score)
+{
+	switch (r)
+	{
+	case LinkSchRelations::Before:
+		BeforeCount++;
+		BeforeScore_Total += _score;
+		BeforeScore_Ave = BeforeScore_Total / BeforeCount;
+		break;
+	case LinkSchRelations::After:
+		AfterCount++;
+		AfterScore_Total += _score;
+		AfterScore_Ave = AfterScore_Total / AfterCount;
+		break;
+	case LinkSchRelations::Same:
+		SamePeriodCount++;
+		SamePeriodScore_Total += _score;
+		SamePeriodScore_Ave = SamePeriodScore_Total / SamePeriodCount;
+		break;
+	case LinkSchRelations::None:
+		cout << "Warning: Relationship is not specified" << endl;
+		TRACE("Debug Relationship Update");
+		break;
+	default:
+		break;
+	}
+}
+
+
+//get the relationship between two links based on their starting time
+LinkSchRelations SCHCLASS::getRelation(int ALink, int ComparedLink) const
+{
+	
+	int AlinkIndex = FindValIndex(LinkID, ALink);
+	int CompareLinkIndex = FindValIndex(LinkID, ComparedLink);
+
+	if (StartTime[AlinkIndex] > StartTime[CompareLinkIndex])
+	{
+		return LinkSchRelations::After;
+	}
+	else if (StartTime[AlinkIndex] < StartTime[CompareLinkIndex])
+	{
+		return LinkSchRelations::Before;
+	}
+	else if (StartTime[AlinkIndex] == StartTime[CompareLinkIndex])
+	{
+		return LinkSchRelations::Same;
+	}
+	else
+	{
+		TRACE("Debug Get Relation of two links");
+		return LinkSchRelations::None;
+	}
+
+}
+

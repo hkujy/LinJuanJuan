@@ -33,6 +33,8 @@ class ParaClass(object):
             # "NetworkIndex":4,   # Paradox
             # "NetworkIndex": 5,   # Wang
             #  "UseMyOwn": "False",
+            "CompareScoreMethod":"Ave",
+            # "CompareScoreMethod":"Total",
             "isTestSingleOp": "False",
             "SingleOpIndex": -1,
             "NumEmployBee": 10,

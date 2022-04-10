@@ -241,21 +241,6 @@ void Algorithm::GenerateIniSol()
 	//for (auto s : Sols) cout << s.ID << "," << s.Fitness << endl;
 }
 
-void Algorithm::UpdateOperatorMeaures(int _id, bool isImproved)
-{
-	//TODO: write the update the counters of the operators
-	assert(_id <= NumOperators-1);
-	assert(_id >= 0);
-	if (isImproved)
-	{
-		this->Operators.at(_id).TotalCounterGood++;
-	}
-	else
-	{
-		this->Operators.at(_id).TotalCounterBad++;
-	}
-	this->Operators.at(_id).TotalCounterSum++;
-}
 
 bool Algorithm::CompareTwoSolsAndReplace(SCHCLASS& lhs, SCHCLASS& rhs, int NeiOperatorId)
 {
@@ -274,12 +259,14 @@ bool Algorithm::CompareTwoSolsAndReplace(SCHCLASS& lhs, SCHCLASS& rhs, int NeiOp
 		isBetter = true;
 		if (rhs.Fitness < GlobalBest.Fitness)
 		{
+			//LearnPattern_Score(rhs, true);
+			LearnPatternRelation_Score(rhs, true);
 			GlobalBest = rhs;
-			updatePatternScore(GlobalBest, true);
 		}
 		else
 		{
-			updatePatternScore(rhs, false);
+			//LearnPattern_Score(rhs, false);
+			LearnPatternRelation_Score(rhs, false);
 		}
 	}
 	return isBetter;
@@ -297,7 +284,7 @@ void Algorithm::EmployBeePhase()
 #endif // _DEBUG
 		//if (i == 2)
 		int OpId = SelectOperIndex();
-		this->Sols.at(i).GenNei(Nei, *Graph, OpId, setOfFailureLinks, setResourceCap,Pattern);
+		this->Sols.at(i).GenNei(Nei, *Graph, OpId, setOfFailureLinks, setResourceCap,Pattern, CompareScoreMethod);
 		EvaluteOneSol(Nei, *Graph);
 		if (SelectOp!=SelectOperatorType::Uniform) UpdateOperatorScore(OpId, Nei.Fitness, this->Sols.at(i).Fitness, GlobalBest.Fitness);
 		isImproved = CompareTwoSolsAndReplace(this->Sols.at(i), Nei, OpId);
@@ -318,10 +305,11 @@ void Algorithm::OnlookerPhase()
 #endif // _DEBUG
 		SCHCLASS Nei(this->Sols.at(Selected));
 		int OpId = SelectOperIndex();
-		this->Sols.at(Selected).GenNei(Nei, *Graph, OpId, setOfFailureLinks, setResourceCap,Pattern);
+		this->Sols.at(Selected).GenNei(Nei, *Graph, OpId, setOfFailureLinks, setResourceCap,Pattern,CompareScoreMethod);
 		EvaluteOneSol(Nei, *Graph);
 		bool isImproved = false;
-		if (SelectOp!=SelectOperatorType::Uniform) UpdateOperatorScore(OpId, Nei.Fitness, this->Sols.at(SelectOp).Fitness, GlobalBest.Fitness);
+		if (SelectOp!=SelectOperatorType::Uniform) UpdateOperatorScore(OpId, Nei.Fitness, 
+			this->Sols.at(Selected).Fitness, GlobalBest.Fitness);
 		isImproved = CompareTwoSolsAndReplace(this->Sols.at(Selected), Nei, OpId);
 		if (isImproved) ScountCounter.at(Selected) = 0;
 		else ScountCounter.at(Selected)++;
@@ -345,7 +333,7 @@ void Algorithm::ScoutPhase()
 			if (this->Sols.at(t).Fitness < GlobalBest.Fitness)
 			{
 				GlobalBest = this->Sols.at(t);
-				updatePatternScore(GlobalBest, true);
+				LearnPattern_Score(GlobalBest, true);
 			}
 			ScountCounter.at(t) = 0;
 		}
@@ -424,6 +412,15 @@ void Algorithm::IniPattern()
 		Pattern.back().AveProb.assign(setOfFailureLinks.size(), 0.0);
 		Pattern.back().AveScore.assign(setOfFailureLinks.size(), 1.0);
 		Pattern.back().Count.assign(setOfFailureLinks.size(), 0);
+
+		// relationship
+		int _FirstLink = setOfFailureLinks[l];
+		for (int j = 0; j < setOfFailureLinks.size(); j++)
+		{
+			int _ComparedLink = setOfFailureLinks[j];
+			Pattern.back().Relation.push_back(RelationClass(_ComparedLink));
+		}
+
 		//Update the score to set the diagonal vector value = 0
 		for (int i = 0; i < setOfFailureLinks.size(); i++)
 		{
@@ -431,6 +428,7 @@ void Algorithm::IniPattern()
 			Pattern.back().AveScore.at(l) = 0;
 		}
 	}
+
 	for (auto& p : Pattern)
 	{
 		p.updateProb();
@@ -531,6 +529,15 @@ void Algorithm::ReadData(GRAPH& g)
 		if (fields[0] == "RewardImproveLocal") RewardImproveLocal = stof(fields[1]);
 		if (fields[0] == "RewardWorse") RewardWorse = stof(fields[1]);
 		if (fields[0] == "ReactionFactor") ReactionFactor = stof(fields[1]);
+		if (fields[0] == "CompareScoreMethod")
+		{
+			if (fields[1] == "Ave") CompareScoreMethod = enum_CompareScoreMethod::Ave;
+			else if (fields[1] == "Total") CompareScoreMethod = enum_CompareScoreMethod::Total;
+			else {
+				TRACE("CompareScoreMethod is not read properly");
+			}
+
+		}
 		if (fields[0] == "SelectOperator")
 		{
 			if (fields[1]._Equal("ALNS"))
@@ -627,7 +634,6 @@ void Algorithm::PrintFinal(int sd)
 			GlobalBest.EndTime.at(t) << endl;
 	}
 	sf.close();
-
 	// print the value of best solution
 	sf.open("..//OutPut//ABCPrintSeedBestSolVal.txt", ios::app);
 	sf <<sd<<","<<GlobalBest.Fitness << endl;
@@ -640,33 +646,7 @@ void Algorithm::PrintFinal(int sd)
 	}
 	sf.close();
 }
-/// <summary>
-/// update the score of an operator
-/// </summary>
-/// <param name="OpId">Id of the operator</param>
-/// <param name="ImprovedFit"> if negative, then it is an improvement</param>
-void Algorithm::UpdateOperatorScore_ALNS(int OpId, double ResultFit, double LocalFit, double GlobalFit)
-{
-	//TODO: write function to read reward 
-	//      change the prob for selecting nei
-	//      write python to read parameter 
-	//      and select which nei select method is used 
-	assert(OpId >= 0); assert(OpId <= NumOperators-1);
-	if (ResultFit<GlobalFit)
-	{
-		Operators.at(OpId).Score += RewardImproveGlobal;
-		return;
-	}
-	if (ResultFit < LocalFit)
-	{
-		Operators.at(OpId).Score += RewardImproveLocal;
-	}
-	else
-	{
-		Operators.at(OpId).Score += RewardWorse;
-	}
 
-}
 OperatorClass::OperatorClass()
 {
 	id = -1; TotalCounterSum = 0; TotalCounterBad = 0; TotalCounterGood = 0;
@@ -679,26 +659,7 @@ OperatorClass::~OperatorClass()
 	Score = 1; Prob = 1.0/NumOperators;
 	Weight = 1;
 }
-/// <summary>
-/// cal the weight 
-/// </summary>
-void OperatorClass::calWeight(double r)
-{
-	if (TotalCounterSum > 0)
-	{
-		Weight = (1 - r) * Weight + r * Score / TotalCounterSum;
-	}
-}
-/// <summary>
-/// update the weight of all operators
-/// </summary>
-void Algorithm::UpdateOperatorWeight_ALNS()
-{
-	for (int i = 0; i < Operators.size(); i++)
-	{
-		Operators.at(i).calWeight(ReactionFactor);
-	}
-}
+
 /// <summary>
 ///  print the summary of the operators
 /// </summary>
@@ -808,55 +769,24 @@ void PatternClass::updateProb()
 	}
 }
 
+// return the location of the vector
+size_t findPatternIndex_fun(int lid, const vector<PatternClass> &Pat)
+{
+	assert(lid >= 0);
+	for (size_t i = 0; i < Pat.size(); i++)
+	{
+		if (Pat[i].LinkId == lid) return i;
+	}
+	cout << "C++ Warning: Can not find pattern index" << endl;
+	return  -1;
+}
 
 // return the location of the vector
 size_t Algorithm::findPatternIndex(int lid)
 {
-	assert(lid >= 0);
-	for (size_t i = 0;i<Pattern.size();i++)
-	{
-		if (Pattern[i].LinkId == lid) return i;
-	}
-	cout << "C++ Warning: Can not find pattern index" << endl;
-	return  -1;
-
+	return findPatternIndex_fun(lid, Pattern);
 }
 
-
-int FindValIndex(const vector<int>& vec, int key);
-// update the score based on the input solution 
-// only call this when it is improved
-void Algorithm::updatePatternScore(const SCHCLASS &sol,bool isGloablImprove)
-{
-	//TOOD: update the pattern of the improve solution
-	for (int i = 0; i < sol.LinkID.size()-1; i++)
-	{
-		//int first = (*sol.LinkID.at(i)).ID;
-		int first = sol.LinkID.at(i);
-		int next = sol.LinkID.at(i+1);
-		
-		size_t PtLoc = findPatternIndex(first);
-		size_t VecLoc = static_cast<size_t> (FindValIndex(setOfFailureLinks, next));
-		if (isGloablImprove)
-		{
-			Pattern.at(PtLoc).AbsScore.at(VecLoc) += PatternGlobalImproveScore;
-			Pattern.at(PtLoc).Count.at(VecLoc)++;
-			Pattern.at(PtLoc).AveScore.at(VecLoc) += Pattern.at(PtLoc).AbsScore.at(VecLoc) / Pattern.at(PtLoc).Count.at(VecLoc);
-		}
-		else
-		{
-			Pattern.at(PtLoc).AbsScore.at(VecLoc) += PatternLocalImproveScore;
-			Pattern.at(PtLoc).Count.at(VecLoc)++;
-			Pattern.at(PtLoc).AveScore.at(VecLoc) = Pattern.at(PtLoc).AbsScore.at(VecLoc) / Pattern.at(PtLoc).Count.at(VecLoc);
-		}
-	}
-
-	//todo : need to check whether this score is improved
-	for (auto &p:Pattern)
-	{
-		p.updateProb();
-	}
-}
 //print pattern on the file
 void Algorithm::printPattern(int seedid)
 {
@@ -882,20 +812,16 @@ void Algorithm::printPattern(int seedid)
 		}
 	}
 	OutFile.close();
-
 }
-
-
-
-void SetAlgoType(std::string _name, AlgorithmType& alot)
-{
-	//TODO
-	//	enum AlgorithmType
-	//{
-	//	CSA = 0, GA = 1, HH = 2, ABC = 3, UnDefined = 4
-	//};
-
-}
+//void SetAlgoType(std::string _name, AlgorithmType& alot)
+//{
+//	//TODO
+//	//	enum AlgorithmType
+//	//{
+//	//	CSA = 0, GA = 1, HH = 2, ABC = 3, UnDefined = 4
+//	//};
+//
+//}
 std::string getAlgoTypeName(const AlgorithmType& alot)
 {
 	switch (alot)
@@ -917,7 +843,6 @@ bool Algorithm::isNeedToEvaluateSol(const SCHCLASS &Sol)
 	return isAddNewToArchive(Sol.key);
 }
 
-
 // TODO: check whether the link is a new to the archive 
 bool Algorithm::isAddNewToArchive(const string &_key)
 {
@@ -935,18 +860,14 @@ string Algorithm::getMapStrFromSol(const SCHCLASS &Sol) //get string for the map
 	{
 		if (l == 0)
 		{
-			//if (Sol.LinkID[l]->ID == 0) str_val = "0";
 			if (Sol.LinkID[l]==0) str_val = "0";
-			//else str_val = std::to_string(Sol.LinkID[l]->ID);
 			else str_val = std::to_string(Sol.LinkID[l]);
 		}
 		else
 		{
-			//if (Sol.LinkID[l]->ID == 0) str_val.append(",0");
 			if (Sol.LinkID[l] == 0) str_val.append(",0");
 			else
 			{
-				//str_val.append(",");str_val.append(std::to_string(Sol.LinkID[l]->ID));
 				str_val.append(",");str_val.append(std::to_string(Sol.LinkID[l]));
 			}
 		}

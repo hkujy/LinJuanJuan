@@ -68,6 +68,7 @@ def TestGa(_mf):
 def TestSingleOperator(mf):
     """Function for test single operator effect
     """
+    # for i in range(0, 9):
     for i in range(0, 9):
         adjust_para = {
             "UseMyOwn": "True",
@@ -76,7 +77,7 @@ def TestSingleOperator(mf):
             "isTestSingleOp": "True",
             "SingleOpIndex": i,
             "ReactionFactor": 0.5,
-            "SelectOperator": "Uni"
+            "SelectOperator": "ALNS"
         }
         para.global_case_id = para.global_case_id + 1
         if para.global_case_id >= stop_number:
@@ -192,7 +193,7 @@ if __name__ == "__main__":
     # BenchmarkParadoxNet(mf)
     TestSingleOperator(mf)
     # TestRewardVal(mf)
-    TestDifferntOpSelect(mf)
+    # TestDifferntOpSelect(mf)
 
     # ------------------Test GA Function
     # TestGa(mf)

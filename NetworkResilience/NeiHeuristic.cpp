@@ -8,10 +8,12 @@
 #include <map>
 
 using namespace std;
+
+int FindValIndex(const vector<int>& vec, int key);
 //main fun for generate a neighborhoods operator
 void SCHCLASS::GenNei(SCHCLASS& Nei, GRAPH& g, 
 	int &OpId,const vector<int>& FailureLinkSet, const vector<double>& ResCap,
-	const vector<PatternClass> &Pat)
+	const vector<PatternClass> &Pat, enum_CompareScoreMethod &CompareMethod)
 {
 #ifdef _DEBUG
 	cout << ".......selected neighbor index = " << OpId <<"........."<<endl;
@@ -27,7 +29,8 @@ void SCHCLASS::GenNei(SCHCLASS& Nei, GRAPH& g,
 		case(6): Nei_Greedy_EI_Based(Nei, g,"Max"); break;
 		case(7): Nei_Greedy_EI_Based(Nei, g,"Prob"); break;
 		//case(8): Nei_New_BasedOn_Pattern(Nei,g,FailureLinkSet,ResCap,Pat); break;
-		case(8): Nei_Swap_BasedOn_Pattern(Nei,g,FailureLinkSet,ResCap,Pat); break;
+		//case(8): Nei_Swap_BasedOn_Pattern(Nei,g,FailureLinkSet,ResCap,Pat); break;
+		case(8): Nei_Swap_BasedOn_PatternRelation(Nei, g, FailureLinkSet, ResCap, Pat, CompareMethod); break;
 	default:
 		cout << "Neighbor operator index is properly set" << endl;
 		system("PAUSE");
@@ -466,7 +469,6 @@ int getPatLoc(const vector<PatternClass> &pat, const int lid)
 }
 
 
-int FindValIndex(const vector<int>& vec, int key);
 //TODO
 //Nei:hybrid with swap and pattern
 //only swap the pattern with higher probability
@@ -536,4 +538,93 @@ void SCHCLASS::Nei_Swap_BasedOn_Pattern(SCHCLASS& NewSol, GRAPH& g, const vector
 #endif
 	}
 
+bool isEqual(LinkSchRelations& rhs, LinkSchRelations& lhs)
+{
+	if (rhs == lhs) return true;
+	else return false;
+}
+// update the relationship based on the patten relationship 
+void SCHCLASS::Nei_Swap_BasedOn_PatternRelation(SCHCLASS& NewSol, GRAPH& g, const vector<int>& FailureLinkSet,
+	const vector<double>& ResCap, const vector<PatternClass>& pat,enum_CompareScoreMethod &CompareMethod)
+{
+	//Step 1: randomly generate two locations
+#ifdef _DEBUG
+	cout << "------------Start Swap-----------" << endl;
+#endif // _DEBUG
+	bool isSwap = false;
+	int swapWhileCounter = 0;
+	int locA = -1;
+	int locB = -1;
+	while (isSwap == false)
+	{
+		// step 1 generate two different nodes
+		locA = GenRandomInt(0, int(LinkID.size() - 1));
+		locB = GenRandomInt(0, int(LinkID.size() - 1));
+		int whileCounter = 0;
+		while (locA == locB)
+		{
+			locB = GenRandomInt(0, int(LinkID.size() - 1));
+			++whileCounter;
+			if (whileCounter > 100)
+			{
+				std::cout << "ERR: find random swap has err in counter" << endl;
+			}
+		}
+		int LinkA = LinkID[locA];
+		int LinkB = LinkID[locB];
 
+		// step 2: check their current relationship
+		LinkSchRelations r = this->getRelation(LinkA, LinkB);
+		// step 3: check their dominate relationship 
+		LinkSchRelations domr = this->findDominantRelation(LinkA, LinkB, pat, CompareMethod);
+	
+		// in the following, swap the two only if their dominated relationship is different 
+		if (isEqual(r, domr))
+		{
+			if (r == LinkSchRelations::Same)
+			{
+				isSwap = true;
+			}
+			else isSwap = false;
+		}
+		else
+		{
+			if (domr==LinkSchRelations::After)
+			{
+				if (locA < locB) isSwap = true;
+				else isSwap = false;
+			}
+			else if (domr == LinkSchRelations::Before)
+			{
+				if (locA > locB) isSwap = true;
+				else isSwap = false;
+			}
+			else if (domr == LinkSchRelations::noDominated)
+			{
+				isSwap = true;
+			}
+			else
+			{
+				TRACE("UnDetectedCase");
+			}
+		}
+
+		swapWhileCounter++;
+		if (swapWhileCounter > 100)
+		{
+			std::cout << "ERR: find random swap based on the pattern value, and there is an err in counter" << endl;
+		}
+	}
+#ifdef _DEBUG
+	cout << "Before Swap: LocALink = " << NewSol.LinkID.at(locA);
+	cout << ", LocBLink = " << NewSol.LinkID.at(locB) << endl;
+#endif // _DEBUG
+	NewSol.LinkID.at(locA) = LinkID.at(locB);
+	NewSol.LinkID.at(locB) = LinkID.at(locA);
+
+#ifdef _DEBUG
+	cout << "After Swap: LocALink = " << NewSol.LinkID.at(locA);
+	cout << ", LocBLink = " << NewSol.LinkID.at(locB) << endl;
+	cout << "-----------End Swap-----------" << endl;
+#endif
+}

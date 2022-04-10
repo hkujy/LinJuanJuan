@@ -53,12 +53,16 @@ public:
 	double RewardWorse;
 	double ReactionFactor;
 	SelectOperatorType SelectOp;
+	enum_CompareScoreMethod CompareScoreMethod;
 	string getMapStrFromSol(const SCHCLASS &Sol); //get string for the map sol archive
 	bool isAddNewToArchive(const string &_key);
 	bool isNeedToEvaluateSol(const SCHCLASS &Sol);
 	void EvaluteOneSol(SCHCLASS &Sch, GRAPH& g);
 	void Ini(GRAPH& g);
 	void IniPattern();
+
+	LinkSchRelations findDominantRelation(int Alink, int Blink);// find the dominate relationship between two links
+
 	Algorithm() {
 		name = "";
 		MaxFitValue = -99999999999999; MinFitValue = 999999999999999;
@@ -72,6 +76,7 @@ public:
 		RewardWorse = 0.0;
 		ReactionFactor = 0.0;
 		Pattern.reserve(100);
+		CompareScoreMethod = enum_CompareScoreMethod::None;
 		SelectOp = SelectOperatorType::None;
 		for (int i = 0; i < NumOperators; i++)
 		{
@@ -101,7 +106,8 @@ public:
 	void PrintFinal(int sd);
 	void UpdateOperatorMeaures(int _id, bool isImproved);
 	bool CompareTwoSolsAndReplace(SCHCLASS& lhs, SCHCLASS& rhs, int NeiOperatorId);
-	void updatePatternScore(const SCHCLASS& sol, bool isGloablImprove);
+	void LearnPattern_Score(const SCHCLASS& sol, bool isGloablImprove);
+	void LearnPatternRelation_Score(const SCHCLASS& sol, bool isGloablImprove);
 	size_t findPatternIndex(int lid);
 	void PrintOperator(int seedid,int _iter);
 	void UpdateOperatorProb();

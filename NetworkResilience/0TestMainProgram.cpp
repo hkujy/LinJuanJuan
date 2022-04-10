@@ -118,7 +118,6 @@ void ReproduceWang(GRAPH& g)
 	cout << "--Complete Reproduce David Work--- " << endl;
 }
 
-
 int main(int argc, char* argv[])
 {	
 	//TOOD: Change NetworkIndex to NetIndex
@@ -150,7 +149,7 @@ int main(int argc, char* argv[])
 	//return 0;
 	//BaseGraph.EvaluteGraph();
 
-// this used for evaluating the method when using python
+	// this used for evaluating the method when using python
 	if (!UseMyOwnAlgo)   
 	{
 		vector<int> InputVec;

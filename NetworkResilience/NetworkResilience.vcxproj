@@ -37,6 +37,8 @@
     <ClCompile Include="DebugMsg.cpp" />
     <ClCompile Include="FW_UE.cpp" />
     <ClCompile Include="HH.cpp" />
+    <ClCompile Include="LearningOperator.cpp" />
+    <ClCompile Include="LearningPattern.cpp" />
     <ClCompile Include="LineSearchUingDirective.cpp" />
     <ClCompile Include="LinkFuncs.cpp" />
     <ClCompile Include="NeiHeuristic.cpp" />
@@ -58,13 +60,13 @@
     <ProjectGuid>{D020EC3B-CC10-4074-9DB6-9080E09F2EA7}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>NetworkResilience</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -76,7 +78,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
