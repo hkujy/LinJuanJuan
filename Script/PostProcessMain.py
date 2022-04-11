@@ -12,7 +12,6 @@ import PlotOperatorConverge
 root_folder = r'M:/LinJuan/RandomSeed/'
 # plot 1 plot the heatmap for the optimal pattern
 
-FailureLinks = [0, 6, 19, 22, 26, 27, 34, 38, 42, 55, 59, 73]
 def EffectOfOperators():
     # convergence the algorithm 
     ## each operator 
@@ -29,9 +28,20 @@ def CompareThree():
     psf.CompareOneFolder(OperatorFolder,"CompareThree")
 
 
+def PlotFinalRelation():
+    """visulise the dominate relationship
+    """
+    test_folder = "M:/LinJuan/0_ALNS/"
+    bs = psf.getBestSeed(test_folder)
+    print("Best Seed = {0}".format(bs))
+    psf.plotRelation(test_folder)
+    
+
 if __name__ == "__main__":
-    EffectOfOperators()
+    # EffectOfOperators()
     # CompareThree()
+    PlotFinalRelation()
+    
 
     # testfolder =  root_folder + "/RemoveOperator/"
     # psf.CompareOneFolder(testfolder,"RemoveOp")

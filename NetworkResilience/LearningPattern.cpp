@@ -9,6 +9,8 @@ int FindValIndex(const vector<int>& vec, int key);
 // compare three number and return the largest number
 // 1: A is the largest, 2: B is the largest, 3: C is the largest
 // 0: all three are equal
+// Notes: when use this, follow the sequence
+// A--After, B--Before,  C--Same
 int CompareThreeNumber(double A, double B, double C)
 {
 	// case 0: if all three numbers are equal
@@ -172,4 +174,44 @@ void Algorithm::LearnPatternRelation_Score(const SCHCLASS& sol, bool isGloablImp
 			else Pattern[AlinkId].Relation[ComRelationLinkId].UpdateScore(r, RewardImproveLocal);
 		}
 	}
+}
+
+// print the relationship into files
+void Algorithm::printDomRelation(int seed) const
+{
+	ofstream OutFile;
+	//OutFile << "Seed,First,Second,AferScore,BeforeScore,SameScore,Dom" << endl;
+	OutFile.open("..//OutPut//DomRelation.txt", ios::app);
+	for (size_t i = 0; i < setOfFailureLinks.size(); i++)
+	{
+		for (size_t j = 0; j < setOfFailureLinks.size(); j++)
+		{
+			int Alink = setOfFailureLinks.at(i);
+			int Blink = setOfFailureLinks.at(j);
+			double AfterScore, BeforeScore, SameScore;
+			if (CompareScoreMethod == enum_CompareScoreMethod::Ave)
+			{
+				AfterScore = Pattern[i].Relation[j].AfterScore_Ave;
+				BeforeScore = Pattern[i].Relation[j].BeforeScore_Ave;
+				SameScore = Pattern[i].Relation[j].SamePeriodScore_Ave;
+			}
+			else if (CompareScoreMethod == enum_CompareScoreMethod::Total)
+			{
+				AfterScore = Pattern[i].Relation[j].AfterScore_Total;
+				BeforeScore = Pattern[i].Relation[j].BeforeScore_Total;
+				SameScore = Pattern[i].Relation[j].SamePeriodScore_Total;
+			}
+			int DomVal = CompareThreeNumber(AfterScore, BeforeScore, SameScore);
+			OutFile << seed << ",";
+			OutFile << Alink << ",";
+			OutFile << Blink << ",";
+			OutFile << AfterScore << ",";
+			OutFile << BeforeScore << ",";
+			OutFile << SameScore << ",";
+			OutFile << DomVal << endl;
+		}
+	}
+
+	OutFile.close();
+
 }

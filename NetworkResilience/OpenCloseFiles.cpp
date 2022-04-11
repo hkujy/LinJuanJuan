@@ -63,6 +63,11 @@ void OpenAndCleanFiles(){
 	OutFile << "Seed,First,Second,Score,Prob" << endl;
 	OutFile.close();
 
+
+	OutFile.open("..//OutPut//DomRelation.txt", ios::trunc);
+	OutFile << "Seed,First,Second,AferScore,BeforeScore,SameScore,Dom" << endl;
+	OutFile.close();
+
 	//OutFile.open("..//OutPut//HHPrintPatternScore.txt", ios::trunc);
 	//OutFile << "Seed,First,Second,Score,Prob" << endl;
 	//OutFile.close();

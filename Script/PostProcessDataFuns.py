@@ -6,9 +6,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
-
-from pandas.core.accessor import PandasDelegate
-
 # root_folder = r"C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin\Tests2022/"
 
 label_font = {'family': 'Times New Roman', 
@@ -21,6 +18,14 @@ tick_font = {'family': 'Times New Roman',
 			  'size': 10
             }
 
+
+def getBestSeed(_folder:str):#return the best seed number
+	"""Input is the folder
+	"""
+	fn = _folder+'/BestSeed.txt'
+	df = pd.read_csv(fn)
+	best_seed = df["Seed"][0]
+	return int(best_seed)	
 
 def updateOperatorName(fn:str):
 	"""
@@ -137,7 +142,6 @@ def TuneReward():
 	folder = root + "j=8\\"
 	CompareOneFolder(_folder=folder,_name="j=8")
 
-
 def effect_of_operators(_folder):
 	"""test the effect of operators
 	"""
@@ -151,7 +155,22 @@ def effect_of_operators(_folder):
 def get_files():
 	"""generate the list of files names
 	"""
-	pass	
+	pass
+    
+def plotRelation(_folder:str):
+	"""read and plot relationship
+	plot table reference
+	https://stackoverflow.com/questions/32137396/how-do-i-plot-only-a-table-in-matplotlib
+	"""
+	# plot table
+	BestSeed = getBestSeed(_folder)
+	fn = _folder +"/DomRelation.txt"
+	data = pd.read_csv(fn)
+	num_row =data.shape[0]
+	print(num_row)
+ 
+
+
 
 if __name__=='__main__':
 	"""

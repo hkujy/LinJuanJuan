@@ -127,7 +127,7 @@ def TestDifferntOpSelect(mf):
     para.global_case_id = para.global_case_id + 1
     TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
                 _case_name="ALNS")
-
+    exit()
     adjust_para['SelectOperator'] = "Uni"
     para.global_case_id = para.global_case_id + 1
     if para.global_case_id>=stop_number:
@@ -191,9 +191,9 @@ if __name__ == "__main__":
     para.Copy_input_and_test_files(mf)
 
     # BenchmarkParadoxNet(mf)
-    TestSingleOperator(mf)
+    # TestSingleOperator(mf)
     # TestRewardVal(mf)
-    # TestDifferntOpSelect(mf)
+    TestDifferntOpSelect(mf)
 
     # ------------------Test GA Function
     # TestGa(mf)

@@ -135,6 +135,7 @@ void Algorithm::ABCMain()
 		CpuTimes.push_back((double)((Et - St)/CLOCKS_PER_SEC)); // time unit is second
 		PrintFinal(s); 
 		printPattern(s);
+		printDomRelation(s);
 
 		if (GlobalBest.Fitness < BestSeedVal)
 		{

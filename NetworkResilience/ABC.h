@@ -121,6 +121,7 @@ public:
 	int SelectOperator_ALNS();
 	void IniOperatorProb_ANLS();
 	void printPattern(int seedid);
+	void printDomRelation(int seed) const;
 };
 
 
