@@ -3,9 +3,12 @@
 # from tkinter import font
 # from tkinter.font import _FontDict
 # from tkinter.font import _FontDict
+from xml import dom
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
+import para
+import numpy as np
 # root_folder = r"C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin\Tests2022/"
 
 label_font = {'family': 'Times New Roman', 
@@ -156,11 +159,32 @@ def get_files():
 	"""generate the list of files names
 	"""
 	pass
-    
+
+def plotTable(df,_name:str):
+	rcolors = plt.cm.BuPu(np.full(len(df.index), 0.1))
+	ccolors = plt.cm.BuPu(np.full(len(df.columns), 0.1))
+	the_table = plt.table(cellText=df.values,
+						rowLabels=df.index,
+						rowColours=rcolors,
+						colColours=ccolors,
+						colLabels=df.columns,
+						rowLoc='right',
+						loc='center')
+	plt.box(on=None)
+	plt.gca().get_xaxis().set_visible(False)
+	plt.gca().get_yaxis().set_visible(False)
+	the_table.scale(1, 1.5)
+	the_table.set_fontsize(12)
+	plt.ion()
+	plt.pause(2)
+	plt.savefig(_name+".png", bbox_inches='tight', dpi=600)
+	plt.close()
+
+
 def plotRelation(_folder:str):
 	"""read and plot relationship
 	plot table reference
-	https://stackoverflow.com/questions/32137396/how-do-i-plot-only-a-table-in-matplotlib
+	https://towardsdatascience.com/simple-little-tables-with-matplotlib-9780ef5d0bc4
 	"""
 	# plot table
 	BestSeed = getBestSeed(_folder)
@@ -168,7 +192,48 @@ def plotRelation(_folder:str):
 	data = pd.read_csv(fn)
 	num_row =data.shape[0]
 	print(num_row)
- 
+	matrix_afterScore = []
+	matrix_BeforeScore = []
+	matrix_SameScore = []
+	matrix_Dom = []
+	for i in range(0,len(para.FailureLinks)):
+		matrix_afterScore.append([-1]*len(para.FailureLinks))
+		matrix_BeforeScore.append([-1]*len(para.FailureLinks))
+		matrix_SameScore.append([-1]*len(para.FailureLinks))
+		matrix_Dom.append([-1]*len(para.FailureLinks))
+	for i in range(0, num_row):
+		if (data["Seed"][i]==BestSeed):
+			RowLink = data["First"][i]
+			ColLink = data["Second"][i]
+			AfterScore = data["AferScore"][i]
+			BeforeScore = data["BeforeScore"][i]
+			SameScore = data["SameScore"][i]
+			DomVal = data["Dom"][i]
+			DomStatus = 'None'
+			if DomVal==0:
+				DomStatus="Equal"
+			if DomVal==1:
+				DomStatus="After"
+			if DomVal==2:
+				DomStatus="Before"
+			if DomVal==3:
+				DomStatus="Same"
+			RowNum = para.FailureLinks.index(RowLink)
+			ColNum = para.FailureLinks.index(ColLink)
+			matrix_afterScore[RowNum][ColNum] = AfterScore
+			matrix_BeforeScore[RowNum][ColNum] = BeforeScore
+			matrix_SameScore[RowNum][ColNum] = SameScore
+			matrix_Dom[RowNum][ColNum] = DomStatus
+	# print(matrix)
+	df = pd.DataFrame(matrix_afterScore,columns=para.FailureLinks,index=para.FailureLinks)
+	plotTable(df,"AfterScore")
+	df = pd.DataFrame(matrix_BeforeScore,columns=para.FailureLinks,index=para.FailureLinks)
+	plotTable(df,"BeforeScore")
+	df = pd.DataFrame(matrix_SameScore,columns=para.FailureLinks,index=para.FailureLinks)
+	plotTable(df,"SameScore")
+	df = pd.DataFrame(matrix_Dom,columns=para.FailureLinks,index=para.FailureLinks)
+	plotTable(df,"DomStatus")
+		
 
 
 

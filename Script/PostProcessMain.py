@@ -31,11 +31,11 @@ def CompareThree():
 def PlotFinalRelation():
     """visulise the dominate relationship
     """
-    test_folder = "M:/LinJuan/0_ALNS/"
+    # test_folder = "M:/LinJuan/0_ALNS/"
+    test_folder = "C:/GitCodes/0_ALNS/"
     bs = psf.getBestSeed(test_folder)
     print("Best Seed = {0}".format(bs))
     psf.plotRelation(test_folder)
-    
 
 if __name__ == "__main__":
     # EffectOfOperators()
