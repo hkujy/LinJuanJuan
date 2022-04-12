@@ -1,10 +1,9 @@
 // user specified headers
-#ifndef COMMONHEADER
-#define COMMONHEADER
-#include "Classes.h"
+#ifndef CommonHeaders
+#define CommonHeaders
+#include "GraphElements.h"
 #include "GlobalVar.h"
 #include "Parameters.h"
-#include "Debug.h"
 // common system header
 #include <iostream>
 #include <assert.h>
@@ -19,4 +18,5 @@
 #include <random>
 #include <stdlib.h>
 #include <numeric>
+#include "Debug.h"
 #endif

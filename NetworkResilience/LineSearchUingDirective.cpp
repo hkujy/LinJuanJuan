@@ -15,10 +15,10 @@ inline double GetBPRCost(double &flow,double &Ca,double &t0,
 	return (t0*(1.0f + AlphBpr*std::pow((flow / Ca),BetaBpr)));// by defalut Bpr = 4;
 };
 
-double LinksDirectionDerivative(vector<LINK> &XLink, vector<double> &FlowDif, double &Alpha)
+double LinksDirectionDerivative(vector<LinkClass> &XLink, vector<double> &FlowDif, double &Alpha)
 {
-	assert(XLink.size() == NumLinks);
-	vector<double> Flow(NumLinks,0.0);
+	assert(XLink.size() == numLinks);
+	vector<double> Flow(numLinks,0.0);
 	double LinkCostSum = 0.0f;;
 
 	for (unsigned int i = 0; i < XLink.size();i++)
@@ -37,11 +37,11 @@ double LinksDirectionDerivative(vector<LINK> &XLink, vector<double> &FlowDif, do
 }
 
 
-double LinksSDLineSearch(vector<LINK> &XLink, vector<LINK> &YLink)
+double LinksSDLineSearch(vector<LinkClass> &XLink, vector<LinkClass> &YLink)
 {
 	//cout << "start update alpha:line search" << endl;
-	assert(XLink.size() == NumLinks);
-	vector<double> FlowDif(NumLinks, 0.0);
+	assert(XLink.size() == numLinks);
+	vector<double> FlowDif(numLinks, 0.0);
 	double Grade;
 	double Alpha = 0.0f;
 	double LastAlpha = 0.0f;
@@ -81,7 +81,7 @@ Loop:
 
 	Alpha = 0.5f*(LeftAlpha + RightAlpha);
 
-	if (std::abs(LeftAlpha - RightAlpha) > OneDimEsp)
+	if (std::abs(LeftAlpha - RightAlpha) > oneDimEps)
 	{
 		//cout << abs(LeftAlpha - RightAlpha) << endl;
 		goto Loop;
@@ -93,10 +93,10 @@ Loop:
 
 }
 //
-//double LinksSDLineSearch(vector<LINK> &XLink, vector<LINK> &YLink)
+//double LinksSDLineSearch(vector<LinkClass> &XLink, vector<LinkClass> &YLink)
 //{
-//	assert(XLink.size() == NumLinks);
-//	vector<double> FlowDif(NumLinks, 0.0);
+//	assert(XLink.size() == numLinks);
+//	vector<double> FlowDif(numLinks, 0.0);
 //	double Grade;
 //	
 //	double LastAlpha = 0.0f;
@@ -137,7 +137,7 @@ Loop:
 //	
 //	//Alpha = 0.61803398875f*(LeftAlpha + RightAlpha);
 //
-//	//for (; ((LeftAlpha==0.0)&&(itercounter<=1000)&&(std::abs(LeftAlpha - RightAlpha)>OneDimEsp));itercounter++)
+//	//for (; ((LeftAlpha==0.0)&&(itercounter<=1000)&&(std::abs(LeftAlpha - RightAlpha)>oneDimEps));itercounter++)
 //	for (; ((LeftAlpha==0.0)&&(itercounter<=1000));itercounter++)
 //	{
 //		Grade = LinksDirectionDerivative(XLink, FlowDif, Alpha);
@@ -149,7 +149,7 @@ Loop:
 //		Alpha = 0.618f*(LeftAlpha + RightAlpha);
 //	}
 //
-//	//if (std::abs(LeftAlpha - RightAlpha)>OneDimEsp&&itercounter<1000)
+//	//if (std::abs(LeftAlpha - RightAlpha)>oneDimEps&&itercounter<1000)
 //	//{
 //	//	//cout << abs(LeftAlpha - RightAlpha) << endl;
 //	//	itercounter++;

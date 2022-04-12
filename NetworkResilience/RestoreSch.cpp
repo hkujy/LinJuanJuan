@@ -1,11 +1,10 @@
-#include "RestoreSchClass.h"
-#include "RandomFuncs.h"
 #include <vector>
 #include <algorithm>
 #include <numeric>
+#include "RestoreSchClass.h"
+#include "RandomFuncs.h"
+#include "GraphElements.h"
 #include <assert.h>
-#include "Debug.h"
-
 using namespace std;
 void SortStartTime(vector<int>& st)
 {
@@ -26,7 +25,7 @@ int FindValIndex(const vector<int>& vec, int key)
 }
 
 //generate the time from order to time
-void SCHCLASS::GenerateTimeFromOrder(const vector<double>& ResCap,GRAPH &g)
+void SCHCLASS::GenerateTimeFromOrder(const vector<double>& ResCap,GraphClass &g)
 {
 	AlignStartTime(ResCap,g);
 }
@@ -35,21 +34,21 @@ void SCHCLASS::print() const
 	cout << "*******Print and check one sol********" << endl;
 	for (size_t i = 0; i < LinkID.size(); i++)
 	{
-		//cout << "Link = " << LinkID.at(i)->ID << ", Start Time = " << StartTime.at(i) << ", End Time = " << EndTime.at(i) << endl;
+		//cout << "Link = " << LinkID.at(i)->Id << ", Start Time = " << StartTime.at(i) << ", End Time = " << EndTime.at(i) << endl;
 		cout << "Link = " << LinkID.at(i) << ", Start Time = " << StartTime.at(i) << ", End Time = " << EndTime.at(i) << endl;
 	}
 	cout << "********End*************************" << endl;
 }
 
-Scenario SCHCLASS::ConvertToScenario() {
-	Scenario s;
-	//for (auto l : LinkID) s.LinkIds.push_back(l->ID);
+ScenarioClass SCHCLASS::ConvertToScenario() {
+	ScenarioClass s;
+	//for (auto l : LinkID) s.LinkIds.push_back(l->Id);
 	for (auto l : LinkID) s.LinkIds.push_back(l);
 	for (auto t : StartTime) s.tau.push_back(t);
 	return s;
 }
 
-void SCHCLASS::getRes(GRAPH &g)
+void SCHCLASS::getRes(GraphClass &g)
 {
 	UsedRes.assign(MaxNumOfSchPeriod, 0);
 
@@ -62,7 +61,7 @@ void SCHCLASS::getRes(GRAPH &g)
 		}
 	}
 }
-void SCHCLASS::updateEndTime(GRAPH &g)
+void SCHCLASS::updateEndTime(GraphClass &g)
 {
 	for (int l = 0; l < LinkID.size(); l++)
 	{
@@ -86,7 +85,7 @@ bool SCHCLASS::isFeasible(const vector<double>& res)
 
 //update the resource used before the pos project
 //does not include the et link, which is supposed to be the current link
-void SCHCLASS::updatePrecedingRes(size_t st, size_t et,GRAPH &g)
+void SCHCLASS::updatePrecedingRes(size_t st, size_t et,GraphClass &g)
 {
 	for (size_t l = st; l < et; l++)
 	{
@@ -98,7 +97,7 @@ void SCHCLASS::updatePrecedingRes(size_t st, size_t et,GRAPH &g)
 	}
 }
 
-void SCHCLASS::updateResFor(size_t Pos, GRAPH &g)
+void SCHCLASS::updateResFor(size_t Pos, GraphClass &g)
 {
 	for (int t = StartTime.at(Pos); t < EndTime.at(Pos); t++)
 	{
@@ -108,7 +107,7 @@ void SCHCLASS::updateResFor(size_t Pos, GRAPH &g)
 }
 
 //find the earliest a time with available resources
-int SCHCLASS::findEarliestFeasibleSt(size_t l, const vector<double>& ResCap,GRAPH &g) {
+int SCHCLASS::findEarliestFeasibleSt(size_t l, const vector<double>& ResCap,GraphClass &g) {
 
 	for (int t = 0; t < MaxNumOfSchPeriod; t++)
 	{
@@ -134,7 +133,7 @@ int SCHCLASS::findEarliestInFeasibleSt(const vector<double>& ResCap) {
 	return -1;
 }
 
-void SCHCLASS::AlignStartTime(const vector<double>& ResCap,GRAPH &g) {
+void SCHCLASS::AlignStartTime(const vector<double>& ResCap,GraphClass &g) {
 	// shift the project to the earliest feasible time
 	EndTime.assign(LinkID.size(), -1);
 	StartTime.assign(LinkID.size(), -1);
@@ -156,7 +155,7 @@ void SCHCLASS::AlignStartTime(const vector<double>& ResCap,GRAPH &g) {
 	updateResFor(this->LinkID.size() - 1,g);
 }
 
-void SCHCLASS::GenerateIniSch(GRAPH& g, const vector<int>& FailureLinks)
+void SCHCLASS::GenerateIniSch(GraphClass& g, const vector<int>& FailureLinks)
 {
 	assert(FailureLinks.size() > 0);
 	if (this->LinkID.size() > 0)
@@ -174,7 +173,7 @@ void SCHCLASS::GenerateIniSch(GRAPH& g, const vector<int>& FailureLinks)
 		if (!isSelected.at(pos))
 		{
 			LinkID.push_back(linkNum);
-			//this->LinkID.push_back(new LINK());
+			//this->LinkID.push_back(new LinkClass());
 			//LinkID.back() = &g.Links.at(linkNum);
 			isSelected.at(pos) = true;
 		}
@@ -206,7 +205,7 @@ vector<size_t> SCHCLASS::getNewReadyLinks(int tau)
 	return results;
 }
 
-void SCHCLASS::Evaluate(GRAPH& g)
+void SCHCLASS::Evaluate(GraphClass& g)
 {
 
 #ifdef _DEBUG
@@ -226,8 +225,8 @@ void SCHCLASS::Evaluate(GRAPH& g)
 	// step 1: set all the capacity of failure links to be 0.0 and evalute the total cost in tau = 0
 	for (size_t l = 0; l < LinkID.size(); l++)
 	{
-		g.Links.at(LinkID[l]).CaRevise = Zero;
-		//LinkID.at(l)->CaRevise = Zero;
+		g.Links.at(LinkID[l]).CaRevise = zero;
+		//LinkID.at(l)->CaRevise = zero;
 	}
 	g.EvaluteGraph();
 
@@ -296,7 +295,7 @@ void SCHCLASS::Evaluate(GRAPH& g)
 
 int SelectOneIndexFrom(const vector<int>& candy, const vector<double>& prob);
 //GenerateIniSolutionBasedonthe pattern 
-void SCHCLASS::GenerateIniBasedOnPattern(GRAPH& g, const vector<int>& FailureLinks, 
+void SCHCLASS::GenerateIniBasedOnPattern(GraphClass& g, const vector<int>& FailureLinks, 
 	const vector<PatternClass>& pat)
 {
 #ifdef _DEBUG
@@ -311,7 +310,7 @@ void SCHCLASS::GenerateIniBasedOnPattern(GRAPH& g, const vector<int>& FailureLin
 	int LinkNum = GenRandomInt(FailureLinks);
 	int LocOfFailLinks = FindValIndex(FailureLinks, LinkNum);
 	this->LinkID.push_back(LinkNum);
-	//this->LinkID.push_back(new LINK());
+	//this->LinkID.push_back(new LinkClass());
 	//LinkID.back() = &g.Links.at(LinkNum);
 	isSelected.at(LocOfFailLinks) = true;
 	vector<int> candy;
@@ -337,7 +336,7 @@ void SCHCLASS::GenerateIniBasedOnPattern(GRAPH& g, const vector<int>& FailureLin
 		LinkNum = FailureLinks.at(candy.at(selectedLocOfCandy));
 		LocOfFailLinks = FindValIndex(FailureLinks, LinkNum);
 		LinkID.push_back(LinkNum);
-		//LinkID.push_back(new LINK());
+		//LinkID.push_back(new LinkClass());
 		//LinkID.back() = &g.Links.at(LinkNum);
 		isSelected.at(LocOfFailLinks) = true;
 	} while (std::find(isSelected.begin(), isSelected.end(), false) != isSelected.end());
@@ -359,12 +358,12 @@ void SCHCLASS::computeKey()
 	}
 	//for (auto l : this->LinkID)
 	//{
-	//	//val = std::to_string(l->ID) + val;
+	//	//val = std::to_string(l->Id) + val;
 	//	val = std::to_string(l) + val;
 	//}
 	for (auto l : this->LinkID)
 	{
-		//cout << "wtf: link id = " << l->ID << endl;
+		//cout << "wtf: link id = " << l->Id << endl;
 		cout << "wtf: link id = " << l << endl;
 	}
 	cout << "converted str = " << val << endl;

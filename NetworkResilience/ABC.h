@@ -1,19 +1,16 @@
 #pragma once
-#ifndef ABCclass
-#define ABCclass
+#ifndef AbcAlgoClass
+#define AbcAlgoClass
 #include <iostream>
 #include <vector>
 #include <unordered_map>
-#include "Parameters.h"
-#include "TempleteFunc.h"
-#include "GlobalVar.h"
 #include "RestoreSchClass.h"
 using namespace std;
 
 class OperatorClass
 {
 public:
-	int id;
+	int Id;
 	int TotalCounterGood;  // number of calls improve
 	int TotalCounterBad; // number of counters drops
 	int TotalCounterSum; // Total number of counters 
@@ -21,26 +18,25 @@ public:
 	double Prob;
 	double Weight;
 	OperatorClass();
-	~OperatorClass();
-	void calWeight(double r);
+	//~OperatorClass();
+	void CalWeight(double r);
 };
-
 
 class Algorithm // to begin with use ABC algorithm
 {
 public:
+	string name;
 	double BaseUNPM;
-	GRAPH* Graph;
+	GraphClass* Graph;
 	double MaxFitValue;
 	double MinFitValue;
 	int NumEmployedBee;
 	int NumOnlookers;
+	int MaxScoutCount;
 	int MaxIter;
-	string name;
-	vector<int> ScountCounter; // record the number of scouts
-	int MaxScountCount;
-	std::vector<double> setResourceCap;  // Capacity of the resources
-	std::vector<int> setOfFailureLinks;
+	vector<int> ScoutCounter; // record the number of scouts
+	std::vector<double> SetOfResourceCap;  // Capacity of the resources
+	std::vector<int> SetOfFailureLinks;
 	std::unordered_map<std::string, double> m_str_val_solArchive;
 	vector<double> CumProbForSelectOnlooker; // probability for the onlookers
 	vector<double> CumProbForSelectNei; // probability for the onlookers
@@ -54,44 +50,44 @@ public:
 	double ReactionFactor;
 	SelectOperatorType SelectOp;
 	enum_CompareScoreMethod CompareScoreMethod;
-	string getMapStrFromSol(const SCHCLASS &Sol); //get string for the map sol archive
-	bool isAddNewToArchive(const string &_key);
-	bool isNeedToEvaluateSol(const SCHCLASS &Sol);
-	void EvaluteOneSol(SCHCLASS &Sch, GRAPH& g);
-	void Ini(GRAPH& g);
+	string getMapStrFromSol(const SCHCLASS &sol); //get string for the map sol archive
+	bool isAddNewToArchive(const string &key);
+	bool isNeedToEvaluateSol(const SCHCLASS &sol);
+	void evaluateOneSol(SCHCLASS &sol, GraphClass& g);
+	void Ini(GraphClass& g);
 	void IniPattern();
+	LinkSchRelations findDominantRelation(int ALink, int BLink);// find the dominate relationship between two links
 
-	LinkSchRelations findDominantRelation(int Alink, int Blink);// find the dominate relationship between two links
-
-	Algorithm() {
-		name = "";
-		MaxFitValue = -99999999999999; MinFitValue = 999999999999999;
-		NumEmployedBee = -1; NumOnlookers = -1; MaxScountCount = -1; MaxIter = -1;
-		ScountCounter.reserve(100); setResourceCap.reserve(100); setOfFailureLinks.reserve(100);
+	Algorithm(): name("Unspecified"),BaseUNPM(-1.0),
+	Graph(new GraphClass), MaxFitValue(-9.9E10), MinFitValue(9.9E20),
+	NumEmployedBee(-1),NumOnlookers(-1),MaxScoutCount(-1),MaxIter(-1),
+	RewardImproveGlobal(0.0),RewardImproveLocal(0.0),RewardWorse(0.0),
+	ReactionFactor(0.0), SelectOp(SelectOperatorType::None),
+	CompareScoreMethod(enum_CompareScoreMethod::None)
+	{
+		ScoutCounter.reserve(100); SetOfResourceCap.reserve(100); SetOfFailureLinks.reserve(100);
+		m_str_val_solArchive.reserve(5000);
 		CumProbForSelectOnlooker.reserve(100);
-		CumProbForSelectNei.reserve(100);
-		Graph = new GRAPH;
-		RewardImproveGlobal = 0.0;
-		RewardImproveLocal = 0.0;
-		RewardWorse = 0.0;
-		ReactionFactor = 0.0;
+		CumProbForSelectNei.reserve(100); ConvergeMeasure.reserve(1000);
 		Pattern.reserve(100);
-		CompareScoreMethod = enum_CompareScoreMethod::None;
-		SelectOp = SelectOperatorType::None;
 		for (int i = 0; i < NumOperators; i++)
 		{
-			Operators.push_back(OperatorClass());
-			Operators.back().id = i;
+			Operators.emplace_back(OperatorClass());
+			Operators.back().Id = i;
 		}
-	};
+	}
 
+	Algorithm(const Algorithm& rhs) = default;
+	Algorithm& operator=(const Algorithm& other) = default;
+	Algorithm(Algorithm&& other) = default;
+	Algorithm& operator=(Algorithm&& other) = default;
 	~Algorithm() { Graph = nullptr; };
 	std::vector<SCHCLASS> Sols;
-	void clearSols() { if (Sols.size()>0) Sols.clear(); }
+	void clearSols() { if (!Sols.empty()) Sols.clear(); }
 	void IniSolArchive();
 	void ComputeFailureLinkEI();
 	void printLinkEI();
-	void ReadSolAndEvaluate(vector<int>& vec,GRAPH &g);
+	void ReadSolAndEvaluate(vector<int>& vec,GraphClass &g);
 	void GenerateIniSol();
 	void ABCMain();
 	void HHMain();
@@ -101,26 +97,26 @@ public:
 	void OnlookerPhase();
 	void ScoutPhase();
 	void GetProb();
-	void ReadData(GRAPH& Graph);
-	size_t SelectOnLookerBasedonProb();
+	void ReadData(GraphClass& graph);
+	size_t SelectOnLookerBasedOnProb();
 	void PrintFinal(int sd);
-	void UpdateOperatorMeaures(int _id, bool isImproved);
+	void UpdateOperatorMeasure(int id, bool isImproved);
 	bool CompareTwoSolsAndReplace(SCHCLASS& lhs, SCHCLASS& rhs, int NeiOperatorId);
-	void LearnPattern_Score(const SCHCLASS& sol, bool isGloablImprove);
-	void LearnPatternRelation_Score(const SCHCLASS& sol, bool isGloablImprove);
+	void LearnPattern_Score(const SCHCLASS& sol, bool isGlobalImprove);
+	void LearnPatternRelation_Score(const SCHCLASS& sol, bool isGlobalImprove);
 	size_t findPatternIndex(int lid);
-	void PrintOperator(int seedid,int _iter);
+	void PrintOperator(int seedId,int iter);
 	void UpdateOperatorProb();
 	void IniOperatorProb();
 	void UpdateOperatorWeight();
-	int SelectOperIndex();
-	void UpdateOperatorScore(int OpId, double ResultFit, double LocalFit, double GlobalFit);
+	int SelectOperatorIndex();
+	void UpdateOperatorScore(int opId, double resultFit, double localFit, double globalFit);
 	void UpdateOperatorProb_ALNS();
-	void UpdateOperatorScore_ALNS(int OpId, double ResultFit, double LocalFit, double GlobalFit);
+	void UpdateOperatorScore_ALNS(int opId, double resultFit, double localFit, double GlobalFit);
 	void UpdateOperatorWeight_ALNS();
 	int SelectOperator_ALNS();
 	void IniOperatorProb_ANLS();
-	void printPattern(int seedid);
+	void printPattern(int seedId);
 	void printDomRelation(int seed) const;
 };
 

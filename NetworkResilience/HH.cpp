@@ -29,11 +29,11 @@ void Algorithm::HHMain()
 
 	vector<double> CpuTimes;
 	clock_t St, Et;
-	for (int s = 0; s < SeedVecVal.size(); s++)
+	for (int s = 0; s < seedVecVal.size(); s++)
 	{
 		// step 0: prepare
 		St = clock();
-		GenRan.seed((unsigned)SeedVecVal.at(s));
+		GenRan.seed((unsigned)seedVecVal.at(s));
 		ConvergeMeasure.clear();
 		GlobalBest.Fitness = std::numeric_limits<double>::max();
 		IniOperatorProb();
@@ -64,7 +64,7 @@ void Algorithm::HHMain()
 	ofstream CpuTimeFile;
 	CpuTimeFile.open("..//OutPut//HHCpuTime.txt", ios::trunc);
 	CpuTimeFile << "Seed,Time" << endl;
-	for (int s = 0; s < SeedVecVal.size(); s++)
+	for (int s = 0; s < seedVecVal.size(); s++)
 	{
 		CpuTimeFile << s << "," << fixed << setprecision(2) << CpuTimes[s] << endl;
 	}

@@ -4,10 +4,9 @@
 #define RestoreClass
 #include <iostream>
 #include <vector>
-#include "Parameters.h"
-#include "TempleteFunc.h"
 #include "GlobalVar.h"
 #include "Debug.h"
+#include "GraphElements.h"
 using namespace std;
 
 //map the relationship between two nodes
@@ -59,7 +58,7 @@ public:
 				return t;
 			}
 		}
-		cerr << "can not find relation compared linked id";
+		cerr << "can not find relation compared linked Id";
 		TRACE("Debug find relationid fun");
 		return -1;
 	};
@@ -125,8 +124,8 @@ public:
 	~SCHCLASS()
 	{
 		//if (Links.size() > 0) Links.clear();
-		//for (vector<LINK*>::iterator itr = Links.begin(); itr != Links.end(); ++itr) {
-		//	LINK* l = *itr;
+		//for (vector<LinkClass*>::iterator itr = Links.begin(); itr != Links.end(); ++itr) {
+		//	LinkClass* l = *itr;
 		//	delete &l;
 		//	l = NULL;
 		//	//delete* itr;
@@ -135,20 +134,20 @@ public:
 		StartTime.clear(); EndTime.clear(); UsedRes.clear(); TravelTime.clear(); UNPM.clear(); key.clear();
 	}
 	// functions
-	Scenario ConvertToScenario(); // convert sch class to scenario and return 
-	void AlignStartTime(const vector<double> &ResCap, GRAPH &g); // improve the solution itself
+	ScenarioClass ConvertToScenario(); // convert sch class to scenario and return 
+	void AlignStartTime(const vector<double> &ResCap, GraphClass &g); // improve the solution itself
 	bool isFeasible(const vector<double> &res);  // check the solution is feasible or not
-	void GenerateIniSch(GRAPH& g, const vector<int>& FailureLinkSet);
-	void GenerateIniBasedOnPattern(GRAPH& g, const vector<int>& FailureLinkSet,
+	void GenerateIniSch(GraphClass& g, const vector<int>& FailureLinkSet);
+	void GenerateIniBasedOnPattern(GraphClass& g, const vector<int>& FailureLinkSet,
 		const vector<PatternClass> &pat);
 	void print() const;
-	void getRes(GRAPH &g);
-	void updatePrecedingRes(size_t st,size_t et,GRAPH &g);
-	void updateResFor(size_t Pos,GRAPH &g);
-	int findEarliestFeasibleSt(size_t l, const vector<double>& ResCap,GRAPH &g);
+	void getRes(GraphClass &g);
+	void updatePrecedingRes(size_t st,size_t et,GraphClass &g);
+	void updateResFor(size_t Pos,GraphClass &g);
+	int findEarliestFeasibleSt(size_t l, const vector<double>& ResCap,GraphClass &g);
 	int findEarliestInFeasibleSt(const vector<double>& ResCap);
-	void updateEndTime(GRAPH &g);
-	void Evaluate(GRAPH& g);
+	void updateEndTime(GraphClass &g);
+	void Evaluate(GraphClass& g);
 	void computeKey();
 	LinkSchRelations findDominantRelation(int Alink, int Blink, const vector<PatternClass> &Pattern,
 		enum_CompareScoreMethod &CompareMethod);
@@ -158,25 +157,25 @@ public:
 	}
 	vector<size_t> getNewReadyLinks(int tau);
 	// write a few neighbor operators
-	void GenNei(SCHCLASS& Nei, GRAPH& g, int& OpId,
+	void GenNei(SCHCLASS& Nei, GraphClass& g, int& OpId,
 		const vector<int>& FailureLinkSet, const vector<double>& ResCap, const vector<PatternClass>& Pat,
 		enum_CompareScoreMethod &CompareMethod);
 	void Nei_Swap(SCHCLASS &NewSol);
-	void Nei_New(SCHCLASS& NewSol, GRAPH& g, const vector<int>& FailureLinkSet, const vector<double>& ResCap);
+	void Nei_New(SCHCLASS& NewSol, GraphClass& g, const vector<int>& FailureLinkSet, const vector<double>& ResCap);
 	void Nei_Move_One_To_Right(SCHCLASS& NewSol);
 	void Nei_Move_One_To_Left(SCHCLASS& NewSol);
 	void Nei_Insert_One_Random_To_Right(SCHCLASS& NewSol);
 	void Nei_Insert_One_Random_To_Left(SCHCLASS& NewSol);
 	void Nei_FlipOver_OnePoint(SCHCLASS& NewSol);
-	void Nei_Greedy_EI_Based(SCHCLASS& NewSol, GRAPH& g, string sType);
-	void Nei_New_BasedOn_Pattern(SCHCLASS& NewSol, GRAPH& g, const vector<int>& FailureLinkSet,
+	void Nei_Greedy_EI_Based(SCHCLASS& NewSol, GraphClass& g, string sType);
+	void Nei_New_BasedOn_Pattern(SCHCLASS& NewSol, GraphClass& g, const vector<int>& FailureLinkSet,
 		const vector<double>& ResCap, const vector<PatternClass> &pat);
-	void Nei_Swap_BasedOn_Pattern(SCHCLASS& NewSol, GRAPH& g, const vector<int>& FailureLinkSet,
+	void Nei_Swap_BasedOn_Pattern(SCHCLASS& NewSol, GraphClass& g, const vector<int>& FailureLinkSet,
 		const vector<double>& ResCap, const vector<PatternClass> &pat);
-	void Nei_Swap_BasedOn_PatternRelation(SCHCLASS& NewSol, GRAPH& g, const vector<int>& FailureLinkSet,
+	void Nei_Swap_BasedOn_PatternRelation(SCHCLASS& NewSol, GraphClass& g, const vector<int>& FailureLinkSet,
 		const vector<double>& ResCap, const vector<PatternClass>& pat,
 		enum_CompareScoreMethod &CompareMethod);
-	void GenerateTimeFromOrder(const vector<double>& ResCap,GRAPH &g);
+	void GenerateTimeFromOrder(const vector<double>& ResCap,GraphClass &g);
 	void Repair_Delay();
 
 	SCHCLASS& operator=(const SCHCLASS& rhs) {

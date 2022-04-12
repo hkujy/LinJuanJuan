@@ -64,11 +64,11 @@ LinkSchRelations SCHCLASS::findDominantRelation(int Alink, int Blink, const vect
 
 }
 // compare the score of the different relationship
-LinkSchRelations Algorithm::findDominantRelation(int Alink, int Blink)
+LinkSchRelations Algorithm::findDominantRelation(int ALink, int BLink)
 {
 	// step 1 : find the patten index
-	size_t Aid = findPatternIndex(Alink);
-	size_t Bid = Pattern[Aid].findRelationId(Blink);
+	size_t Aid = findPatternIndex(ALink);
+	size_t Bid = Pattern[Aid].findRelationId(BLink);
 	int flag = -1;
 	switch (CompareScoreMethod)
 	{
@@ -126,28 +126,30 @@ LinkSchRelations getReversRelation(LinkSchRelations& r)
 
 // update the score based on the input solution 
 // only call this when it is improved
-void Algorithm::LearnPattern_Score(const SCHCLASS& sol, bool isGloablImprove)
+void Algorithm::LearnPattern_Score(const SCHCLASS& sol, bool isGlobalImprove)
 {
 	//TOOD: update the pattern of the improve solution
 	for (int i = 0; i < sol.LinkID.size() - 1; i++)
 	{
-		//int first = (*sol.LinkID.at(i)).ID;
+		//int first = (*sol.LinkID.at(i)).Id;
 		int first = sol.LinkID.at(i);
 		int next = sol.LinkID.at(i + 1);
 
 		size_t PtLoc = findPatternIndex(first);
-		size_t VecLoc = static_cast<size_t> (FindValIndex(setOfFailureLinks, next));
-		if (isGloablImprove)
+		size_t VecLoc = static_cast<size_t>(FindValIndex(SetOfFailureLinks, next));
+		if (isGlobalImprove)
 		{
 			Pattern.at(PtLoc).AbsScore.at(VecLoc) += RewardImproveGlobal;
 			Pattern.at(PtLoc).Count.at(VecLoc)++;
-			Pattern.at(PtLoc).AveScore.at(VecLoc) += Pattern.at(PtLoc).AbsScore.at(VecLoc) / Pattern.at(PtLoc).Count.at(VecLoc);
+			Pattern.at(PtLoc).AveScore.at(VecLoc) += Pattern.at(PtLoc).AbsScore.at(VecLoc) / Pattern.at(PtLoc).Count.
+				at(VecLoc);
 		}
 		else
 		{
 			Pattern.at(PtLoc).AbsScore.at(VecLoc) += RewardImproveLocal;
 			Pattern.at(PtLoc).Count.at(VecLoc)++;
-			Pattern.at(PtLoc).AveScore.at(VecLoc) = Pattern.at(PtLoc).AbsScore.at(VecLoc) / Pattern.at(PtLoc).Count.at(VecLoc);
+			Pattern.at(PtLoc).AveScore.at(VecLoc) = Pattern.at(PtLoc).AbsScore.at(VecLoc) / Pattern.at(PtLoc).Count.
+				at(VecLoc);
 		}
 	}
 	//todo : need to check whether this score is improved
@@ -156,8 +158,9 @@ void Algorithm::LearnPattern_Score(const SCHCLASS& sol, bool isGloablImprove)
 		p.updateProb();
 	}
 }
+
 //Update the relation score
-void Algorithm::LearnPatternRelation_Score(const SCHCLASS& sol, bool isGloablImprove)
+void Algorithm::LearnPatternRelation_Score(const SCHCLASS& sol, bool isGlobalImprove)
 {
 	for (int i = 0; i < sol.LinkID.size(); i++)
 	{
@@ -170,24 +173,24 @@ void Algorithm::LearnPatternRelation_Score(const SCHCLASS& sol, bool isGloablImp
 			LinkSchRelations r = sol.getRelation(ALink, ComparedLink);
 			size_t AlinkId = findPatternIndex(ALink);
 			size_t ComRelationLinkId = Pattern[AlinkId].findRelationId(ComparedLink);
-			if (isGloablImprove) Pattern[AlinkId].Relation[ComRelationLinkId].UpdateScore(r, RewardImproveGlobal);
+			if (isGlobalImprove) Pattern[AlinkId].Relation[ComRelationLinkId].UpdateScore(r, RewardImproveGlobal);
 			else Pattern[AlinkId].Relation[ComRelationLinkId].UpdateScore(r, RewardImproveLocal);
 		}
 	}
 }
 
-// print the relationship into files
+// Print the relationship into files
 void Algorithm::printDomRelation(int seed) const
 {
 	ofstream OutFile;
 	//OutFile << "Seed,First,Second,AferScore,BeforeScore,SameScore,Dom" << endl;
 	OutFile.open("..//OutPut//DomRelation.txt", ios::app);
-	for (size_t i = 0; i < setOfFailureLinks.size(); i++)
+	for (size_t i = 0; i < SetOfFailureLinks.size(); i++)
 	{
-		for (size_t j = 0; j < setOfFailureLinks.size(); j++)
+		for (size_t j = 0; j < SetOfFailureLinks.size(); j++)
 		{
-			int Alink = setOfFailureLinks.at(i);
-			int Blink = setOfFailureLinks.at(j);
+			int Alink = SetOfFailureLinks.at(i);
+			int Blink = SetOfFailureLinks.at(j);
 			double AfterScore, BeforeScore, SameScore;
 			if (CompareScoreMethod == enum_CompareScoreMethod::Ave)
 			{

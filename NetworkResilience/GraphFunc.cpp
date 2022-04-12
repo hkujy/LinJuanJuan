@@ -1,11 +1,10 @@
 #include "CommonHeaders.h"
 #include <assert.h>
-#include <math.h>       /* pow */
 using namespace std;
 
-bool ReadLinkData(std::vector<LINK>& Links,
+bool ReadLinkData(std::vector<LinkClass>& Links,
 	ifstream& fin) {
-	LINK tl;
+	LinkClass tl;
 	int IDcount = 0;
 	//int tail, head;
 	//float t0, ca0;
@@ -21,7 +20,7 @@ bool ReadLinkData(std::vector<LINK>& Links,
 		/*	fscanf_s(fin, "%i %i %f %f %f %f",
 				&tail, &head, &t0, &ca0, &BprAlph, &BprBeta);*/
 		Links.push_back(tl);
-		Links.back().ID = IDcount;
+		Links.back().Id = IDcount;
 		Links.back().Tail = std::stoi(fields[0]);
 		Links.back().Head = std::stoi(fields[1]);
 		Links.back().T0 = std::stof(fields[2]);
@@ -34,33 +33,34 @@ bool ReadLinkData(std::vector<LINK>& Links,
 	return true;
 }
 
-GRAPH::GRAPH(){
-	this->OdPairs.reserve(NumOD + 1);
-	this->OriginSet.reserve(NumNodes);
-	this->Nodes.reserve(NumNodes + 1);
-	this->Links.reserve(NumLinks + 1);
-	TotalSystemCost = 0.0;
+GraphClass::GraphClass():UNPM(0.0), TotalSystemCost(0.0)
+{
+	this->OdPairs.reserve(numOD + 1);
+	this->OriginSet.reserve(numNodes);
+	this->Nodes.reserve(numNodes + 1);
+	this->Links.reserve(numLinks + 1);
 	//int** MinPathPredLink;
-	if (NumNodes==0)
+	if (numNodes==0)
 	{
 		cerr << "Input node should be known before construct graph" << endl;
 	}
 	this->MinPathPredLink
-		= Create2DAarray<int>(NumNodes + 1, NumNodes + 1);
-	for (int i = 0; i < NumNodes + 1; i++)
+		= Create2DArray<int>(numNodes + 1, numNodes + 1);
+	for (int i = 0; i < numNodes + 1; i++)
 	{
-		for (int j = 0; j < NumNodes + 1; j++)
+		for (int j = 0; j < numNodes + 1; j++)
 		{
 			this->MinPathPredLink[i][j] = InvaildInt;
 		}
 	}
 
 };
-GRAPH::~GRAPH(){
-	Free2DArrey<int>(this->MinPathPredLink, NumNodes + 1);
+GraphClass::~GraphClass(){
+	Free2DArray<int>(this->MinPathPredLink, numNodes + 1);
+	OdPairs.clear(); Links.clear(); Nodes.clear(); OriginSet.clear();
 };
 
-int GRAPH::FindMinCostRoutes(){
+int GraphClass::FindMinCostRoutes(){
 
 	try{
 		int StatusMsg;
@@ -79,12 +79,12 @@ int GRAPH::FindMinCostRoutes(){
 #ifdef __DEBUG__ 
 				if (isnan(Lable[Dest])) DEBUG("Od Pair %d,mincost is NaN", *d);
 #endif	
-				this->OdPairs.at((*d)->ID).MinCost = Lable[Dest];
+				this->OdPairs.at((*d)->Id).MinCost = Lable[Dest];
 
 				//ODPairs.at(*d).MinCost.at(ModeType) = Lable[Dest];
-				if (this->OdPairs.at((*d)->ID).MinCost < InvalidMinCost)
+				if (this->OdPairs.at((*d)->Id).MinCost < InvalidMinCost)
 				{
-					this->OdPairs.at((*d)->ID).isConnected = true;
+					this->OdPairs.at((*d)->Id).isConnected = true;
 				}
 				/*if (ODPairs.at(*d).MinCost.at(ModeType) < InvalidMinCost)
 					ODPairs.at(*d).isConnected = true;*/
@@ -100,17 +100,17 @@ int GRAPH::FindMinCostRoutes(){
 	}
 }
 
-void GRAPH::CreateOriginSet()
+void GraphClass::CreateOriginSet()
 
 {
 	OriginBasedOD Oset;
-	vector<bool> isOrign(NumNodes, false);
+	vector<bool> isOrign(numNodes, false);
 	for (auto od = this->OdPairs.begin(); od != this->OdPairs.end(); od++)
 	{
-		//cout << od->Orign << endl;
-		isOrign.at(od->Orign) = true;
+		//cout << od->Origin << endl;
+		isOrign.at(od->Origin) = true;
 	}
-	for (int n = 0; n < NumNodes; n++) {
+	for (int n = 0; n < numNodes; n++) {
 
 		this->OriginSet.push_back(Oset);
 		if (isOrign.at(n))	this->OriginSet.back().Onode = n;
@@ -123,20 +123,20 @@ void GRAPH::CreateOriginSet()
 
 	for (auto od = this->OdPairs.begin(); od != this->OdPairs.end(); od++)
 	{
-		this->OriginSet.at(od->Orign).ODset.push_back(&*od);
+		this->OriginSet.at(od->Origin).ODset.push_back(&*od);
 	}
 
 	cout << "finish create origin set" << endl;
 }
 
-void GRAPH::CreateNodes(){
+void GraphClass::CreateNodes(){
 	cout <<"Read Number of Nodes in the network is"<<this->Links.size() << endl;
 	assert(this->Links.size() > 0);
-	NODE tnode;
-	for (int i = 0; i < NumNodes; i++)
+	NodeClass tnode;
+	for (int i = 0; i < numNodes; i++)
 	{
 		this->Nodes.push_back(tnode);
-		this->Nodes.back().ID = i;
+		this->Nodes.back().Id = i;
 	}
 	for (auto l = this->Links.begin(); l != this->Links.end(); l++)
 	{
@@ -145,7 +145,7 @@ void GRAPH::CreateNodes(){
 	}
 }
 
-bool ReadDemandData(vector<OD>& ODPairs,
+bool ReadDemandData(vector<ODClass>& ODPairs,
 	ifstream& fin) {
 
 	int IDcount = 0;
@@ -153,7 +153,7 @@ bool ReadDemandData(vector<OD>& ODPairs,
 	//float dd;
 	vector<string> fields;
 	string line;
-	OD tod;
+	ODClass tod;
 
 	while (getline(fin, line))
 	{
@@ -162,8 +162,8 @@ bool ReadDemandData(vector<OD>& ODPairs,
 			continue;
 
 		ODPairs.push_back(tod);
-		ODPairs.back().ID = IDcount;
-		ODPairs.back().Orign = std::stoi(fields[0]);
+		ODPairs.back().Id = IDcount;
+		ODPairs.back().Origin = std::stoi(fields[0]);
 		ODPairs.back().Dest = std::stoi(fields[1]);
 		ODPairs.back().Demand = std::stof(fields[2]);
 		IDcount++;
@@ -173,33 +173,33 @@ bool ReadDemandData(vector<OD>& ODPairs,
 }
 
 
-void GRAPH::ReadGraphData()
+void GraphClass::ReadGraphData()
 {
 
 	//FILE * fin;
 	std::ifstream fin;
 	// Read Demand data
-	if (NetworkIndex == 1) // Scan
+	if (networkIndex == 1) // Scan
 	{
 		//fopen_s(&fin, "..//Input//MediumNetwork//DeamdData.txt", "r");
 		fin.open("..//Input//MediumNetwork//DeamdData.txt");
 		//fopen_s(&fin, "..//Input//MediumNetwork//DeamdData.txt", "r");
 	}
-	else if (NetworkIndex == 2)
+	else if (networkIndex == 2)
 	{
 		fin.open("..//Input//Nagureny2009Network//DeamdData.txt");
 		//fopen_s(&fin, "..//Input//Nagureny2009Network//DeamdData.txt", "r");
 	}
-	else if (NetworkIndex == 3)
+	else if (networkIndex == 3)
 	{
 		fin.open("..//Input//SiouxFallsNetwork//DeamdData.txt");
 	}
-	else if (NetworkIndex == 4)
+	else if (networkIndex == 4)
 	{
 		fin.open("..//Input//ParadoxNet//DeamdData.txt");
 		//fopen_s(&fin, "..//Input//Nagureny2009Network//DeamdData.txt", "r");
 	}
-	else if (NetworkIndex ==5)
+	else if (networkIndex ==5)
 	{
 		fin.open("..//Input//WangNetwork//DeamdData.txt");
 		//fopen_s(&fin, "..//Input//Nagureny2009Network//DeamdData.txt", "r");
@@ -221,29 +221,29 @@ void GRAPH::ReadGraphData()
 	fin.close();
 
 	// Read link data
-	if (NetworkIndex == 1) // Scan
+	if (networkIndex == 1) // Scan
 	{
 		fin.open("..//Input//MediumNetwork//LinkData.txt");
 		//fopen_s(&fin, "..//Input//MediumNetwork//LinkData.txt", "r");
 	}
-	else if (NetworkIndex == 2)
+	else if (networkIndex == 2)
 	{
 		fin.open("..//Input//Nagureny2009Network//LinkData.txt");
 		//fin.open("C://GitCodes//NRI//InPut//Nagureny2009Network//LinkData.txt");
 			//LinkData.txt");
 		//fopen_s(&fin, "..//Input//Nagureny2009Network//LinkData.txt", "r");
 	}
-	else if (NetworkIndex == 3)
+	else if (networkIndex == 3)
 	{
 		fin.open("..//Input//SiouxFallsNetwork//LinkData.txt");
 		//fopen_s(&fin, "..//Input//SiouxFallsNetwork//LinkData.txt", "r");
 	}
-	else if (NetworkIndex == 4)
+	else if (networkIndex == 4)
 	{
 		fin.open("..//Input//ParadoxNet//LinkData.txt");
 		//fopen_s(&fin, "..//Input//SiouxFallsNetwork//LinkData.txt", "r");
 	}
-	else if (NetworkIndex == 5)
+	else if (networkIndex == 5)
 	{
 		fin.open("..//Input//WangNetwork//LinkData.txt");
 		//fopen_s(&fin, "..//Input//SiouxFallsNetwork//LinkData.txt", "r");
@@ -268,12 +268,12 @@ void GRAPH::ReadGraphData()
 }
 
 
-int GRAPH::PrintLinks(std::ofstream &fout){
+int GraphClass::PrintLinks(std::ofstream &fout){
 
 	try{
 		assert(fout.good());
 		fout.setf(ios::fixed);
-		fout << left << setw(6) << "ID" << ",";
+		fout << left << setw(6) << "Id" << ",";
 		fout << left << setw(12) << "Tail" << ",";
 		fout << left << setw(12) << "Head" << ",";
 		fout << left << setw(12) << "T0" << ",";
@@ -284,7 +284,7 @@ int GRAPH::PrintLinks(std::ofstream &fout){
 		//fout << endl;
 		for (auto l = this->Links.begin(); l != this->Links.end(); l++)
 		{
-			fout << l->ID << ",";
+			fout << l->Id << ",";
 			fout << l->Tail << ",";
 			fout << l->Head << ",";
 			fout << l->T0 << ",";
@@ -303,10 +303,10 @@ int GRAPH::PrintLinks(std::ofstream &fout){
 	}
 }
 
-int GRAPH::PrintLinks_onscreen() {
+int GraphClass::PrintLinks_onscreen() {
 	try {
 		cout.setf(ios::fixed);
-		cout << left << setw(6) << "ID" << ",";
+		cout << left << setw(6) << "Id" << ",";
 		cout << left << setw(12) << "Tail" << ",";
 		cout << left << setw(12) << "Head" << ",";
 		cout << left << setw(12) << "T0" << ",";
@@ -317,7 +317,7 @@ int GRAPH::PrintLinks_onscreen() {
 		//fout << endl;
 		for (auto l = this->Links.begin(); l != this->Links.end(); l++)
 		{
-			cout << l->ID << ",";
+			cout << l->Id << ",";
 			cout << l->Tail << ",";
 			cout << l->Head << ",";
 			cout << l->T0 << ",";
@@ -338,13 +338,13 @@ int GRAPH::PrintLinks_onscreen() {
 
 }
 
-int GRAPH::PrintOD(std::ofstream &fout)
+int GraphClass::PrintOD(std::ofstream &fout)
 {
 	try
 	{
 		assert(fout.good());
 		fout.setf(ios::fixed);
-		fout << left << setw(6) << "ID" << ",";
+		fout << left << setw(6) << "Id" << ",";
 		fout << left << setw(12) << "Origin" << ",";
 		fout << left << setw(12) << "Dest" << ",";
 		fout << left << setw(12) << "Demand" << ",";
@@ -353,8 +353,8 @@ int GRAPH::PrintOD(std::ofstream &fout)
 
 		for (auto od = this->OdPairs.begin(); od != this->OdPairs.end(); od++)
 		{
-			fout << od->ID << ",";
-			fout << od->Orign << ",";
+			fout << od->Id << ",";
+			fout << od->Origin << ",";
 			fout << od->Dest << ",";
 			fout << od->Demand << ",";
 			fout << od->MinCost << endl;
@@ -371,7 +371,7 @@ int GRAPH::PrintOD(std::ofstream &fout)
 
 }
 
-int GRAPH::PrintSp(int Orign, int Dest, std::ofstream &fout)
+int GraphClass::PrintSp(int Orign, int Dest, std::ofstream &fout)
 {
 	try{
 
@@ -380,13 +380,13 @@ int GRAPH::PrintSp(int Orign, int Dest, std::ofstream &fout)
 		{
 			for (auto od = o->ODset.begin(); od != o->ODset.end(); od++)
 			{
-				if ((*od)->Orign == Orign && Dest == (*od)->Dest)
+				if ((*od)->Origin == Orign && Dest == (*od)->Dest)
 				{
 					Path.clear();
 					int CurrentNode = (*od)->Dest;
-					while (CurrentNode != (*od)->Orign)
+					while (CurrentNode != (*od)->Origin)
 					{
-						int k = this->MinPathPredLink[(*od)->Orign][CurrentNode];
+						int k = this->MinPathPredLink[(*od)->Origin][CurrentNode];
 						Path.push_back(k);
 						CurrentNode = this->Links.at(k).Tail;
 					}
@@ -407,7 +407,7 @@ int GRAPH::PrintSp(int Orign, int Dest, std::ofstream &fout)
 	}
 }
 
-void GRAPH::EvalutateFailureScenarios(const Scenario &s)
+void GraphClass::EvalutateFailureScenarios(const ScenarioClass &s)
 {
 	if (s.tau.size() != s.LinkIds.size())
 	{
@@ -423,7 +423,7 @@ void GRAPH::EvalutateFailureScenarios(const Scenario &s)
 		{
 			if (i == s.tau.at(j))
 			{
-				this->Links.at(s.LinkIds.at(j)).CaRevise = Zero;
+				this->Links.at(s.LinkIds.at(j)).CaRevise = zero;
 			}
 		}
 		this->EvaluteGraph();
@@ -434,7 +434,7 @@ void GRAPH::EvalutateFailureScenarios(const Scenario &s)
 	cout << "------End of Eva Link Cap Fail-----------------------" << endl;
 }
 
-void GRAPH::RevertFailureScenarios(const Scenario& s)
+void GraphClass::RevertFailureScenarios(const ScenarioClass& s)
 {
 	if (s.tau.size() != s.LinkIds.size())
 	{
@@ -464,7 +464,7 @@ void GRAPH::RevertFailureScenarios(const Scenario& s)
 /// compute the relative changes for the graph with and without the link
 /// </summary>
 /// <param name="link"></param>
-double GRAPH::CalRelSpChange(int LinkID)
+double GraphClass::CalRelSpChange(int LinkID)
 {
 	// Step 0: Compute the Sp labels before remove the links
 	int StatusMsg;
@@ -487,11 +487,11 @@ double GRAPH::CalRelSpChange(int LinkID)
 #ifdef __DEBUG__ 
 			if (isnan(Lable[Dest])) DEBUG("Od Pair %d,min cost is NaN", *d);
 #endif	
-			this->OdPairs.at((*d)->ID).BeforeRemoveSpDist = Lable[Dest];
+			this->OdPairs.at((*d)->Id).BeforeRemoveSpDist = Lable[Dest];
 			//ODPairs.at(*d).MinCost.at(ModeType) = Lable[Dest];
-			if (this->OdPairs.at((*d)->ID).BeforeRemoveSpDist < InvalidMinCost)
+			if (this->OdPairs.at((*d)->Id).BeforeRemoveSpDist < InvalidMinCost)
 			{
-				this->OdPairs.at((*d)->ID).BeforeRemoveSpDist = true;
+				this->OdPairs.at((*d)->Id).BeforeRemoveSpDist = true;
 			}
 			/*if (ODPairs.at(*d).MinCost.at(ModeType) < InvalidMinCost)
 				ODPairs.at(*d).isConnected = true;*/
@@ -516,11 +516,11 @@ double GRAPH::CalRelSpChange(int LinkID)
 #ifdef __DEBUG__ 
 			if (isnan(Lable[Dest])) DEBUG("Od Pair %d,min cost is NaN", *d);
 #endif	
-			this->OdPairs.at((*d)->ID).AfterRemoveSpDist = Lable[Dest];
+			this->OdPairs.at((*d)->Id).AfterRemoveSpDist = Lable[Dest];
 			//ODPairs.at(*d).MinCost.at(ModeType) = Lable[Dest];
-			if (this->OdPairs.at((*d)->ID).AfterRemoveSpDist < InvalidMinCost)
+			if (this->OdPairs.at((*d)->Id).AfterRemoveSpDist < InvalidMinCost)
 			{
-				this->OdPairs.at((*d)->ID).isConnected = true;
+				this->OdPairs.at((*d)->Id).isConnected = true;
 			}
 			/*if (ODPairs.at(*d).MinCost.at(ModeType) < InvalidMinCost)
 				ODPairs.at(*d).isConnected = true;*/

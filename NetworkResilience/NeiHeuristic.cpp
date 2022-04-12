@@ -6,12 +6,14 @@
 #include <numeric>
 #include <assert.h>
 #include <map>
+#include "GraphElements.h"
+#include "Parameters.h"
 
 using namespace std;
 
 int FindValIndex(const vector<int>& vec, int key);
 //main fun for generate a neighborhoods operator
-void SCHCLASS::GenNei(SCHCLASS& Nei, GRAPH& g, 
+void SCHCLASS::GenNei(SCHCLASS& Nei, GraphClass& g, 
 	int &OpId,const vector<int>& FailureLinkSet, const vector<double>& ResCap,
 	const vector<PatternClass> &Pat, enum_CompareScoreMethod &CompareMethod)
 {
@@ -70,18 +72,18 @@ void SCHCLASS::Nei_Swap(SCHCLASS& NewSol) {
 		}
 	}
 #ifdef _DEBUG
-	//cout << "Before Swap: LocA = " << NewSol.LinkID.at(locA)->ID;
+	//cout << "Before Swap: LocA = " << NewSol.LinkID.at(locA)->Id;
 	cout << "Before Swap: LocA = " << NewSol.LinkID.at(locA);
-	//cout << ",locB = " << NewSol.LinkID.at(locB)->ID << endl;
+	//cout << ",locB = " << NewSol.LinkID.at(locB)->Id << endl;
 	cout << ",locB = " << NewSol.LinkID.at(locB) << endl;
 #endif // _DEBUG
 	NewSol.LinkID.at(locA) = LinkID.at(locB);
 	NewSol.LinkID.at(locB) = LinkID.at(locA);
 
 #ifdef _DEBUG
-	//cout << "After Swap: LocA = " << NewSol.LinkID.at(locA)->ID;
+	//cout << "After Swap: LocA = " << NewSol.LinkID.at(locA)->Id;
 	cout << "After Swap: LocA = " << NewSol.LinkID.at(locA);
-	//cout << ", LocB = " << NewSol.LinkID.at(locB)->ID << endl;
+	//cout << ", LocB = " << NewSol.LinkID.at(locB)->Id << endl;
 	cout << ", LocB = " << NewSol.LinkID.at(locB) << endl;
 	cout << "-----------End Swap-----------" << endl;
 #endif
@@ -97,17 +99,17 @@ void SCHCLASS::Nei_Move_One_To_Left(SCHCLASS& NewSol)
 	int locB = locA - 1;
 #ifdef _DEBUG
 	cout << "------------Start Move One To Left-----------" << endl;
-	//cout << "Before Nei_Order_to_left: LocA = " << NewSol.LinkID.at(locA)->ID;
+	//cout << "Before Nei_Order_to_left: LocA = " << NewSol.LinkID.at(locA)->Id;
 	cout << "Before Nei_Order_to_left: LocA = " << NewSol.LinkID.at(locA);
-	//cout << ",locB = " << NewSol.LinkID.at(locB)->ID << endl;
+	//cout << ",locB = " << NewSol.LinkID.at(locB)->Id << endl;
 	cout << ",locB = " << NewSol.LinkID.at(locB) << endl;
 #endif // _DEBUG
 	NewSol.LinkID.at(locA) = LinkID.at(locB);
 	NewSol.LinkID.at(locB) = LinkID.at(locA);
 #ifdef _DEBUG
-	//cout << "After Swap: LocA = " << NewSol.LinkID.at(locA)->ID;
+	//cout << "After Swap: LocA = " << NewSol.LinkID.at(locA)->Id;
 	cout << "After Swap: LocA = " << NewSol.LinkID.at(locA);
-	//cout << ", LocB = " << NewSol.LinkID.at(locB)->ID << endl;
+	//cout << ", LocB = " << NewSol.LinkID.at(locB)->Id << endl;
 	cout << ", LocB = " << NewSol.LinkID.at(locB) << endl;
 	cout << "-----------End Move One To Left-----------" << endl;
 #endif // _DEBUG
@@ -122,17 +124,17 @@ void SCHCLASS::Nei_Move_One_To_Right(SCHCLASS& NewSol)
 	int locB = locA + 1;
 #ifdef _DEBUG
 	cout << "------------Start Move One To Right-----------" << endl;
-	//cout << "Before Nei_Order_to_right: LocA = " << NewSol.LinkID.at(locA)->ID;
+	//cout << "Before Nei_Order_to_right: LocA = " << NewSol.LinkID.at(locA)->Id;
 	cout << "Before Nei_Order_to_right: LocA = " << NewSol.LinkID.at(locA);
-	//cout << ",locB = " << NewSol.LinkID.at(locB)->ID << endl;
+	//cout << ",locB = " << NewSol.LinkID.at(locB)->Id << endl;
 	cout << ",locB = " << NewSol.LinkID.at(locB) << endl;
 #endif // _DEBUG
 	NewSol.LinkID.at(locA) = LinkID.at(locB);
 	NewSol.LinkID.at(locB) = LinkID.at(locA);
 #ifdef _DEBUG
-	//cout << "After Swap: LocA = " << NewSol.LinkID.at(locA)->ID;
+	//cout << "After Swap: LocA = " << NewSol.LinkID.at(locA)->Id;
 	cout << "After Swap: LocA = " << NewSol.LinkID.at(locA);
-	//cout << ", LocB = " << NewSol.LinkID.at(locB)->ID << endl;
+	//cout << ", LocB = " << NewSol.LinkID.at(locB)->Id << endl;
 	cout << ", LocB = " << NewSol.LinkID.at(locB) << endl;
 	cout << "-----------End Move One To Right-----------" << endl;
 #endif // _DEBUG
@@ -164,19 +166,19 @@ void SCHCLASS::Nei_FlipOver_OnePoint(SCHCLASS& NewSol)
 	cout << "-----before one point cross over" << endl;
 	for (size_t i = 0; i < LinkID.size() - 1; i++)
 	{
-		//cout << this->LinkID.at(i)->ID << ",";
+		//cout << this->LinkID.at(i)->Id << ",";
 		cout << this->LinkID.at(i) << ",";
 	}
-	//cout << this->LinkID.back()->ID << endl;
+	//cout << this->LinkID.back()->Id << endl;
 	cout << this->LinkID.back() << endl;
 
 	cout << "-----after one point cross over" << endl;
 	for (size_t i = 0; i < LinkID.size() - 1; i++)
 	{
-		//cout << NewSol.LinkID.at(i)->ID << ",";
+		//cout << NewSol.LinkID.at(i)->Id << ",";
 		cout << NewSol.LinkID.at(i) << ",";
 	}
-	//cout << NewSol.LinkID.back()->ID << endl;
+	//cout << NewSol.LinkID.back()->Id << endl;
 	cout << NewSol.LinkID.back() << endl;
 	cout << "------------End One Point Cross Over---------------------------" << endl;
 #endif // _DEBUG
@@ -189,7 +191,7 @@ void SCHCLASS::Repair_Delay() // repair the solution by postpone the repair
 	cout << "repair_delay operator is called" << endl;
 }
 
-void SCHCLASS::Nei_New(SCHCLASS& NewSol, GRAPH& g,
+void SCHCLASS::Nei_New(SCHCLASS& NewSol, GraphClass& g,
 	const vector<int>& FailureLinkSet, const vector<double>& ResCap)
 {
 	NewSol.GenerateIniSch(g, FailureLinkSet);
@@ -235,11 +237,11 @@ void SCHCLASS::Nei_Insert_One_Random_To_Right(SCHCLASS& NewSol) // randomly inse
 
 #ifdef _DEBUG
 	cout << "***before***" << endl;
-	//for (auto l : LinkID) cout << l->ID << endl;
+	//for (auto l : LinkID) cout << l->Id << endl;
 	for (auto l : LinkID) cout << l << endl;
 	cout << "Selected CP = " << cp << ", Dest = " << dest << endl;
 	cout << "***after***" << endl;
-	//for (auto l : NewSol.LinkID) cout << l->ID << endl;
+	//for (auto l : NewSol.LinkID) cout << l->Id << endl;
 	for (auto l : NewSol.LinkID) cout << l << endl;
 	cout << "-----------------Complete random To Right------------" << endl;
 #endif // _DEBUG
@@ -280,11 +282,11 @@ void SCHCLASS::Nei_Insert_One_Random_To_Left(SCHCLASS& NewSol)
 	}
 #ifdef _DEBUG
 	cout << "***before***" << endl;
-	//for (auto l : LinkID) cout << l->ID << endl;
+	//for (auto l : LinkID) cout << l->Id << endl;
 	for (auto l : LinkID) cout << l << endl;
 	cout << "Selected CP = " << cp << ", Dest = " << dest << endl;
 	cout << "***after***" << endl;
-	//for (auto l : NewSol.LinkID) cout << l->ID << endl;
+	//for (auto l : NewSol.LinkID) cout << l->Id << endl;
 	for (auto l : NewSol.LinkID) cout << l << endl;
 	cout << "-----------------Complete Random To Left------------" << endl;
 #endif // _DEBUG
@@ -354,7 +356,7 @@ int SectOneFromMap(const std::map<int, double> &m_Lid2EI)
 /// <param name="sType">
 /// stype is "max" or "prob", where max is based on the maximu prob and prob is rooleet method 
 /// </param>
-void SCHCLASS::Nei_Greedy_EI_Based(SCHCLASS& NewSol, GRAPH& g, string sType)
+void SCHCLASS::Nei_Greedy_EI_Based(SCHCLASS& NewSol, GraphClass& g, string sType)
 {
 	// step: random select a location
 	int stp= GenRandomInt(0, int(LinkID.size() - 1));
@@ -385,9 +387,9 @@ void SCHCLASS::Nei_Greedy_EI_Based(SCHCLASS& NewSol, GRAPH& g, string sType)
 			{
 				g.Links.at(LinkID[j]).Cost = g.Links.at(LinkID[j]).IniCost();
 				//(*LinkID.at(j)).Cost = (*LinkID.at(j)).IniCost();
-				//double ev = g.CalRelSpChange((*LinkID[j]).ID);
+				//double ev = g.CalRelSpChange((*LinkID[j]).Id);
 				double ev = g.CalRelSpChange(LinkID[j]);
-				//LinkEIs.insert(make_pair((*LinkID[j]).ID, ev));
+				//LinkEIs.insert(make_pair((*LinkID[j]).Id, ev));
 				LinkEIs.insert(make_pair(LinkID[j], ev));
 				//(*LinkID.at(j)).Cost = RemoveLinkCost;
 				g.Links.at(LinkID[j]).Cost = RemoveLinkCost;
@@ -416,7 +418,7 @@ void SCHCLASS::Nei_Greedy_EI_Based(SCHCLASS& NewSol, GRAPH& g, string sType)
 		//NewSol.LinkID.at(i) = &g.Links.at(lid);
 		for (int j = stp; j < LinkID.size(); j++)
 		{
-			//if (LinkID.at(j)->ID == lid) 
+			//if (LinkID.at(j)->Id == lid) 
 			if (LinkID.at(j) == lid) 
 			{
 				InsertedFlag.at(j) = true;
@@ -429,10 +431,10 @@ void SCHCLASS::Nei_Greedy_EI_Based(SCHCLASS& NewSol, GRAPH& g, string sType)
 
 #ifdef _DEBUG
 	cout << "***before***" << endl;
-	//for (auto l : LinkID) cout << l->ID << endl;
+	//for (auto l : LinkID) cout << l->Id << endl;
 	for (auto l : LinkID) cout << l << endl;
 	cout << "***after***" << endl;
-	//for (auto l : NewSol.LinkID) cout << l->ID << endl;
+	//for (auto l : NewSol.LinkID) cout << l->Id << endl;
 	for (auto l : NewSol.LinkID) cout << l << endl;
 	cout << "-----------------Complete Greedy MaxEI------------" << endl;
 #endif // _DEBUG
@@ -446,14 +448,14 @@ void SCHCLASS::Nei_Greedy_EI_Based(SCHCLASS& NewSol, GRAPH& g, string sType)
 /// <param name="FailureLinkSet"></param>
 /// <param name="ResCap"></param>
 /// <param name="pat"></param>
-void SCHCLASS::Nei_New_BasedOn_Pattern(SCHCLASS& NewSol, GRAPH& g,
+void SCHCLASS::Nei_New_BasedOn_Pattern(SCHCLASS& NewSol, GraphClass& g,
 	const vector<int>& FailureLinkSet, const vector<double>& ResCap,
 	const vector<PatternClass>& pat)
 {
 	NewSol.GenerateIniBasedOnPattern(g,FailureLinkSet,pat);
 	NewSol.AlignStartTime(ResCap,g);
 #ifdef _DEBUG
-	cout << "-------Generate new solution based on pattern finishes and print the sol" << endl;
+	cout << "-------Generate new solution based on pattern finishes and Print the sol" << endl;
 	NewSol.print();
 #endif // _DEBUG
 }
@@ -472,7 +474,7 @@ int getPatLoc(const vector<PatternClass> &pat, const int lid)
 //TODO
 //Nei:hybrid with swap and pattern
 //only swap the pattern with higher probability
-void SCHCLASS::Nei_Swap_BasedOn_Pattern(SCHCLASS& NewSol, GRAPH& g, const vector<int>& FailureLinkSet,
+void SCHCLASS::Nei_Swap_BasedOn_Pattern(SCHCLASS& NewSol, GraphClass& g, const vector<int>& FailureLinkSet,
 	const vector<double>& ResCap, const vector<PatternClass>& pat)
 {
 		//Step 1: randomly generate two locations
@@ -521,18 +523,18 @@ void SCHCLASS::Nei_Swap_BasedOn_Pattern(SCHCLASS& NewSol, GRAPH& g, const vector
 			}
 		}
 #ifdef _DEBUG
-		//cout << "Before Swap: LocA = " << NewSol.LinkID.at(locA)->ID;
+		//cout << "Before Swap: LocA = " << NewSol.LinkID.at(locA)->Id;
 		cout << "Before Swap: LocA = " << NewSol.LinkID.at(locA);
-		//cout << ",locB = " << NewSol.LinkID.at(locB)->ID << endl;
+		//cout << ",locB = " << NewSol.LinkID.at(locB)->Id << endl;
 		cout << ",locB = " << NewSol.LinkID.at(locB) << endl;
 #endif // _DEBUG
 		NewSol.LinkID.at(locA) = LinkID.at(locB);
 		NewSol.LinkID.at(locB) = LinkID.at(locA);
 
 #ifdef _DEBUG
-		//cout << "After Swap: LocA = " << NewSol.LinkID.at(locA)->ID;
+		//cout << "After Swap: LocA = " << NewSol.LinkID.at(locA)->Id;
 		cout << "After Swap: LocA = " << NewSol.LinkID.at(locA);
-		//cout << ", LocB = " << NewSol.LinkID.at(locB)->ID << endl;
+		//cout << ", LocB = " << NewSol.LinkID.at(locB)->Id << endl;
 		cout << ", LocB = " << NewSol.LinkID.at(locB) << endl;
 		cout << "-----------End Swap-----------" << endl;
 #endif
@@ -544,7 +546,7 @@ bool isEqual(LinkSchRelations& rhs, LinkSchRelations& lhs)
 	else return false;
 }
 // update the relationship based on the patten relationship 
-void SCHCLASS::Nei_Swap_BasedOn_PatternRelation(SCHCLASS& NewSol, GRAPH& g, const vector<int>& FailureLinkSet,
+void SCHCLASS::Nei_Swap_BasedOn_PatternRelation(SCHCLASS& NewSol, GraphClass& g, const vector<int>& FailureLinkSet,
 	const vector<double>& ResCap, const vector<PatternClass>& pat,enum_CompareScoreMethod &CompareMethod)
 {
 	//Step 1: randomly generate two locations

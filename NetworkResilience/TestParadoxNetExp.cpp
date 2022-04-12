@@ -8,25 +8,25 @@ using namespace std;
 void ComputeBaressNetUnpm(Algorithm alg)
 {
 	ofstream  OutFile;
-	UEeps = 1.0e-10f;
-	Zero = 1.0e-26f;
-	UEmaxIter = 5000;
+	epsUE = 1.0e-10f;
+	zero = 1.0e-26f;
+	maxIterUE = 5000;
 	OutFile.open("..//OutPut//BaressNetUnpm.txt", ios::trunc);
 	OutFile << "Link,Unpm,Impact,Cost,CostIncr,UEcost" << endl;
 	alg.Graph->EvaluteGraph();
 	double BaseCost = alg.Graph->TotalSystemCost;
 	double BaseUnpm = alg.Graph->UNPM;
-	Scenario s;
+	ScenarioClass s;
 
 
-	for (int l = 0; l < alg.setOfFailureLinks.size(); l++)
+	for (int l = 0; l < alg.SetOfFailureLinks.size(); l++)
 	{
-		int linkId = alg.setOfFailureLinks.at(l);
+		int linkId = alg.SetOfFailureLinks.at(l);
 		//if (linkId!=5)continue;
 		s.LinkIds.push_back(linkId); s.tau.push_back(0);
 		alg.Graph->EvalutateFailureScenarios(s);
 		alg.Graph->Links.at(linkId).IniCap();
-		OutFile << alg.setOfFailureLinks.at(l) << ",";
+		OutFile << alg.SetOfFailureLinks.at(l) << ",";
 		OutFile << alg.Graph->UNPM << ",";
 		OutFile << (BaseUnpm - alg.Graph->UNPM) / BaseUnpm << ",";
 		OutFile << alg.Graph->TotalSystemCost << ",";
@@ -42,9 +42,9 @@ void ComputeBaressNetUnpm(Algorithm alg)
 // check the combination of solution scenarios 
 void CheckReadSolScenario_2_period(Algorithm alg)
 {
-	UEeps = 1.0e-10f;
-	Zero = 1.0e-20f;
-	UEmaxIter = 1000;
+	epsUE = 1.0e-10f;
+	zero = 1.0e-20f;
+	maxIterUE = 1000;
 
 	alg.Graph->EvaluteGraph();
 	double BaseCost = alg.Graph->TotalSystemCost;
@@ -96,9 +96,9 @@ void CheckReadSolScenario_2_period(Algorithm alg)
 }
 void CheckReadSolScenario_1_period(Algorithm alg)
 {
-	UEeps = 1.0e-10f;
-	Zero = 1.0e-20f;
-	UEmaxIter = 1000;
+	epsUE = 1.0e-10f;
+	zero = 1.0e-20f;
+	maxIterUE = 1000;
 
 	alg.Graph->EvaluteGraph();
 	double BaseCost = alg.Graph->TotalSystemCost;
@@ -153,9 +153,9 @@ void CheckReadSolScenario_1_period(Algorithm alg)
 void CompareBaressNet(Algorithm alg)
 {
 	ofstream  OutFile;
-	UEeps = 1.0e-10f;
-	Zero = 1.0e-20f;
-	UEmaxIter = 1000;
+	epsUE = 1.0e-10f;
+	zero = 1.0e-20f;
+	maxIterUE = 1000;
 	OutFile.open("..//OutPut//CompareBaressNet.txt", ios::trunc);
 	OutFile << "Link,Unpm,Impact,Cost,CostIncr" << endl;
 	alg.Graph->EvaluteGraph();
@@ -199,9 +199,9 @@ void CompareBaressNet(Algorithm alg)
 void Check2PeriodSol(Algorithm alg)
 {
 	//ofstream  OutFile;
-	UEeps = 1.0e-10f;
-	Zero = 1.0e-20f;
-	UEmaxIter = 1000;
+	epsUE = 1.0e-10f;
+	zero = 1.0e-20f;
+	maxIterUE = 1000;
 	//OutFile.open("..//OutPut//CompareBaressNet.txt", ios::trunc);
 	//OutFile << "Link,Unpm,Impact,Cost,CostIncr" << endl;
 	//alg.Graph->EvaluteGraph();

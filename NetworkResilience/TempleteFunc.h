@@ -2,13 +2,12 @@
 #ifndef TempletFun
 #define TempletFun
 
-#include "Parameters.h"
-#include "Classes.h"
 //#include "DefGloVar.h"
 #include "GlobalVar.h"
-template <typename T>  T **Create2DAarray(const int dim1, const int dim2){
-	T **array;
-	array = new T*[dim1];
+#include <stdarg.h> /* va_list, va_start, va_arg, va_end */
+template <typename T>  T **Create2DArray(const int dim1, const int dim2)
+{
+	T **array = new T*[dim1];
 	for (int i = 0; i < dim1; i++) {
 		array[i] = new T[dim2];
 	}
@@ -24,7 +23,7 @@ template <typename T>  T **Create2DAarray(const int dim1, const int dim2){
 
 
 template <typename T>
-void Free2DArrey(T **Array, const int dim1) {
+void Free2DArray(T **Array, const int dim1) {
 
 	for (int i = 0; i < dim1; i++) {
 		delete[] Array[i];
@@ -33,12 +32,12 @@ void Free2DArrey(T **Array, const int dim1) {
 }
 
 template <typename T>
-T *Create1DAarray(const int dim1) {
+T *Create1DArray(const int dim1) {
 	T *array = new T[dim1];
 	return (array);
 }
 template <typename T>
-void Free1DArrey(T *Array) {
+void Free1DArray(T *Array) {
 
 	delete[] Array;
 }
@@ -91,12 +90,13 @@ Container& splitf(
 
 template<typename T>
 inline bool isEqual(const T &Rhs, const T &Lhs){
-	if (std::abs(Rhs - Lhs) <= Zero) return true;
+	if (std::abs(Rhs - Lhs) <= zero) return true;
 	else return false;
 }
 inline bool isEqual(const double &Rhs, const double &Lhs) {
-	if (std::abs(Rhs - Lhs) <= Zero) return true;
+	if (std::abs(Rhs - Lhs) <= zero) return true;
 	else return false;
 }
+
 
 #endif

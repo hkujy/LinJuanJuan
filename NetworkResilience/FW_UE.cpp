@@ -3,8 +3,8 @@
 #include <math.h>       /* pow */
 using namespace std;
 
-double LinksSDLineSearch(vector<LINK>& XLink, vector<LINK>& YLink);
-double Wobj(const vector<LINK>& Links)
+double LinksSDLineSearch(vector<LinkClass>& XLink, vector<LinkClass>& YLink);
+double Wobj(const vector<LinkClass>& Links)
 {
 	double Wobj = 0.0;
 	for (auto l = Links.begin(); l != Links.end(); l++)
@@ -17,8 +17,8 @@ double Wobj(const vector<LINK>& Links)
 	return Wobj;
 }
 
-double OneDim(vector<LINK> VALinks, std::vector<LINK> VBLinks,
-	vector<LINK>& V1Links, vector<LINK>& V2Links)
+double OneDim(vector<LinkClass> VALinks, std::vector<LinkClass> VBLinks,
+	vector<LinkClass>& V1Links, vector<LinkClass>& V2Links)
 {
 	try {
 		double Alfa = 1.0f;
@@ -72,7 +72,7 @@ double OneDim(vector<LINK> VALinks, std::vector<LINK> VBLinks,
 		}
 
 
-		if (std::abs(VA - VB) > OneDimEsp) goto Loop;
+		if (std::abs(VA - VB) > oneDimEps) goto Loop;
 
 		Alfa = (VA + VB) / 2.0f;
 
@@ -87,7 +87,7 @@ double OneDim(vector<LINK> VALinks, std::vector<LINK> VBLinks,
 
 void Assign(const std::vector<OriginBasedOD>& Oset,
 	int** PreLinks,
-	std::vector<LINK>& Links) {
+	std::vector<LinkClass>& Links) {
 	//try {
 
 	for (auto l = Links.begin(); l != Links.end(); l++)
@@ -102,8 +102,8 @@ void Assign(const std::vector<OriginBasedOD>& Oset,
 			if ((*od)->Demand < 1.0f) continue;
 			assert((*od)->Demand > 0.0);
 			int CurrentNode = (*od)->Dest;
-			while (CurrentNode != (*od)->Orign) {
-				int k = PreLinks[(*od)->Orign][CurrentNode];
+			while (CurrentNode != (*od)->Origin) {
+				int k = PreLinks[(*od)->Origin][CurrentNode];
 				if (k < 0)
 				{
 					std::cout << "k="<<k << endl;
@@ -134,7 +134,7 @@ int PrintConverge(int NumIter, double Err, ofstream& fout) {
 	fout << "Iter," << NumIter << "," << Err << endl;
 	return 1;
 }
-int GRAPH::FW_UE() {
+int GraphClass::FW_UE() {
 	//try {
 		int StatusMsg;
 		// step -1 clean and create variable:
@@ -145,9 +145,9 @@ int GRAPH::FW_UE() {
 			l->Cost = l->IniCost();
 		}
 
-		vector<LINK> YLinks;
-		vector<LINK> OldLinks;
-		vector<LINK> V1Links, V2Links;
+		vector<LinkClass> YLinks;
+		vector<LinkClass> OldLinks;
+		vector<LinkClass> V1Links, V2Links;
 
 		for (unsigned int i = 0; i < this->Links.size(); i++)
 		{
@@ -174,13 +174,13 @@ int GRAPH::FW_UE() {
 
 		NumIter = 1;
 
-		//STEP 1: UPDATE LINK TRAVEL COST
+		//STEP 1: UPDATE LinkClass TRAVEL COST
 	UeLop:
 		//cout << "update cost:-----" << endl;
 		for (auto l = this->Links.begin(); l != this->Links.end(); l++)
 		{
 			l->Cost = l->BPRCost();
-			//cout << l->ID << "," << l->Cost << endl;
+			//cout << l->Id << "," << l->Cost << endl;
 		}
 		for (unsigned int i = 0; i < this->Links.size(); i++)
 		{
@@ -226,7 +226,7 @@ int GRAPH::FW_UE() {
 		}
 		Err = Err / TotalFlow;
 
-		if (Err > UEeps && NumIter < UEmaxIter)
+		if (Err > epsUE && NumIter < maxIterUE)
 		{
 #ifdef _DEBUG
 			cout << NumIter<<"\t"<<Err << endl;
@@ -252,7 +252,7 @@ int GRAPH::FW_UE() {
 	//}
 }
 
-void GRAPH::EvaluteGraph() {
+void GraphClass::EvaluteGraph() {
 	int StatusMsg = 0;
 	this->TotalSystemCost = 0.0;
 	StatusMsg = this->FW_UE();
@@ -266,7 +266,7 @@ void GRAPH::EvaluteGraph() {
 	for (auto od = this->OdPairs.begin(); od != this->OdPairs.end(); od++)
 	{
 		assert(od->MinCost >= 0.0f);
-		if (od->MinCost < Zero)
+		if (od->MinCost < zero)
 		{
 			TRACE("od->MinCost <Zeor\n");
 		}
@@ -281,7 +281,7 @@ void GRAPH::EvaluteGraph() {
 	BaseSolutionOutput << "LinkId,Tail,Head,t0,Cap,Flow,Cost" << endl;
 	for (auto l = this->Links.begin(); l != Links.end(); l++)
 	{
-		BaseSolutionOutput << l->ID << ",";
+		BaseSolutionOutput << l->Id << ",";
 		BaseSolutionOutput << l->Tail << ",";
 		BaseSolutionOutput << l->Head << ",";
 		BaseSolutionOutput << l->T0 << ",";
@@ -296,8 +296,8 @@ void GRAPH::EvaluteGraph() {
 	BaseSolutionOutput << "ODId,Origin,Dest,Demand,minCost" << endl;
 	for (auto l = this->OdPairs.begin(); l != OdPairs.end(); l++)
 	{
-		BaseSolutionOutput << l->ID << ",";
-		BaseSolutionOutput << l->Orign << ",";
+		BaseSolutionOutput << l->Id << ",";
+		BaseSolutionOutput << l->Origin << ",";
 		BaseSolutionOutput << l->Dest << ",";
 		BaseSolutionOutput << l->Demand << ",";
 		BaseSolutionOutput << l->MinCost << endl;

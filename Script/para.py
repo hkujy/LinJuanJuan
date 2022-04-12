@@ -17,10 +17,10 @@ isDebug = False
 #             1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,16,18,19,20]
 SeedPool = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,16,18,19,20]
 # NumOfTestSeed = len(SeedPool)
-NumOfTestSeed = 10
+NumOfTestSeed = 2
 # FailureLinks = [0, 6, 19, 22, 26, 27, 34, 38, 42, 55, 59, 73]
 FailureLinks = [0,2,6,12,16,19,22,26,27,29,31,34,42,50,55,59]
-NumofIter = 1000
+NumofIter = 10
 global_case_id = 0
 
 class ParaClass(object):
@@ -30,8 +30,8 @@ class ParaClass(object):
         self.caes_id = 0
         self.case_name = "null"
         self.para = {
-            "UseMyOwn": "True",
-            "NetworkIndex": 3,   # SiouxFall
+            "isUseMyOwn": "True",
+            "networkIndex": 3,   # SiouxFall
             # "NetworkIndex":4,   # Paradox
             # "NetworkIndex": 5,   # Wang
             #  "UseMyOwn": "False",
@@ -49,23 +49,23 @@ class ParaClass(object):
             "RewardWorse": 0,
             "ReactionFactor": 0.5,
             "SelectOperator": "ALNS",
-            "OneDimEsp": 0.0000001,
-            "UEeps": 0.01,
-            "UEmaxIter": 500
+            "oneDimEps": 0.0000001,
+            "epsUE": 0.01,
+            "maxIterUE": 500
         }
 
     def print_para(self):
         """
         """
-        if self.para["NetworkIndex"] == 3:
+        if self.para["networkIndex"] == 3:
             with open("..//InPut//SiouxFallsNetwork//ABCPara.txt", "w+") as f:
                 for key, value in self.para.items():
                     print("{0},{1}".format(key, value), file=f)
-        elif self.para["NetworkIndex"] == 4:
+        elif self.para["networkIndex"] == 4:
             with open("..//InPut//ParadoxNet//ABCPara.txt", "w+") as f:
                 for key, value in self.para.items():
                     print("{0},{1}".format(key, value), file=f)
-        elif self.para["NetworkIndex"] == 5:
+        elif self.para["networkIndex"] == 5:
             with open("..//InPut//WangNetwork//ABCPara.txt", "w+") as f:
                 for key, value in self.para.items():
                     print("{0},{1}".format(key, value), file=f)
@@ -74,13 +74,13 @@ class ParaClass(object):
                 "Input network and model index is not specified for printing ABC parameters")
 
         with open("..//InPut//ModelPara.txt", "w+") as f:
-            print("NetworkIndex,{0}".format(self.para["NetworkIndex"]), file=f)
+            print("networkIndex,{0}".format(self.para["networkIndex"]), file=f)
             print("isTestSingleOp,{0}".format( self.para['isTestSingleOp']), file=f)
             print("SingleOpIndex,{0}".format(self.para['SingleOpIndex']),file=f)
-            print("UseMyOwn,{0}".format(self.para["UseMyOwn"]), file=f)
-            print("OneDimEsp,{0}".format(self.para["OneDimEsp"]), file=f)
-            print("UEeps,{0}".format(self.para["UEeps"]), file=f)
-            print("UEmaxIter,{0}".format(self.para["UEmaxIter"]), file=f)
+            print("isUseMyOwn,{0}".format(self.para["isUseMyOwn"]), file=f)
+            print("oneDimEps,{0}".format(self.para["oneDimEps"]), file=f)
+            print("epsUE,{0}".format(self.para["epsUE"]), file=f)
+            print("maxIterUE,{0}".format(self.para["maxIterUE"]), file=f)
 
     def adjust_para(self, _adjust):
         """

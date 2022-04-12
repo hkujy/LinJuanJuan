@@ -17,7 +17,7 @@ bool UpdateLable(const double CurrentCost, const double LinkCost, const double O
 	else return false;
 }
 
-int GRAPH::SP(const int Orig, std::vector<double> &Lable)
+int GraphClass::SP(const int origin, std::vector<double> &label)
 {
 //int *PredLink, double *Labl
 try
@@ -26,45 +26,45 @@ try
 		int now, NewNode, Return2Q_Count = 0;
 		double NewCost = InvaildFloat;
 		int QueueFirst, QueueLast;
-		Lable.clear();
+		label.clear();
 		std::vector<int> QueueNext;
 		
-		QueueNext.reserve(NumNodes);
+		QueueNext.reserve(numNodes);
 	
-		for (int node = 0; node < NumNodes; node++){
+		for (int node = 0; node < numNodes; node++){
 			QueueNext.push_back(InvaildInt);
-			//Lable[node] = LargeNum;
-			Lable.push_back(LargeNum);
+			//label[node] = LargeNum;
+			label.push_back(LargeNum);
 			//PredLink[node] = InvaildInt;
-			this->MinPathPredLink[Orig][node] = InvaildInt;
+			this->MinPathPredLink[origin][node] = InvaildInt;
 		}
-		now = Orig;
+		now = origin;
 		QueueNext.at(now) = WasInQueue;
 		//PredLink[now] = InvaildInt;
-		this->MinPathPredLink[Orig][now] = InvaildInt;
+		this->MinPathPredLink[origin][now] = InvaildInt;
 
-		Lable[now] = 0.0;
+		label[now] = 0.0;
 		QueueFirst = QueueLast = InvaildInt;
 		while ((now != InvaildInt) && (now != WasInQueue)) {
 			for (auto k =this->Nodes.at(now).OutLinks.begin();
 				k != this->Nodes.at(now).OutLinks.end(); k++) {
 
 				// in case the capacity is zero
-				if ((*k)->CaRevise <Zero) continue;
+				if ((*k)->CaRevise <zero) continue;
 				NewNode = (*k)->Head;
-				//printf("current Cost= %f \n", Lable[now]);
-				if (UpdateLable(Lable[now], (*k)->Cost, Lable[NewNode], NewCost))
+				//printf("current Cost= %f \n", label[now]);
+				if (UpdateLable(label[now], (*k)->Cost, label[NewNode], NewCost))
 				{
-				//if (UpdateLable(Lable[now], thiLinks,  *k, Lable[NewNode], NewCost)){
-					//if (Lable[NewNode] > NewCost) {
+				//if (UpdateLable(label[now], thiLinks,  *k, label[NewNode], NewCost)){
+					//if (label[NewNode] > NewCost) {
 					//printf("new node is = %d, cost = %f \n", NewNode,NewCost);
-					Lable[NewNode] = NewCost;
-					//if (Lable[NewNode] > 1000.0f&&isPrint)
+					label[NewNode] = NewCost;
+					//if (label[NewNode] > 1000.0f&&isPrint)
 					//{
-					//	DEBUG("Cost is %f, node is %i, PLink is %i", Lable[NewNode], NewNode, *k);
+					//	DEBUG("Cost is %f, node is %i, PLink is %i", label[NewNode], NewNode, *k);
 					//}
 					//PredLink[NewNode] = *k;
-					this->MinPathPredLink[Orig][NewNode] = (*k)->ID;
+					this->MinPathPredLink[origin][NewNode] = (*k)->Id;
 
 					if (QueueNext.at(NewNode) == WasInQueue) {
 						QueueNext.at(NewNode) = QueueFirst;
@@ -84,7 +84,7 @@ try
 						}
 					}
 					/* If the new node is in the queue, just leave it there. (Do nothing) */
-				}//if (Lable[NewNode] > NewCost) {
+				}//if (label[NewNode] > NewCost) {
 			} // for incoming link cycle
 
 			/* Get the first node out of the queue, and use it as the current node. */

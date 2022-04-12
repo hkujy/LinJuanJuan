@@ -1,0 +1,14 @@
+numNodes,24
+numOD,585
+numLinks,76
+oneDimEps,1e-07
+maxIterUE,500
+NumEmployBee,10
+NumOnlookerBee,10
+MaxScoutCount,-1
+MaxABCIter,10
+RewardImproveGlobal,1
+RewardImproveLocal,1
+RewardWorse,0
+ReactionFactor,0.5
+SelectOperator,ANLS

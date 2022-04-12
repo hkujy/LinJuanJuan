@@ -20,9 +20,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ABC.h" />
-    <ClInclude Include="Classes.h" />
-    <ClInclude Include="CommonHeaders.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="GraphElements.h" />
+    <ClInclude Include="CommonHeaders.h" />
     <ClInclude Include="DefGloVar.h" />
     <ClInclude Include="GlobalVar.h" />
     <ClInclude Include="Parameters.h" />
@@ -32,7 +32,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ABC.cpp" />
-    <ClCompile Include="CloneSet.cpp" />
     <ClCompile Include="GraphFunc.cpp" />
     <ClCompile Include="DebugMsg.cpp" />
     <ClCompile Include="FW_UE.cpp" />
@@ -47,8 +46,6 @@
     <ClCompile Include="OpenCloseFiles.cpp" />
     <ClCompile Include="OutPutGraph.cpp" />
     <ClCompile Include="RandomValue.cpp" />
-    <ClCompile Include="ReadData.cpp" />
-    <ClCompile Include="ChromFuncs.cpp" />
     <ClCompile Include="RouletteSelect.cpp" />
     <ClCompile Include="SP.cpp" />
     <ClCompile Include="TestParadoxNetExp.cpp" />
@@ -60,7 +57,7 @@
     <ProjectGuid>{D020EC3B-CC10-4074-9DB6-9080E09F2EA7}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>NetworkResilience</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -72,7 +69,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -85,7 +82,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>

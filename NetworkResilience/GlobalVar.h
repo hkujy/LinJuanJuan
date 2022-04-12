@@ -1,40 +1,39 @@
 #pragma once
-#ifndef GLOBALVAR
-#define GLOBALVAR
+#ifndef GlobalVar
+#define GlobalVar
 #include <fstream>
 #include <random>
 //Constant
 extern bool isTestSingleOperator;
-extern int TestSingleOpIndex;
-extern double Zero;
-extern int NumOrig;
-extern int NumDest;
-extern int NumLinks;
-extern int NumNodes;
-extern int NumOD;
+extern int testSingleOperatorIndex;
+extern double zero;
+extern int numOrigin;
+extern int numDest;
+extern int numLinks;
+extern int numNodes;
+extern int numOD;
 //extern std::ofstream TestStepSize/*;*/
 extern std::ofstream Log;
 extern std::ofstream AssertLog;
-extern double OneDimEsp;
-extern double UEeps;
-extern int UEmaxIter;
+extern double oneDimEps;
+extern double epsUE;
+extern int maxIterUE;
 extern std::default_random_engine GenRan;
-extern int MaxCsaIter;
-extern int NetworkIndex;
-extern int CsaNumPop;
-extern double CsaCloneBeta;
-extern double CsaRepRatio;
-extern int MaxGAIter;
-extern int GANumPop;
-extern int GANumChild;
-//extern int MaxNumSolEval;
+extern int networkIndex;
+extern std::vector<int> seedVecVal;
+extern bool isUseMyOwnAlgo;
 extern bool isWriteConverge;
-//extern int StopCriteria;  
-extern int CSACloneMethod;
-extern double GaMutationRate;
-extern int SeedRunCount;
-extern std::vector<int> SeedVecVal;
-extern bool UseMyOwnAlgo;
 // stop criteria =1: based on number of solution evaluated
 // stop criteria =0: normal : based on number of iterations
+
+//extern int MaxCsaIter;
+//extern int CsaNumPop;
+//extern double CsaCloneBeta;
+//extern double CsaRepRatio;
+//extern int MaxGAIter;
+//extern int GANumPop;
+//extern int GANumChild;
+//extern int CSACloneMethod;
+//extern double GaMutationRate;
+//extern int SeedRunCount;
 #endif

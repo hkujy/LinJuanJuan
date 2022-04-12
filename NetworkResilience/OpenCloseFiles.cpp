@@ -30,7 +30,7 @@ void OpenAndCleanFiles(){
 	//OutFile << "Seed,Period,Cost,UNPM" << endl;
 	//OutFile.close();
 
-	OutFile.open("..//OutPut//ABCPrintPeriod.txt", ios::trunc);
+	OutFile.open("..//OutPut//PrintPeriod.txt", ios::trunc);
 	OutFile << "Seed,Period,Cost,UNPM" << endl;
 	OutFile.close();
 

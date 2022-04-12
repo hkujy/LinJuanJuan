@@ -72,9 +72,6 @@ def TestSingleOperator(mf):
     testOp = [0, 8]
     for i in testOp:
         adjust_para = {
-            "UseMyOwn": "True",
-            # "NetworkIndex": 5,  # WangNet
-            # "NetworkIndex": 3,  # SiouxFall
             "isTestSingleOp": "True",
             "SingleOpIndex": i,
             "ReactionFactor": 0.5,
@@ -104,7 +101,6 @@ def TestRewardVal(mf):
     for j in range(4, 6):   # this change to 9
         for i in range(2, 4):  # this is change to 5
             adjust_para = {
-                "UseMyOwn": "True",
                 "RewardImproveGlobal": i*0.5,
                 "RewardImproveLocal": i*0.5,
                 "RewardWorse": 0,
@@ -121,18 +117,10 @@ def TestDifferntOpSelect(mf):
         select different operator
     """
     adjust_para = {
-        "UseMyOwn": "True",
-        # "NetworkIndex": 5,  # WangNet
-        # "NetworkIndex": 3,  # SiouxFall
-        # "NumEmployBee": 10,
-        # "NumOnlookerBee":10,
-        # "MaxScountCount": 50,
-        # "MaxABCIter": 200,
         "RewardImproveGlobal": 1,
         "RewardImproveLocal": 1,
         "RewardWorse": 0,
         "ReactionFactor": 0.5,
-        # "SelectOperator": "ALNS"
     }
     # Notes: 2022 March 2
     # - it seems I do not need to test the ALNS, as it has been tested in other cases
@@ -153,12 +141,7 @@ def BenchmarkParadoxNet(mf):
     benchmark the algorithm to see whether it gets solution
     """
     adjust_para = {
-        "UseMyOwn": "True",
         "NetworkIndex": 4,  # Paradox
-        # "NumEmployBee": 10,
-        # "NumOnlookerBee": 10,
-        # "MaxScountCount": 50,
-        # "MaxABCIter": 200,
         "RewardImproveGlobal": 20,
         "RewardImproveLocal": 10,
         "RewardWorse": 0,
@@ -204,9 +187,9 @@ if __name__ == "__main__":
     para.Copy_input_and_test_files(mf)
 
     # BenchmarkParadoxNet(mf)
-    TestSingleOperator(mf)
+    # TestSingleOperator(mf)
     # TestRewardVal(mf)
-    # TestDifferntOpSelect(mf)
+    TestDifferntOpSelect(mf)
 
     # ------------------Test GA Function
     # TestGa(mf)
