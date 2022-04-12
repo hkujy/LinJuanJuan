@@ -17,10 +17,10 @@ isDebug = False
 #             1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,16,18,19,20]
 SeedPool = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,16,18,19,20]
 # NumOfTestSeed = len(SeedPool)
-NumOfTestSeed = 2
+NumOfTestSeed = 20
 # FailureLinks = [0, 6, 19, 22, 26, 27, 34, 38, 42, 55, 59, 73]
 FailureLinks = [0,2,6,12,16,19,22,26,27,29,31,34,42,50,55,59]
-NumofIter = 20
+NumofIter = 1000
 global_case_id = 0
 
 class ParaClass(object):
@@ -50,7 +50,7 @@ class ParaClass(object):
             "ReactionFactor": 0.5,
             "SelectOperator": "ALNS",
             "OneDimEsp": 0.0000001,
-            "UEeps": 0.1,
+            "UEeps": 0.01,
             "UEmaxIter": 500
         }
 
