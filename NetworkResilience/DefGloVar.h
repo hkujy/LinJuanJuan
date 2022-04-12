@@ -3,7 +3,6 @@
 #ifndef DGV
 #define DGV
 #include <random>
-#include <fstream>
 //define global
 double zero;
 int numOrigin;
@@ -12,8 +11,8 @@ int numLinks;
 int numNodes;
 int numOD;
 double  oneDimEps;
-double  epsUE;
-int	   maxIterUE;
+double epsUE;
+int maxIterUE;
 std::default_random_engine GenRan;
 int networkIndex;
 int MaxGAIter;

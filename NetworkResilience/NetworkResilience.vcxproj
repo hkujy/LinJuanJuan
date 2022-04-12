@@ -32,7 +32,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ABC.cpp" />
-    <ClCompile Include="GraphFunc.cpp" />
+    <ClCompile Include="GraphElements.cpp" />
     <ClCompile Include="DebugMsg.cpp" />
     <ClCompile Include="FW_UE.cpp" />
     <ClCompile Include="HH.cpp" />

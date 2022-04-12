@@ -1,16 +1,14 @@
 #include <string>
-#ifndef PARA
-#define PARA
+#ifndef PARAMETERS
+#define PARAMETERS
 
-//TODO code python and read globle parameters
-
-const int InvaildInt=-1;
-const double InvaildFloat = -999.9f;
-const int NumOperators = 9;
-const double LargeNum = 1.0e+20f;
-const double RemoveLinkCost = 9999999999.0f;
-const double InvalidMinCost = 9999999999.0f;
-const int MaxNumOfSchPeriod = 50;
+constexpr int  INVALID_INT=-1;
+constexpr double INVALID_FLOAT = -999.9;
+constexpr int NUM_OPERATORS = 9;
+constexpr double LARGE_NUM = 1.0e+20;
+constexpr double REMOVE_LINK_COST = 9999999999.0;
+constexpr double INVALID_MIN_COST = 9999999999.0;
+constexpr int MAX_NUM_OF_SCH_PERIOD = 50;
 //const int PatternLocalImproveScore = 1;
 //const int PatternGlobalImproveScore = 5;
 // enumerate algorithm type
@@ -23,7 +21,7 @@ LinkSchRelations getReversRelation(LinkSchRelations &r); // get the reverse of a
 
 // enumerate how to compare score method
 enum class enum_CompareScoreMethod {Ave, Total, None};
-std::string getAlgoTypeName(const AlgorithmType &alot);
-void SetAlgoType(std::string _name, AlgorithmType& alot);
+std::string getAlgorithmTypeName(const AlgorithmType &algorithmType);
+//void SetAlgorithmType(std::string name, AlgorithmType& algorithmType);
 
-#endif // !PARA
+#endif // !PARAMETERS

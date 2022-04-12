@@ -16,7 +16,7 @@ void Algorithm::UpdateOperatorScore_ALNS(int opId, double resultFit, double loca
 	//      change the prob for selecting nei
 	//      write python to read parameter 
 	//      and select which nei select method is used 
-	assert(opId >= 0); assert(opId <= NumOperators - 1);
+	assert(opId >= 0); assert(opId <= NUM_OPERATORS - 1);
 	if (resultFit < globalFit)
 	{
 		Operators.at(opId).Score += RewardImproveGlobal;
@@ -49,7 +49,7 @@ void Algorithm::UpdateOperatorWeight_ALNS()
 void Algorithm::UpdateOperatorMeasure(int id, bool isImproved)
 {
 	//TODO: write the update the counters of the operators
-	assert(id <= NumOperators - 1);
+	assert(id <= NUM_OPERATORS - 1);
 	assert(id >= 0);
 	if (isImproved)
 	{

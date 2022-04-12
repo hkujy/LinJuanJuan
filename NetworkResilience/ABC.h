@@ -1,6 +1,6 @@
 #pragma once
-#ifndef AbcAlgoClass
-#define AbcAlgoClass
+#ifndef ABC_ALGORITHM_CLASS
+#define ABC_ALGORITHM_CLASS
 #include <iostream>
 #include <vector>
 #include <unordered_map>
@@ -40,7 +40,7 @@ public:
 	std::unordered_map<std::string, double> m_str_val_solArchive;
 	vector<double> CumProbForSelectOnlooker; // probability for the onlookers
 	vector<double> CumProbForSelectNei; // probability for the onlookers
-	SCHCLASS GlobalBest;
+	ScheduleClass GlobalBest;
 	vector<double> ConvergeMeasure;
 	vector<OperatorClass> Operators;
 	vector<PatternClass> Pattern;
@@ -50,10 +50,10 @@ public:
 	double ReactionFactor;
 	SelectOperatorType SelectOp;
 	enum_CompareScoreMethod CompareScoreMethod;
-	string getMapStrFromSol(const SCHCLASS &sol); //get string for the map sol archive
+	string getMapStrFromSol(const ScheduleClass &sol); //get string for the map sol archive
 	bool isAddNewToArchive(const string &key);
-	bool isNeedToEvaluateSol(const SCHCLASS &sol);
-	void evaluateOneSol(SCHCLASS &sol, GraphClass& g);
+	bool isNeedToEvaluateSol(const ScheduleClass &sol);
+	void evaluateOneSol(ScheduleClass &sol, GraphClass& g);
 	void Ini(GraphClass& g);
 	void IniPattern();
 	LinkSchRelations findDominantRelation(int ALink, int BLink);// find the dominate relationship between two links
@@ -70,7 +70,7 @@ public:
 		CumProbForSelectOnlooker.reserve(100);
 		CumProbForSelectNei.reserve(100); ConvergeMeasure.reserve(1000);
 		Pattern.reserve(100);
-		for (int i = 0; i < NumOperators; i++)
+		for (int i = 0; i < NUM_OPERATORS; i++)
 		{
 			Operators.emplace_back(OperatorClass());
 			Operators.back().Id = i;
@@ -82,7 +82,7 @@ public:
 	Algorithm(Algorithm&& other) = default;
 	Algorithm& operator=(Algorithm&& other) = default;
 	~Algorithm() { Graph = nullptr; };
-	std::vector<SCHCLASS> Sols;
+	std::vector<ScheduleClass> Sols;
 	void clearSols() { if (!Sols.empty()) Sols.clear(); }
 	void IniSolArchive();
 	void ComputeFailureLinkEI();
@@ -101,9 +101,9 @@ public:
 	size_t SelectOnLookerBasedOnProb();
 	void PrintFinal(int sd);
 	void UpdateOperatorMeasure(int id, bool isImproved);
-	bool CompareTwoSolsAndReplace(SCHCLASS& lhs, SCHCLASS& rhs, int NeiOperatorId);
-	void LearnPattern_Score(const SCHCLASS& sol, bool isGlobalImprove);
-	void LearnPatternRelation_Score(const SCHCLASS& sol, bool isGlobalImprove);
+	bool CompareTwoSolsAndReplace(ScheduleClass& lhs, ScheduleClass& rhs, int NeiOperatorId);
+	void LearnPattern_Score(const ScheduleClass& sol, bool isGlobalImprove);
+	void LearnPatternRelation_Score(const ScheduleClass& sol, bool isGlobalImprove);
 	size_t findPatternIndex(int lid);
 	void PrintOperator(int seedId,int iter);
 	void UpdateOperatorProb();

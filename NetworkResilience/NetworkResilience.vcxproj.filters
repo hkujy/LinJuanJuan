@@ -62,7 +62,7 @@
     <ClCompile Include="LineSearchUingDirective.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GraphFunc.cpp">
+    <ClCompile Include="GraphElements.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LinkFuncs.cpp">

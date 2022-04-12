@@ -1,12 +1,11 @@
 
-#ifndef MyClasses
-#define MyClasses
+#ifndef MY_CLASSES
+#define MY_CLASSES
 #include <iostream>
 #include <vector>
 #include "Parameters.h"
 #include "TempleteFunc.h"
 #include "GlobalVar.h"
-using namespace std;
 
 template <typename T>  T** Create2DArray(const int dim1, const int dim2);
 class LinkClass
@@ -26,13 +25,15 @@ public:
 	double EI; // Efficiency Index
 	int RecoverTime;  // recover time
 	int RequiredRes; // required resources
-	double CleanLinkFlow();
+	//double CleanLinkFlow() const;
+	void CleanLinkFlow() { Flow = 0.0; }
 	double BPRCost();
-	double IniCost();
+	double GetIniCost()const;
+	void SetIniCost() { Cost = T0; }
 	void IniCap();
-	LinkClass():Id(InvaildInt), Tail(InvaildInt), Head(InvaildInt), T0(-1.0),
-	CaInput(InvaildFloat), CaRevise(InvaildFloat),
-	Cost(InvaildFloat), Flow(InvaildFloat), AlphaBpr(0.15), BetaBBpr(4.0),
+	LinkClass():Id(INVALID_INT), Tail(INVALID_INT), Head(INVALID_INT), T0(-1.0),
+	CaInput(INVALID_FLOAT), CaRevise(INVALID_FLOAT),
+	Cost(INVALID_FLOAT), Flow(INVALID_FLOAT), AlphaBpr(0.15), BetaBBpr(4.0),
 	EI(0), RecoverTime(-1), RequiredRes(-1){}
 	~LinkClass() = default;
 	LinkClass(LinkClass&& other) = default;
@@ -105,11 +106,11 @@ public:
 	double BeforeRemoveSpDist;
 	double AfterRemoveSpDist;
 	bool isConnected;
-	ODClass():Id(-1), Origin(InvaildInt), Dest(InvaildInt),
-	Demand(InvaildFloat),
-	MinCost(InvaildFloat),
-	BeforeRemoveSpDist(InvaildFloat),
-	AfterRemoveSpDist(InvaildFloat),
+	ODClass():Id(-1), Origin(INVALID_INT), Dest(INVALID_INT),
+	Demand(INVALID_FLOAT),
+	MinCost(INVALID_FLOAT),
+	BeforeRemoveSpDist(INVALID_FLOAT),
+	AfterRemoveSpDist(INVALID_FLOAT),
 	isConnected(false){}
 	~ODClass() = default;
 	ODClass(const ODClass& rhs) = default;
@@ -121,14 +122,14 @@ public:
 class OriginBasedOD
 {
 public:
-	int Onode;
+	int OirginNode;
 	std::vector<const ODClass*>  ODset;
 	//std::vector<ODClass> ODset;
-	OriginBasedOD():Onode(InvaildInt){
+	OriginBasedOD():OirginNode(INVALID_INT){
 		ODset.reserve(numNodes);
 	}
 	//~OriginBasedOD(){
-	//	Onode = InvaildInt;
+	//	OirginNode = INVALID_INT;
 	//	ODset.clear();
 	//}
 };
@@ -149,7 +150,7 @@ public:
 	{
 		for (size_t i = 0; i < LinkIds.size(); i++)
 		{
-			std::cout << "DisruptedLinkID=" << LinkIds.at(i) << ",TimePeriod=" << tau.at(i) << endl;
+			std::cout << "DisruptedLinkID=" << LinkIds.at(i) << ",TimePeriod=" << tau.at(i) << std::endl;
 		}
 	}
 };
@@ -241,7 +242,7 @@ public:
 	int PrintLinks(std::ofstream &fout);
 	int PrintLinks_onscreen();
 	int PrintOD(std::ofstream &fout);
-	int PrintSp(int Orign, int Dest, std::ofstream &fout);
+	int PrintSp(int origin, int dest, std::ofstream &fout);
 	void EvaluteGraph();//ue total cost unpin
 	void EvalutateFailureScenarios(const ScenarioClass &s);  // evaluate one failure scenario 
 	void RevertFailureScenarios(const ScenarioClass &s);  // evaluate one failure scenario 
@@ -249,7 +250,7 @@ public:
 	//friend class Algorithms;
 	void ReadGraphData();
 	void ReadDataMain() {
-		ofstream OutPutFile;
+		std::ofstream OutPutFile;
 		ReadGraphData();
 		OutPutFile.open("..//OutPut//LinkData.txt");
 		PrintLinks(OutPutFile);
@@ -258,21 +259,21 @@ public:
 		PrintOD(OutPutFile);
 		OutPutFile.close();
 	}
-	double CalRelSpChange(int LinkID);
+	double CalRelSpChange(int linkId);
 };
 
 class TEST
 {
 public:
 	int Id;
-	TEST():Id(InvaildInt){}
+	TEST():Id(INVALID_INT){}
 };
 
 #pragma region NotUsedInResotration
 //class CHROME // ==  scenario
 //{
 //public:
-//	int ID;
+//	int Id;
 //	vector<int> Nodes;
 //	vector<double> NodeDof;
 //	vector<double> NodeDofProb;

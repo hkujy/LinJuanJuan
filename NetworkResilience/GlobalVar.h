@@ -1,6 +1,6 @@
 #pragma once
-#ifndef GlobalVar
-#define GlobalVar
+#ifndef GLOBALVAR
+#define GLOBALVAR
 #include <fstream>
 #include <random>
 //Constant

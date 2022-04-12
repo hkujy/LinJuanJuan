@@ -1,10 +1,9 @@
 #pragma once
-#ifndef TempletFun
-#define TempletFun
+#ifndef TEMPLATE_FUN
+#define TEMPLATE_FUN
 
 //#include "DefGloVar.h"
 #include "GlobalVar.h"
-#include <stdarg.h> /* va_list, va_start, va_arg, va_end */
 template <typename T>  T **Create2DArray(const int dim1, const int dim2)
 {
 	T **array = new T*[dim1];

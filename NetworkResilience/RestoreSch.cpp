@@ -19,58 +19,58 @@ int FindValIndex(const vector<int>& vec, int key)
 		//std::cout << "Element present at index " << std::distance(v.begin(), itr);
 	}
 	else {
-		cerr << "wtf: can not find the index of a key" << endl;
+		cerr << "wtf: can not find the index of a Key" << endl;
 		return -1;
 	}
 }
 
 //generate the time from order to time
-void SCHCLASS::GenerateTimeFromOrder(const vector<double>& ResCap,GraphClass &g)
+void ScheduleClass::GenerateTimeFromOrder(const vector<double>& resCap,GraphClass &g)
 {
-	AlignStartTime(ResCap,g);
+	AlignStartTime(resCap,g);
 }
-void SCHCLASS::print() const
+void ScheduleClass::print() const
 {
 	cout << "*******Print and check one sol********" << endl;
-	for (size_t i = 0; i < LinkID.size(); i++)
+	for (size_t i = 0; i < LinkId.size(); i++)
 	{
-		//cout << "Link = " << LinkID.at(i)->Id << ", Start Time = " << StartTime.at(i) << ", End Time = " << EndTime.at(i) << endl;
-		cout << "Link = " << LinkID.at(i) << ", Start Time = " << StartTime.at(i) << ", End Time = " << EndTime.at(i) << endl;
+		//cout << "Link = " << LinkId.at(i)->Id << ", Start Time = " << StartTime.at(i) << ", End Time = " << EndTime.at(i) << endl;
+		cout << "Link = " << LinkId.at(i) << ", Start Time = " << StartTime.at(i) << ", End Time = " << EndTime.at(i) << endl;
 	}
 	cout << "********End*************************" << endl;
 }
 
-ScenarioClass SCHCLASS::ConvertToScenario() {
+ScenarioClass ScheduleClass::ConvertToScenario() {
 	ScenarioClass s;
-	//for (auto l : LinkID) s.LinkIds.push_back(l->Id);
-	for (auto l : LinkID) s.LinkIds.push_back(l);
+	//for (auto l : LinkId) s.LinkIds.push_back(l->Id);
+	for (auto l : LinkId) s.LinkIds.push_back(l);
 	for (auto t : StartTime) s.tau.push_back(t);
 	return s;
 }
 
-void SCHCLASS::getRes(GraphClass &g)
+void ScheduleClass::getRes(GraphClass &g)
 {
-	UsedRes.assign(MaxNumOfSchPeriod, 0);
+	UsedRes.assign(MAX_NUM_OF_SCH_PERIOD, 0);
 
-	for (size_t l = 0; l < LinkID.size(); l++)
+	for (size_t l = 0; l < LinkId.size(); l++)
 	{
 		for (int t = StartTime.at(l); t < EndTime.at(l); t++)
 		{
-			//UsedRes.at(t) += LinkID.at(l)->RequiredRes;
-			UsedRes.at(t) += g.Links.at(LinkID[l]).RequiredRes;
+			//UsedRes.at(t) += LinkId.at(l)->RequiredRes;
+			UsedRes.at(t) += g.Links.at(LinkId[l]).RequiredRes;
 		}
 	}
 }
-void SCHCLASS::updateEndTime(GraphClass &g)
+void ScheduleClass::updateEndTime(GraphClass &g)
 {
-	for (int l = 0; l < LinkID.size(); l++)
+	for (int l = 0; l < LinkId.size(); l++)
 	{
-		//EndTime.at(l) = StartTime.at(l) + LinkID.at(l)->RecoverTime;
-		EndTime.at(l) = StartTime.at(l) + g.Links.at(LinkID[l]).RecoverTime;
+		//EndTime.at(l) = StartTime.at(l) + LinkId.at(l)->RecoverTime;
+		EndTime.at(l) = StartTime.at(l) + g.Links.at(LinkId[l]).RecoverTime;
 	}
 }
 
-bool SCHCLASS::isFeasible(const vector<double>& res)
+bool ScheduleClass::isFeasible(const vector<double>& res)
 {
 	for (size_t i = 0; i < res.size(); i++)
 	{
@@ -85,34 +85,34 @@ bool SCHCLASS::isFeasible(const vector<double>& res)
 
 //update the resource used before the pos project
 //does not include the et link, which is supposed to be the current link
-void SCHCLASS::updatePrecedingRes(size_t st, size_t et,GraphClass &g)
+void ScheduleClass::updatePrecedingRes(size_t st, size_t et,GraphClass &g)
 {
 	for (size_t l = st; l < et; l++)
 	{
 		for (size_t t = StartTime.at(l); t < EndTime.at(l); t++)
 		{
-			//UsedRes.at(t) += LinkID.at(l)->RequiredRes;
-			UsedRes.at(t) += g.Links.at(LinkID[l]).RequiredRes;
+			//UsedRes.at(t) += LinkId.at(l)->RequiredRes;
+			UsedRes.at(t) += g.Links.at(LinkId[l]).RequiredRes;
 		}
 	}
 }
 
-void SCHCLASS::updateResFor(size_t Pos, GraphClass &g)
+void ScheduleClass::updateResFor(size_t pos, GraphClass &g)
 {
-	for (int t = StartTime.at(Pos); t < EndTime.at(Pos); t++)
+	for (int t = StartTime.at(pos); t < EndTime.at(pos); t++)
 	{
-		//UsedRes.at(t) += LinkID.at(Pos)->RequiredRes;
-		UsedRes.at(t) += g.Links.at(LinkID[Pos]).RequiredRes;
+		//UsedRes.at(t) += LinkId.at(pos)->RequiredRes;
+		UsedRes.at(t) += g.Links.at(LinkId[pos]).RequiredRes;
 	}
 }
 
 //find the earliest a time with available resources
-int SCHCLASS::findEarliestFeasibleSt(size_t l, const vector<double>& ResCap,GraphClass &g) {
+int ScheduleClass::findEarliestFeasibleSt(size_t l, const vector<double>& resCap,GraphClass &g) {
 
-	for (int t = 0; t < MaxNumOfSchPeriod; t++)
+	for (int t = 0; t < MAX_NUM_OF_SCH_PERIOD; t++)
 	{
-		//if (UsedRes.at(t) + this->LinkID.at(l)->RequiredRes <= ResCap.at(t))
-		if (UsedRes.at(t) + g.Links.at(LinkID[l]).RequiredRes <= ResCap.at(t))
+		//if (UsedRes.at(t) + this->LinkId.at(l)->RequiredRes <= resCap.at(t))
+		if (UsedRes.at(t) + g.Links.at(LinkId[l]).RequiredRes <= resCap.at(t))
 		{
 			return t;
 		}
@@ -121,11 +121,11 @@ int SCHCLASS::findEarliestFeasibleSt(size_t l, const vector<double>& ResCap,Grap
 	return -1;
 }
 
-int SCHCLASS::findEarliestInFeasibleSt(const vector<double>& ResCap) {
+int ScheduleClass::findEarliestInFeasibleSt(const vector<double>& resCap) {
 
-	for (int t = 0; t < MaxNumOfSchPeriod; t++)
+	for (int t = 0; t < MAX_NUM_OF_SCH_PERIOD; t++)
 	{
-		if (UsedRes.at(t) > ResCap.at(t))
+		if (UsedRes.at(t) > resCap.at(t))
 		{
 			return t;
 		}
@@ -133,34 +133,34 @@ int SCHCLASS::findEarliestInFeasibleSt(const vector<double>& ResCap) {
 	return -1;
 }
 
-void SCHCLASS::AlignStartTime(const vector<double>& ResCap,GraphClass &g) {
+void ScheduleClass::AlignStartTime(const vector<double>& resCap,GraphClass &g) {
 	// shift the project to the earliest feasible time
-	EndTime.assign(LinkID.size(), -1);
-	StartTime.assign(LinkID.size(), -1);
-	this->UsedRes.assign(MaxNumOfSchPeriod, 0.0);
-	for (size_t l = 0; l < LinkID.size(); l++)
+	EndTime.assign(LinkId.size(), -1);
+	StartTime.assign(LinkId.size(), -1);
+	this->UsedRes.assign(MAX_NUM_OF_SCH_PERIOD, 0.0);
+	for (size_t l = 0; l < LinkId.size(); l++)
 	{
 		if (l == 0)
 		{
 			StartTime.at(l) = 0;
-			EndTime.at(l) = StartTime.at(l) +g.Links.at(LinkID.at(l)).RecoverTime;
+			EndTime.at(l) = StartTime.at(l) +g.Links.at(LinkId.at(l)).RecoverTime;
 		}
 		else
 		{
 			updatePrecedingRes(l - 1, l,g);
-			StartTime.at(l) = findEarliestFeasibleSt(l, ResCap,g);
-			EndTime.at(l) = StartTime.at(l) + g.Links.at(LinkID.at(l)).RecoverTime;
+			StartTime.at(l) = findEarliestFeasibleSt(l, resCap,g);
+			EndTime.at(l) = StartTime.at(l) + g.Links.at(LinkId.at(l)).RecoverTime;
 		}
 	}
-	updateResFor(this->LinkID.size() - 1,g);
+	updateResFor(this->LinkId.size() - 1,g);
 }
 
-void SCHCLASS::GenerateIniSch(GraphClass& g, const vector<int>& FailureLinks)
+void ScheduleClass::GenerateIniSch(GraphClass& g, const vector<int>& FailureLinks)
 {
 	assert(FailureLinks.size() > 0);
-	if (this->LinkID.size() > 0)
+	if (this->LinkId.size() > 0)
 	{
-		LinkID.clear(); StartTime.clear(); EndTime.clear();
+		LinkId.clear(); StartTime.clear(); EndTime.clear();
 	}
 	// step 1 generate ini number of links
 	int NumOfFailureLinks = (int)FailureLinks.size();
@@ -172,9 +172,9 @@ void SCHCLASS::GenerateIniSch(GraphClass& g, const vector<int>& FailureLinks)
 		int pos = FindValIndex(FailureLinks, linkNum);
 		if (!isSelected.at(pos))
 		{
-			LinkID.push_back(linkNum);
-			//this->LinkID.push_back(new LinkClass());
-			//LinkID.back() = &g.Links.at(linkNum);
+			LinkId.push_back(linkNum);
+			//this->LinkId.push_back(new LinkClass());
+			//LinkId.back() = &g.Links.at(linkNum);
 			isSelected.at(pos) = true;
 		}
 		CountDoWhile++;
@@ -186,14 +186,14 @@ void SCHCLASS::GenerateIniSch(GraphClass& g, const vector<int>& FailureLinks)
 	} while (std::find(isSelected.begin(), isSelected.end(), false) != isSelected.end());
 }
 
-vector<size_t> SCHCLASS::getNewReadyLinks(int tau)
+vector<size_t> ScheduleClass::getNewReadyLinks(int tau)
 {
 
 	vector<size_t> results;
 	if (tau == 0) return results;
 	else
 	{
-		for (size_t l = 0; l < LinkID.size(); l++)
+		for (size_t l = 0; l < LinkId.size(); l++)
 		{
 			if (EndTime.at(l) == tau)
 			{
@@ -205,7 +205,7 @@ vector<size_t> SCHCLASS::getNewReadyLinks(int tau)
 	return results;
 }
 
-void SCHCLASS::Evaluate(GraphClass& g)
+void ScheduleClass::Evaluate(GraphClass& g)
 {
 
 #ifdef _DEBUG
@@ -223,10 +223,10 @@ void SCHCLASS::Evaluate(GraphClass& g)
 	TravelTime.assign(GetLastPeriod(), 0);
 	UNPM.assign(GetLastPeriod(), 0);
 	// step 1: set all the capacity of failure links to be 0.0 and evalute the total cost in tau = 0
-	for (size_t l = 0; l < LinkID.size(); l++)
+	for (size_t l = 0; l < LinkId.size(); l++)
 	{
-		g.Links.at(LinkID[l]).CaRevise = zero;
-		//LinkID.at(l)->CaRevise = zero;
+		g.Links.at(LinkId[l]).CaRevise = zero;
+		//LinkId.at(l)->CaRevise = zero;
 	}
 	g.EvaluteGraph();
 
@@ -257,8 +257,8 @@ void SCHCLASS::Evaluate(GraphClass& g)
 		{
 			for (auto l : NewReady)
 			{
-				g.Links.at(LinkID[l]).IniCap();
-				//LinkID.at(l)->IniCap();
+				g.Links.at(LinkId[l]).IniCap();
+				//LinkId.at(l)->IniCap();
 			}
 
 			g.EvaluteGraph();
@@ -295,23 +295,23 @@ void SCHCLASS::Evaluate(GraphClass& g)
 
 int SelectOneIndexFrom(const vector<int>& candy, const vector<double>& prob);
 //GenerateIniSolutionBasedonthe pattern 
-void SCHCLASS::GenerateIniBasedOnPattern(GraphClass& g, const vector<int>& FailureLinks, 
+void ScheduleClass::GenerateIniBasedOnPattern(GraphClass& g, const vector<int>& FailureLinks, 
 	const vector<PatternClass>& pat)
 {
 #ifdef _DEBUG
 	cout << "---------------Generate Ini Based on Pattern is called" << endl;
 #endif // _DEBUG
 	assert(FailureLinks.size() > 0);
-	if (this->LinkID.size() > 0) { LinkID.clear(); StartTime.clear(); EndTime.clear(); }
+	if (this->LinkId.size() > 0) { LinkId.clear(); StartTime.clear(); EndTime.clear(); }
 	// step 1 generate ini number of links
 	vector<bool> isSelected(FailureLinks.size(), false);
 	int CountDoWhile = 0;
 	// step 1: select the first link 
 	int LinkNum = GenRandomInt(FailureLinks);
 	int LocOfFailLinks = FindValIndex(FailureLinks, LinkNum);
-	this->LinkID.push_back(LinkNum);
-	//this->LinkID.push_back(new LinkClass());
-	//LinkID.back() = &g.Links.at(LinkNum);
+	this->LinkId.push_back(LinkNum);
+	//this->LinkId.push_back(new LinkClass());
+	//LinkId.back() = &g.Links.at(LinkNum);
 	isSelected.at(LocOfFailLinks) = true;
 	vector<int> candy;
 	vector<double> prob;
@@ -335,9 +335,9 @@ void SCHCLASS::GenerateIniBasedOnPattern(GraphClass& g, const vector<int>& Failu
 		int selectedLocOfCandy = SelectOneIndexFrom(candy, prob);
 		LinkNum = FailureLinks.at(candy.at(selectedLocOfCandy));
 		LocOfFailLinks = FindValIndex(FailureLinks, LinkNum);
-		LinkID.push_back(LinkNum);
-		//LinkID.push_back(new LinkClass());
-		//LinkID.back() = &g.Links.at(LinkNum);
+		LinkId.push_back(LinkNum);
+		//LinkId.push_back(new LinkClass());
+		//LinkId.back() = &g.Links.at(LinkNum);
 		isSelected.at(LocOfFailLinks) = true;
 	} while (std::find(isSelected.begin(), isSelected.end(), false) != isSelected.end());
 
@@ -348,45 +348,45 @@ void SCHCLASS::GenerateIniBasedOnPattern(GraphClass& g, const vector<int>& Failu
 
 }
 
-// compute the key associated the solution
-void SCHCLASS::computeKey()
+// compute the Key associated the solution
+void ScheduleClass::computeKey()
 {
 	string val;
-	for (int i=0;i<LinkID.size();i++)
+	for (int i=0;i<LinkId.size();i++)
 	{
-		val = std::to_string(LinkID[i]) + val;
+		val = std::to_string(LinkId[i]) + val;
 	}
-	//for (auto l : this->LinkID)
+	//for (auto l : this->LinkId)
 	//{
 	//	//val = std::to_string(l->Id) + val;
 	//	val = std::to_string(l) + val;
 	//}
-	for (auto l : this->LinkID)
+	for (auto l : this->LinkId)
 	{
-		//cout << "wtf: link id = " << l->Id << endl;
-		cout << "wtf: link id = " << l << endl;
+		//cout << "wtf: link Id = " << l->Id << endl;
+		cout << "wtf: link Id = " << l << endl;
 	}
 	cout << "converted str = " << val << endl;
 }
 
 
-void RelationClass::UpdateScore(const LinkSchRelations& r,double _score)
+void RelationClass::UpdateScore(const LinkSchRelations& r,double score)
 {
 	switch (r)
 	{
 	case LinkSchRelations::Before:
 		BeforeCount++;
-		BeforeScore_Total += _score;
+		BeforeScore_Total += score;
 		BeforeScore_Ave = BeforeScore_Total / BeforeCount;
 		break;
 	case LinkSchRelations::After:
 		AfterCount++;
-		AfterScore_Total += _score;
+		AfterScore_Total += score;
 		AfterScore_Ave = AfterScore_Total / AfterCount;
 		break;
 	case LinkSchRelations::Same:
 		SamePeriodCount++;
-		SamePeriodScore_Total += _score;
+		SamePeriodScore_Total += score;
 		SamePeriodScore_Ave = SamePeriodScore_Total / SamePeriodCount;
 		break;
 	case LinkSchRelations::None:
@@ -400,11 +400,11 @@ void RelationClass::UpdateScore(const LinkSchRelations& r,double _score)
 
 
 //get the relationship between two links based on their starting time
-LinkSchRelations SCHCLASS::getRelation(int ALink, int ComparedLink) const
+LinkSchRelations ScheduleClass::getRelation(int aLink, int comparedLink) const
 {
 	
-	int AlinkIndex = FindValIndex(LinkID, ALink);
-	int CompareLinkIndex = FindValIndex(LinkID, ComparedLink);
+	int AlinkIndex = FindValIndex(LinkId, aLink);
+	int CompareLinkIndex = FindValIndex(LinkId, comparedLink);
 
 	if (StartTime[AlinkIndex] > StartTime[CompareLinkIndex])
 	{

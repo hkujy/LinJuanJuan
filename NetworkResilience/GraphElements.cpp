@@ -1,11 +1,12 @@
 #include "CommonHeaders.h"
-#include <assert.h>
+#include <cassert>
+#include <thread>
 using namespace std;
 
-bool ReadLinkData(std::vector<LinkClass>& Links,
+bool ReadLinkData(std::vector<LinkClass>& links,
 	ifstream& fin) {
 	LinkClass tl;
-	int IDcount = 0;
+	int IdCount = 0;
 	//int tail, head;
 	//float t0, ca0;
 	//float BprAlph, BprBeta;
@@ -19,26 +20,26 @@ bool ReadLinkData(std::vector<LinkClass>& Links,
 			continue;
 		/*	fscanf_s(fin, "%i %i %f %f %f %f",
 				&tail, &head, &t0, &ca0, &BprAlph, &BprBeta);*/
-		Links.push_back(tl);
-		Links.back().Id = IDcount;
-		Links.back().Tail = std::stoi(fields[0]);
-		Links.back().Head = std::stoi(fields[1]);
-		Links.back().T0 = std::stof(fields[2]);
-		Links.back().CaInput = std::stof(fields[3]);
-		Links.back().CaRevise = std::stof(fields[3]);
-		Links.back().AlphaBpr = std::stof(fields[4]);
-		Links.back().BetaBBpr = std::stof(fields[5]);
-		IDcount++;
+		links.push_back(tl);
+		links.back().Id = IdCount;
+		links.back().Tail = std::stoi(fields[0]);
+		links.back().Head = std::stoi(fields[1]);
+		links.back().T0 =static_cast<double>(std::stof(fields[2]));
+		links.back().CaInput = static_cast<double>(std::stof(fields[3]));
+		links.back().CaRevise = static_cast<double>(std::stof(fields[3]));
+		links.back().AlphaBpr = static_cast<double>(std::stof(fields[4]));
+		links.back().BetaBBpr = static_cast<double>(std::stof(fields[5]));
+		IdCount++;
 	}
 	return true;
 }
 
 GraphClass::GraphClass():UNPM(0.0), TotalSystemCost(0.0)
 {
-	this->OdPairs.reserve(numOD + 1);
+	this->OdPairs.reserve(static_cast<std::vector<ODClass, std::allocator<ODClass>>::size_type>(numOD) + 1);
 	this->OriginSet.reserve(numNodes);
-	this->Nodes.reserve(numNodes + 1);
-	this->Links.reserve(numLinks + 1);
+	this->Nodes.reserve(static_cast<std::vector<NodeClass, std::allocator<NodeClass>>::size_type>(numNodes) + 1);
+	this->Links.reserve(static_cast<std::vector<LinkClass, std::allocator<LinkClass>>::size_type>(numLinks) + 1);
 	//int** MinPathPredLink;
 	if (numNodes==0)
 	{
@@ -50,7 +51,7 @@ GraphClass::GraphClass():UNPM(0.0), TotalSystemCost(0.0)
 	{
 		for (int j = 0; j < numNodes + 1; j++)
 		{
-			this->MinPathPredLink[i][j] = InvaildInt;
+			this->MinPathPredLink[i][j] = INVALID_INT;
 		}
 	}
 
@@ -63,30 +64,31 @@ GraphClass::~GraphClass(){
 int GraphClass::FindMinCostRoutes(){
 
 	try{
-		int StatusMsg;
-		std::vector<double> Lable;
-		for (auto o = this->OriginSet.begin(); o != this->OriginSet.end(); o++)
+		int statusMsg = -1;
+		std::vector<double> label;
+		//for (auto o = this->OriginSet.begin(); o != this->OriginSet.end(); ++o)
+		for (auto o:OriginSet)
 		{
-			int Orig = o->Onode;
-			if (Orig<0) continue;
-			StatusMsg = this->SP(o->Onode, Lable);// shortest path
-			assert(StatusMsg);
-			//printf("Find min tree for Onode = %d \n", Orig);
+			const int orig = o.OirginNode;
+			if (orig<0) continue;
+			statusMsg = this->SP(o.OirginNode, label);// shortest path
+			assert(statusMsg);
+			//printf("Find min tree for OirginNode = %d \n", Orig);
 			//Minpath(Orig, MinPathPredLink[Orig], Lable, Nodes, Links, ModeType);
-			for (auto d = o->ODset.begin(); d != o->ODset.end(); d++)
+			//for (auto d = o.ODset.begin(); d != o.ODset.end(); ++d)
+			for (auto d:o.ODset)
 			{
-				int Dest = (*d)->Dest;
+				const int dest = (*d).Dest;
 #ifdef __DEBUG__ 
 				if (isnan(Lable[Dest])) DEBUG("Od Pair %d,mincost is NaN", *d);
 #endif	
-				this->OdPairs.at((*d)->Id).MinCost = Lable[Dest];
+				this->OdPairs.at((*d).Id).MinCost = label[dest];
 
-				//ODPairs.at(*d).MinCost.at(ModeType) = Lable[Dest];
-				if (this->OdPairs.at((*d)->Id).MinCost < InvalidMinCost)
+				if (this->OdPairs.at((*d).Id).MinCost < INVALID_MIN_COST)
 				{
-					this->OdPairs.at((*d)->Id).isConnected = true;
+					this->OdPairs.at((*d).Id).isConnected = true;
 				}
-				/*if (ODPairs.at(*d).MinCost.at(ModeType) < InvalidMinCost)
+				/*if (ODPairs.at(*d).MinCost.at(ModeType) < INVALID_MIN_COST)
 					ODPairs.at(*d).isConnected = true;*/
 			}
 		}
@@ -101,29 +103,29 @@ int GraphClass::FindMinCostRoutes(){
 }
 
 void GraphClass::CreateOriginSet()
-
 {
 	OriginBasedOD Oset;
-	vector<bool> isOrign(numNodes, false);
-	for (auto od = this->OdPairs.begin(); od != this->OdPairs.end(); od++)
+	vector<bool> isOrigin(numNodes, false);
+	//for (auto od = this->OdPairs.begin(); od != this->OdPairs.end(); od++)
+	for (auto const &od:OdPairs)
 	{
-		//cout << od->Origin << endl;
-		isOrign.at(od->Origin) = true;
+		isOrigin.at(od.Origin) = true;
 	}
-	for (int n = 0; n < numNodes; n++) {
+	for (int n = 0; n < numNodes; ++n) {
 
 		this->OriginSet.push_back(Oset);
-		if (isOrign.at(n))	this->OriginSet.back().Onode = n;
-		//if (isOrign.at(n))
-		//{
-		//	Oset.Onode = n;
-		//	this->OriginSet.push_back(Oset);
-		//}
+		if (isOrigin.at(n))	this->OriginSet.back().OirginNode = n;
 	}
+	//for (auto od = this->OdPairs.begin(); od != this->OdPairs.end(); ++od)
+	////for (auto od = this->OdPairs.begin(); od != this->OdPairs.end(); ++od)
+	//{
+	//	this->OriginSet.at(od->Origin).ODset.push_back(&*od);
+	//}
 
-	for (auto od = this->OdPairs.begin(); od != this->OdPairs.end(); od++)
+	for (auto &od: OdPairs)
+		//for (auto od = this->OdPairs.begin(); od != this->OdPairs.end(); ++od)
 	{
-		this->OriginSet.at(od->Origin).ODset.push_back(&*od);
+		this->OriginSet.at(od.Origin).ODset.push_back(&od);
 	}
 
 	cout << "finish create origin set" << endl;
@@ -131,42 +133,46 @@ void GraphClass::CreateOriginSet()
 
 void GraphClass::CreateNodes(){
 	cout <<"Read Number of Nodes in the network is"<<this->Links.size() << endl;
-	assert(this->Links.size() > 0);
+	assert(!Links.empty());
 	NodeClass tnode;
 	for (int i = 0; i < numNodes; i++)
 	{
 		this->Nodes.push_back(tnode);
 		this->Nodes.back().Id = i;
 	}
-	for (auto l = this->Links.begin(); l != this->Links.end(); l++)
+	//for (auto l = this->Links.begin(); l != this->Links.end(); ++l)
+	//{
+	//	this->Nodes.at(l->Tail).OutLinks.push_back(&*l);
+	//	this->Nodes.at(l->Head).InLinks.push_back(&*l);
+	//}
+
+	for (auto &l:this->Links)
 	{
-		this->Nodes.at(l->Tail).OutLinks.push_back(&*l);
-		this->Nodes.at(l->Head).InLinks.push_back(&*l);
+		this->Nodes.at(l.Tail).OutLinks.push_back(&l);
+		this->Nodes.at(l.Head).InLinks.push_back(&l);
 	}
 }
 
 bool ReadDemandData(vector<ODClass>& ODPairs,
 	ifstream& fin) {
 
-	int IDcount = 0;
-	//int or , de;
-	//float dd;
+	int idCount = 0;
 	vector<string> fields;
 	string line;
-	ODClass tod;
 
 	while (getline(fin, line))
 	{
 		splitf(fields, line, ",");
 		if (std::stoi(fields[0]) < 0)
 			continue;
-
-		ODPairs.push_back(tod);
-		ODPairs.back().Id = IDcount;
+		//ODClass tempOd;
+		//ODPairs.push_back(tempOd);
+		ODPairs.emplace_back(ODClass());
+		ODPairs.back().Id = idCount;
 		ODPairs.back().Origin = std::stoi(fields[0]);
 		ODPairs.back().Dest = std::stoi(fields[1]);
-		ODPairs.back().Demand = std::stof(fields[2]);
-		IDcount++;
+		ODPairs.back().Demand = static_cast<double>(std::stof(fields[2]));
+		idCount++;
 	}
 
 	return true;
@@ -181,14 +187,11 @@ void GraphClass::ReadGraphData()
 	// Read Demand data
 	if (networkIndex == 1) // Scan
 	{
-		//fopen_s(&fin, "..//Input//MediumNetwork//DeamdData.txt", "r");
 		fin.open("..//Input//MediumNetwork//DeamdData.txt");
-		//fopen_s(&fin, "..//Input//MediumNetwork//DeamdData.txt", "r");
 	}
 	else if (networkIndex == 2)
 	{
 		fin.open("..//Input//Nagureny2009Network//DeamdData.txt");
-		//fopen_s(&fin, "..//Input//Nagureny2009Network//DeamdData.txt", "r");
 	}
 	else if (networkIndex == 3)
 	{
@@ -197,12 +200,10 @@ void GraphClass::ReadGraphData()
 	else if (networkIndex == 4)
 	{
 		fin.open("..//Input//ParadoxNet//DeamdData.txt");
-		//fopen_s(&fin, "..//Input//Nagureny2009Network//DeamdData.txt", "r");
 	}
 	else if (networkIndex ==5)
 	{
 		fin.open("..//Input//WangNetwork//DeamdData.txt");
-		//fopen_s(&fin, "..//Input//Nagureny2009Network//DeamdData.txt", "r");
 	}
 	else
 	{
@@ -255,11 +256,14 @@ void GraphClass::ReadGraphData()
 	}
 
 	if (!fin.is_open())
-		cout << "link data file is not open" << endl;
+	{
+		cout << "ERR:link data file is not open" << endl;
+		system("PAUSE");
+	}
 
 	if (!ReadLinkData(Links, fin))
 	{
-		cerr << "read link data fails" << endl;
+		cerr << "Err:read link data fails" << endl;
 		system("PAUSE");
 	}
 	fin.close();
@@ -296,9 +300,9 @@ int GraphClass::PrintLinks(std::ofstream &fout){
 		}
 		return 1;
 	}
-	catch (exception &e)
+	catch (std::exception &e)
 	{
-		TRACE("%s", e);
+		TRACE("%s", e.what());
 		return 0;
 	}
 }
@@ -330,9 +334,9 @@ int GraphClass::PrintLinks_onscreen() {
 		cout << " Total Cost = " << TotalSystemCost << endl;
 		return 1;
 	}
-	catch (exception& e)
+	catch (std::exception& e)
 	{
-		TRACE("%s", e);
+		TRACE("%s", e.what());
 		return 0;
 	}
 
@@ -371,26 +375,25 @@ int GraphClass::PrintOD(std::ofstream &fout)
 
 }
 
-int GraphClass::PrintSp(int Orign, int Dest, std::ofstream &fout)
+int GraphClass::PrintSp(int origin, int dest, std::ofstream &fout)
 {
 	try{
-
-		vector<int> Path;
-		for (auto o = this->OriginSet.begin(); o != this->OriginSet.end(); o++)
+		vector<int> path;
+		for (auto o = this->OriginSet.begin(); o != this->OriginSet.end(); ++o)
 		{
-			for (auto od = o->ODset.begin(); od != o->ODset.end(); od++)
+			for (auto od = o->ODset.begin(); od != o->ODset.end(); ++od)
 			{
-				if ((*od)->Origin == Orign && Dest == (*od)->Dest)
+				if ((*od)->Origin == origin && dest == (*od)->Dest)
 				{
-					Path.clear();
+					path.clear();
 					int CurrentNode = (*od)->Dest;
 					while (CurrentNode != (*od)->Origin)
 					{
 						int k = this->MinPathPredLink[(*od)->Origin][CurrentNode];
-						Path.push_back(k);
+						path.push_back(k);
 						CurrentNode = this->Links.at(k).Tail;
 					}
-					for (auto i = Path.rbegin(); i != Path.rend(); i++)
+					for (auto i = path.rbegin(); i != path.rend(); ++i)
 					{
 						fout << *i << ",";
 					}
@@ -402,7 +405,7 @@ int GraphClass::PrintSp(int Orign, int Dest, std::ofstream &fout)
 	}
 	catch (exception &e)
 	{
-		TRACE("%s", e);
+		TRACE("%s", e.what());
 		return 0;
 	}
 }
@@ -443,7 +446,7 @@ void GraphClass::RevertFailureScenarios(const ScenarioClass& s)
 	}
 
 	cout << "------Restore Link Cap-----------------------" << endl;
-	for (int i = 0; i < MaxNumOfSchPeriod; i++)  // loop all the period
+	for (int i = 0; i < MAX_NUM_OF_SCH_PERIOD; i++)  // loop all the period
 	{
 		for (size_t j = 0; j < s.tau.size(); j++)
 		{
@@ -460,85 +463,93 @@ void GraphClass::RevertFailureScenarios(const ScenarioClass& s)
 	cout << "------End Restore Link Cap-----------------------" << endl;
 }
 
-/// <summary>
-/// compute the relative changes for the graph with and without the link
-/// </summary>
-/// <param name="link"></param>
-double GraphClass::CalRelSpChange(int LinkID)
+// calculate relative changes in the shortest path
+double GraphClass::CalRelSpChange(int linkId)
 {
 	// Step 0: Compute the Sp labels before remove the links
-	int StatusMsg;
-	for (int i = 0; i < Links.size(); i++)
+	int statusMsg=-2;
+	//for (int i = 0; i < Links.size(); i++)
+	//{
+	//	Links.at(i).Cost = Links.at(i).GetIniCost();
+	//}
+	for (auto &l:Links)
 	{
-		Links.at(i).Cost= Links.at(i).IniCost();
+		l.SetIniCost();
 	}
-	std::vector<double> Lable;
-	for (auto o = this->OriginSet.begin(); o != this->OriginSet.end(); o++)
+		//Links.at(i).Cost = Links.at(i).GetIniCost();
+
+	std::vector<double> label;
+	//for (auto o = this->OriginSet.begin(); o != this->OriginSet.end(); o++)
+	for (auto &o:OriginSet)
 	{
-		int Orig = o->Onode;
-		if (Orig < 0) continue;
-		StatusMsg = this->SP(o->Onode, Lable);// shortest path
-		assert(StatusMsg);
-		//printf("Find min tree for Onode = %d \n", Orig);
+		const int origin = o.OirginNode;
+		if (origin < 0) continue;
+		statusMsg = this->SP(o.OirginNode, label);// shortest path
+		assert(statusMsg);
+		//printf("Find min tree for OirginNode = %d \n", Orig);
 		//Minpath(Orig, MinPathPredLink[Orig], Lable, Nodes, Links, ModeType);
-		for (auto d = o->ODset.begin(); d != o->ODset.end(); d++)
+		//for (auto d = o->ODset.begin(); d != o->ODset.end(); d++)
+		for (auto const &d: o.ODset)
 		{
-			int Dest = (*d)->Dest;
+			const int dest = (*d).Dest;
 #ifdef __DEBUG__ 
 			if (isnan(Lable[Dest])) DEBUG("Od Pair %d,min cost is NaN", *d);
 #endif	
-			this->OdPairs.at((*d)->Id).BeforeRemoveSpDist = Lable[Dest];
+			this->OdPairs.at((*d).Id).BeforeRemoveSpDist = label[dest];
 			//ODPairs.at(*d).MinCost.at(ModeType) = Lable[Dest];
-			if (this->OdPairs.at((*d)->Id).BeforeRemoveSpDist < InvalidMinCost)
+			if (this->OdPairs.at((*d).Id).BeforeRemoveSpDist < INVALID_MIN_COST)
 			{
-				this->OdPairs.at((*d)->Id).BeforeRemoveSpDist = true;
+				this->OdPairs.at((*d).Id).BeforeRemoveSpDist = true;
 			}
-			/*if (ODPairs.at(*d).MinCost.at(ModeType) < InvalidMinCost)
+			/*if (ODPairs.at(*d).MinCost.at(ModeType) < INVALID_MIN_COST)
 				ODPairs.at(*d).isConnected = true;*/
 		}
 	}
 
 	//////////////////////////////////////////////////////////////////////////
 	//Step 1: Remove the link in the current network
-	this->Links.at(LinkID).Cost = RemoveLinkCost;
+	this->Links.at(linkId).Cost = REMOVE_LINK_COST;
 	//////////////////////////////////////////////////////////////////////////
-	for (auto o = this->OriginSet.begin(); o != this->OriginSet.end(); o++)
+	//for (auto o = this->OriginSet.begin(); o != this->OriginSet.end(); o++)
+	for (auto &o: OriginSet)
 	{
-		int Orig = o->Onode;
-		if (Orig < 0) continue;
-		StatusMsg = this->SP(o->Onode, Lable);// shortest path
-		assert(StatusMsg);
-		//printf("Find min tree for Onode = %d \n", Orig);
+		const int origin = o.OirginNode;
+		if (origin < 0) continue;
+		statusMsg = this->SP(o.OirginNode, label);// shortest path
+		assert(statusMsg);
+		//printf("Find min tree for OirginNode = %d \n", Orig);
 		//Minpath(Orig, MinPathPredLink[Orig], Lable, Nodes, Links, ModeType);
-		for (auto d = o->ODset.begin(); d != o->ODset.end(); d++)
+		//for (auto d = o->ODset.begin(); d != o->ODset.end(); d++)
+		for (auto const &d:o.ODset)
 		{
-			int Dest = (*d)->Dest;
+			const int dest = (*d).Dest;
 #ifdef __DEBUG__ 
 			if (isnan(Lable[Dest])) DEBUG("Od Pair %d,min cost is NaN", *d);
 #endif	
-			this->OdPairs.at((*d)->Id).AfterRemoveSpDist = Lable[Dest];
+			this->OdPairs.at((*d).Id).AfterRemoveSpDist = label[dest];
 			//ODPairs.at(*d).MinCost.at(ModeType) = Lable[Dest];
-			if (this->OdPairs.at((*d)->Id).AfterRemoveSpDist < InvalidMinCost)
+			if (this->OdPairs.at((*d).Id).AfterRemoveSpDist < INVALID_MIN_COST)
 			{
-				this->OdPairs.at((*d)->Id).isConnected = true;
+				this->OdPairs.at((*d).Id).isConnected = true;
 			}
-			/*if (ODPairs.at(*d).MinCost.at(ModeType) < InvalidMinCost)
+			/*if (ODPairs.at(*d).MinCost.at(ModeType) < INVALID_MIN_COST)
 				ODPairs.at(*d).isConnected = true;*/
 		}
 	}
 	//TODO: need to update the denominator	
-	double EIvalue = 0.0;
-	for (auto o:OdPairs)
+	double evaluateVal = 0.0;
+	for (auto const &o:OdPairs)
 	{
 #ifdef _DEBUG
 		assert(o.AfterRemoveSpDist > 0);
 		assert(o.BeforeRemoveSpDist > 0);
 #endif // _DEBUG
-		EIvalue += (1/ o.BeforeRemoveSpDist- 1 / o.AfterRemoveSpDist);
+		evaluateVal += (1/ o.BeforeRemoveSpDist- 1 / o.AfterRemoveSpDist);
 	}
 
 	//Final step add back the link
-	this->Links.at(LinkID).Cost = this->Links.at(LinkID).IniCost();
+	//this->Links.at(linkId).Cost = this->Links.at(linkId).GetIniCost();
+	this->Links.at(linkId).SetIniCost();
 
-	return EIvalue;
+	return evaluateVal;
 }

@@ -3,14 +3,17 @@
 #include <algorithm>    // std::max
 #include <math.h>       /* pow */
 using namespace std;
-
-double LinkClass::CleanLinkFlow(){
-	return 0.0f;
-}
-double LinkClass::IniCost(){
+//
+//double LinkClass::CleanLinkFlow() const
+//{
+//	return 0.0;
+//}
+double LinkClass::GetIniCost() const
+{
 	return this->T0;
 }
-double LinkClass::BPRCost(){
+double LinkClass::BPRCost()
+{
 	//assert(this->CaRevise > zero);
 	//return (this->T0*(1.0f + (this->AlphaBpr)*std::pow((this->Flow /std::max(this->CaRevise, zero)), this->BetaBBpr)));
 	//return (this->T0*(1.0f + 0.15*std::pow((this->Flow /std::max(this->CaRevise, zero)), 4.0)));

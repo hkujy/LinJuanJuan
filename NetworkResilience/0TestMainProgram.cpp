@@ -125,7 +125,7 @@ int main(int argc, char* argv[])
 	  networkIndex = 5; //Wang David network
 	*/
 	//zero = 1.0e-16f;
-	cout << "Remarks: Maximum Restore Periods is " << MaxNumOfSchPeriod << endl;
+	cout << "Remarks: Maximum Restore Periods is " << MAX_NUM_OF_SCH_PERIOD << endl;
 	isWriteConverge = true;
 	OpenAndCleanFiles();
 	ReadModelPara();

@@ -24,18 +24,18 @@ int CompareThreeNumber(double A, double B, double C)
 }
 
 
-LinkSchRelations SCHCLASS::findDominantRelation(int Alink, int Blink, const vector<PatternClass> &Pattern,
+LinkSchRelations ScheduleClass::findDominantRelation(int aLink, int bLink, const vector<PatternClass> &pat,
 	enum_CompareScoreMethod &CompareScoreMethod)
 {
-	size_t Aid = findPatternIndex_fun(Alink, Pattern);
-	size_t Bid = Pattern[Aid].findRelationId(Blink);
+	size_t Aid = findPatternIndex_fun(aLink, pat);
+	size_t Bid = pat[Aid].findRelationId(bLink);
 	int flag = -1;
 	switch (CompareScoreMethod)
 	{
 	case enum_CompareScoreMethod::Ave:
-		flag = CompareThreeNumber(Pattern[Aid].Relation[Bid].AfterScore_Ave,
-			Pattern[Aid].Relation[Bid].BeforeScore_Ave,
-			Pattern[Aid].Relation[Bid].SamePeriodScore_Ave);
+		flag = CompareThreeNumber(pat[Aid].Relation[Bid].AfterScore_Ave,
+			pat[Aid].Relation[Bid].BeforeScore_Ave,
+			pat[Aid].Relation[Bid].SamePeriodScore_Ave);
 		// if the three have the same value, then consider it is no dominated solution status
 		if (0 == flag) return LinkSchRelations::noDominated;
 		if (1 == flag) return LinkSchRelations::After;
@@ -44,9 +44,9 @@ LinkSchRelations SCHCLASS::findDominantRelation(int Alink, int Blink, const vect
 		break;
 	case enum_CompareScoreMethod::Total:
 		flag = CompareThreeNumber(
-			Pattern[Aid].Relation[Bid].AfterScore_Total,
-			Pattern[Aid].Relation[Bid].BeforeScore_Total,
-			Pattern[Aid].Relation[Bid].SamePeriodScore_Total);
+			pat[Aid].Relation[Bid].AfterScore_Total,
+			pat[Aid].Relation[Bid].BeforeScore_Total,
+			pat[Aid].Relation[Bid].SamePeriodScore_Total);
 		if (0 == flag) return LinkSchRelations::noDominated;
 		if (1 == flag) return LinkSchRelations::After;
 		if (2 == flag) return LinkSchRelations::Before;
@@ -126,14 +126,14 @@ LinkSchRelations getReversRelation(LinkSchRelations& r)
 
 // update the score based on the input solution 
 // only call this when it is improved
-void Algorithm::LearnPattern_Score(const SCHCLASS& sol, bool isGlobalImprove)
+void Algorithm::LearnPattern_Score(const ScheduleClass& sol, bool isGlobalImprove)
 {
 	//TOOD: update the pattern of the improve solution
-	for (int i = 0; i < sol.LinkID.size() - 1; i++)
+	for (int i = 0; i < sol.LinkId.size() - 1; i++)
 	{
-		//int first = (*sol.LinkID.at(i)).Id;
-		int first = sol.LinkID.at(i);
-		int next = sol.LinkID.at(i + 1);
+		//int first = (*sol.LinkId.at(i)).Id;
+		int first = sol.LinkId.at(i);
+		int next = sol.LinkId.at(i + 1);
 
 		size_t PtLoc = findPatternIndex(first);
 		size_t VecLoc = static_cast<size_t>(FindValIndex(SetOfFailureLinks, next));
@@ -160,15 +160,15 @@ void Algorithm::LearnPattern_Score(const SCHCLASS& sol, bool isGlobalImprove)
 }
 
 //Update the relation score
-void Algorithm::LearnPatternRelation_Score(const SCHCLASS& sol, bool isGlobalImprove)
+void Algorithm::LearnPatternRelation_Score(const ScheduleClass& sol, bool isGlobalImprove)
 {
-	for (int i = 0; i < sol.LinkID.size(); i++)
+	for (int i = 0; i < sol.LinkId.size(); i++)
 	{
-		for (int j = 0; j < sol.LinkID.size(); j++)
+		for (int j = 0; j < sol.LinkId.size(); j++)
 		{
 			if (i==j) continue;
-			int ALink = sol.LinkID[i];
-			int ComparedLink = sol.LinkID[j];
+			int ALink = sol.LinkId[i];
+			int ComparedLink = sol.LinkId[j];
 			// step 1 : update the forward direction relationship, e.g. A - B
 			LinkSchRelations r = sol.getRelation(ALink, ComparedLink);
 			size_t AlinkId = findPatternIndex(ALink);

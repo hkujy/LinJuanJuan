@@ -81,7 +81,7 @@ double OneDim(vector<LinkClass> VALinks, std::vector<LinkClass> VBLinks,
 	catch (exception& e)
 	{
 		TRACE("ONEDIM %s", e.what());
-		return InvaildFloat;
+		return INVALID_FLOAT;
 	}
 }
 
@@ -90,9 +90,11 @@ void Assign(const std::vector<OriginBasedOD>& Oset,
 	std::vector<LinkClass>& Links) {
 	//try {
 
-	for (auto l = Links.begin(); l != Links.end(); l++)
+	//for (auto l = Links.begin(); l != Links.end(); l++)
+	for (auto &l :Links)
 	{
-		l->Flow = l->CleanLinkFlow();
+		l.CleanLinkFlow();
+		//l->Flow = l->CleanLinkFlow();
 	}
 	for (auto o = Oset.begin(); o != Oset.end(); o++)
 	{
@@ -107,12 +109,12 @@ void Assign(const std::vector<OriginBasedOD>& Oset,
 				if (k < 0)
 				{
 					std::cout << "k="<<k << endl;
-					std::cout << "origin = " << o->Onode << ", dest = " << (*od)->Dest << endl;
+					std::cout << "origin = " << o->OirginNode << ", dest = " << (*od)->Dest << endl;
 					std::cout <<  "This OD pair may not be connected" << endl;
 				}
 
 #ifdef __DEBUG__ 
-				if (k == InvaildInt) {
+				if (k == INVALID_INT) {
 					DEBUG("A problem in mincostroutes.c (Assign): Invalid pred for node %d Orig %d \n\n", CurrentNode, Origin);
 					break;
 				}
@@ -139,11 +141,16 @@ int GraphClass::FW_UE() {
 		int StatusMsg;
 		// step -1 clean and create variable:
 		int NumIter = -1;
-		for (auto l = this->Links.begin(); l != this->Links.end(); l++)
+		for (auto &l:Links)
 		{
-			l->Flow = l->CleanLinkFlow();
-			l->Cost = l->IniCost();
+			l.CleanLinkFlow();
+			l.SetIniCost();
 		}
+		//for (auto l = this->Links.begin(); l != this->Links.end(); l++)
+		//{
+		//	//l->Flow = l->CleanLinkFlow();
+		//	l->Cost = l->GetIniCost();
+		//}
 
 		vector<LinkClass> YLinks;
 		vector<LinkClass> OldLinks;

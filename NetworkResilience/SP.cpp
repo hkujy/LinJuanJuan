@@ -6,7 +6,7 @@ using namespace std;
 bool UpdateLable(const double CurrentCost, const double LinkCost, const double OldNextNodeCost, double &NewCost)
 {
 
-	NewCost = InvaildFloat;
+	NewCost = INVALID_FLOAT;
 	//printf("ModeType = %d, link Type = %d \n", ModeType, Links.at(LinkIndex).Type);
 	NewCost = CurrentCost + LinkCost;
 #ifdef __DEBUG__  
@@ -24,7 +24,7 @@ try
 	{
 		int  WasInQueue = -7;
 		int now, NewNode, Return2Q_Count = 0;
-		double NewCost = InvaildFloat;
+		double NewCost = INVALID_FLOAT;
 		int QueueFirst, QueueLast;
 		label.clear();
 		std::vector<int> QueueNext;
@@ -32,20 +32,20 @@ try
 		QueueNext.reserve(numNodes);
 	
 		for (int node = 0; node < numNodes; node++){
-			QueueNext.push_back(InvaildInt);
-			//label[node] = LargeNum;
-			label.push_back(LargeNum);
-			//PredLink[node] = InvaildInt;
-			this->MinPathPredLink[origin][node] = InvaildInt;
+			QueueNext.push_back(INVALID_INT);
+			//label[node] = LARGE_NUM;
+			label.push_back(LARGE_NUM);
+			//PredLink[node] = INVALID_INT;
+			this->MinPathPredLink[origin][node] = INVALID_INT;
 		}
 		now = origin;
 		QueueNext.at(now) = WasInQueue;
-		//PredLink[now] = InvaildInt;
-		this->MinPathPredLink[origin][now] = InvaildInt;
+		//PredLink[now] = INVALID_INT;
+		this->MinPathPredLink[origin][now] = INVALID_INT;
 
 		label[now] = 0.0;
-		QueueFirst = QueueLast = InvaildInt;
-		while ((now != InvaildInt) && (now != WasInQueue)) {
+		QueueFirst = QueueLast = INVALID_INT;
+		while ((now != INVALID_INT) && (now != WasInQueue)) {
 			for (auto k =this->Nodes.at(now).OutLinks.begin();
 				k != this->Nodes.at(now).OutLinks.end(); k++) {
 
@@ -69,18 +69,18 @@ try
 					if (QueueNext.at(NewNode) == WasInQueue) {
 						QueueNext.at(NewNode) = QueueFirst;
 						QueueFirst = NewNode;
-						if (QueueLast == InvaildInt)
+						if (QueueLast == INVALID_INT)
 							QueueLast = NewNode;
 						Return2Q_Count++;
 					}
-					else if (QueueNext.at(NewNode) == InvaildInt && NewNode != QueueLast) {
-						if (QueueLast != InvaildInt) { 					/*Usually*/
+					else if (QueueNext.at(NewNode) == INVALID_INT && NewNode != QueueLast) {
+						if (QueueLast != INVALID_INT) { 					/*Usually*/
 							QueueNext.at(QueueLast) = NewNode;
 							QueueLast = NewNode;
 						}
 						else {			  /* If the queue is empty, initialize it. */
 							QueueFirst = QueueLast = NewNode;
-							QueueNext.at(QueueLast) = InvaildInt;
+							QueueNext.at(QueueLast) = INVALID_INT;
 						}
 					}
 					/* If the new node is in the queue, just leave it there. (Do nothing) */
@@ -89,11 +89,11 @@ try
 
 			/* Get the first node out of the queue, and use it as the current node. */
 			now = QueueFirst;
-			if ((now == InvaildInt) || (now == WasInQueue))	break;
+			if ((now == INVALID_INT) || (now == WasInQueue))	break;
 
 			QueueFirst = QueueNext[now];
 			QueueNext.at(now) = WasInQueue;
-			if (QueueLast == now) QueueLast = InvaildInt;
+			if (QueueLast == now) QueueLast = INVALID_INT;
 		}
 		return 1;
 	}//try

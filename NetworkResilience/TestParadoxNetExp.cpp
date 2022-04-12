@@ -63,7 +63,7 @@ void CheckReadSolScenario_2_period(Algorithm alg)
 	vector<int> st(5,-1);
 	vector<int> et(5,-1);
 	int SolNumCounter = 0;
-	//Sols.push_back(SCHCLASS(i));
+	//Sols.push_back(ScheduleClass(i));
 	string line;
 	vector<string> fields;
 	while (getline(fin, line))
@@ -75,11 +75,11 @@ void CheckReadSolScenario_2_period(Algorithm alg)
 			st.at(i) = static_cast<int>(stoi(fields[i + 5]))-1;
 			et.at(i) = st.at(i) + 2;
 		}
-		alg.Sols.push_back(SCHCLASS());
+		alg.Sols.push_back(ScheduleClass());
 		for (int i = 0; i < 5; i++)
 		{
-			//alg.Sols.back().LinkID.push_back(&alg.Graph->Links.at(lv.at(i)));
-			alg.Sols.back().LinkID.push_back(lv.at(i));
+			//alg.Sols.back().LinkId.push_back(&alg.Graph->Links.at(lv.at(i)));
+			alg.Sols.back().LinkId.push_back(lv.at(i));
 			alg.Sols.back().StartTime.push_back(st.at(i));
 			alg.Sols.back().EndTime.push_back(et.at(i));
 		}
@@ -117,7 +117,7 @@ void CheckReadSolScenario_1_period(Algorithm alg)
 	vector<int> st(5, -1);
 	vector<int> et(5, -1);
 	int SolNumCounter = 0;
-	//Sols.push_back(SCHCLASS(i));
+	//Sols.push_back(ScheduleClass(i));
 	string line;
 	vector<string> fields;
 	while (getline(fin, line))
@@ -129,11 +129,11 @@ void CheckReadSolScenario_1_period(Algorithm alg)
 			st.at(i) = static_cast<int>(stoi(fields[i + 5])) - 1;
 			et.at(i) = st.at(i) + 1;
 		}
-		alg.Sols.push_back(SCHCLASS());
+		alg.Sols.push_back(ScheduleClass());
 		for (int i = 0; i < 5; i++)
 		{
-			//alg.Sols.back().LinkID.push_back(&alg.Graph->Links.at(lv.at(i)));
-			alg.Sols.back().LinkID.push_back(lv.at(i));
+			//alg.Sols.back().LinkId.push_back(&alg.Graph->Links.at(lv.at(i)));
+			alg.Sols.back().LinkId.push_back(lv.at(i));
 			alg.Sols.back().StartTime.push_back(st.at(i));
 			alg.Sols.back().EndTime.push_back(et.at(i));
 		}
@@ -159,12 +159,12 @@ void CompareBaressNet(Algorithm alg)
 	OutFile.open("..//OutPut//CompareBaressNet.txt", ios::trunc);
 	OutFile << "Link,Unpm,Impact,Cost,CostIncr" << endl;
 	alg.Graph->EvaluteGraph();
-	alg.Sols.push_back(SCHCLASS());
-	alg.Sols.back().LinkID.push_back(8);
-	alg.Sols.back().LinkID.push_back(3);
-	alg.Sols.back().LinkID.push_back(5);
-	alg.Sols.back().LinkID.push_back(7);
-	alg.Sols.back().LinkID.push_back(6);
+	alg.Sols.push_back(ScheduleClass());
+	alg.Sols.back().LinkId.push_back(8);
+	alg.Sols.back().LinkId.push_back(3);
+	alg.Sols.back().LinkId.push_back(5);
+	alg.Sols.back().LinkId.push_back(7);
+	alg.Sols.back().LinkId.push_back(6);
 	vector<int> st = { 1,2,3,4,5 };
 	for (int i = 0; i < 5; i++)
 	{
@@ -178,12 +178,12 @@ void CompareBaressNet(Algorithm alg)
 	alg.Graph->PrintLinks_onscreen();
 	OutFile << "Seq:8,5,3,7,6, total cost = " << alg.Sols.back().Fitness << endl;
 
-	alg.Sols.push_back(SCHCLASS());
-	alg.Sols.back().LinkID.push_back(5);
-	alg.Sols.back().LinkID.push_back(8);
-	alg.Sols.back().LinkID.push_back(7);
-	alg.Sols.back().LinkID.push_back(3);
-	alg.Sols.back().LinkID.push_back(6);
+	alg.Sols.push_back(ScheduleClass());
+	alg.Sols.back().LinkId.push_back(5);
+	alg.Sols.back().LinkId.push_back(8);
+	alg.Sols.back().LinkId.push_back(7);
+	alg.Sols.back().LinkId.push_back(3);
+	alg.Sols.back().LinkId.push_back(6);
 	st = { 1,2,3,4,5 };
 	for (int i = 0; i < 5; i++)
 	{
@@ -205,12 +205,12 @@ void Check2PeriodSol(Algorithm alg)
 	//OutFile.open("..//OutPut//CompareBaressNet.txt", ios::trunc);
 	//OutFile << "Link,Unpm,Impact,Cost,CostIncr" << endl;
 	//alg.Graph->EvaluteGraph();
-	alg.Sols.push_back(SCHCLASS());
-	alg.Sols.back().LinkID.push_back(3);
-	alg.Sols.back().LinkID.push_back(5);
-	alg.Sols.back().LinkID.push_back(8);
-	alg.Sols.back().LinkID.push_back(6);
-	alg.Sols.back().LinkID.push_back(7);
+	alg.Sols.push_back(ScheduleClass());
+	alg.Sols.back().LinkId.push_back(3);
+	alg.Sols.back().LinkId.push_back(5);
+	alg.Sols.back().LinkId.push_back(8);
+	alg.Sols.back().LinkId.push_back(6);
+	alg.Sols.back().LinkId.push_back(7);
 	vector<int> st = { 1,1,3,5,5 };
 	for (int i = 0; i < 5; i++)
 	{
@@ -221,7 +221,7 @@ void Check2PeriodSol(Algorithm alg)
 
 	alg.GlobalBest = alg.Sols.back();
 	alg.PrintFinal(0);
-	//alg.Sols.push_back(SCHCLASS());
+	//alg.Sols.push_back(ScheduleClass());
 	//alg.Sols.back().Links.push_back(&alg.Graph->Links.at(6));
 	//alg.Sols.back().Links.push_back(&alg.Graph->Links.at(3));
 	//alg.Sols.back().Links.push_back(&alg.Graph->Links.at(7));

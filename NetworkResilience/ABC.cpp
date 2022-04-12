@@ -47,7 +47,7 @@ int Algorithm::SelectOperatorIndex()
 	if (isTestSingleOperator) return testSingleOperatorIndex;
 	if (this->SelectOp == SelectOperatorType::Uniform)
 	{
-		return GenRandomInt(0, NumOperators-1);
+		return GenRandomInt(0, NUM_OPERATORS-1);
 	}
 	if (this->SelectOp == SelectOperatorType::ALNS)
 	{
@@ -60,7 +60,7 @@ void Algorithm::IniOperatorProb_ANLS()
 {
 	for (int i = 0; i < Operators.size(); i++)
 	{
-		Operators.at(i).Prob = 1.0 / NumOperators;
+		Operators.at(i).Prob = 1.0 / NUM_OPERATORS;
 		Operators.at(i).Weight = 1.0;
 		Operators.at(i).Score = 1.0;
 		Operators.at(i).TotalCounterBad = 0;
@@ -70,7 +70,7 @@ void Algorithm::IniOperatorProb_ANLS()
 }
 void Algorithm::IniOperatorProb()
 {
-	CumProbForSelectNei.assign(NumOperators, 0.0);
+	CumProbForSelectNei.assign(NUM_OPERATORS, 0.0);
 	if (SelectOp == SelectOperatorType::ALNS) IniOperatorProb_ANLS();
 	else if (SelectOp == SelectOperatorType::Uniform) { ; }
 	else 
@@ -181,17 +181,17 @@ void Algorithm::ABCMain()
 //Evaluate solution
 //if it is a new solution, then add to archive 
 //if not, then evaluate the solution
-void Algorithm::evaluateOneSol(SCHCLASS& Sol, GraphClass& g)
+void Algorithm::evaluateOneSol(ScheduleClass& Sol, GraphClass& g)
 {
-	Sol.key.assign(getMapStrFromSol(Sol));
+	Sol.Key.assign(getMapStrFromSol(Sol));
 	if (isNeedToEvaluateSol(Sol))
 	{
 		Sol.Evaluate(g);
-		m_str_val_solArchive.insert(std::make_pair(Sol.key, Sol.Fitness));
+		m_str_val_solArchive.insert(std::make_pair(Sol.Key, Sol.Fitness));
 	}
 	else
 	{
-		Sol.Fitness = m_str_val_solArchive[Sol.key];
+		Sol.Fitness = m_str_val_solArchive[Sol.Key];
 	}
 }
 
@@ -204,7 +204,7 @@ void Algorithm::GenerateIniSol()
 #ifdef _DEBUG
 		cout << "-----------------------Generate Ini Sol= " << i << "-------------------" << endl;
 #endif // _DEBUG
-		Sols.push_back(SCHCLASS(i));
+		Sols.push_back(ScheduleClass(i));
 		Sols.back().GenerateIniSch(*Graph, SetOfFailureLinks);
 		Sols.back().AlignStartTime(SetOfResourceCap,*Graph);
 #ifdef _DEBUG
@@ -245,7 +245,7 @@ void Algorithm::GenerateIniSol()
 }
 
 
-bool Algorithm::CompareTwoSolsAndReplace(SCHCLASS& lhs, SCHCLASS& rhs, int NeiOperatorId)
+bool Algorithm::CompareTwoSolsAndReplace(ScheduleClass& lhs, ScheduleClass& rhs, int NeiOperatorId)
 {
 	//Compare the left hand side and the right hand side solutions 
 	//if the right hand side is better 
@@ -279,7 +279,7 @@ void Algorithm::EmployBeePhase()
 {
 	for (int i = 0; i < NumEmployedBee; i++)
 	{
-		SCHCLASS Nei(this->Sols.at(i));
+		ScheduleClass Nei(this->Sols.at(i));
 		bool isImproved = false;
 #ifdef _DEBUG
 		cout << "******Employed Bee = " << i << "**************" << endl;
@@ -306,7 +306,7 @@ void Algorithm::OnlookerPhase()
 		cout << "******Onlooker Bee = " << i << "**************" << endl;
 		cout << "******Selected Bee = " << Selected << "**************" << endl;
 #endif // _DEBUG
-		SCHCLASS Nei(this->Sols.at(Selected));
+		ScheduleClass Nei(this->Sols.at(Selected));
 		int OpId = SelectOperatorIndex();
 		this->Sols.at(Selected).GenNei(Nei, *Graph, OpId, SetOfFailureLinks, SetOfResourceCap,Pattern,CompareScoreMethod);
 		evaluateOneSol(Nei, *Graph);
@@ -403,7 +403,7 @@ void Algorithm::IniPattern()
 	for (int l = 0; l < SetOfFailureLinks.size(); l++)
 	{
 		Pattern.push_back(PatternClass());
-		Pattern.back().id = l;
+		Pattern.back().Id = l;
 		Pattern.back().LinkId = SetOfFailureLinks.at(l);
 		for (int k = 0; k < SetOfFailureLinks.size(); k++)
 		{
@@ -444,7 +444,7 @@ void Algorithm::Ini(GraphClass& g)
 	for (int l = 0; l < SetOfFailureLinks.size(); l++)
 	{
 		Pattern.push_back(PatternClass());
-		Pattern.back().id = l;
+		Pattern.back().Id = l;
 		Pattern.back().LinkId = SetOfFailureLinks.at(l);
 		for (int k =0;k<SetOfFailureLinks.size();k++)
 		{
@@ -568,7 +568,7 @@ void Algorithm::ReadData(GraphClass& g)
 		{
 			if (fields[0]._Equal("res"))
 			{
-				SetOfResourceCap.assign(MaxNumOfSchPeriod, stoi(fields[1]));
+				SetOfResourceCap.assign(MAX_NUM_OF_SCH_PERIOD, stoi(fields[1]));
 			}
 			else
 				std::cout << "ERR: Read failure links warning" << endl;
@@ -630,10 +630,10 @@ void Algorithm::PrintFinal(int sd)
 	{
 		TRACE("Name of the algorithm is not specified");
 	}
-	for (size_t t = 0; t < GlobalBest.LinkID.size(); t++)
+	for (size_t t = 0; t < GlobalBest.LinkId.size(); t++)
 	{
-		//sf << sd << "," << GlobalBest.LinkID.at(t)->Id << "," << GlobalBest.StartTime.at(t) << "," <<
-		sf << sd << "," << GlobalBest.LinkID.at(t) << "," << GlobalBest.StartTime.at(t) << "," <<
+		//sf << sd << "," << GlobalBest.LinkId.at(t)->Id << "," << GlobalBest.StartTime.at(t) << "," <<
+		sf << sd << "," << GlobalBest.LinkId.at(t) << "," << GlobalBest.StartTime.at(t) << "," <<
 			GlobalBest.EndTime.at(t) << endl;
 	}
 	sf.close();
@@ -653,11 +653,11 @@ void Algorithm::PrintFinal(int sd)
 }
 
 OperatorClass::OperatorClass():Id(-1),TotalCounterGood(0), TotalCounterBad(0), TotalCounterSum(0), 
-Score(1),Prob(1.0/NumOperators),Weight(1){}
+Score(1),Prob(1.0/NUM_OPERATORS),Weight(1){}
 //OperatorClass::~OperatorClass()
 //{
 //	Id = -1; TotalCounterSum = 0; TotalCounterBad = 0; TotalCounterGood = 0;
-//	Score = 1; Prob = 1.0/NumOperators;
+//	Score = 1; Prob = 1.0/NUM_OPERATORS;
 //	Weight = 1;
 //}
 
@@ -680,7 +680,7 @@ void Algorithm::PrintOperator(int seedId, int iter)
 		TRACE("Name of the algorithm is not specified");
 	}
 	//OutFile << "Seed,Iter,Id,Good,Bad,Sum,Gp,Bp,Prob,Score,Weight" << endl;
-	for (int i = 0; i < NumOperators; ++i)
+	for (int i = 0; i < NUM_OPERATORS; ++i)
 	{
 		OutFile << seedId<< ",";
 		OutFile << iter << ",";
@@ -713,11 +713,11 @@ void Algorithm::UpdateOperatorWeight()
 void Algorithm::ReadSolAndEvaluate(vector<int> &vec,GraphClass &g)
 {
 	// step 1: set the solution vector 
-	SCHCLASS sol;
+	ScheduleClass sol;
 	sol.EndTime.assign(SetOfFailureLinks.size(), -1);
 	sol.StartTime.assign(SetOfFailureLinks.size(), -1);
-	//for (int l = 0; l < vec.size(); l++) sol.LinkID.push_back(&Graph->Links.at(vec[l]));
-	for (int l = 0; l < vec.size(); l++) sol.LinkID.push_back(vec[l]);
+	//for (int l = 0; l < vec.size(); l++) sol.LinkId.push_back(&Graph->Links.at(vec[l]));
+	for (int l = 0; l < vec.size(); l++) sol.LinkId.push_back(vec[l]);
 	if (SetOfFailureLinks.size() != vec.size()) 
 		std::cout << "c++: warning: the failure link size does not equal vec size" << endl;
 	sol.AlignStartTime(SetOfResourceCap,g);
@@ -814,7 +814,7 @@ void Algorithm::printPattern(int seedId)
 	}
 	OutFile.close();
 }
-//void SetAlgoType(std::string _name, AlgorithmType& alot)
+//void SetAlgorithmType(std::string _name, AlgorithmType& algorithmType)
 //{
 //	//TODO
 //	//	enum AlgorithmType
@@ -823,9 +823,9 @@ void Algorithm::printPattern(int seedId)
 //	//};
 //
 //}
-std::string getAlgoTypeName(const AlgorithmType& alot)
+std::string getAlgorithmTypeName(const AlgorithmType& algorithmType)
 {
-	switch (alot)
+	switch (algorithmType)
 	{
 	case (AlgorithmType::HH):
 		return "HH"; break;
@@ -839,9 +839,9 @@ std::string getAlgoTypeName(const AlgorithmType& alot)
 }
 
 // this is to check whether the solution needs to be evaluated
-bool Algorithm::isNeedToEvaluateSol(const SCHCLASS &sol)
+bool Algorithm::isNeedToEvaluateSol(const ScheduleClass &sol)
 {
-	return isAddNewToArchive(sol.key);
+	return isAddNewToArchive(sol.Key);
 }
 
 // TODO: check whether the link is a new to the archive 
@@ -854,27 +854,27 @@ bool Algorithm::isAddNewToArchive(const string &key)
 		return false;
 }
 
-string Algorithm::getMapStrFromSol(const SCHCLASS &sol) //get string for the map sol archive
+string Algorithm::getMapStrFromSol(const ScheduleClass &sol) //get string for the map sol archive
 {
 	string str_val;
-	for (size_t l=0; l < sol.LinkID.size(); l++)
+	for (size_t l=0; l < sol.LinkId.size(); l++)
 	{
 		if (l == 0)
 		{
-			if (sol.LinkID[l]==0) str_val = "0";
-			else str_val = std::to_string(sol.LinkID[l]);
+			if (sol.LinkId[l]==0) str_val = "0";
+			else str_val = std::to_string(sol.LinkId[l]);
 		}
 		else
 		{
-			if (sol.LinkID[l] == 0) str_val.append(",0");
+			if (sol.LinkId[l] == 0) str_val.append(",0");
 			else
 			{
-				str_val.append(",");str_val.append(std::to_string(sol.LinkID[l]));
+				str_val.append(",");str_val.append(std::to_string(sol.LinkId[l]));
 			}
 		}
 	}
 #ifdef _DEBUG
-	for (auto l : sol.LinkID)
+	for (auto l : sol.LinkId)
 	{
 		//cout << "wtf: link Id = " << l->Id << endl;
 		cout << "wtf: link Id = " << l << endl;
