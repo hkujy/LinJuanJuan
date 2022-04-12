@@ -9,7 +9,7 @@ import PlotOperatorConverge
 # root_folder = r"C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin\Tests2022/"
 # root_folder = r'C:/GitCodes/2022Apr3Test/'
 # root_folder = r'C:/GitCodes/RandomDemand/'
-root_folder = r'M:/LinJuan/RandomSeed/'
+root_folder = r'M:/LinJuan/500Iter/'
 # plot 1 plot the heatmap for the optimal pattern
 
 def EffectOfOperators():
@@ -38,9 +38,9 @@ def PlotFinalRelation():
     psf.plotRelation(test_folder)
 
 if __name__ == "__main__":
-    # EffectOfOperators()
+    EffectOfOperators()
     # CompareThree()
-    PlotFinalRelation()
+    # PlotFinalRelation()
     
 
     # testfolder =  root_folder + "/RemoveOperator/"

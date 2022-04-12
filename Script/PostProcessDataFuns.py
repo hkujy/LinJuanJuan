@@ -3,9 +3,11 @@
 # from tkinter import font
 # from tkinter.font import _FontDict
 # from tkinter.font import _FontDict
-from xml import dom
+from audioop import avg
 import pandas as pd
 import matplotlib.pyplot as plt
+from statistics import mean
+import statistics as stat
 import os
 import para
 import numpy as np
@@ -14,12 +16,12 @@ import numpy as np
 label_font = {'family': 'Times New Roman', 
 			  'weight': 'bold',
 			  'size': 12
-            }
+			}
 
 tick_font = {'family': 'Times New Roman', 
 			  'weight': 'bold',
 			  'size': 10
-            }
+			}
 
 
 def getBestSeed(_folder:str):#return the best seed number
@@ -113,7 +115,44 @@ def CompareOneFolder(_folder:str,_name:str):
 	plt.pause(1)
 	plt.savefig(_folder+"\\"+_name+"_min.png", bbox_inches='tight', dpi=600)
 	plt.close()
-
+ 
+	# next is to output the value, std, and min value
+	allObjs = []
+	ave = []
+	minval = []
+	std = []
+	for fo in range(0, len(dirs)):
+		f = _folder+"\\"+dirs[fo] + "\\ABCPrintSeedBestSolVal.txt"
+		df = pd.read_csv(f)
+		print(df)
+		obj = []
+		for j in range(0, para.NumOfTestSeed):
+			obj.append(df["BestVal"][j])
+		allObjs.append(obj)
+		ave.append(mean(obj))
+		minval.append(min(obj))
+		std.append(stat.stdev(obj))
+	rowLabel = []			
+	matrix = []
+	for i in range(0, len(dirs)):
+		matrix.append([-1]*3)
+	colLabel = ["Ave","Min","Std"]
+	for i in range(0,len(dirs)):
+		rowLabel.append(dirs[i])
+		matrix[i][0] = ave[i]
+		matrix[i][1] = minval[i]
+		matrix[i][2] = std[i]
+	print(matrix)
+	mydf = pd.DataFrame(matrix,columns=colLabel,index=rowLabel)
+	plotTable(mydf,"Summary")
+	
+	with open(_folder+"Summary.txt","w+") as f:
+		print(mydf,file=f)
+		# print("Id,Obj",file=f)
+		# for r in range(0,len(df)):
+			# print("{0},{1}",df['Exp'][r],df['MinObj'][r],file=f)
+	
+ 
 
 def TuneReward():
 	"""

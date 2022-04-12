@@ -17,7 +17,7 @@ isDebug = False
 #             1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,16,18,19,20]
 SeedPool = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,16,18,19,20]
 # NumOfTestSeed = len(SeedPool)
-NumOfTestSeed = 20
+NumOfTestSeed = 10
 # FailureLinks = [0, 6, 19, 22, 26, 27, 34, 38, 42, 55, 59, 73]
 FailureLinks = [0,2,6,12,16,19,22,26,27,29,31,34,42,50,55,59]
 NumofIter = 1000
