@@ -69,8 +69,8 @@ def TestSingleOperator(mf):
     """Function for test single operator effect
     """
     # for i in range(0, 9):
-    # testOp = [0, 8]
-    testOp = [8]
+    testOp = [0, 8]
+    # testOp = [8]
     for i in testOp:
         adjust_para = {
             "isTestSingleOp": "True",

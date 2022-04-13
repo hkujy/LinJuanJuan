@@ -1,6 +1,6 @@
 isUseMyOwn,True
 networkIndex,3
-CompareScoreMethod,Ave
+CompareScoreMethod,Total
 isTestSingleOp,True
 SingleOpIndex,8
 NumEmployBee,10

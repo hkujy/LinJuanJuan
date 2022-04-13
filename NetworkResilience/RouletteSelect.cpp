@@ -1,7 +1,8 @@
 #include <vector>
 #include "RandomFuncs.h"
 #include <iostream>
-#include <assert.h>
+#include <cassert>
+#include "Debug.h"
 #include <algorithm>
 #include <numeric>
 using namespace std;
@@ -10,7 +11,7 @@ using namespace std;
 int RouletteSelect(const vector<double>& cumProb)
 {
 	int selected = -1;
-	double f = GenRandomReal();
+	const double f = GenRandomReal();
 	for (size_t i = 0; i < cumProb.size() - 1; i++)
 	{
 		if (f >= cumProb.at(i) && f < cumProb.at(i + 1))
@@ -24,10 +25,10 @@ int RouletteSelect(const vector<double>& cumProb)
 	{
 		std::cout << "C++ Warning: RouletteSelect does not select a proper val" << endl;
 		std::cout << f << endl;
-		for (auto v : cumProb) std::cout << v << endl;
-		std::cout << "wtf" << endl;
+		for (auto const v : cumProb) std::cout << v << endl;
+		TRACE("ERR: can not select a number");
 	}
-	assert(selected >= 0);
+	assert(selected>= 0);
 	return selected;
 }
 

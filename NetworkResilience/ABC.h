@@ -98,7 +98,7 @@ public:
 	void ScoutPhase();
 	void GetProb();
 	void ReadData(GraphClass& graph);
-	size_t SelectOnLookerBasedOnProb();
+	size_t SelectOnLookerBasedOnProb() const;
 	void PrintFinal(int sd);
 	void UpdateOperatorMeasure(int id, bool isImproved);
 	bool CompareTwoSolsAndReplace(ScheduleClass& lhs, const ScheduleClass& rhs, int neiOperatorId);

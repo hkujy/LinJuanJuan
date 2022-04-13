@@ -162,17 +162,17 @@ public:
 	void Evaluate(GraphClass& g);
 	void computeKey();
 	LinkSchRelations findDominantRelation(int aLink, int bLink, const std::vector<PatternClass> &pat,
-		enum_CompareScoreMethod &compareMethod);
+		enum_CompareScoreMethod &compareMethod) const;
 	int GetLastPeriod() { return *max_element(EndTime.begin(), EndTime.end());}
 	std::vector<size_t> getNewReadyLinks(int tau) const;
 	// write a few neighbor operators
-	void GenNei(ScheduleClass& nei, GraphClass& g, int& operatorId,
+	void GenNei(ScheduleClass& nei, GraphClass& g, const int& operatorId,
 		const std::vector<int>& failureLinkSet, const std::vector<double>& resCap, const std::vector<PatternClass>& pat,
 		enum_CompareScoreMethod &compareMethod);
-	void Nei_Swap(ScheduleClass &newSol);
+	void Nei_Swap(ScheduleClass &newSol) const;
 	void Nei_New(ScheduleClass& newSol, GraphClass& g, const std::vector<int>& failureLinkSet, const std::vector<double>& resCap);
 	void Nei_Move_One_To_Right(ScheduleClass& newSol);
-	void Nei_Move_One_To_Left(ScheduleClass& newSol);
+	void Nei_Move_One_To_Left(ScheduleClass& newSol) const;
 	void Nei_Insert_One_Random_To_Right(ScheduleClass& newSol);
 	void Nei_Insert_One_Random_To_Left(ScheduleClass& newSol);
 	void Nei_FlipOver_OnePoint(ScheduleClass& newSol);
@@ -183,7 +183,7 @@ public:
 		const std::vector<double>& resCap, const std::vector<PatternClass> &pat);
 	void Nei_Swap_BasedOn_PatternRelation(ScheduleClass& newSol, GraphClass& g, const std::vector<int>& failureLinkSet,
 		const std::vector<double>& resCap, const std::vector<PatternClass>& pat,
-		enum_CompareScoreMethod &compareMethod);
+		enum_CompareScoreMethod &compareMethod) const;
 	void GenerateTimeFromOrder(const std::vector<double>& resCap,GraphClass &g);
 	void Repair_Delay();
 	LinkSchRelations getRelation(int aLink,int comparedLink) const;//get the relationship of the two links

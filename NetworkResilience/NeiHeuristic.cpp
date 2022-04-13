@@ -14,7 +14,7 @@ using namespace std;
 int FindValIndex(const vector<int>& vec, int key);
 //main fun for generate a neighborhoods operator
 void ScheduleClass::GenNei(ScheduleClass& nei, GraphClass& g, 
-	int &operatorId,const vector<int>& failureLinkSet, const vector<double>& resCap,
+	const int &operatorId,const vector<int>& failureLinkSet, const vector<double>& resCap,
 	const vector<PatternClass> &pat, enum_CompareScoreMethod &compareMethod)
 {
 #ifdef _DEBUG
@@ -54,38 +54,36 @@ void ScheduleClass::GenNei(ScheduleClass& nei, GraphClass& g,
 /// randomly select two nodes and swap them
 /// </summary>
 /// <param name="newSol"></param>
-void ScheduleClass::Nei_Swap(ScheduleClass& newSol) {
+void ScheduleClass::Nei_Swap(ScheduleClass& newSol) const
+{
 	//Step 1: randomly generate two locations
 #ifdef _DEBUG
 	cout << "------------Start Swap-----------" << endl;
 #endif // _DEBUG
-	int locA = GenRandomInt(0, int(LinkId.size() - 1));
-	int locB = GenRandomInt(0, int(LinkId.size() - 1));
+	int locA = GenRandomInt(0, static_cast<int>(LinkId.size() - 1));
+	int locB = GenRandomInt(0, static_cast<int>(LinkId.size() - 1));
 	int whileCounter = 0;
 	while (locA == locB)
 	{
-		locB = GenRandomInt(0, int(LinkId.size() - 1));
+		locB = GenRandomInt(0, static_cast<int>(LinkId.size() - 1));
 		++whileCounter;
 		if (whileCounter > 100)
 		{
+			TRACE("ERR: find random swap has err in counter");
 			cout << "ERR: find random swap has err in counter" << endl;
 		}
 	}
 #ifdef _DEBUG
-	//cout << "Before Swap: LocA = " << newSol.LinkId.at(locA)->Id;
-	cout << "Before Swap: LocA = " << newSol.LinkId.at(locA);
-	//cout << ",locB = " << newSol.LinkId.at(locB)->Id << endl;
-	cout << ",locB = " << newSol.LinkId.at(locB) << endl;
+	std::cout << "Before Swap: LocA = " << newSol.LinkId.at(locA);
+	std::cout << ",locB = " << newSol.LinkId.at(locB) << std::endl;
 #endif // _DEBUG
 	newSol.LinkId.at(locA) = LinkId.at(locB);
 	newSol.LinkId.at(locB) = LinkId.at(locA);
 
 #ifdef _DEBUG
-	//cout << "After Swap: LocA = " << newSol.LinkId.at(locA)->Id;
-	cout << "After Swap: LocA = " << newSol.LinkId.at(locA);
-	//cout << ", LocB = " << newSol.LinkId.at(locB)->Id << endl;
-	cout << ", LocB = " << newSol.LinkId.at(locB) << endl;
-	cout << "-----------End Swap-----------" << endl;
+	std::cout << "After Swap: LocA = " << newSol.LinkId.at(locA);
+	std::cout << ", LocB = " << newSol.LinkId.at(locB) << std::endl;
+	std::cout << "-----------End Swap-----------" << std::endl;
 #endif
 }
 
@@ -93,7 +91,7 @@ void ScheduleClass::Nei_Swap(ScheduleClass& newSol) {
 /// advance one node, swap it with its left
 /// </summary>
 /// <param name="newSol"></param>
-void ScheduleClass::Nei_Move_One_To_Left(ScheduleClass& newSol)
+void ScheduleClass::Nei_Move_One_To_Left(ScheduleClass& newSol) const
 {
 	int locA = GenRandomInt(1, int(LinkId.size() - 1));
 	int locB = locA - 1;
@@ -547,7 +545,7 @@ bool isEqual(LinkSchRelations& rhs, LinkSchRelations& lhs)
 }
 // update the relationship based on the patten relationship 
 void ScheduleClass::Nei_Swap_BasedOn_PatternRelation(ScheduleClass& newSol, GraphClass& g, const vector<int>& failureLinkSet,
-	const vector<double>& resCap, const vector<PatternClass>& pat,enum_CompareScoreMethod &compareMethod)
+	const vector<double>& resCap, const vector<PatternClass>& pat,enum_CompareScoreMethod &compareMethod) const
 {
 	//Step 1: randomly generate two locations
 #ifdef _DEBUG
@@ -560,61 +558,67 @@ void ScheduleClass::Nei_Swap_BasedOn_PatternRelation(ScheduleClass& newSol, Grap
 	while (isSwap == false)
 	{
 		// step 1 generate two different nodes
-		locA = GenRandomInt(0, int(LinkId.size() - 1));
-		locB = GenRandomInt(0, int(LinkId.size() - 1));
+		locA = GenRandomInt(0, static_cast<int>(LinkId.size() - 1));
+		locB = GenRandomInt(0, static_cast<int>(LinkId.size() - 1));
 		int whileCounter = 0;
 		while (locA == locB)
 		{
-			locB = GenRandomInt(0, int(LinkId.size() - 1));
+			locB = GenRandomInt(0, static_cast<int>(LinkId.size() - 1));
 			++whileCounter;
 			if (whileCounter > 100)
 			{
-				std::cout << "ERR: find random swap has err in counter" << endl;
+				//std::cout << "ERR: find random swap has err in counter" << endl;
+				TRACE("ERR: find random swap has err in counter");
 			}
 		}
-		int LinkA = LinkId[locA];
-		int LinkB = LinkId[locB];
 
-		// step 2: check their current relationship
-		LinkSchRelations r = this->getRelation(LinkA, LinkB);
-		// step 3: check their dominate relationship 
-		LinkSchRelations domr = this->findDominantRelation(LinkA, LinkB, pat, compareMethod);
-	
-		// in the following, swap the two only if their dominated relationship is different 
-		if (isEqual(r, domr))
+		if (GenRandomReal() <= 0.9)  // take 0.9 as a threshold, if it is less than 0.9 than swap based on pattern
 		{
-			if (r == LinkSchRelations::Same)
+			const int LinkA = LinkId[locA];
+			const int LinkB = LinkId[locB];
+
+			// step 2: check their current relationship
+			LinkSchRelations r = this->getRelation(LinkA, LinkB);
+			// step 3: check their dominate relationship 
+			LinkSchRelations domr = this->findDominantRelation(LinkA, LinkB, pat, compareMethod);
+
+			// in the following, swap the two only if their dominated relationship is different 
+			if (isEqual(r, domr))
 			{
-				isSwap = true;
-			}
-			else isSwap = false;
-		}
-		else
-		{
-			if (domr==LinkSchRelations::After)
-			{
-				if (locA < locB) isSwap = true;
-				else isSwap = false;
-			}
-			else if (domr == LinkSchRelations::Before)
-			{
-				if (locA > locB) isSwap = true;
-				else isSwap = false;
-			}
-			else if (domr == LinkSchRelations::noDominated)
-			{
-				isSwap = true;
+				isSwap = false;
 			}
 			else
 			{
-				TRACE("UnDetectedCase");
+				if (domr == LinkSchRelations::After)
+				{
+					if (locA < locB) isSwap = true;
+					else isSwap = false;
+				}
+				else if (domr == LinkSchRelations::Before)
+				{
+					if (locA > locB) isSwap = true;
+					else isSwap = false;
+				}
+				else if (domr == LinkSchRelations::noDominated)
+				{
+					isSwap = true;
+				}
+				else
+				{
+					TRACE("UnDetectedSwapCase");
+				}
+			}
+
+			swapWhileCounter++;
+			if (swapWhileCounter > 100)
+			{
+				//std::cout << "ERR: find random swap based on the pattern value, and there is an err in counter" << endl;
+				TRACE("ERR: find random swap based on the pattern value, and there is an err in counter");
 			}
 		}
-
-		swapWhileCounter++;
-		if (swapWhileCounter > 100)
+		else
 		{
-			std::cout << "ERR: find random swap based on the pattern value, and there is an err in counter" << endl;
+			isSwap = true;
 		}
 	}
 #ifdef _DEBUG

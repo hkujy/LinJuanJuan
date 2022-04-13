@@ -25,7 +25,7 @@ int CompareThreeNumber(double A, double B, double C)
 
 
 LinkSchRelations ScheduleClass::findDominantRelation(int aLink, int bLink, const vector<PatternClass> &pat,
-	enum_CompareScoreMethod &CompareScoreMethod)
+	enum_CompareScoreMethod &CompareScoreMethod) const
 {
 	size_t Aid = findPatternIndex_fun(aLink, pat);
 	size_t Bid = pat[Aid].findRelationId(bLink);

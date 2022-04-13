@@ -50,12 +50,12 @@ void Algorithm::ABCMain()
 	clock_t startTime, endTime;
 	int BestSeedNum = -1;
 	double bestSeedVal = std::numeric_limits<double>::max();
-	for (auto s:seedVecVal)
-	//for (int s = 0; s < seedVecVal.size(); s++)
+	//for (auto s:seedVecVal)
+	for (int s = 0; s < seedVecVal.size(); ++s)
 	{
 		startTime = clock();
-		//GenRan.seed((unsigned)seedVecVal.at(s));
-		GenRan.seed(static_cast<unsigned>(s));
+		GenRan.seed(static_cast<unsigned>(seedVecVal.at(s)));
+		//GenRan.seed(static_cast<unsigned>(s));
 		// start the process of one seed operation
 		ConvergeMeasure.clear();
 		CumProbForSelectOnlooker.assign(NumEmployedBee, 0.0);
@@ -95,9 +95,9 @@ void Algorithm::ABCMain()
 
 			PrintOperator(s,i);
 		}
-		sizeOfArchive.push_back(m_str_val_solArchive.size());
+		sizeOfArchive.emplace_back(m_str_val_solArchive.size());
 		endTime = clock();
-		cpuTimes.push_back((double)((endTime - startTime)/CLOCKS_PER_SEC)); // time unit is second
+		cpuTimes.emplace_back(static_cast<double>((endTime - startTime)/CLOCKS_PER_SEC)); // time unit is second
 		PrintFinal(s); 
 		printPattern(s);
 		printDomRelation(s);
@@ -108,29 +108,29 @@ void Algorithm::ABCMain()
 			BestSeedNum = s;
 		}
 	}
-	ofstream CpuTimeFile;
-	CpuTimeFile.open("..//OutPut//CpuTime.txt", ios::trunc);
-	CpuTimeFile << "Seed,Time" << endl;
-	for (int s= 0;s< seedVecVal.size();s++)
+	ofstream cpuTimeFile;
+	cpuTimeFile.open("..//OutPut//CpuTime.txt", ios::trunc);
+	cpuTimeFile << "Seed,Time" << endl;
+	for (int s= 0;s<seedVecVal.size();++s)
 	{
-		CpuTimeFile << s << "," << fixed << setprecision(2) <<cpuTimes[s]<< endl;
+		cpuTimeFile << s << "," << fixed << setprecision(2) <<cpuTimes[s]<< endl;
 	}
-	CpuTimeFile.close();
+	cpuTimeFile.close();
 
-	ofstream Archive;
-	Archive.open("..//OutPut//ArchiveSize.txt", ios::trunc);
-	Archive << "Seed,Size" << endl;
+	ofstream archiveFile;
+	archiveFile.open("..//OutPut//ArchiveSize.txt", ios::trunc);
+	archiveFile << "Seed,Size" << endl;
 	for (int s = 0; s < seedVecVal.size(); s++)
 	{
-		Archive << s << "," << sizeOfArchive[s] << endl;
+		archiveFile << s << "," << sizeOfArchive[s] << endl;
 	}
-	Archive.close();
+	archiveFile.close();
 
-	ofstream bs;
-	bs.open("..//OutPut//BestSeed.txt", ios::trunc);
-	bs << "Seed,Val" << endl;
-	bs << BestSeedNum << "," << bestSeedVal << endl;
-	bs.close();
+	ofstream bestSeedFile;
+	bestSeedFile.open("..//OutPut//BestSeed.txt", ios::trunc);
+	bestSeedFile << "Seed,Val" << endl;
+	bestSeedFile << BestSeedNum << "," << bestSeedVal << endl;
+	bestSeedFile.close();
 
 #ifdef _DEBUG
 	cout << "*************************ABC completes**************************" << endl;
@@ -264,42 +264,42 @@ void Algorithm::OnlookerPhase()
 {
 	for (int i = 0; i < NumOnlookers; i++)
 	{
-		size_t Selected = SelectOnLookerBasedOnProb();
+		const size_t selectedEbId = SelectOnLookerBasedOnProb();
 #ifdef _DEBUG
 		cout << "******Onlooker Bee = " << i << "**************" << endl;
-		cout << "******Selected Bee = " << Selected << "**************" << endl;
+		cout << "******Selected Bee = " << selectedEbId << "**************" << endl;
 #endif // _DEBUG
-		ScheduleClass Nei(this->Sols.at(Selected));
+		ScheduleClass nei(Sols.at(selectedEbId));
 		int OpId = SelectOperatorIndex();
-		this->Sols.at(Selected).GenNei(Nei, *Graph, OpId, SetOfFailureLinks, SetOfResourceCap,Pattern,CompareScoreMethod);
-		evaluateOneSol(Nei, *Graph);
-		bool isImproved = false;
-		if (SelectOp!=SelectOperatorType::Uniform) UpdateOperatorScore(OpId, Nei.Fitness, 
-			this->Sols.at(Selected).Fitness, GlobalBest.Fitness);
-		isImproved = CompareTwoSolsAndReplace(this->Sols.at(Selected), Nei, OpId);
-		if (isImproved) ScoutCounter.at(Selected) = 0;
-		else ScoutCounter.at(Selected)++;
+		Sols.at(selectedEbId).GenNei(nei, *Graph, OpId, SetOfFailureLinks, SetOfResourceCap,Pattern,CompareScoreMethod);
+		evaluateOneSol(nei, *Graph);
+		if (SelectOp!=SelectOperatorType::Uniform) 
+			UpdateOperatorScore(OpId, nei.Fitness, Sols.at(selectedEbId).Fitness, GlobalBest.Fitness);
+	    const bool isImproved = CompareTwoSolsAndReplace(Sols.at(selectedEbId), nei, OpId);
+		if (isImproved) ScoutCounter.at(selectedEbId) = 0;
+		else ScoutCounter.at(selectedEbId)++;
 		UpdateOperatorMeasure(OpId, isImproved);
 	}
 }
 
 void Algorithm::ScoutPhase()
 {
-	for (size_t t = 0; t < NumEmployedBee; t++)
+	for (size_t t = 0; t < NumEmployedBee; ++t)
 	{
 		if (ScoutCounter.at(t) > MaxScoutCount)
 		{
 #ifdef _DEBUG
 			cout << "******Scout selected employed bee = " << t << "**************" << endl;
 #endif // _DEBUG
-			this->Sols.at(t).GenerateIniSch(*Graph, SetOfFailureLinks);
-			this->Sols.at(t).AlignStartTime(SetOfResourceCap,*Graph);
-			evaluateOneSol(this->Sols.at(t), *Graph);
+			Sols.at(t).GenerateIniSch(*Graph, SetOfFailureLinks);
+			Sols.at(t).AlignStartTime(SetOfResourceCap,*Graph);
+			evaluateOneSol(Sols.at(t), *Graph);
 			//this->Sols.at(t).Evaluate(*Graph);
-			if (this->Sols.at(t).Fitness < GlobalBest.Fitness)
+			if (Sols.at(t).Fitness < GlobalBest.Fitness)
 			{
 				GlobalBest = this->Sols.at(t);
-				LearnPattern_Score(GlobalBest, true);
+				//LearnPattern_Score(GlobalBest, true);
+				LearnPatternRelation_Score(GlobalBest, true);
 			}
 			ScoutCounter.at(t) = 0;
 		}
@@ -310,7 +310,7 @@ void Algorithm::ScoutPhase()
 void Algorithm::GetProb()  // compute probability based on the fitness values
 {
 	double sumFit = 0.0;
-	for (auto s : Sols) sumFit += s.Fitness;
+	for (auto const &s : Sols) sumFit += s.Fitness;
 	assert(sumFit > 0);
 	CumProbForSelectOnlooker.at(0) = 0.0;
 	for (size_t i = 0; i < NumEmployedBee - 1; i++)
@@ -355,7 +355,7 @@ void Algorithm::UpdateOperatorScore(int opId, double resultFit, double localFit,
 	UpdateOperatorScore_ALNS(opId, resultFit, localFit, globalFit);
 }
 
-size_t Algorithm::SelectOnLookerBasedOnProb()
+size_t Algorithm::SelectOnLookerBasedOnProb() const
 {
 	return RouletteSelect(CumProbForSelectOnlooker);
 }
