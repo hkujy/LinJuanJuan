@@ -1,6 +1,6 @@
 networkIndex,3
-isTestSingleOp,False
-SingleOpIndex,-1
+isTestSingleOp,True
+SingleOpIndex,8
 isUseMyOwn,True
 oneDimEps,1e-07
 epsUE,0.01

@@ -101,7 +101,6 @@ void ScheduleClass::updateResFor(size_t pos, GraphClass &g)
 {
 	for (int t = StartTime.at(pos); t < EndTime.at(pos); t++)
 	{
-		//UsedRes.at(t) += LinkId.at(pos)->RequiredRes;
 		UsedRes.at(t) += g.Links.at(LinkId[pos]).RequiredRes;
 	}
 }
@@ -133,11 +132,11 @@ int ScheduleClass::findEarliestInFeasibleSt(const vector<double>& resCap) {
 	return -1;
 }
 
-void ScheduleClass::AlignStartTime(const vector<double>& resCap,GraphClass &g) {
+void ScheduleClass::AlignStartTime(const vector<double>& resCap, GraphClass &g) {
 	// shift the project to the earliest feasible time
 	EndTime.assign(LinkId.size(), -1);
 	StartTime.assign(LinkId.size(), -1);
-	this->UsedRes.assign(MAX_NUM_OF_SCH_PERIOD, 0.0);
+	UsedRes.assign(MAX_NUM_OF_SCH_PERIOD, 0.0);
 	for (size_t l = 0; l < LinkId.size(); l++)
 	{
 		if (l == 0)
@@ -152,45 +151,42 @@ void ScheduleClass::AlignStartTime(const vector<double>& resCap,GraphClass &g) {
 			EndTime.at(l) = StartTime.at(l) + g.Links.at(LinkId.at(l)).RecoverTime;
 		}
 	}
-	updateResFor(this->LinkId.size() - 1,g);
+	updateResFor(LinkId.size() - 1,g);
 }
-
 void ScheduleClass::GenerateIniSch(GraphClass& g, const vector<int>& FailureLinks)
 {
-	assert(FailureLinks.size() > 0);
-	if (this->LinkId.size() > 0)
+	assert(!FailureLinks.empty());
+	if (!LinkId.empty())
 	{
 		LinkId.clear(); StartTime.clear(); EndTime.clear();
 	}
 	// step 1 generate ini number of links
-	int NumOfFailureLinks = (int)FailureLinks.size();
 	vector<bool> isSelected(FailureLinks.size(), false);
-	int CountDoWhile = 0;
+	int countDoWhile = 0;
 	do
 	{
 		int linkNum = GenRandomInt(FailureLinks);
 		int pos = FindValIndex(FailureLinks, linkNum);
 		if (!isSelected.at(pos))
 		{
-			LinkId.push_back(linkNum);
-			//this->LinkId.push_back(new LinkClass());
-			//LinkId.back() = &g.Links.at(linkNum);
+			LinkId.emplace_back(linkNum);
 			isSelected.at(pos) = true;
 		}
-		CountDoWhile++;
-		if (CountDoWhile > 1000)
+		countDoWhile++;
+		if (countDoWhile > 1000)
 		{
-			cout << "ERR: Do while count is larger than 1000" << endl;
+			cout << "ERR: Do while count in GenerateIniSch is larger than 1000" << endl;
 			system("PAUSE");
 		}
 	} while (std::find(isSelected.begin(), isSelected.end(), false) != isSelected.end());
 }
-
-vector<size_t> ScheduleClass::getNewReadyLinks(int tau)
+vector<size_t> ScheduleClass::getNewReadyLinks(int tau) const
 {
-
 	vector<size_t> results;
-	if (tau == 0) return results;
+	if (tau == 0)
+	{
+		return results;
+	}
 	else
 	{
 		for (size_t l = 0; l < LinkId.size(); l++)
@@ -209,7 +205,7 @@ void ScheduleClass::Evaluate(GraphClass& g)
 {
 
 #ifdef _DEBUG
-	for (auto l:g.Links)
+	for (auto const &l:g.Links)
 	{
 		if (l.CaRevise < l.CaInput - 1)
 		{
@@ -218,15 +214,14 @@ void ScheduleClass::Evaluate(GraphClass& g)
 		}
 	}
 #endif
-	Fitness = 0.0;
-	vector<size_t> CumulativeReadyLinks;
-	TravelTime.assign(GetLastPeriod(), 0);
-	UNPM.assign(GetLastPeriod(), 0);
-	// step 1: set all the capacity of failure links to be 0.0 and evalute the total cost in tau = 0
+	//Fitness = 0.0;
+	vector<size_t> cumulativeReadyLinks;
+	TravelTime.assign(GetLastPeriod(), 0.0);
+	UNPM.assign(GetLastPeriod(), 0.0);
+	// step 1: set all the capacity of failure links to be 0.0 and evaluate the total cost in tau = 0
 	for (size_t l = 0; l < LinkId.size(); l++)
 	{
 		g.Links.at(LinkId[l]).CaRevise = zero;
-		//LinkId.at(l)->CaRevise = zero;
 	}
 	g.EvaluteGraph();
 
@@ -266,7 +261,7 @@ void ScheduleClass::Evaluate(GraphClass& g)
 			std::cout << "---Period = " << t << "," << NewReady.size() << " link is added" << endl;
 			cout << "---Period = " << t << "," << "min cost = " << g.OdPairs.at(0).MinCost << "unpm=" << g.UNPM << endl;;
 #endif // _DEBUG
-			CumulativeReadyLinks.insert(CumulativeReadyLinks.end(), NewReady.begin(), NewReady.end());
+			cumulativeReadyLinks.insert(cumulativeReadyLinks.end(), NewReady.begin(), NewReady.end());
 			if (t == GetLastPeriod())
 			{
 				//TravelTime.push_back(0);
@@ -398,23 +393,21 @@ void RelationClass::UpdateScore(const LinkSchRelations& r,double score)
 	}
 }
 
-
 //get the relationship between two links based on their starting time
 LinkSchRelations ScheduleClass::getRelation(int aLink, int comparedLink) const
 {
-	
-	int AlinkIndex = FindValIndex(LinkId, aLink);
-	int CompareLinkIndex = FindValIndex(LinkId, comparedLink);
+	const int ALinkIndex = FindValIndex(LinkId, aLink);
+	const int compareLinkIndex = FindValIndex(LinkId, comparedLink);
 
-	if (StartTime[AlinkIndex] > StartTime[CompareLinkIndex])
+	if (StartTime[ALinkIndex] > StartTime[compareLinkIndex])
 	{
 		return LinkSchRelations::After;
 	}
-	else if (StartTime[AlinkIndex] < StartTime[CompareLinkIndex])
+	else if (StartTime[ALinkIndex] < StartTime[compareLinkIndex])
 	{
 		return LinkSchRelations::Before;
 	}
-	else if (StartTime[AlinkIndex] == StartTime[CompareLinkIndex])
+	else if (StartTime[ALinkIndex] == StartTime[compareLinkIndex])
 	{
 		return LinkSchRelations::Same;
 	}

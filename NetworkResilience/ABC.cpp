@@ -13,9 +13,9 @@
 #include "DefGloVar.h" /*all the global variables*/
 using namespace std;
 // read seed vector
-bool ReadSeedVec(std::vector<int>& SeedVec, FILE* fin) {
+bool ReadSeedVec(std::vector<int>& seedVec, FILE* fin) {
 	int SeedValue;
-	SeedVec.clear();
+	seedVec.clear();
 	if (nullptr == fin) {
 		perror("Read Seed File Fails \n");
 		return false;
@@ -27,72 +27,35 @@ bool ReadSeedVec(std::vector<int>& SeedVec, FILE* fin) {
 			fscanf_s(fin, "%i",
 				&SeedValue);
 			if (SeedValue != EOF) {
-				SeedVec.push_back(SeedValue);
+				seedVec.push_back(SeedValue);
 			}
 		}
 	}
 	ofstream fout;
 	fout.open("..//OutPut//CheckSeed.txt");
-	for (int i = 0; i < SeedVec.size(); i++)
+	for(auto const i: seedVec)
 	{
-		fout << SeedVec.at(i) << endl;
+		fout << i << endl;
 	}
 	fout.close();
 	return true;
 }
 
-int Algorithm::SelectOperatorIndex()
-{
-	//return 8;
-	if (isTestSingleOperator) return testSingleOperatorIndex;
-	if (this->SelectOp == SelectOperatorType::Uniform)
-	{
-		return GenRandomInt(0, NUM_OPERATORS-1);
-	}
-	if (this->SelectOp == SelectOperatorType::ALNS)
-	{
-		return SelectOperator_ALNS();
-	}
-	TRACE("Select Operator does not return an index");
-	return -999;
-}
-void Algorithm::IniOperatorProb_ANLS()
-{
-	for (int i = 0; i < Operators.size(); i++)
-	{
-		Operators.at(i).Prob = 1.0 / NUM_OPERATORS;
-		Operators.at(i).Weight = 1.0;
-		Operators.at(i).Score = 1.0;
-		Operators.at(i).TotalCounterBad = 0;
-		Operators.at(i).TotalCounterGood = 0;
-		Operators.at(i).TotalCounterSum = 0;
-	}
-}
-void Algorithm::IniOperatorProb()
-{
-	CumProbForSelectNei.assign(NUM_OPERATORS, 0.0);
-	if (SelectOp == SelectOperatorType::ALNS) IniOperatorProb_ANLS();
-	else if (SelectOp == SelectOperatorType::Uniform) { ; }
-	else 
-	{
-		std::cout << "C++ Warning: iniOperatorProb type is not defined" << endl;
-	}
-}
-
 void Algorithm::ABCMain()
 {
-	ofstream ConvergeFile;
-	ConvergeFile.open("..//OutPut//ABCConverge.txt", ios::app);
-	vector<double> CpuTimes;
-	vector<size_t> sizeOfarchive;
-	clock_t St, Et;
+	ofstream convergeFile;
+	convergeFile.open("..//OutPut//ABCConverge.txt", ios::app);
+	vector<double> cpuTimes;
+	vector<size_t> sizeOfArchive;
+	clock_t startTime, endTime;
 	int BestSeedNum = -1;
-	double BestSeedVal = std::numeric_limits<double>::max();
-
-	for (int s = 0; s < seedVecVal.size(); s++)
+	double bestSeedVal = std::numeric_limits<double>::max();
+	for (auto s:seedVecVal)
+	//for (int s = 0; s < seedVecVal.size(); s++)
 	{
-		St = clock();
-		GenRan.seed((unsigned)seedVecVal.at(s));
+		startTime = clock();
+		//GenRan.seed((unsigned)seedVecVal.at(s));
+		GenRan.seed(static_cast<unsigned>(s));
 		// start the process of one seed operation
 		ConvergeMeasure.clear();
 		CumProbForSelectOnlooker.assign(NumEmployedBee, 0.0);
@@ -127,21 +90,21 @@ void Algorithm::ABCMain()
 #endif // _DEBUG
 			//ConvergeMeasure.at(i) = GlobalBest.Fitness;
 			ConvergeMeasure.push_back(GlobalBest.Fitness);
-			if (isWriteConverge) ConvergeFile << s << "," << i << "," << fixed << setprecision(2) << ConvergeMeasure.back() << endl;
+			if (isWriteConverge) convergeFile << s << "," << i << "," << fixed << setprecision(2) << ConvergeMeasure.back() << endl;
 			if (SelectOp!=SelectOperatorType::Uniform) UpdateOperatorWeight();
 
 			PrintOperator(s,i);
 		}
-		sizeOfarchive.push_back(m_str_val_solArchive.size());
-		Et = clock();
-		CpuTimes.push_back((double)((Et - St)/CLOCKS_PER_SEC)); // time unit is second
+		sizeOfArchive.push_back(m_str_val_solArchive.size());
+		endTime = clock();
+		cpuTimes.push_back((double)((endTime - startTime)/CLOCKS_PER_SEC)); // time unit is second
 		PrintFinal(s); 
 		printPattern(s);
 		printDomRelation(s);
 
-		if (GlobalBest.Fitness < BestSeedVal)
+		if (GlobalBest.Fitness < bestSeedVal)
 		{
-			BestSeedVal = GlobalBest.Fitness;
+			bestSeedVal = GlobalBest.Fitness;
 			BestSeedNum = s;
 		}
 	}
@@ -150,7 +113,7 @@ void Algorithm::ABCMain()
 	CpuTimeFile << "Seed,Time" << endl;
 	for (int s= 0;s< seedVecVal.size();s++)
 	{
-		CpuTimeFile << s << "," << fixed << setprecision(2) <<CpuTimes[s]<< endl;
+		CpuTimeFile << s << "," << fixed << setprecision(2) <<cpuTimes[s]<< endl;
 	}
 	CpuTimeFile.close();
 
@@ -159,14 +122,14 @@ void Algorithm::ABCMain()
 	Archive << "Seed,Size" << endl;
 	for (int s = 0; s < seedVecVal.size(); s++)
 	{
-		Archive << s << "," << sizeOfarchive[s] << endl;
+		Archive << s << "," << sizeOfArchive[s] << endl;
 	}
 	Archive.close();
 
 	ofstream bs;
 	bs.open("..//OutPut//BestSeed.txt", ios::trunc);
 	bs << "Seed,Val" << endl;
-	bs << BestSeedNum << "," << BestSeedVal << endl;
+	bs << BestSeedNum << "," << bestSeedVal << endl;
 	bs.close();
 
 #ifdef _DEBUG
@@ -204,7 +167,7 @@ void Algorithm::GenerateIniSol()
 #ifdef _DEBUG
 		cout << "-----------------------Generate Ini Sol= " << i << "-------------------" << endl;
 #endif // _DEBUG
-		Sols.push_back(ScheduleClass(i));
+		Sols.emplace_back(ScheduleClass(i));
 		Sols.back().GenerateIniSch(*Graph, SetOfFailureLinks);
 		Sols.back().AlignStartTime(SetOfResourceCap,*Graph);
 #ifdef _DEBUG
@@ -243,9 +206,9 @@ void Algorithm::GenerateIniSol()
 	}
 	//for (auto s : Sols) cout << s.Id << "," << s.Fitness << endl;
 }
+	
 
-
-bool Algorithm::CompareTwoSolsAndReplace(ScheduleClass& lhs, ScheduleClass& rhs, int NeiOperatorId)
+bool Algorithm::CompareTwoSolsAndReplace(ScheduleClass& lhs, const ScheduleClass& rhs, int neiOperatorId)
 {
 	//Compare the left hand side and the right hand side solutions 
 	//if the right hand side is better 
@@ -279,18 +242,18 @@ void Algorithm::EmployBeePhase()
 {
 	for (int i = 0; i < NumEmployedBee; i++)
 	{
-		ScheduleClass Nei(this->Sols.at(i));
-		bool isImproved = false;
+		ScheduleClass nei(Sols.at(i));
+		//bool isImproved = false;
 #ifdef _DEBUG
 		cout << "******Employed Bee = " << i << "**************" << endl;
 		cout << "Eb = " << i << endl;
 #endif // _DEBUG
 		//if (i == 2)
 		int OpId = SelectOperatorIndex();
-		this->Sols.at(i).GenNei(Nei, *Graph, OpId, SetOfFailureLinks, SetOfResourceCap,Pattern, CompareScoreMethod);
-		evaluateOneSol(Nei, *Graph);
-		if (SelectOp!=SelectOperatorType::Uniform) UpdateOperatorScore(OpId, Nei.Fitness, this->Sols.at(i).Fitness, GlobalBest.Fitness);
-		isImproved = CompareTwoSolsAndReplace(this->Sols.at(i), Nei, OpId);
+		this->Sols.at(i).GenNei(nei, *Graph, OpId, SetOfFailureLinks, SetOfResourceCap,Pattern, CompareScoreMethod);
+		evaluateOneSol(nei, *Graph);
+		if (SelectOp!=SelectOperatorType::Uniform) UpdateOperatorScore(OpId, nei.Fitness, this->Sols.at(i).Fitness, GlobalBest.Fitness);
+		bool const isImproved = CompareTwoSolsAndReplace(this->Sols.at(i), nei, OpId);
 		if (isImproved) ScoutCounter.at(i) = 0;
 		else ScoutCounter.at(i)++;
 		UpdateOperatorMeasure(OpId, isImproved);
@@ -399,29 +362,29 @@ size_t Algorithm::SelectOnLookerBasedOnProb()
 
 void Algorithm::IniPattern()
 {
-	if (Pattern.size() > 0) Pattern.clear();
+	if (!Pattern.empty()) Pattern.clear();
 	for (int l = 0; l < SetOfFailureLinks.size(); l++)
 	{
-		Pattern.push_back(PatternClass());
+		Pattern.emplace_back(PatternClass());
 		Pattern.back().Id = l;
 		Pattern.back().LinkId = SetOfFailureLinks.at(l);
+
 		for (int k = 0; k < SetOfFailureLinks.size(); k++)
 		{
 			Pattern.back().Next.push_back(SetOfFailureLinks.at(k));
 		}
+		
 		Pattern.back().AbsProb.assign(SetOfFailureLinks.size(), 0.0);
 		Pattern.back().AbsScore.assign(SetOfFailureLinks.size(), 1.0);
-
 		Pattern.back().AveProb.assign(SetOfFailureLinks.size(), 0.0);
 		Pattern.back().AveScore.assign(SetOfFailureLinks.size(), 1.0);
 		Pattern.back().Count.assign(SetOfFailureLinks.size(), 0);
 
 		// relationship
-		int _FirstLink = SetOfFailureLinks[l];
+		int firstLink = SetOfFailureLinks[l];
 		for (int j = 0; j < SetOfFailureLinks.size(); j++)
 		{
-			int _ComparedLink = SetOfFailureLinks[j];
-			Pattern.back().Relation.push_back(RelationClass(_ComparedLink));
+			Pattern.back().Relation.emplace_back(RelationClass(SetOfFailureLinks[j]));
 		}
 
 		//Update the score to set the diagonal vector value = 0
@@ -752,17 +715,12 @@ void Algorithm::printLinkEI()
 //based the score value update the patten prob
 void PatternClass::updateProb()
 {
-	// step 1: update the absolute probablity value
-	assert(AbsScore.size() > 0);
-	assert(AbsProb.size() > 0);
+	// step 1: update the absolute probability value
+	assert(!AbsScore.empty()); assert(!AbsProb.empty());
 	double sum = std::accumulate(AbsScore.begin(), AbsScore.end(), 0.0);
-	for (int p = 0; p < AbsProb.size(); p++)
-	{
-		AbsProb[p] = AbsScore[p] / sum;
-	}
+	for (int p = 0; p < AbsProb.size(); p++) { AbsProb[p] = AbsScore[p] / sum; }
 	// step 2: update the average probability value
-	assert(AveScore.size() > 0);
-	assert(AveProb.size() > 0);
+	assert(!AveScore.empty()); assert(!AveProb.empty());
 	sum = std::accumulate(AveScore.begin(), AveScore.end(), 0.0);
 	for (int p = 0; p < AveProb.size(); p++)
 	{
@@ -854,34 +812,33 @@ bool Algorithm::isAddNewToArchive(const string &key)
 		return false;
 }
 
-string Algorithm::getMapStrFromSol(const ScheduleClass &sol) //get string for the map sol archive
+string Algorithm::getMapStrFromSol(const ScheduleClass &sol) const //get string for the map sol archive
 {
-	string str_val;
+	string strVal;
 	for (size_t l=0; l < sol.LinkId.size(); l++)
 	{
 		if (l == 0)
 		{
-			if (sol.LinkId[l]==0) str_val = "0";
-			else str_val = std::to_string(sol.LinkId[l]);
+			if (sol.LinkId[l]==0) strVal = "0";
+			else strVal = std::to_string(sol.LinkId[l]);
 		}
 		else
 		{
-			if (sol.LinkId[l] == 0) str_val.append(",0");
+			if (sol.LinkId[l] == 0) strVal.append(",0");
 			else
 			{
-				str_val.append(",");str_val.append(std::to_string(sol.LinkId[l]));
+				strVal.append(",");strVal.append(std::to_string(sol.LinkId[l]));
 			}
 		}
 	}
 #ifdef _DEBUG
-	for (auto l : sol.LinkId)
+	for (auto const &l : sol.LinkId)
 	{
-		//cout << "wtf: link Id = " << l->Id << endl;
 		cout << "wtf: link Id = " << l << endl;
 	}
-	cout << "converted str = " << str_val << endl;
+	cout << "converted str = " << strVal << endl;
 #endif
-	return str_val;
+	return strVal;
 }
 
 void Algorithm::IniSolArchive()
@@ -900,6 +857,46 @@ void OperatorClass::CalWeight(double r)
 	if (TotalCounterSum > 0)
 	{
 		Weight = (1 - r) * Weight + r * Score / TotalCounterSum;
+	}
+}
+
+
+int Algorithm::SelectOperatorIndex()
+{
+	if (isTestSingleOperator) return testSingleOperatorIndex;
+	if (this->SelectOp == SelectOperatorType::Uniform)
+	{
+		return GenRandomInt(0, NUM_OPERATORS - 1);
+	}
+	if (this->SelectOp == SelectOperatorType::ALNS)
+	{
+		return SelectOperator_ALNS();
+	}
+	TRACE("Select Operator does not return an index");
+	return -999;
+}
+void Algorithm::IniOperatorProb_ALNS()
+{
+	for (int i = 0; i < Operators.size(); i++)
+	{
+		Operators.at(i).Prob = 1.0 / NUM_OPERATORS;
+		Operators.at(i).Weight = 1.0;
+		Operators.at(i).Score = 1.0;
+		Operators.at(i).TotalCounterBad = 0;
+		Operators.at(i).TotalCounterGood = 0;
+		Operators.at(i).TotalCounterSum = 0;
+	}
+
+
+}
+void Algorithm::IniOperatorProb()
+{
+	CumProbForSelectNei.assign(NUM_OPERATORS, 0.0);
+	if (SelectOp == SelectOperatorType::ALNS) IniOperatorProb_ALNS();
+	else if (SelectOp == SelectOperatorType::Uniform) { ; }
+	else
+	{
+		std::cout << "C++ Warning: iniOperatorProb type is not defined" << endl;
 	}
 }
 

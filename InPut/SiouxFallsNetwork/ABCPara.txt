@@ -1,12 +1,12 @@
 isUseMyOwn,True
 networkIndex,3
 CompareScoreMethod,Ave
-isTestSingleOp,False
-SingleOpIndex,-1
+isTestSingleOp,True
+SingleOpIndex,8
 NumEmployBee,10
 NumOnlookerBee,10
 MaxScountCount,50
-MaxABCIter,10
+MaxABCIter,5
 MaxGAIter,5
 RewardImproveGlobal,1
 RewardImproveLocal,1

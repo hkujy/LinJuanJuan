@@ -260,57 +260,54 @@ int GraphClass::FW_UE() {
 }
 
 void GraphClass::EvaluteGraph() {
-	int StatusMsg = 0;
-	this->TotalSystemCost = 0.0;
-	StatusMsg = this->FW_UE();
 
-	for (auto od = this->OdPairs.begin(); od != this->OdPairs.end(); od++)
+	const int statusMsg = this->FW_UE();
+	assert(statusMsg);
+	TotalSystemCost = 0.0;
+	for (auto od = this->OdPairs.begin(); od != this->OdPairs.end(); ++od)
 	{
-		this->TotalSystemCost += od->Demand * od->MinCost;
+		TotalSystemCost += od->Demand * od->MinCost;
 	}
-	assert(StatusMsg);
-	this->UNPM = 0.0f;
-	for (auto od = this->OdPairs.begin(); od != this->OdPairs.end(); od++)
+	UNPM = 0.0;
+	for (auto od = this->OdPairs.begin(); od != this->OdPairs.end(); ++od)
 	{
-		assert(od->MinCost >= 0.0f);
+		assert(od->MinCost >= 0.0);
 		if (od->MinCost < zero)
 		{
 			TRACE("od->MinCost <Zeor\n");
 		}
-		this->UNPM +=
-			od->Demand / od->MinCost;
+		UNPM += od->Demand / od->MinCost;
 	}
-	this->UNPM = this->UNPM / (double)this->OdPairs.size();
-#if DEBUG
-	cout << "Print Detail solution" << endl;
-	std::ofstream BaseSolutionOutput;
-	BaseSolutionOutput.open("..//OutPut//BaseSolLink.txt", ios::trunc);
-	BaseSolutionOutput << "LinkId,Tail,Head,t0,Cap,Flow,Cost" << endl;
+	UNPM = UNPM / static_cast<double>(OdPairs.size());
+#if _DEBUG
+	std::cout << "Print Detail solution" << std::endl;
+	std::ofstream baseSolutionOutput;
+	baseSolutionOutput.open("..//OutPut//BaseSolLink.txt", ios::trunc);
+	baseSolutionOutput << "LinkId,Tail,Head,t0,Cap,Flow,Cost" << endl;
 	for (auto l = this->Links.begin(); l != Links.end(); l++)
 	{
-		BaseSolutionOutput << l->Id << ",";
-		BaseSolutionOutput << l->Tail << ",";
-		BaseSolutionOutput << l->Head << ",";
-		BaseSolutionOutput << l->T0 << ",";
-		BaseSolutionOutput << l->CaRevise << ",";
-		BaseSolutionOutput << l->Flow << ",";
-		BaseSolutionOutput << l->Cost << endl;;
+		baseSolutionOutput << l->Id << ",";
+		baseSolutionOutput << l->Tail << ",";
+		baseSolutionOutput << l->Head << ",";
+		baseSolutionOutput << l->T0 << ",";
+		baseSolutionOutput << l->CaRevise << ",";
+		baseSolutionOutput << l->Flow << ",";
+		baseSolutionOutput << l->Cost << endl;
 	}
 
-	BaseSolutionOutput.close();
-
-	BaseSolutionOutput.open("..//OutPut//BaseSolOD.txt", ios::trunc);
-	BaseSolutionOutput << "ODId,Origin,Dest,Demand,minCost" << endl;
-	for (auto l = this->OdPairs.begin(); l != OdPairs.end(); l++)
+	baseSolutionOutput.close();
+	baseSolutionOutput.open("..//OutPut//BaseSolOD.txt", ios::trunc);
+	baseSolutionOutput << "ODId,Origin,Dest,Demand,minCost" << endl;
+	for (auto l = this->OdPairs.begin(); l != OdPairs.end(); ++l)
 	{
-		BaseSolutionOutput << l->Id << ",";
-		BaseSolutionOutput << l->Origin << ",";
-		BaseSolutionOutput << l->Dest << ",";
-		BaseSolutionOutput << l->Demand << ",";
-		BaseSolutionOutput << l->MinCost << endl;
+		baseSolutionOutput << l->Id << ",";
+		baseSolutionOutput << l->Origin << ",";
+		baseSolutionOutput << l->Dest << ",";
+		baseSolutionOutput << l->Demand << ",";
+		baseSolutionOutput << l->MinCost << endl;
 
 	}
-	BaseSolutionOutput.close();
+	baseSolutionOutput.close();
 #endif
 
 

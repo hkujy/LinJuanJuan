@@ -164,7 +164,7 @@ public:
 	LinkSchRelations findDominantRelation(int aLink, int bLink, const std::vector<PatternClass> &pat,
 		enum_CompareScoreMethod &compareMethod);
 	int GetLastPeriod() { return *max_element(EndTime.begin(), EndTime.end());}
-	std::vector<size_t> getNewReadyLinks(int tau);
+	std::vector<size_t> getNewReadyLinks(int tau) const;
 	// write a few neighbor operators
 	void GenNei(ScheduleClass& nei, GraphClass& g, int& operatorId,
 		const std::vector<int>& failureLinkSet, const std::vector<double>& resCap, const std::vector<PatternClass>& pat,

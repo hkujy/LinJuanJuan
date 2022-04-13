@@ -50,7 +50,7 @@ public:
 	double ReactionFactor;
 	SelectOperatorType SelectOp;
 	enum_CompareScoreMethod CompareScoreMethod;
-	string getMapStrFromSol(const ScheduleClass &sol); //get string for the map sol archive
+	string getMapStrFromSol(const ScheduleClass &sol) const; //get string for the map sol archive
 	bool isAddNewToArchive(const string &key);
 	bool isNeedToEvaluateSol(const ScheduleClass &sol);
 	void evaluateOneSol(ScheduleClass &sol, GraphClass& g);
@@ -81,7 +81,7 @@ public:
 	Algorithm& operator=(const Algorithm& other) = default;
 	Algorithm(Algorithm&& other) = default;
 	Algorithm& operator=(Algorithm&& other) = default;
-	~Algorithm() { Graph = nullptr; };
+	~Algorithm() { Graph = nullptr; }
 	std::vector<ScheduleClass> Sols;
 	void clearSols() { if (!Sols.empty()) Sols.clear(); }
 	void IniSolArchive();
@@ -101,7 +101,7 @@ public:
 	size_t SelectOnLookerBasedOnProb();
 	void PrintFinal(int sd);
 	void UpdateOperatorMeasure(int id, bool isImproved);
-	bool CompareTwoSolsAndReplace(ScheduleClass& lhs, ScheduleClass& rhs, int NeiOperatorId);
+	bool CompareTwoSolsAndReplace(ScheduleClass& lhs, const ScheduleClass& rhs, int neiOperatorId);
 	void LearnPattern_Score(const ScheduleClass& sol, bool isGlobalImprove);
 	void LearnPatternRelation_Score(const ScheduleClass& sol, bool isGlobalImprove);
 	size_t findPatternIndex(int lid);
@@ -115,7 +115,7 @@ public:
 	void UpdateOperatorScore_ALNS(int opId, double resultFit, double localFit, double GlobalFit);
 	void UpdateOperatorWeight_ALNS();
 	int SelectOperator_ALNS();
-	void IniOperatorProb_ANLS();
+	void IniOperatorProb_ALNS();
 	void printPattern(int seedId);
 	void printDomRelation(int seed) const;
 };

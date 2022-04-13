@@ -167,16 +167,17 @@ void Algorithm::LearnPatternRelation_Score(const ScheduleClass& sol, bool isGlob
 		for (int j = 0; j < sol.LinkId.size(); j++)
 		{
 			if (i==j) continue;
-			int ALink = sol.LinkId[i];
-			int ComparedLink = sol.LinkId[j];
+			const int ALink = sol.LinkId[i];
+			const int ComparedLink = sol.LinkId[j];
 			// step 1 : update the forward direction relationship, e.g. A - B
 			LinkSchRelations r = sol.getRelation(ALink, ComparedLink);
-			size_t AlinkId = findPatternIndex(ALink);
-			size_t ComRelationLinkId = Pattern[AlinkId].findRelationId(ComparedLink);
+			const size_t AlinkId = findPatternIndex(ALink);
+			const size_t ComRelationLinkId = Pattern[AlinkId].findRelationId(ComparedLink);
 			if (isGlobalImprove) Pattern[AlinkId].Relation[ComRelationLinkId].UpdateScore(r, RewardImproveGlobal);
 			else Pattern[AlinkId].Relation[ComRelationLinkId].UpdateScore(r, RewardImproveLocal);
 		}
 	}
+
 }
 
 // Print the relationship into files

@@ -69,7 +69,8 @@ def TestSingleOperator(mf):
     """Function for test single operator effect
     """
     # for i in range(0, 9):
-    testOp = [0, 8]
+    # testOp = [0, 8]
+    testOp = [8]
     for i in testOp:
         adjust_para = {
             "isTestSingleOp": "True",
@@ -83,15 +84,15 @@ def TestSingleOperator(mf):
             _case_name="TestOp_"+str(i))
 
     # The following is to test the total score
-    testOp = [8] 
-    for i in testOp:
-        adjust_para = {
-            "CompareScoreMethod":"Total",
-        }
-        para.global_case_id = para.global_case_id + 1
-        if para.global_case_id >= stop_number:
-            TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
-            _case_name="TestOp_"+str(i)+"_tot")
+    # testOp = [8] 
+    # for i in testOp:
+    #     adjust_para = {
+    #         "CompareScoreMethod":"Total",
+    #     }
+    #     para.global_case_id = para.global_case_id + 1
+    #     if para.global_case_id >= stop_number:
+    #         TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
+    #         _case_name="TestOp_"+str(i)+"_tot")
     
 
 def TestRewardVal(mf):
@@ -187,9 +188,9 @@ if __name__ == "__main__":
     para.Copy_input_and_test_files(mf)
 
     # BenchmarkParadoxNet(mf)
-    # TestSingleOperator(mf)
+    TestSingleOperator(mf)
     # TestRewardVal(mf)
-    TestDifferntOpSelect(mf)
+    # TestDifferntOpSelect(mf)
 
     # ------------------Test GA Function
     # TestGa(mf)
