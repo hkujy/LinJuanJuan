@@ -9,7 +9,7 @@ void TestBaraess(Algorithm alg);
 //bool PrintModelParas();
 void ReadModelPara()
 {
-	ifstream fin_Model,fin_Net;
+	ifstream fin_Model, fin_Net;
 	string line;
 	vector<string> fields;
 	fin_Model.open("..//InPut//ModelPara.txt");
@@ -109,7 +109,7 @@ void ReproduceWang(GraphClass& g)
 	ScenarioClass s;
 	s.LinkIds.push_back(15); s.tau.push_back(0);
 	epsUE = 0.0000000001;
-	zero = 1.0e-16f;
+	zero = 1.0e-16;
 	maxIterUE = 5000;
 	g.EvalutateFailureScenarios(s);
 	cout << "Total Cost = " << g.TotalSystemCost << endl;
@@ -117,7 +117,7 @@ void ReproduceWang(GraphClass& g)
 }
 
 int main(int argc, char* argv[])
-{	
+{
 	//TOOD: Change networkIndex to NetIndex
 	/* remarks on the network model index
 	* networkIndex = 3;  //Sioux Fall Network
@@ -148,7 +148,7 @@ int main(int argc, char* argv[])
 	//BaseGraph.EvaluteGraph();
 
 	// this used for evaluating the method when using python
-	if (!isUseMyOwnAlgo)   
+	if (!isUseMyOwnAlgo)
 	{
 		vector<int> InputVec;
 		if (argc > 1)
@@ -166,7 +166,7 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
-		zero = 1.0e-6f;
+		zero = 1.0e-6;
 		MainAlgo.name = "ABC";
 		//ReproduceWang(BaseGraph); // This function is for reproducing Wang's work
 		MainAlgo.ABCMain();

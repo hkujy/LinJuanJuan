@@ -7,7 +7,8 @@ import PostProcessDataFuns as psf
 import PlotOperatorConverge
 
 # root_folder = r"C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin\Tests2022/"
-root_folder = r'C:/GitCodes/1_TestOp_8/'
+# root_folder = r'C:/GitCodes/Res/'
+root_folder = r'C:/GitCodes/LearnByCompare/'
 # root_folder = r'C:/GitCodes/RandomDemand/'
 # root_folder = r'M:/LinJuan/500Iter/'
 # plot 1 plot the heatmap for the optimal pattern

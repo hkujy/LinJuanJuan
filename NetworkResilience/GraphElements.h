@@ -31,10 +31,10 @@ public:
 	double GetIniCost()const;
 	void SetIniCost() { Cost = T0; }
 	void IniCap();
-	LinkClass():Id(INVALID_INT), Tail(INVALID_INT), Head(INVALID_INT), T0(-1.0),
-	CaInput(INVALID_FLOAT), CaRevise(INVALID_FLOAT),
-	Cost(INVALID_FLOAT), Flow(INVALID_FLOAT), AlphaBpr(0.15), BetaBBpr(4.0),
-	EI(0), RecoverTime(-1), RequiredRes(-1){}
+	LinkClass() :Id(INVALID_INT), Tail(INVALID_INT), Head(INVALID_INT), T0(-1.0),
+		CaInput(INVALID_FLOAT), CaRevise(INVALID_FLOAT),
+		Cost(INVALID_FLOAT), Flow(INVALID_FLOAT), AlphaBpr(0.15), BetaBBpr(4.0),
+		EI(0), RecoverTime(-1), RequiredRes(-1) {}
 	~LinkClass() = default;
 	LinkClass(LinkClass&& other) = default;
 	LinkClass(const LinkClass& otherLink);
@@ -51,9 +51,10 @@ public:
 	std::vector<const LinkClass*> InLinks;
 	//std::vector<int> OutLinks;
 	//std::vector<int> InLinks;
-	NodeClass():Id(-1) { OutLinks.reserve(10); InLinks.reserve(10);
+	NodeClass() :Id(-1) {
+		OutLinks.reserve(10); InLinks.reserve(10);
 	}
-	NodeClass(const NodeClass& rhs):Id(rhs.Id)
+	NodeClass(const NodeClass& rhs) :Id(rhs.Id)
 	{
 		OutLinks.assign(rhs.OutLinks.begin(), rhs.OutLinks.end());
 		InLinks.assign(rhs.InLinks.begin(), rhs.InLinks.end());
@@ -68,7 +69,7 @@ public:
 		}
 		return *this;
 	}
-	NodeClass(NodeClass&& other) noexcept:Id(other.Id)
+	NodeClass(NodeClass&& other) noexcept :Id(other.Id)
 	{
 		OutLinks.assign(other.OutLinks.begin(), other.OutLinks.end());
 		InLinks.assign(other.InLinks.begin(), other.InLinks.end());
@@ -83,10 +84,10 @@ public:
 		}
 		return *this;
 	}
-	~NodeClass(){
-	/*	for (vector<const LinkClass*>::iterator itr = OutLinks.begin(); itr !=OutLinks.end(); ++itr) {
-			delete* itr;
-		}*/
+	~NodeClass() {
+		/*	for (vector<const LinkClass*>::iterator itr = OutLinks.begin(); itr !=OutLinks.end(); ++itr) {
+				delete* itr;
+			}*/
 		OutLinks.clear();
 		//for (vector<const LinkClass*>::iterator itr = InLinks.begin(); itr !=InLinks.end(); ++itr) {
 		//	delete* itr;
@@ -106,12 +107,12 @@ public:
 	double BeforeRemoveSpDist;
 	double AfterRemoveSpDist;
 	bool isConnected;
-	ODClass():Id(-1), Origin(INVALID_INT), Dest(INVALID_INT),
-	Demand(INVALID_FLOAT),
-	MinCost(INVALID_FLOAT),
-	BeforeRemoveSpDist(INVALID_FLOAT),
-	AfterRemoveSpDist(INVALID_FLOAT),
-	isConnected(false){}
+	ODClass() :Id(-1), Origin(INVALID_INT), Dest(INVALID_INT),
+		Demand(INVALID_FLOAT),
+		MinCost(INVALID_FLOAT),
+		BeforeRemoveSpDist(INVALID_FLOAT),
+		AfterRemoveSpDist(INVALID_FLOAT),
+		isConnected(false) {}
 	~ODClass() = default;
 	ODClass(const ODClass& rhs) = default;
 	ODClass& operator=(const ODClass& rsh) = default;
@@ -125,7 +126,7 @@ public:
 	int OirginNode;
 	std::vector<const ODClass*>  ODset;
 	//std::vector<ODClass> ODset;
-	OriginBasedOD():OirginNode(INVALID_INT){
+	OriginBasedOD() :OirginNode(INVALID_INT) {
 		ODset.reserve(numNodes);
 	}
 	//~OriginBasedOD(){
@@ -185,7 +186,7 @@ public:
 		OriginSet.assign(rhs.OriginSet.begin(), rhs.OriginSet.end());
 		return *this;
 	}
-	GraphClass(const GraphClass& rhs):UNPM(rhs.UNPM), TotalSystemCost(rhs.TotalSystemCost),
+	GraphClass(const GraphClass& rhs) :UNPM(rhs.UNPM), TotalSystemCost(rhs.TotalSystemCost),
 		MinPathPredLink(Create2DArray<int>(numNodes + 1, numNodes + 1))
 	{
 		for (int i = 0; i < numNodes + 1; i++)
@@ -200,7 +201,7 @@ public:
 		Nodes.assign(rhs.Nodes.begin(), rhs.Nodes.end());
 		OriginSet.assign(rhs.OriginSet.begin(), rhs.OriginSet.end());
 	}
-	GraphClass(GraphClass&& other) noexcept:UNPM(other.UNPM),TotalSystemCost(other.TotalSystemCost),
+	GraphClass(GraphClass&& other) noexcept :UNPM(other.UNPM), TotalSystemCost(other.TotalSystemCost),
 		MinPathPredLink(Create2DArray<int>(numNodes + 1, numNodes + 1))
 	{
 		for (int i = 0; i < numNodes + 1; i++)
@@ -217,7 +218,7 @@ public:
 	}
 	GraphClass& operator=(GraphClass&& rhs) noexcept
 	{
-		if (this!=&rhs)
+		if (this != &rhs)
 		{
 			UNPM = rhs.UNPM; TotalSystemCost = rhs.TotalSystemCost;
 			for (int i = 0; i < numNodes + 1; i++)
@@ -234,18 +235,18 @@ public:
 		}
 		return *this;
 	}
-	int SP(const int origin, std::vector<double> &label);
+	int SP(const int origin, std::vector<double>& label);
 	int FindMinCostRoutes();
 	int FW_UE();
 	void CreateOriginSet();
 	void CreateNodes();
-	int PrintLinks(std::ofstream &fout);
+	int PrintLinks(std::ofstream& fout);
 	int PrintLinks_onscreen();
-	int PrintOD(std::ofstream &fout);
-	int PrintSp(int origin, int dest, std::ofstream &fout);
+	int PrintOD(std::ofstream& fout);
+	int PrintSp(int origin, int dest, std::ofstream& fout);
 	void EvaluteGraph();//ue total cost unpin
-	void EvalutateFailureScenarios(const ScenarioClass &s);  // evaluate one failure scenario 
-	void RevertFailureScenarios(const ScenarioClass &s);  // evaluate one failure scenario 
+	void EvalutateFailureScenarios(const ScenarioClass& s);  // evaluate one failure scenario 
+	void RevertFailureScenarios(const ScenarioClass& s);  // evaluate one failure scenario 
 	//friend class CHROME;
 	//friend class Algorithms;
 	void ReadGraphData();
@@ -266,7 +267,7 @@ class TEST
 {
 public:
 	int Id;
-	TEST():Id(INVALID_INT){}
+	TEST() :Id(INVALID_INT) {}
 };
 
 #pragma region NotUsedInResotration

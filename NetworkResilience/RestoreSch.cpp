@@ -4,7 +4,7 @@
 #include "RestoreSchClass.h"
 #include "RandomFuncs.h"
 #include "GraphElements.h"
-#include <assert.h>
+#include <cassert>
 using namespace std;
 void SortStartTime(vector<int>& st)
 {
@@ -40,7 +40,8 @@ void ScheduleClass::print() const
 	cout << "********End*************************" << endl;
 }
 
-ScenarioClass ScheduleClass::ConvertToScenario() {
+ScenarioClass ScheduleClass::ConvertToScenario() const
+{
 	ScenarioClass s;
 	//for (auto l : LinkId) s.LinkIds.push_back(l->Id);
 	for (auto l : LinkId) s.LinkIds.push_back(l);
@@ -70,7 +71,7 @@ void ScheduleClass::updateEndTime(GraphClass &g)
 	}
 }
 
-bool ScheduleClass::isFeasible(const vector<double>& res)
+bool ScheduleClass::isFeasible(const vector<double>& res) const
 {
 	for (size_t i = 0; i < res.size(); i++)
 	{
@@ -106,7 +107,8 @@ void ScheduleClass::updateResFor(size_t pos, GraphClass &g)
 }
 
 //find the earliest a time with available resources
-int ScheduleClass::findEarliestFeasibleSt(size_t l, const vector<double>& resCap,GraphClass &g) {
+int ScheduleClass::findEarliestFeasibleSt(size_t l, const vector<double>& resCap,GraphClass &g) const
+{
 
 	for (int t = 0; t < MAX_NUM_OF_SCH_PERIOD; t++)
 	{
@@ -296,18 +298,17 @@ void ScheduleClass::GenerateIniBasedOnPattern(GraphClass& g, const vector<int>& 
 #ifdef _DEBUG
 	cout << "---------------Generate Ini Based on Pattern is called" << endl;
 #endif // _DEBUG
-	assert(FailureLinks.size() > 0);
-	if (this->LinkId.size() > 0) { LinkId.clear(); StartTime.clear(); EndTime.clear(); }
+	assert(!FailureLinks.empty());
+	if (!LinkId.empty()) { LinkId.clear(); StartTime.clear(); EndTime.clear(); }
 	// step 1 generate ini number of links
 	vector<bool> isSelected(FailureLinks.size(), false);
-	int CountDoWhile = 0;
 	// step 1: select the first link 
-	int LinkNum = GenRandomInt(FailureLinks);
-	int LocOfFailLinks = FindValIndex(FailureLinks, LinkNum);
-	this->LinkId.push_back(LinkNum);
+	int linkNum = GenRandomInt(FailureLinks);
+	int locOfFailLinks = FindValIndex(FailureLinks, linkNum);
+	this->LinkId.push_back(linkNum);
 	//this->LinkId.push_back(new LinkClass());
 	//LinkId.back() = &g.Links.at(LinkNum);
-	isSelected.at(LocOfFailLinks) = true;
+	isSelected.at(locOfFailLinks) = true;
 	vector<int> candy;
 	vector<double> prob;
 	int loopCounter = 0;
@@ -324,16 +325,16 @@ void ScheduleClass::GenerateIniBasedOnPattern(GraphClass& g, const vector<int>& 
 			if (!isSelected.at(s))
 			{
 				candy.push_back(s);
-				prob.push_back(pat[LocOfFailLinks].AbsProb.at(s));
+				prob.push_back(pat[locOfFailLinks].AbsProb.at(s));
 			}
 		}
-		int selectedLocOfCandy = SelectOneIndexFrom(candy, prob);
-		LinkNum = FailureLinks.at(candy.at(selectedLocOfCandy));
-		LocOfFailLinks = FindValIndex(FailureLinks, LinkNum);
-		LinkId.push_back(LinkNum);
+		int const selectedLocOfCandy = SelectOneIndexFrom(candy, prob);
+		linkNum = FailureLinks.at(candy.at(selectedLocOfCandy));
+		locOfFailLinks = FindValIndex(FailureLinks, linkNum);
+		LinkId.push_back(linkNum);
 		//LinkId.push_back(new LinkClass());
 		//LinkId.back() = &g.Links.at(LinkNum);
-		isSelected.at(LocOfFailLinks) = true;
+		isSelected.at(locOfFailLinks) = true;
 	} while (std::find(isSelected.begin(), isSelected.end(), false) != isSelected.end());
 
 #ifdef _DEBUG
@@ -344,7 +345,7 @@ void ScheduleClass::GenerateIniBasedOnPattern(GraphClass& g, const vector<int>& 
 }
 
 // compute the Key associated the solution
-void ScheduleClass::computeKey()
+void ScheduleClass::computeKey() const
 {
 	string val;
 	for (int i=0;i<LinkId.size();i++)

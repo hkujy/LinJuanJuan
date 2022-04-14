@@ -23,6 +23,7 @@ std::vector<int> seedVecVal;
 bool isUseMyOwnAlgo;
 bool isTestSingleOperator;
 int testSingleOperatorIndex;
+int gIterationCounter;
 
 
 //int GANumPop;

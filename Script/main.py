@@ -18,6 +18,7 @@ import myplot
 
 stop_number = -1
 
+
 def copy_file(_from, _to):
     copyfile(_from, _to)
 
@@ -65,12 +66,13 @@ def TestGa(_mf):
     to_folder = _mf.root_folder + "Tests\\GA"
     copy_folder(from_folder, to_folder)
 
+
 def TestSingleOperator(mf):
     """Function for test single operator effect
     """
     # for i in range(0, 9):
-    testOp = [0, 8]
-    # testOp = [8]
+    # testOp = [0, 8]
+    testOp = [8]
     for i in testOp:
         adjust_para = {
             "isTestSingleOp": "True",
@@ -81,10 +83,10 @@ def TestSingleOperator(mf):
         para.global_case_id = para.global_case_id + 1
         if para.global_case_id >= stop_number:
             TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
-            _case_name="TestOp_"+str(i))
+                        _case_name="TestOp_"+str(i))
 
     # The following is to test the total score
-    # testOp = [8] 
+    # testOp = [8]
     # for i in testOp:
     #     adjust_para = {
     #         "CompareScoreMethod":"Total",
@@ -93,7 +95,65 @@ def TestSingleOperator(mf):
     #     if para.global_case_id >= stop_number:
     #         TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
     #         _case_name="TestOp_"+str(i)+"_tot")
-    
+
+
+def TestLearnThreshold(mf):
+    """Function for test single operator effect
+    """
+    # for i in range(0, 9):
+    # testOp = [0, 8]
+    adjust_para = {
+        "SingleOpIndex": 0,
+        "LearnThresholdFit": 2.0,
+        "LearnThresholdIter": 0,  # this is applied for the swap operator
+        "SelectOperator": "ALNS"
+    }
+    para.global_case_id = para.global_case_id + 1
+    if para.global_case_id >= stop_number:
+        TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
+                    _case_name="Op_0_Base")
+    # --------------------------------------------------------
+    adjust_para = {
+        "SingleOpIndex": 8,
+        "LearnThresholdFit": 2.0,
+        "LearnThresholdIter": 0,  # this is applied for the swap operator
+        "SelectOperator": "ALNS"
+    }
+    para.global_case_id = para.global_case_id + 1
+    if para.global_case_id >= stop_number:
+        TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
+                    _case_name="Op_8_Threshold_Case_1")
+    # --------------------------------------------------------
+    adjust_para = {
+        "LearnThresholdFit": 2.0,
+        "LearnThresholdIter": 50,  # this is applied for the swap operator
+        "SelectOperator": "ALNS"
+    }
+    para.global_case_id = para.global_case_id + 1
+    if para.global_case_id >= stop_number:
+        TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
+                    _case_name="Op_8_Threshold_Case_2")
+    # --------------------------------------------------------
+    adjust_para = {
+        "LearnThresholdFit": 1.2,
+        "LearnThresholdIter": 0,  # this is applied for the swap operator
+        "SelectOperator": "ALNS"
+    }
+    para.global_case_id = para.global_case_id + 1
+    if para.global_case_id >= stop_number:
+        TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
+                    _case_name="Op_8_Threshold_Case_3")
+    # --------------------------------------------------------
+    adjust_para = {
+        "LearnThresholdFit": 1.2,
+        "LearnThresholdIter": 50,  # this is applied for the swap operator
+        "SelectOperator": "ALNS"
+    }
+    para.global_case_id = para.global_case_id + 1
+    if para.global_case_id >= stop_number:
+        TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
+                    _case_name="Op_8_Threshold_Case_4")
+
 
 def TestRewardVal(mf):
     """
@@ -109,9 +169,10 @@ def TestRewardVal(mf):
                 "SelectOperator": "ALNS"
             }
             para.global_case_id = para.global_case_id + 1
-            if para.global_case_id>=stop_number:
+            if para.global_case_id >= stop_number:
                 TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
-                        _case_name="Test_Rect_"+str(j)+"_imporve_"+str(i))
+                            _case_name="Test_Rect_"+str(j)+"_imporve_"+str(i))
+
 
 def TestDifferntOpSelect(mf):
     """
@@ -132,9 +193,9 @@ def TestDifferntOpSelect(mf):
     exit()
     adjust_para['SelectOperator'] = "Uni"
     para.global_case_id = para.global_case_id + 1
-    if para.global_case_id>=stop_number:
-        TestOneCase(mf, adjust_para, _case_id=para.global_case_id, 
-        _case_name="Uni")
+    if para.global_case_id >= stop_number:
+        TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
+                    _case_name="Uni")
 
 
 def BenchmarkParadoxNet(mf):
@@ -149,7 +210,7 @@ def BenchmarkParadoxNet(mf):
         "ReactionFactor": 0.5,
         "SelectOperator": "ALNS"
     }
-    
+
     print("---------need to check---------")
     print("1. demand is 6")
     print("2. the data used is FailureLinks - Case 2.txt")
@@ -162,7 +223,7 @@ def BenchmarkParadoxNet(mf):
     # TestOneCase(mf, adjust_para, _case_id=para.global_case_id, _case_name="ALNS")
     adjust_para['SelectOperator'] = "Uni"
     para.global_case_id = para.global_case_id + 1
-    TestOneCase(mf, adjust_para, _case_id = para.global_case_id,
+    TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
                 _case_name="Uni")
 
 
@@ -177,8 +238,8 @@ if __name__ == "__main__":
     print("# notes on the test")
     remarks = input()
     with open(mf.root_folder+"Output\\TestRemarks.txt", "w+") as f:
-        print(remarks,file=f)
- 
+        print(remarks, file=f)
+
     # step 0 print seed
     with open(mf.root_folder+"Input\\Seed.txt", "w+") as f:
         for i in range(0, para.NumOfTestSeed):
@@ -188,7 +249,8 @@ if __name__ == "__main__":
     para.Copy_input_and_test_files(mf)
 
     # BenchmarkParadoxNet(mf)
-    TestSingleOperator(mf)
+    TestLearnThreshold(mf)
+    # TestSingleOperator(mf)
     # TestRewardVal(mf)
     # TestDifferntOpSelect(mf)
 

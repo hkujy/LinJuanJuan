@@ -24,7 +24,7 @@ bool ReadLinkData(std::vector<LinkClass>& links,
 		links.back().Id = IdCount;
 		links.back().Tail = std::stoi(fields[0]);
 		links.back().Head = std::stoi(fields[1]);
-		links.back().T0 =static_cast<double>(std::stof(fields[2]));
+		links.back().T0 = static_cast<double>(std::stof(fields[2]));
 		links.back().CaInput = static_cast<double>(std::stof(fields[3]));
 		links.back().CaRevise = static_cast<double>(std::stof(fields[3]));
 		links.back().AlphaBpr = static_cast<double>(std::stof(fields[4]));
@@ -34,14 +34,14 @@ bool ReadLinkData(std::vector<LinkClass>& links,
 	return true;
 }
 
-GraphClass::GraphClass():UNPM(0.0), TotalSystemCost(0.0)
+GraphClass::GraphClass() :UNPM(0.0), TotalSystemCost(0.0)
 {
 	this->OdPairs.reserve(static_cast<std::vector<ODClass, std::allocator<ODClass>>::size_type>(numOD) + 1);
 	this->OriginSet.reserve(numNodes);
 	this->Nodes.reserve(static_cast<std::vector<NodeClass, std::allocator<NodeClass>>::size_type>(numNodes) + 1);
 	this->Links.reserve(static_cast<std::vector<LinkClass, std::allocator<LinkClass>>::size_type>(numLinks) + 1);
 	//int** MinPathPredLink;
-	if (numNodes==0)
+	if (numNodes == 0)
 	{
 		cerr << "Input node should be known before construct graph" << endl;
 	}
@@ -56,27 +56,27 @@ GraphClass::GraphClass():UNPM(0.0), TotalSystemCost(0.0)
 	}
 
 };
-GraphClass::~GraphClass(){
+GraphClass::~GraphClass() {
 	Free2DArray<int>(this->MinPathPredLink, numNodes + 1);
 	OdPairs.clear(); Links.clear(); Nodes.clear(); OriginSet.clear();
 };
 
-int GraphClass::FindMinCostRoutes(){
+int GraphClass::FindMinCostRoutes() {
 
-	try{
+	try {
 		int statusMsg = -1;
 		std::vector<double> label;
 		//for (auto o = this->OriginSet.begin(); o != this->OriginSet.end(); ++o)
-		for (auto o:OriginSet)
+		for (auto o : OriginSet)
 		{
 			const int orig = o.OirginNode;
-			if (orig<0) continue;
+			if (orig < 0) continue;
 			statusMsg = this->SP(o.OirginNode, label);// shortest path
 			assert(statusMsg);
 			//printf("Find min tree for OirginNode = %d \n", Orig);
 			//Minpath(Orig, MinPathPredLink[Orig], Lable, Nodes, Links, ModeType);
 			//for (auto d = o.ODset.begin(); d != o.ODset.end(); ++d)
-			for (auto d:o.ODset)
+			for (auto d : o.ODset)
 			{
 				const int dest = (*d).Dest;
 #ifdef __DEBUG__ 
@@ -107,7 +107,7 @@ void GraphClass::CreateOriginSet()
 	OriginBasedOD Oset;
 	vector<bool> isOrigin(numNodes, false);
 	//for (auto od = this->OdPairs.begin(); od != this->OdPairs.end(); od++)
-	for (auto const &od:OdPairs)
+	for (auto const& od : OdPairs)
 	{
 		isOrigin.at(od.Origin) = true;
 	}
@@ -122,7 +122,7 @@ void GraphClass::CreateOriginSet()
 	//	this->OriginSet.at(od->Origin).ODset.push_back(&*od);
 	//}
 
-	for (auto &od: OdPairs)
+	for (auto& od : OdPairs)
 		//for (auto od = this->OdPairs.begin(); od != this->OdPairs.end(); ++od)
 	{
 		this->OriginSet.at(od.Origin).ODset.push_back(&od);
@@ -131,8 +131,8 @@ void GraphClass::CreateOriginSet()
 	cout << "finish create origin set" << endl;
 }
 
-void GraphClass::CreateNodes(){
-	cout <<"Read Number of Nodes in the network is"<<this->Links.size() << endl;
+void GraphClass::CreateNodes() {
+	cout << "Read Number of Nodes in the network is" << this->Links.size() << endl;
 	assert(!Links.empty());
 	NodeClass tnode;
 	for (int i = 0; i < numNodes; i++)
@@ -146,7 +146,7 @@ void GraphClass::CreateNodes(){
 	//	this->Nodes.at(l->Head).InLinks.push_back(&*l);
 	//}
 
-	for (auto &l:this->Links)
+	for (auto& l : this->Links)
 	{
 		this->Nodes.at(l.Tail).OutLinks.push_back(&l);
 		this->Nodes.at(l.Head).InLinks.push_back(&l);
@@ -201,7 +201,7 @@ void GraphClass::ReadGraphData()
 	{
 		fin.open("..//Input//ParadoxNet//DeamdData.txt");
 	}
-	else if (networkIndex ==5)
+	else if (networkIndex == 5)
 	{
 		fin.open("..//Input//WangNetwork//DeamdData.txt");
 	}
@@ -272,9 +272,9 @@ void GraphClass::ReadGraphData()
 }
 
 
-int GraphClass::PrintLinks(std::ofstream &fout){
+int GraphClass::PrintLinks(std::ofstream& fout) {
 
-	try{
+	try {
 		assert(fout.good());
 		fout.setf(ios::fixed);
 		fout << left << setw(6) << "Id" << ",";
@@ -284,7 +284,7 @@ int GraphClass::PrintLinks(std::ofstream &fout){
 		fout << left << setw(12) << "Ca0" << ",";
 		fout << left << setw(12) << "CaRev" << ",";
 		fout << left << setw(12) << "Cost" << ",";
-		fout << left << setw(12) << "Flow" <<endl;
+		fout << left << setw(12) << "Flow" << endl;
 		//fout << endl;
 		for (auto l = this->Links.begin(); l != this->Links.end(); l++)
 		{
@@ -295,12 +295,12 @@ int GraphClass::PrintLinks(std::ofstream &fout){
 			fout << l->CaInput << ",";
 			fout << l->CaRevise << ",";
 			fout << l->Cost << ",";
-			fout << l->Flow <<endl;
+			fout << l->Flow << endl;
 			//fout << endl;
 		}
 		return 1;
 	}
-	catch (std::exception &e)
+	catch (std::exception& e)
 	{
 		TRACE("%s", e.what());
 		return 0;
@@ -342,7 +342,7 @@ int GraphClass::PrintLinks_onscreen() {
 
 }
 
-int GraphClass::PrintOD(std::ofstream &fout)
+int GraphClass::PrintOD(std::ofstream& fout)
 {
 	try
 	{
@@ -367,7 +367,7 @@ int GraphClass::PrintOD(std::ofstream &fout)
 		}
 		return 1;
 	}
-	catch (exception &e)
+	catch (exception& e)
 	{
 		TRACE("%s", e);
 		return 0;
@@ -375,9 +375,9 @@ int GraphClass::PrintOD(std::ofstream &fout)
 
 }
 
-int GraphClass::PrintSp(int origin, int dest, std::ofstream &fout)
+int GraphClass::PrintSp(int origin, int dest, std::ofstream& fout)
 {
-	try{
+	try {
 		vector<int> path;
 		for (auto o = this->OriginSet.begin(); o != this->OriginSet.end(); ++o)
 		{
@@ -403,14 +403,14 @@ int GraphClass::PrintSp(int origin, int dest, std::ofstream &fout)
 		}
 		return 1;
 	}
-	catch (exception &e)
+	catch (exception& e)
 	{
 		TRACE("%s", e.what());
 		return 0;
 	}
 }
 
-void GraphClass::EvalutateFailureScenarios(const ScenarioClass &s)
+void GraphClass::EvalutateFailureScenarios(const ScenarioClass& s)
 {
 	if (s.tau.size() != s.LinkIds.size())
 	{
@@ -467,20 +467,20 @@ void GraphClass::RevertFailureScenarios(const ScenarioClass& s)
 double GraphClass::CalRelSpChange(int linkId)
 {
 	// Step 0: Compute the Sp labels before remove the links
-	int statusMsg=-2;
+	int statusMsg = -2;
 	//for (int i = 0; i < Links.size(); i++)
 	//{
 	//	Links.at(i).Cost = Links.at(i).GetIniCost();
 	//}
-	for (auto &l:Links)
+	for (auto& l : Links)
 	{
 		l.SetIniCost();
 	}
-		//Links.at(i).Cost = Links.at(i).GetIniCost();
+	//Links.at(i).Cost = Links.at(i).GetIniCost();
 
 	std::vector<double> label;
 	//for (auto o = this->OriginSet.begin(); o != this->OriginSet.end(); o++)
-	for (auto &o:OriginSet)
+	for (auto& o : OriginSet)
 	{
 		const int origin = o.OirginNode;
 		if (origin < 0) continue;
@@ -489,7 +489,7 @@ double GraphClass::CalRelSpChange(int linkId)
 		//printf("Find min tree for OirginNode = %d \n", Orig);
 		//Minpath(Orig, MinPathPredLink[Orig], Lable, Nodes, Links, ModeType);
 		//for (auto d = o->ODset.begin(); d != o->ODset.end(); d++)
-		for (auto const &d: o.ODset)
+		for (auto const& d : o.ODset)
 		{
 			const int dest = (*d).Dest;
 #ifdef __DEBUG__ 
@@ -511,7 +511,7 @@ double GraphClass::CalRelSpChange(int linkId)
 	this->Links.at(linkId).Cost = REMOVE_LINK_COST;
 	//////////////////////////////////////////////////////////////////////////
 	//for (auto o = this->OriginSet.begin(); o != this->OriginSet.end(); o++)
-	for (auto &o: OriginSet)
+	for (auto& o : OriginSet)
 	{
 		const int origin = o.OirginNode;
 		if (origin < 0) continue;
@@ -520,7 +520,7 @@ double GraphClass::CalRelSpChange(int linkId)
 		//printf("Find min tree for OirginNode = %d \n", Orig);
 		//Minpath(Orig, MinPathPredLink[Orig], Lable, Nodes, Links, ModeType);
 		//for (auto d = o->ODset.begin(); d != o->ODset.end(); d++)
-		for (auto const &d:o.ODset)
+		for (auto const& d : o.ODset)
 		{
 			const int dest = (*d).Dest;
 #ifdef __DEBUG__ 
@@ -538,13 +538,13 @@ double GraphClass::CalRelSpChange(int linkId)
 	}
 	//TODO: need to update the denominator	
 	double evaluateVal = 0.0;
-	for (auto const &o:OdPairs)
+	for (auto const& o : OdPairs)
 	{
 #ifdef _DEBUG
 		assert(o.AfterRemoveSpDist > 0);
 		assert(o.BeforeRemoveSpDist > 0);
 #endif // _DEBUG
-		evaluateVal += (1/ o.BeforeRemoveSpDist- 1 / o.AfterRemoveSpDist);
+		evaluateVal += (1 / o.BeforeRemoveSpDist - 1 / o.AfterRemoveSpDist);
 	}
 
 	//Final step add back the link

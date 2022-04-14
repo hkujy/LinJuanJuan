@@ -22,17 +22,17 @@ public:
 	int BeforeCount;
 	int AfterCount;
 	int SamePeriodCount;
-	explicit RelationClass(const int lid):
-	CompareLink(lid),BeforeScore_Ave(0),
-	BeforeScore_Total(0), AfterScore_Ave(0),AfterScore_Total(0),
-	SamePeriodScore_Ave(0), SamePeriodScore_Total(0), BeforeCount(0),
-	AfterCount(0), SamePeriodCount(0){}
+	explicit RelationClass(const int lid) :
+		CompareLink(lid), BeforeScore_Ave(0),
+		BeforeScore_Total(0), AfterScore_Ave(0), AfterScore_Total(0),
+		SamePeriodScore_Ave(0), SamePeriodScore_Total(0), BeforeCount(0),
+		AfterCount(0), SamePeriodCount(0) {}
 	RelationClass(const RelationClass& obj) = default;
 	~RelationClass() = default;
 	RelationClass& operator=(const RelationClass& obj) = default;
 	RelationClass(RelationClass&& rhs) = default;
 	RelationClass& operator=(RelationClass&& rhs) = default;
-	void UpdateScore(const LinkSchRelations &r,double score);
+	void UpdateScore(const LinkSchRelations& r, double score);
 };
 
 class PatternClass
@@ -60,12 +60,14 @@ public:
 		TRACE("Debug find relationid fun");
 		return -1;
 	}
-	PatternClass():Id(-1),LinkId(-1)
-	{AbsScore.reserve(100); AbsProb.reserve(100); Count.reserve(100); 
-	AveProb.reserve(100); AveScore.reserve(100); }
-	~PatternClass() { 
-		AbsScore.clear(); AbsProb.clear(); Id = -1; LinkId = -1; Next.clear(); 
-		AveScore.clear(); AveProb.clear(); Count.clear(); 
+	PatternClass() :Id(-1), LinkId(-1)
+	{
+		AbsScore.reserve(100); AbsProb.reserve(100); Count.reserve(100);
+		AveProb.reserve(100); AveScore.reserve(100);
+	}
+	~PatternClass() {
+		AbsScore.clear(); AbsProb.clear(); Id = -1; LinkId = -1; Next.clear();
+		AveScore.clear(); AveProb.clear(); Count.clear();
 	}
 	void updateProb();
 	PatternClass(const PatternClass& obj) = default;
@@ -86,16 +88,16 @@ public:
 	std::vector<double> UNPM;
 	double Fitness;
 	std::string Key; // map to the string Key
-	ScheduleClass():Id(-1),Fitness(-1),Key("-")
+	ScheduleClass() :Id(-1), Fitness(-1), Key("-")
 	{
 		LinkId.reserve(100); StartTime.reserve(100); EndTime.reserve(100);
-		UsedRes.reserve(100); 
+		UsedRes.reserve(100);
 		TravelTime.reserve(100);
 		UNPM.reserve(100);
 	}
-	explicit  ScheduleClass(int id):Id(-1), Fitness(-1), Key("-")
+	explicit  ScheduleClass(int id) :Id(-1), Fitness(-1), Key("-")
 	{
-		LinkId.reserve(100); StartTime.reserve(100); EndTime.reserve(100); 
+		LinkId.reserve(100); StartTime.reserve(100); EndTime.reserve(100);
 		UsedRes.reserve(100); TravelTime.reserve(100); UNPM.reserve(100);
 	}
 	~ScheduleClass() = default;
@@ -146,30 +148,30 @@ public:
 	//}
 	// functions
 #pragma endregion
-	ScenarioClass ConvertToScenario(); // convert sch class to scenario and return 
-	void AlignStartTime(const std::vector<double> &resCap, GraphClass &g); // improve the solution itself
-	bool isFeasible(const std::vector<double> &res);  // check the solution is feasible or not
+	ScenarioClass ConvertToScenario() const; // convert sch class to scenario and return 
+	void AlignStartTime(const std::vector<double>& resCap, GraphClass& g); // improve the solution itself
+	bool isFeasible(const std::vector<double>& res) const;  // check the solution is feasible or not
 	void GenerateIniSch(GraphClass& g, const std::vector<int>& failureLinkSet);
 	void GenerateIniBasedOnPattern(GraphClass& g, const std::vector<int>& failureLinkSet,
-		const std::vector<PatternClass> &pat);
+		const std::vector<PatternClass>& pat);
 	void print() const;
-	void getRes(GraphClass &g);
-	void updatePrecedingRes(size_t st,size_t et,GraphClass &g);
-	void updateResFor(size_t pos,GraphClass &g);
-	int findEarliestFeasibleSt(size_t l, const std::vector<double>& resCap,GraphClass &g);
+	void getRes(GraphClass& g);
+	void updatePrecedingRes(size_t st, size_t et, GraphClass& g);
+	void updateResFor(size_t pos, GraphClass& g);
+	int findEarliestFeasibleSt(size_t l, const std::vector<double>& resCap, GraphClass& g) const;
 	int findEarliestInFeasibleSt(const std::vector<double>& resCap);
-	void updateEndTime(GraphClass &g);
+	void updateEndTime(GraphClass& g);
 	void Evaluate(GraphClass& g);
-	void computeKey();
-	LinkSchRelations findDominantRelation(int aLink, int bLink, const std::vector<PatternClass> &pat,
-		enum_CompareScoreMethod &compareMethod) const;
-	int GetLastPeriod() { return *max_element(EndTime.begin(), EndTime.end());}
+	void computeKey() const;
+	LinkSchRelations findDominantRelation(int aLink, int bLink, const std::vector<PatternClass>& pat,
+		enum_CompareScoreMethod& compareMethod) const;
+	int GetLastPeriod() { return *max_element(EndTime.begin(), EndTime.end()); }
 	std::vector<size_t> getNewReadyLinks(int tau) const;
 	// write a few neighbor operators
 	void GenNei(ScheduleClass& nei, GraphClass& g, const int& operatorId,
 		const std::vector<int>& failureLinkSet, const std::vector<double>& resCap, const std::vector<PatternClass>& pat,
-		enum_CompareScoreMethod &compareMethod);
-	void Nei_Swap(ScheduleClass &newSol) const;
+		enum_CompareScoreMethod& compareMethod);
+	void Nei_Swap(ScheduleClass& newSol) const;
 	void Nei_New(ScheduleClass& newSol, GraphClass& g, const std::vector<int>& failureLinkSet, const std::vector<double>& resCap);
 	void Nei_Move_One_To_Right(ScheduleClass& newSol);
 	void Nei_Move_One_To_Left(ScheduleClass& newSol) const;
@@ -178,15 +180,15 @@ public:
 	void Nei_FlipOver_OnePoint(ScheduleClass& newSol);
 	void Nei_Greedy_EI_Based(ScheduleClass& newSol, GraphClass& g, std::string sType);
 	void Nei_New_BasedOn_Pattern(ScheduleClass& newSol, GraphClass& g, const std::vector<int>& failureLinkSet,
-		const std::vector<double>& resCap, const std::vector<PatternClass> &pat);
+		const std::vector<double>& resCap, const std::vector<PatternClass>& pat);
 	void Nei_Swap_BasedOn_Pattern(ScheduleClass& newSol, GraphClass& g, const std::vector<int>& failureLinkSet,
-		const std::vector<double>& resCap, const std::vector<PatternClass> &pat);
+		const std::vector<double>& resCap, const std::vector<PatternClass>& pat);
 	void Nei_Swap_BasedOn_PatternRelation(ScheduleClass& newSol, GraphClass& g, const std::vector<int>& failureLinkSet,
 		const std::vector<double>& resCap, const std::vector<PatternClass>& pat,
-		enum_CompareScoreMethod &compareMethod) const;
-	void GenerateTimeFromOrder(const std::vector<double>& resCap,GraphClass &g);
+		enum_CompareScoreMethod& compareMethod) const;
+	void GenerateTimeFromOrder(const std::vector<double>& resCap, GraphClass& g);
 	void Repair_Delay();
-	LinkSchRelations getRelation(int aLink,int comparedLink) const;//get the relationship of the two links
+	LinkSchRelations getRelation(int aLink, int comparedLink) const;//get the relationship of the two links
 };
 
 #endif

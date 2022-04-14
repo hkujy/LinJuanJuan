@@ -23,6 +23,7 @@ extern int networkIndex;
 extern std::vector<int> seedVecVal;
 extern bool isUseMyOwnAlgo;
 extern bool isWriteConverge;
+extern int gIterationCounter;
 // stop criteria =1: based on number of solution evaluated
 // stop criteria =0: normal : based on number of iterations
 

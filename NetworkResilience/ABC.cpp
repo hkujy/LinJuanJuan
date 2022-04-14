@@ -33,7 +33,7 @@ bool ReadSeedVec(std::vector<int>& seedVec, FILE* fin) {
 	}
 	ofstream fout;
 	fout.open("..//OutPut//CheckSeed.txt");
-	for(auto const i: seedVec)
+	for (auto const i : seedVec)
 	{
 		fout << i << endl;
 	}
@@ -68,7 +68,8 @@ void Algorithm::ABCMain()
 
 		for (int i = 0; i < MaxIter; i++)
 		{
-			if (SelectOp!=SelectOperatorType::Uniform) UpdateOperatorProb();
+			gIterationCounter = i;
+			if (SelectOp != SelectOperatorType::Uniform) UpdateOperatorProb();
 #ifdef _DEBUG
 			cout << "---------------------ABC iter = " << i << "--------------" << endl;
 #endif // _DEBUG
@@ -91,14 +92,14 @@ void Algorithm::ABCMain()
 			//ConvergeMeasure.at(i) = GlobalBest.Fitness;
 			ConvergeMeasure.push_back(GlobalBest.Fitness);
 			if (isWriteConverge) convergeFile << s << "," << i << "," << fixed << setprecision(2) << ConvergeMeasure.back() << endl;
-			if (SelectOp!=SelectOperatorType::Uniform) UpdateOperatorWeight();
+			if (SelectOp != SelectOperatorType::Uniform) UpdateOperatorWeight();
 
-			PrintOperator(s,i);
+			PrintOperator(s, i);
 		}
 		sizeOfArchive.emplace_back(m_str_val_solArchive.size());
 		endTime = clock();
-		cpuTimes.emplace_back(static_cast<double>((endTime - startTime)/CLOCKS_PER_SEC)); // time unit is second
-		PrintFinal(s); 
+		cpuTimes.emplace_back(static_cast<double>((endTime - startTime) / CLOCKS_PER_SEC)); // time unit is second
+		PrintFinal(s);
 		printPattern(s);
 		printDomRelation(s);
 
@@ -111,9 +112,9 @@ void Algorithm::ABCMain()
 	ofstream cpuTimeFile;
 	cpuTimeFile.open("..//OutPut//CpuTime.txt", ios::trunc);
 	cpuTimeFile << "Seed,Time" << endl;
-	for (int s= 0;s<seedVecVal.size();++s)
+	for (int s = 0; s < seedVecVal.size(); ++s)
 	{
-		cpuTimeFile << s << "," << fixed << setprecision(2) <<cpuTimes[s]<< endl;
+		cpuTimeFile << s << "," << fixed << setprecision(2) << cpuTimes[s] << endl;
 	}
 	cpuTimeFile.close();
 
@@ -169,7 +170,7 @@ void Algorithm::GenerateIniSol()
 #endif // _DEBUG
 		Sols.emplace_back(ScheduleClass(i));
 		Sols.back().GenerateIniSch(*Graph, SetOfFailureLinks);
-		Sols.back().AlignStartTime(SetOfResourceCap,*Graph);
+		Sols.back().AlignStartTime(SetOfResourceCap, *Graph);
 #ifdef _DEBUG
 		cout << "----------Print solution after solution alignment--------" << endl;
 		Sols.back().print();
@@ -195,8 +196,8 @@ void Algorithm::GenerateIniSol()
 		Sols.back().Links.at(3) = &Graph->Links.at(7);
 		Sols.back().Links.at(4) = &Graph->Links.at(6);
 		Sols.back().GenerateTimeFromOrder(ResourceCap);*/
-	
-		evaluateOneSol(Sols[i],*Graph);
+
+		evaluateOneSol(Sols[i], *Graph);
 		//Sols.back().Evaluate(*Graph);
 
 		if (Sols.back().Fitness < GlobalBest.Fitness)
@@ -206,7 +207,7 @@ void Algorithm::GenerateIniSol()
 	}
 	//for (auto s : Sols) cout << s.Id << "," << s.Fitness << endl;
 }
-	
+
 // lhs is the current solution
 // rhs is the neighbour solution
 bool Algorithm::CompareTwoSolsAndReplace(ScheduleClass& lhs, const ScheduleClass& rhs, int neiOperatorId)
@@ -235,7 +236,10 @@ bool Algorithm::CompareTwoSolsAndReplace(ScheduleClass& lhs, const ScheduleClass
 		{
 			//LearnPattern_Score(rhs, false);
 			//LearnPatternRelation_Score(rhs, false);
-			LearnPatternFromCompare(lhs, rhs, false);
+			if (rhs.Fitness < GlobalBest.Fitness * LearnThresholdFit)
+			{
+				LearnPatternFromCompare(lhs, rhs, false);
+			}
 		}
 	}
 	return isBetter;
@@ -253,9 +257,9 @@ void Algorithm::EmployBeePhase()
 #endif // _DEBUG
 		//if (i == 2)
 		int OpId = SelectOperatorIndex();
-		this->Sols.at(i).GenNei(nei, *Graph, OpId, SetOfFailureLinks, SetOfResourceCap,Pattern, CompareScoreMethod);
+		this->Sols.at(i).GenNei(nei, *Graph, OpId, SetOfFailureLinks, SetOfResourceCap, Pattern, CompareScoreMethod);
 		evaluateOneSol(nei, *Graph);
-		if (SelectOp!=SelectOperatorType::Uniform) UpdateOperatorScore(OpId, nei.Fitness, this->Sols.at(i).Fitness, GlobalBest.Fitness);
+		if (SelectOp != SelectOperatorType::Uniform) UpdateOperatorScore(OpId, nei.Fitness, this->Sols.at(i).Fitness, GlobalBest.Fitness);
 		bool const isImproved = CompareTwoSolsAndReplace(this->Sols.at(i), nei, OpId);
 		if (isImproved) ScoutCounter.at(i) = 0;
 		else ScoutCounter.at(i)++;
@@ -274,11 +278,11 @@ void Algorithm::OnlookerPhase()
 #endif // _DEBUG
 		ScheduleClass nei(Sols.at(selectedEbId));
 		int OpId = SelectOperatorIndex();
-		Sols.at(selectedEbId).GenNei(nei, *Graph, OpId, SetOfFailureLinks, SetOfResourceCap,Pattern,CompareScoreMethod);
+		Sols.at(selectedEbId).GenNei(nei, *Graph, OpId, SetOfFailureLinks, SetOfResourceCap, Pattern, CompareScoreMethod);
 		evaluateOneSol(nei, *Graph);
-		if (SelectOp!=SelectOperatorType::Uniform) 
+		if (SelectOp != SelectOperatorType::Uniform)
 			UpdateOperatorScore(OpId, nei.Fitness, Sols.at(selectedEbId).Fitness, GlobalBest.Fitness);
-	    const bool isImproved = CompareTwoSolsAndReplace(Sols.at(selectedEbId), nei, OpId);
+		const bool isImproved = CompareTwoSolsAndReplace(Sols.at(selectedEbId), nei, OpId);
 		if (isImproved) ScoutCounter.at(selectedEbId) = 0;
 		else ScoutCounter.at(selectedEbId)++;
 		UpdateOperatorMeasure(OpId, isImproved);
@@ -295,7 +299,7 @@ void Algorithm::ScoutPhase()
 			cout << "******Scout selected employed bee = " << t << "**************" << endl;
 #endif // _DEBUG
 			Sols.at(t).GenerateIniSch(*Graph, SetOfFailureLinks);
-			Sols.at(t).AlignStartTime(SetOfResourceCap,*Graph);
+			Sols.at(t).AlignStartTime(SetOfResourceCap, *Graph);
 			evaluateOneSol(Sols.at(t), *Graph);
 			//this->Sols.at(t).Evaluate(*Graph);
 			if (Sols.at(t).Fitness < GlobalBest.Fitness)
@@ -314,7 +318,7 @@ void Algorithm::ScoutPhase()
 void Algorithm::GetProb()  // compute probability based on the fitness values
 {
 	double sumFit = 0.0;
-	for (auto const &s : Sols) sumFit += s.Fitness;
+	for (auto const& s : Sols) sumFit += s.Fitness;
 	assert(sumFit > 0);
 	CumProbForSelectOnlooker.at(0) = 0.0;
 	for (size_t i = 0; i < NumEmployedBee - 1; i++)
@@ -342,14 +346,14 @@ void Algorithm::UpdateOperatorProb_ALNS()
 		Operators.at(i).Prob = Operators.at(i).Weight / sumWeight;
 	}
 	CumProbForSelectNei.at(0) = 0.0;
-	for (size_t i = 0; i < Operators.size()-1; i++)
+	for (size_t i = 0; i < Operators.size() - 1; i++)
 	{
 		CumProbForSelectNei.at(i + 1) = CumProbForSelectNei.at(i) + Operators.at(i).Prob;
 	}
 }
 int RouletteSelect(const vector<double>& cumProb);
 
-int Algorithm::SelectOperator_ALNS()
+int Algorithm::SelectOperator_ALNS() const
 {
 	return RouletteSelect(CumProbForSelectNei);
 }
@@ -377,7 +381,7 @@ void Algorithm::IniPattern()
 		{
 			Pattern.back().Next.push_back(SetOfFailureLinks.at(k));
 		}
-		
+
 		Pattern.back().AbsProb.assign(SetOfFailureLinks.size(), 0.0);
 		Pattern.back().AbsScore.assign(SetOfFailureLinks.size(), 1.0);
 		Pattern.back().AveProb.assign(SetOfFailureLinks.size(), 0.0);
@@ -410,12 +414,12 @@ void Algorithm::Ini(GraphClass& g)
 	ReadData(g);
 	for (int l = 0; l < SetOfFailureLinks.size(); l++)
 	{
-		Pattern.push_back(PatternClass());
+		Pattern.emplace_back(PatternClass());
 		Pattern.back().Id = l;
 		Pattern.back().LinkId = SetOfFailureLinks.at(l);
-		for (int k =0;k<SetOfFailureLinks.size();k++)
+		for (int k = 0; k < SetOfFailureLinks.size(); k++)
 		{
-			Pattern.back().Next.push_back(SetOfFailureLinks.at(k));
+			Pattern.back().Next.emplace_back(SetOfFailureLinks.at(k));
 		}
 		Pattern.back().AbsProb.assign(SetOfFailureLinks.size(), 0.0);
 		Pattern.back().AbsScore.assign(SetOfFailureLinks.size(), 1.0);
@@ -423,7 +427,7 @@ void Algorithm::Ini(GraphClass& g)
 		Pattern.back().AveProb.assign(SetOfFailureLinks.size(), 0.0);
 		Pattern.back().AveScore.assign(SetOfFailureLinks.size(), 1.0);
 		Pattern.back().Count.assign(SetOfFailureLinks.size(), 0);
-			
+
 		// TODO. update the score to set the diagonal vector value =1
 		for (int i = 0; i < SetOfFailureLinks.size(); i++)
 		{
@@ -495,10 +499,12 @@ void Algorithm::ReadData(GraphClass& g)
 		if (fields[0] == "NumOnlookerBee")	NumOnlookers = stoi(fields[1]);
 		if (fields[0] == "MaxScoutCount")	MaxScoutCount = stoi(fields[1]);
 		if (fields[0] == "MaxABCIter")	MaxIter = stoi(fields[1]);
-		if (fields[0] == "RewardImproveGlobal") RewardImproveGlobal = stof(fields[1]);
-		if (fields[0] == "RewardImproveLocal") RewardImproveLocal = stof(fields[1]);
-		if (fields[0] == "RewardWorse") RewardWorse = stof(fields[1]);
-		if (fields[0] == "ReactionFactor") ReactionFactor = stof(fields[1]);
+		if (fields[0] == "RewardImproveGlobal") RewardImproveGlobal = static_cast<double>(stof(fields[1]));
+		if (fields[0] == "RewardImproveLocal") RewardImproveLocal = static_cast<double>(stof(fields[1]));
+		if (fields[0] == "RewardWorse") RewardWorse = static_cast<double>(stof(fields[1]));
+		if (fields[0] == "ReactionFactor") ReactionFactor = static_cast<double>(stof(fields[1]));
+		if (fields[0] == "LearnThresholdFit") LearnThresholdFit = static_cast<double>(stof(fields[1]));
+		if (fields[0] == "LearnThresholdIter") LearnThresholdIter = stoi(fields[1]);
 		if (fields[0] == "CompareScoreMethod")
 		{
 			if (fields[1] == "Ave") CompareScoreMethod = enum_CompareScoreMethod::Ave;
@@ -564,7 +570,7 @@ void Algorithm::ReadData(GraphClass& g)
 	fout << "MaxABCIter" << "," << MaxIter << endl;
 	fout << "RewardImproveGlobal" << "," << RewardImproveGlobal << endl;
 	fout << "RewardImproveLocal" << "," << RewardImproveLocal << endl;
-	fout << "RewardWorse" << ","<<RewardWorse << endl;;
+	fout << "RewardWorse" << "," << RewardWorse << endl;;
 	fout << "ReactionFactor," << ReactionFactor << endl;
 	if (SelectOp == SelectOperatorType::ALNS)
 	{
@@ -582,7 +588,7 @@ void Algorithm::ReadData(GraphClass& g)
 }
 
 
-void Algorithm::PrintFinal(int sd)
+void Algorithm::PrintFinal(int sd) const
 {
 	ofstream sf;
 	if (name._Equal("ABC"))
@@ -607,20 +613,20 @@ void Algorithm::PrintFinal(int sd)
 	// Print the value of best solution
 	sf.open("..//OutPut//ABCPrintSeedBestSolVal.txt", ios::app);
 	sf << sd << ",";
-	sf <<setiosflags(ios::fixed)<<setprecision(2)<<GlobalBest.Fitness << endl;
+	sf << setiosflags(ios::fixed) << setprecision(2) << GlobalBest.Fitness << endl;
 	sf.close();
 	// Print the best solution period
 	sf.open("..//OutPut//PrintPeriod.txt", ios::app);
 	for (size_t t = 0; t < GlobalBest.TravelTime.size(); t++)
 	{
 		sf << sd << "," << t << ",";
-		sf<<setiosflags(ios::fixed)<<setprecision(2)<<GlobalBest.TravelTime.at(t) << ","<<GlobalBest.UNPM.at(t)<<endl;
+		sf << setiosflags(ios::fixed) << setprecision(2) << GlobalBest.TravelTime.at(t) << "," << GlobalBest.UNPM.at(t) << endl;
 	}
 	sf.close();
 }
 
-OperatorClass::OperatorClass():Id(-1),TotalCounterGood(0), TotalCounterBad(0), TotalCounterSum(0), 
-Score(1),Prob(1.0/NUM_OPERATORS),Weight(1){}
+OperatorClass::OperatorClass() :Id(-1), TotalCounterGood(0), TotalCounterBad(0), TotalCounterSum(0),
+Score(1), Prob(1.0 / NUM_OPERATORS), Weight(1) {}
 //OperatorClass::~OperatorClass()
 //{
 //	Id = -1; TotalCounterSum = 0; TotalCounterBad = 0; TotalCounterGood = 0;
@@ -649,15 +655,15 @@ void Algorithm::PrintOperator(int seedId, int iter)
 	//OutFile << "Seed,Iter,Id,Good,Bad,Sum,Gp,Bp,Prob,Score,Weight" << endl;
 	for (int i = 0; i < NUM_OPERATORS; ++i)
 	{
-		OutFile << seedId<< ",";
+		OutFile << seedId << ",";
 		OutFile << iter << ",";
-		OutFile << i<< ",";
+		OutFile << i << ",";
 		OutFile << Operators.at(i).TotalCounterGood << ",";
 		OutFile << Operators.at(i).TotalCounterBad << ",";
 		OutFile << Operators.at(i).TotalCounterSum << ",";
-		OutFile << double(Operators.at(i).TotalCounterGood)/max(1.0, double(Operators.at(i).TotalCounterSum)) << ",";
-		OutFile << double(Operators.at(i).TotalCounterBad)/max(1.0,double(Operators.at(i).TotalCounterSum))<<",";
-		OutFile << Operators.at(i).Prob <<",";
+		OutFile << double(Operators.at(i).TotalCounterGood) / max(1.0, double(Operators.at(i).TotalCounterSum)) << ",";
+		OutFile << double(Operators.at(i).TotalCounterBad) / max(1.0, double(Operators.at(i).TotalCounterSum)) << ",";
+		OutFile << Operators.at(i).Prob << ",";
 		OutFile << Operators.at(i).Score << ",";
 		OutFile << Operators.at(i).Weight;
 		OutFile << endl;
@@ -677,7 +683,7 @@ void Algorithm::UpdateOperatorWeight()
 /// given a solution from the exe input file then evaluate the solution
 /// </summary>
 /// <param name="vec"></param>
-void Algorithm::ReadSolAndEvaluate(vector<int> &vec,GraphClass &g)
+void Algorithm::ReadSolAndEvaluate(vector<int>& vec, GraphClass& g)
 {
 	// step 1: set the solution vector 
 	ScheduleClass sol;
@@ -685,9 +691,9 @@ void Algorithm::ReadSolAndEvaluate(vector<int> &vec,GraphClass &g)
 	sol.StartTime.assign(SetOfFailureLinks.size(), -1);
 	//for (int l = 0; l < vec.size(); l++) sol.LinkId.push_back(&Graph->Links.at(vec[l]));
 	for (int l = 0; l < vec.size(); l++) sol.LinkId.push_back(vec[l]);
-	if (SetOfFailureLinks.size() != vec.size()) 
+	if (SetOfFailureLinks.size() != vec.size())
 		std::cout << "c++: warning: the failure link size does not equal vec size" << endl;
-	sol.AlignStartTime(SetOfResourceCap,g);
+	sol.AlignStartTime(SetOfResourceCap, g);
 	sol.Evaluate(*Graph);
 	//Remark: this is the last line of the exe, so that the results can be read from python
 	//        Do not Print the "endl" at the end.
@@ -705,7 +711,7 @@ void Algorithm::ComputeFailureLinkEI()
 	}
 }
 
-void Algorithm::printLinkEI()
+void Algorithm::printLinkEI() const
 {
 	ofstream  OutFile;
 	OutFile.open("..//OutPut/LinkEI.txt", ios::app);
@@ -733,7 +739,7 @@ void PatternClass::updateProb()
 }
 
 // return the location of the vector
-size_t findPatternIndex_fun(int lid, const vector<PatternClass> &Pat)
+size_t findPatternIndex_fun(int lid, const vector<PatternClass>& Pat)
 {
 	assert(lid >= 0);
 	for (size_t i = 0; i < Pat.size(); i++)
@@ -745,13 +751,13 @@ size_t findPatternIndex_fun(int lid, const vector<PatternClass> &Pat)
 }
 
 // return the location of the vector
-size_t Algorithm::findPatternIndex(int lid)
+size_t Algorithm::findPatternIndex(int lid) const
 {
 	return findPatternIndex_fun(lid, Pattern);
 }
 
 //Print pattern on the file
-void Algorithm::printPattern(int seedId)
+void Algorithm::printPattern(int seedId) const
 {
 	ofstream OutFile;
 	if (name._Equal("ABC"))
@@ -765,7 +771,7 @@ void Algorithm::printPattern(int seedId)
 	//OutFile << "Seed,First,Second,Score,Prob" << endl;
 	for (auto p : Pattern)
 	{
-		for (int i=0;i<p.Next.size();i++)
+		for (int i = 0; i < p.Next.size(); i++)
 		{
 			OutFile << seedId << ",";
 			OutFile << p.LinkId << ",";
@@ -793,6 +799,13 @@ std::string getAlgorithmTypeName(const AlgorithmType& algorithmType)
 		return "HH"; break;
 	case (AlgorithmType::ABC):
 		return "ABC"; break;
+	case (AlgorithmType::CSA):
+		return "CSA";
+	case (AlgorithmType::GA):
+		return "GA";
+	case (AlgorithmType::UnDefined):
+		TRACE("Algorithm Undefined");
+		return "UnDefined";
 	default:
 		TRACE("Algorithm type is wrong input");
 		break;
@@ -801,29 +814,29 @@ std::string getAlgorithmTypeName(const AlgorithmType& algorithmType)
 }
 
 // this is to check whether the solution needs to be evaluated
-bool Algorithm::isNeedToEvaluateSol(const ScheduleClass &sol)
+bool Algorithm::isNeedToEvaluateSol(const ScheduleClass& sol) const
 {
 	return isAddNewToArchive(sol.Key);
 }
 
 // TODO: check whether the link is a new to the archive 
-bool Algorithm::isAddNewToArchive(const string &key)
+bool Algorithm::isAddNewToArchive(const string& key) const
 {
-// step 1. get string from so
+	// step 1. get string from so
 	if (m_str_val_solArchive.count(key) == 0)
 		return true;
 	else
 		return false;
 }
 
-string Algorithm::getMapStrFromSol(const ScheduleClass &sol) const //get string for the map sol archive
+string Algorithm::getMapStrFromSol(const ScheduleClass& sol) const //get string for the map sol archive
 {
 	string strVal;
-	for (size_t l=0; l < sol.LinkId.size(); l++)
+	for (size_t l = 0; l < sol.LinkId.size(); l++)
 	{
 		if (l == 0)
 		{
-			if (sol.LinkId[l]==0) strVal = "0";
+			if (sol.LinkId[l] == 0) strVal = "0";
 			else strVal = std::to_string(sol.LinkId[l]);
 		}
 		else
@@ -831,12 +844,12 @@ string Algorithm::getMapStrFromSol(const ScheduleClass &sol) const //get string 
 			if (sol.LinkId[l] == 0) strVal.append(",0");
 			else
 			{
-				strVal.append(",");strVal.append(std::to_string(sol.LinkId[l]));
+				strVal.append(","); strVal.append(std::to_string(sol.LinkId[l]));
 			}
 		}
 	}
 #ifdef _DEBUG
-	for (auto const &l : sol.LinkId)
+	for (auto const& l : sol.LinkId)
 	{
 		cout << "wtf: link Id = " << l << endl;
 	}
@@ -846,8 +859,8 @@ string Algorithm::getMapStrFromSol(const ScheduleClass &sol) const //get string 
 }
 
 void Algorithm::IniSolArchive()
-{	
-	if (m_str_val_solArchive.size() > 0)
+{
+	if (!m_str_val_solArchive.empty())
 	{
 		m_str_val_solArchive.clear();
 	}
@@ -864,17 +877,36 @@ void OperatorClass::CalWeight(double r)
 	}
 }
 
-
-int Algorithm::SelectOperatorIndex()
+int Algorithm::SelectOperatorIndex() const
 {
-	if (isTestSingleOperator) return testSingleOperatorIndex;
+	if (isTestSingleOperator)
+	{
+		// set and test a learning threshold
+		if (testSingleOperatorIndex == 8)
+		{
+			if (gIterationCounter < LearnThresholdIter) return 0;
+			else return testSingleOperatorIndex;
+		}
+		return testSingleOperatorIndex;
+	}
 	if (this->SelectOp == SelectOperatorType::Uniform)
 	{
-		return GenRandomInt(0, NUM_OPERATORS - 1);
+		int OpId = GenRandomInt(0, NUM_OPERATORS - 1);;
+		while (gIterationCounter < LearnThresholdIter && OpId == 8)
+		{
+			OpId = GenRandomInt(0, NUM_OPERATORS - 1);;
+		}
+		return OpId;
 	}
 	if (this->SelectOp == SelectOperatorType::ALNS)
 	{
-		return SelectOperator_ALNS();
+		int OpId = SelectOperator_ALNS();
+		while (gIterationCounter < LearnThresholdIter && OpId == 8)
+		{
+			OpId = SelectOperator_ALNS();
+		}
+
+		return OpId;
 	}
 	TRACE("Select Operator does not return an index");
 	return -999;
@@ -883,14 +915,13 @@ void Algorithm::IniOperatorProb_ALNS()
 {
 	for (int i = 0; i < Operators.size(); i++)
 	{
-		Operators.at(i).Prob = 1.0 / NUM_OPERATORS;
+		Operators.at(i).Prob = 1.0 / static_cast<double>(NUM_OPERATORS);
 		Operators.at(i).Weight = 1.0;
 		Operators.at(i).Score = 1.0;
 		Operators.at(i).TotalCounterBad = 0;
 		Operators.at(i).TotalCounterGood = 0;
 		Operators.at(i).TotalCounterSum = 0;
 	}
-
 
 }
 void Algorithm::IniOperatorProb()

@@ -16,11 +16,11 @@ isDebug = False
 #             9629, 8266, 3045, 9770, 3048, 6705, 9591, 7905, 8223, 9044, 1091,
 #             1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,16,18,19,20]
 SeedPool = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,16,18,19,20]
-NumOfTestSeed = 2
+NumOfTestSeed = 20
 # FailureLinks = [0, 6, 19, 22, 26, 27, 34, 38, 42, 55, 59, 73]
 FailureLinks = [0,2,6,12,16,19,22,26,27,29,31,34,42,50,55,59]
 
-NumofIter = 50
+NumofIter = 500
 global_case_id = 0
 
 class ParaClass(object):
@@ -51,7 +51,9 @@ class ParaClass(object):
             "SelectOperator": "ALNS",
             "oneDimEps": 0.0000001,
             "epsUE": 0.01,
-            "maxIterUE": 500
+            "maxIterUE": 500,
+            "LearnThresholdFit":1.2,
+            "LearnThresholdIter":50  # this is applied for the swap operator 
         }
 
     def print_para(self):

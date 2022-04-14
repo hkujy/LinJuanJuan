@@ -1,7 +1,7 @@
 networkIndex,3
-isTestSingleOp,True
-SingleOpIndex,8
+isTestSingleOp,False
+SingleOpIndex,-1
 isUseMyOwn,True
 oneDimEps,1e-07
-epsUE,0.01
+epsUE,0.1
 maxIterUE,500

@@ -4,9 +4,9 @@
 
 //#include "DefGloVar.h"
 #include "GlobalVar.h"
-template <typename T>  T **Create2DArray(const int dim1, const int dim2)
+template <typename T>  T** Create2DArray(const int dim1, const int dim2)
 {
-	T **array = new T*[dim1];
+	T** array = new T * [dim1];
 	for (int i = 0; i < dim1; i++) {
 		array[i] = new T[dim2];
 	}
@@ -22,7 +22,7 @@ template <typename T>  T **Create2DArray(const int dim1, const int dim2)
 
 
 template <typename T>
-void Free2DArray(T **Array, const int dim1) {
+void Free2DArray(T** Array, const int dim1) {
 
 	for (int i = 0; i < dim1; i++) {
 		delete[] Array[i];
@@ -31,21 +31,21 @@ void Free2DArray(T **Array, const int dim1) {
 }
 
 template <typename T>
-T *Create1DArray(const int dim1) {
-	T *array = new T[dim1];
+T* Create1DArray(const int dim1) {
+	T* array = new T[dim1];
 	return (array);
 }
 template <typename T>
-void Free1DArray(T *Array) {
+void Free1DArray(T* Array) {
 
 	delete[] Array;
 }
 
 template <typename T>
-void DebugStop(T val, T tv){
+void DebugStop(T val, T tv) {
 	if (val >= tv - 0.1 && val < tv + 0.1)
 	{
-		cout << "debug stop" << endl;
+		std::cout << "debug stop" << std::endl;
 		system("pause");
 	}
 }
@@ -65,7 +65,7 @@ struct split
 
 template <typename Container>
 Container& splitf(
-	Container&                            result,
+	Container& result,
 	const typename Container::value_type& s,
 	const typename Container::value_type& delimiters,
 	split::empties_t                      empties = split::empties_ok)
@@ -89,11 +89,11 @@ Container& splitf(
 }
 
 template<typename T>
-inline bool isEqual(const T &Rhs, const T &Lhs){
+inline bool isEqual(const T& Rhs, const T& Lhs) {
 	if (std::abs(Rhs - Lhs) <= zero) return true;
 	else return false;
 }
-inline bool isEqual(const double &Rhs, const double &Lhs) {
+inline bool isEqual(const double& Rhs, const double& Lhs) {
 	if (std::abs(Rhs - Lhs) <= zero) return true;
 	else return false;
 }
