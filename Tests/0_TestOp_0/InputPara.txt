@@ -6,7 +6,7 @@ maxIterUE,500
 NumEmployBee,10
 NumOnlookerBee,10
 MaxScoutCount,-1
-MaxABCIter,5
+MaxABCIter,50
 RewardImproveGlobal,1
 RewardImproveLocal,1
 RewardWorse,0

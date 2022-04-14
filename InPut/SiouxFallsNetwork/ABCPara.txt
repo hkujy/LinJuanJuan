@@ -6,7 +6,7 @@ SingleOpIndex,8
 NumEmployBee,10
 NumOnlookerBee,10
 MaxScountCount,50
-MaxABCIter,5
+MaxABCIter,50
 MaxGAIter,5
 RewardImproveGlobal,1
 RewardImproveLocal,1

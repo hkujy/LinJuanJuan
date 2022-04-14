@@ -14,7 +14,8 @@ class FileFolderClass(object):
             set the root folder 
             just in case in the IPTOP folder is not placed under the folder of GitHub
         """
-        self.root_folder = "C:\\GitCodes\\"
+        # self.root_folder = "C:\\GitCodes\\"
+        self.root_folder = "C:\\GitCodes\\LinJuanJuan\\"
         # folder = os.path.abspath(os.path.dirname(__file__))
         # x = folder.split("\\")
         # for i in range(0, len(x)-1):

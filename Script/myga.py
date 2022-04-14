@@ -96,9 +96,9 @@ def gamain(_mf,_ps):
     links = []
     for i in range(0, row-1):
         links.append(int(data[0][i]))
-    with open (_mf.root_folder+"LinJuanJuan\\OutPut\\GaPrintSol.txt","w+") as sf:
+    with open (_mf.root_folder+"OutPut\\GaPrintSol.txt","w+") as sf:
         print("Seed,Link,St,Et",file=sf)
-        with open (_mf.root_folder + "LinJuanJuan\\Output\\GAConverge.txt","w+") as f:
+        with open (_mf.root_folder + "Output\\GAConverge.txt","w+") as f:
             for i in range(0, para.NumOfTestSeed):
                 (gap, best) = gafun(num_links=len(links), seed_val=para.SeedPool[i],iter=GaIter)
                 sd = deCode(best)
@@ -111,6 +111,6 @@ def gamain(_mf,_ps):
                     print("{0},{1},-1,-1".format(i,links[vec[j]]),file=sf)
             print("Complete one GA seed {0}".format(i))
     print("GA seed loop complete")
-    myplot.plot_converge(_ps, _mf.root_folder + "LinJuanJuan\\Output\\GAConverge.txt",GaIter,"GA")
+    myplot.plot_converge(_ps, _mf.root_folder + "Output\\GAConverge.txt",GaIter,"GA")
 
 

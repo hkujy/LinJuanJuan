@@ -40,9 +40,9 @@ def TestOneCase(_mf, _adjust, _case_id, _case_name):
     print("py:model input para is printed")
     run.run_test(_mf)
     myplot.plot_converge(ps, _mf.root_folder +
-                         "LinJuanJuan\\Output\\ABCConverge.txt", ps.para["MaxABCIter"], "ABC")
-    from_folder = _mf.root_folder + "LinJuanJuan\\OutPut"
-    to_folder = _mf.root_folder + "LinJuanJuan\\Tests\\" + \
+                         "Output\\ABCConverge.txt", ps.para["MaxABCIter"], "ABC")
+    from_folder = _mf.root_folder + "OutPut"
+    to_folder = _mf.root_folder + "Tests\\" + \
         str(_case_id) + "_" + _case_name
     copy_folder(from_folder, to_folder)
 
@@ -61,8 +61,8 @@ def TestGa(_mf):
     ps.print_para()
     print("ga para setting is write")
     # myga.gamain(_mf, ps)
-    from_folder = _mf.root_folder + "LinJuanJuan\\OutPut"
-    to_folder = _mf.root_folder + "LinJuanJuan\\Tests\\GA"
+    from_folder = _mf.root_folder + "OutPut"
+    to_folder = _mf.root_folder + "Tests\\GA"
     copy_folder(from_folder, to_folder)
 
 def TestSingleOperator(mf):
@@ -176,11 +176,11 @@ if __name__ == "__main__":
     print("Working folder is", mf.root_folder)
     print("# notes on the test")
     remarks = input()
-    with open(mf.root_folder+"LinJuanJuan\\Output\\TestRemarks.txt", "w+") as f:
+    with open(mf.root_folder+"Output\\TestRemarks.txt", "w+") as f:
         print(remarks,file=f)
  
     # step 0 print seed
-    with open(mf.root_folder+"LinJuanJuan\\Input\\Seed.txt", "w+") as f:
+    with open(mf.root_folder+"Input\\Seed.txt", "w+") as f:
         for i in range(0, para.NumOfTestSeed):
             print("{0}".format(para.SeedPool[i]), file=f)
         print(-1, file=f)

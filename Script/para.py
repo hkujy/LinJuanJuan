@@ -16,11 +16,11 @@ isDebug = False
 #             9629, 8266, 3045, 9770, 3048, 6705, 9591, 7905, 8223, 9044, 1091,
 #             1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,16,18,19,20]
 SeedPool = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,16,18,19,20]
-NumOfTestSeed = 10
+NumOfTestSeed = 2
 # FailureLinks = [0, 6, 19, 22, 26, 27, 34, 38, 42, 55, 59, 73]
 FailureLinks = [0,2,6,12,16,19,22,26,27,29,31,34,42,50,55,59]
 
-NumofIter = 500
+NumofIter = 50
 global_case_id = 0
 
 class ParaClass(object):
@@ -121,14 +121,14 @@ def Copy_input_and_test_files(mf):
         1. copy cpp files
         2. copy input mms data files
     """
-    SFileToDFile(sourcefile=mf.root_folder+"LinJuanJuan\\NetworkResilience\\", fileclass='.cpp',
+    SFileToDFile(sourcefile=mf.root_folder+"NetworkResilience\\", fileclass='.cpp',
                  #  destinationfile=mp.root_folder+"\\IPTOP\\IOPT\\OutPut\\BackupCpp\\")
-                 destinationfile=mf.root_folder+"LinJuanJuan\\Output\\BackupCpp\\")
+                 destinationfile=mf.root_folder+"Output\\BackupCpp\\")
 
-    SFileToDFile(sourcefile=mf.root_folder+"LinJuanJuan\\NetworkResilience\\", fileclass='.h',
+    SFileToDFile(sourcefile=mf.root_folder+"NetworkResilience\\", fileclass='.h',
                  #  destinationfile=mp.root_folder+"\\IPTOP\\IOPT\\OutPut\\BackupCpp\\")
-                 destinationfile=mf.root_folder+"LinJuanJuan\\Output\\BackupCpp\\")
+                 destinationfile=mf.root_folder+"Output\\BackupCpp\\")
 
-    SFileToDFile(sourcefile=mf.root_folder+"LinJuanJuan\\Script\\", fileclass='.py',
+    SFileToDFile(sourcefile=mf.root_folder+"Script\\", fileclass='.py',
                  #  destinationfile=mp.root_folder+"\\IPTOP\\IOPT\\Output\\BackupScript\\")
-                 destinationfile=mf.root_folder+"LinJuanJuan\\Output\\BackupScript\\")
+                 destinationfile=mf.root_folder+"Output\\BackupScript\\")
