@@ -170,15 +170,51 @@ void Algorithm::LearnPatternRelation_Score(const ScheduleClass& sol, bool isGlob
 			const int ALink = sol.LinkId[i];
 			const int ComparedLink = sol.LinkId[j];
 			// step 1 : update the forward direction relationship, e.g. A - B
+			// not necessary to compare the revers relationship, 
 			LinkSchRelations r = sol.getRelation(ALink, ComparedLink);
-			const size_t AlinkId = findPatternIndex(ALink);
-			const size_t ComRelationLinkId = Pattern[AlinkId].findRelationId(ComparedLink);
-			if (isGlobalImprove) Pattern[AlinkId].Relation[ComRelationLinkId].UpdateScore(r, RewardImproveGlobal);
-			else Pattern[AlinkId].Relation[ComRelationLinkId].UpdateScore(r, RewardImproveLocal);
+			const size_t ALinkId = findPatternIndex(ALink);
+			const size_t ComRelationLinkId = Pattern[ALinkId].findRelationId(ComparedLink);
+			if (isGlobalImprove) Pattern[ALinkId].Relation[ComRelationLinkId].UpdateScore(r, RewardImproveGlobal);
+			else Pattern[ALinkId].Relation[ComRelationLinkId].UpdateScore(r, RewardImproveLocal);
 		}
 	}
-
 }
+
+bool isEqualRelation(const LinkSchRelations &A, const LinkSchRelations &B)
+{
+	if (A == LinkSchRelations::After && B == LinkSchRelations::After) return true;
+	if (A == LinkSchRelations::Before && B == LinkSchRelations::Before) return true;
+	if (A == LinkSchRelations::Same && B == LinkSchRelations::Same) return true;
+	if (A == LinkSchRelations::noDominated && B == LinkSchRelations::noDominated) return true;
+	if (A == LinkSchRelations::None && B == LinkSchRelations::None) return true;
+	return false;
+	
+}
+
+// learn and update pattern score by compare the difference between two solutions
+void Algorithm::LearnPatternFromCompare(const ScheduleClass& sol, const ScheduleClass& nei, bool isGlobalImprove)
+{
+	for (int i = 0; i < nei.LinkId.size(); i++)
+	{
+		for (int j = 0; j < nei.LinkId.size(); j++)
+		{
+			if (i==j) continue;
+			const int ALink = nei.LinkId[i];
+			const int ComparedLink = nei.LinkId[j];
+			LinkSchRelations oldRelation = sol.getRelation(ALink, ComparedLink);
+			LinkSchRelations newRelation = nei.getRelation(ALink, ComparedLink);
+			if (isEqualRelation(oldRelation,newRelation)) continue;
+			// only update the relationship of the two pairs if their new relationship is better
+			// update based on the new
+			const size_t ALinkId = findPatternIndex(ALink);
+			const size_t ComRelationLinkId = Pattern[ALinkId].findRelationId(ComparedLink);
+			if (isGlobalImprove) Pattern[ALinkId].Relation[ComRelationLinkId].UpdateScore(newRelation, RewardImproveGlobal);
+			else Pattern[ALinkId].Relation[ComRelationLinkId].UpdateScore(newRelation, RewardImproveLocal);
+		}
+	}
+}
+
+
 
 // Print the relationship into files
 void Algorithm::printDomRelation(int seed) const

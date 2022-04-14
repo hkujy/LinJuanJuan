@@ -7,9 +7,9 @@ import PostProcessDataFuns as psf
 import PlotOperatorConverge
 
 # root_folder = r"C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin\Tests2022/"
-# root_folder = r'C:/GitCodes/2022Apr3Test/'
+root_folder = r'C:/GitCodes/1_TestOp_8/'
 # root_folder = r'C:/GitCodes/RandomDemand/'
-root_folder = r'M:/LinJuan/500Iter/'
+# root_folder = r'M:/LinJuan/500Iter/'
 # plot 1 plot the heatmap for the optimal pattern
 
 def EffectOfOperators():
@@ -28,11 +28,11 @@ def CompareThree():
     psf.CompareOneFolder(OperatorFolder,"CompareThree")
 
 
-def PlotFinalRelation():
+def PlotFinalRelation(test_folder:str):
     """visulise the dominate relationship
     """
     # test_folder = "M:/LinJuan/0_ALNS/"
-    test_folder = "C:/GitCodes/0_ALNS/"
+    # test_folder = "C:/GitCodes/0_ALNS/"
     bs = psf.getBestSeed(test_folder)
     print("Best Seed = {0}".format(bs))
     psf.plotRelation(test_folder)
@@ -40,7 +40,8 @@ def PlotFinalRelation():
 if __name__ == "__main__":
     EffectOfOperators()
     # CompareThree()
-    # PlotFinalRelation()
+    # test_folder = r'C:/GitCodes/1_TestOp_8/'
+    # PlotFinalRelation(test_folder)
     
 
     # testfolder =  root_folder + "/RemoveOperator/"

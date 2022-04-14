@@ -118,6 +118,7 @@ public:
 	void IniOperatorProb_ALNS();
 	void printPattern(int seedId);
 	void printDomRelation(int seed) const;
+	void LearnPatternFromCompare(const ScheduleClass& sol, const ScheduleClass& nei, bool isGlobalImprove);
 };
 
 

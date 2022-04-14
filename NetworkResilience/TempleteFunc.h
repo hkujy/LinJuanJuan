@@ -50,12 +50,13 @@ void DebugStop(T val, T tv){
 	}
 }
 
-template<typename T>
-void PrintParaValue(char *Name, T Value)
-{
-	ParaSummary << left << setw(40) << Name;
-	ParaSummary << right << Value << endl;
-}
+//
+//template<typename T>
+//void PrintParaValue(char *Name, T Value)
+//{
+//	ParaSummary << left << setw(40) << Name;
+//	ParaSummary << right << Value << endl;
+//}
 
 struct split
 {

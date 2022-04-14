@@ -207,7 +207,8 @@ void Algorithm::GenerateIniSol()
 	//for (auto s : Sols) cout << s.Id << "," << s.Fitness << endl;
 }
 	
-
+// lhs is the current solution
+// rhs is the neighbour solution
 bool Algorithm::CompareTwoSolsAndReplace(ScheduleClass& lhs, const ScheduleClass& rhs, int neiOperatorId)
 {
 	//Compare the left hand side and the right hand side solutions 
@@ -226,13 +227,15 @@ bool Algorithm::CompareTwoSolsAndReplace(ScheduleClass& lhs, const ScheduleClass
 		if (rhs.Fitness < GlobalBest.Fitness)
 		{
 			//LearnPattern_Score(rhs, true);
-			LearnPatternRelation_Score(rhs, true);
+			//LearnPatternRelation_Score(rhs, true);
+			LearnPatternFromCompare(lhs, rhs, true);
 			GlobalBest = rhs;
 		}
 		else
 		{
 			//LearnPattern_Score(rhs, false);
-			LearnPatternRelation_Score(rhs, false);
+			//LearnPatternRelation_Score(rhs, false);
+			LearnPatternFromCompare(lhs, rhs, false);
 		}
 	}
 	return isBetter;
@@ -297,9 +300,10 @@ void Algorithm::ScoutPhase()
 			//this->Sols.at(t).Evaluate(*Graph);
 			if (Sols.at(t).Fitness < GlobalBest.Fitness)
 			{
+				//LearnPatternRelation_Score(GlobalBest, true);
+				//LearnPatternFromCompare()
 				GlobalBest = this->Sols.at(t);
 				//LearnPattern_Score(GlobalBest, true);
-				LearnPatternRelation_Score(GlobalBest, true);
 			}
 			ScoutCounter.at(t) = 0;
 		}

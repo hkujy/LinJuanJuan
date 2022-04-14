@@ -65,7 +65,7 @@ def CompareOneFolder(_folder:str,_name:str):
 
 	print("plot one folder case")
 	print("default number of iter is 200, need to check if it is not")
-	NumberOfIter = 200
+	NumberOfIter = para.NumofIter
 	allGaps = []
 	for fo in range(0, len(dirs)):
 		f = _folder+"\\"+dirs[fo] + "\\ABC_Converge_ave.txt"
