@@ -1,12 +1,12 @@
 isUseMyOwn,True
 networkIndex,3
 CompareScoreMethod,Total
-isTestSingleOp,False
-SingleOpIndex,-1
+isTestSingleOp,True
+SingleOpIndex,8
 NumEmployBee,10
 NumOnlookerBee,10
 MaxScountCount,50
-MaxABCIter,51
+MaxABCIter,500
 MaxGAIter,5
 RewardImproveGlobal,1
 RewardImproveLocal,1
@@ -14,7 +14,7 @@ RewardWorse,0
 ReactionFactor,0.5
 SelectOperator,ALNS
 oneDimEps,1e-07
-epsUE,0.1
+epsUE,0.01
 maxIterUE,500
-LearnThresholdFit,1.2
-LearnThresholdIter,50
+LearnThresholdFit,2.0
+LearnThresholdIter,0
