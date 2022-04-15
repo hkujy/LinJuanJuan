@@ -101,17 +101,17 @@ def TestLearnThreshold(mf):
     """Function for test single operator effect
     """
     # for i in range(0, 9):
-    # adjust_para = {
-    #     "isTestSingleOp": "True",
-    #     "SingleOpIndex": 0,
-    #     "LearnThresholdFit": 2.0,
-    #     "LearnThresholdIter": 0,  # this is applied for the swap operator
-    #     "SelectOperator": "ALNS"
-    # }
-    # para.global_case_id = para.global_case_id + 1
-    # if para.global_case_id >= stop_number:
-    #     TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
-    #                 _case_name="Op_0_Base")
+    adjust_para = {
+        "isTestSingleOp": "True",
+        "SingleOpIndex": 0,
+        "LearnThresholdFit": 100.0,
+        "LearnThresholdIter": 0,  # this is applied for the swap operator
+        "SelectOperator": "ALNS"
+    }
+    para.global_case_id = para.global_case_id + 1
+    if para.global_case_id >= stop_number:
+        TestOneCase(mf, adjust_para, _case_id=para.global_case_id,
+                    _case_name="Op_0_Base")
     # # --------------------------------------------------------
     adjust_para = {
         "isTestSingleOp": "True",
