@@ -37,12 +37,15 @@ void Algorithm::UpdateOperatorScore_ALNS(int opId, double resultFit, double loca
 /// </summary>
 void Algorithm::UpdateOperatorWeight_ALNS()
 {
-	for (int i = 0; i < Operators.size(); i++)
+	//for (int i = 0; i < Operators.size(); i++)
+	//{
+	//	Operators.at(i).CalWeight(ReactionFactor);
+	//}
+	for (auto &o:Operators)
 	{
-		Operators.at(i).CalWeight(ReactionFactor);
+		o.CalWeight(ReactionFactor);
 	}
 }
-
 
 
 // update operator measures

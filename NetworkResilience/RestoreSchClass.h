@@ -163,8 +163,8 @@ public:
 	void updateEndTime(GraphClass& g);
 	void Evaluate(GraphClass& g);
 	void computeKey() const;
-	LinkSchRelations findDominantRelation(int aLink, int bLink, const std::vector<PatternClass>& pat,
-		enum_CompareScoreMethod& compareMethod) const;
+	static LinkSchRelations findDominantRelation(int aLink, int bLink, const std::vector<PatternClass>& pat,
+		enum_CompareScoreMethod& compareMethod);
 	int GetLastPeriod() { return *max_element(EndTime.begin(), EndTime.end()); }
 	std::vector<size_t> getNewReadyLinks(int tau) const;
 	// write a few neighbor operators
@@ -172,22 +172,22 @@ public:
 		const std::vector<int>& failureLinkSet, const std::vector<double>& resCap, const std::vector<PatternClass>& pat,
 		enum_CompareScoreMethod& compareMethod);
 	void Nei_Swap(ScheduleClass& newSol) const;
-	void Nei_New(ScheduleClass& newSol, GraphClass& g, const std::vector<int>& failureLinkSet, const std::vector<double>& resCap);
-	void Nei_Move_One_To_Right(ScheduleClass& newSol);
+	void Nei_New(ScheduleClass& newSol, GraphClass& g, const std::vector<int>& failureLinkSet, const std::vector<double>& resCap) const;
+	void Nei_Move_One_To_Right(ScheduleClass& newSol) const;
 	void Nei_Move_One_To_Left(ScheduleClass& newSol) const;
-	void Nei_Insert_One_Random_To_Right(ScheduleClass& newSol);
-	void Nei_Insert_One_Random_To_Left(ScheduleClass& newSol);
-	void Nei_FlipOver_OnePoint(ScheduleClass& newSol);
+	void Nei_Insert_One_Random_To_Right(ScheduleClass& newSol) const;
+	void Nei_Insert_One_Random_To_Left(ScheduleClass& newSol) const;
+	void Nei_FlipOver_OnePoint(ScheduleClass& newSol) const;
 	void Nei_Greedy_EI_Based(ScheduleClass& newSol, GraphClass& g, std::string sType);
 	void Nei_New_BasedOn_Pattern(ScheduleClass& newSol, GraphClass& g, const std::vector<int>& failureLinkSet,
-		const std::vector<double>& resCap, const std::vector<PatternClass>& pat);
+		const std::vector<double>& resCap, const std::vector<PatternClass>& pat) const;
 	void Nei_Swap_BasedOn_Pattern(ScheduleClass& newSol, GraphClass& g, const std::vector<int>& failureLinkSet,
-		const std::vector<double>& resCap, const std::vector<PatternClass>& pat);
+		const std::vector<double>& resCap, const std::vector<PatternClass>& pat) const;
 	void Nei_Swap_BasedOn_PatternRelation(ScheduleClass& newSol, GraphClass& g, const std::vector<int>& failureLinkSet,
 		const std::vector<double>& resCap, const std::vector<PatternClass>& pat,
 		enum_CompareScoreMethod& compareMethod) const;
 	void GenerateTimeFromOrder(const std::vector<double>& resCap, GraphClass& g);
-	void Repair_Delay();
+	//void Repair_Delay();
 	LinkSchRelations getRelation(int aLink, int comparedLink) const;//get the relationship of the two links
 };
 

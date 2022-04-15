@@ -96,7 +96,7 @@ void Assign(const std::vector<OriginBasedOD>& Oset,
 		l.CleanLinkFlow();
 		//l->Flow = l->CleanLinkFlow();
 	}
-	for (auto o = Oset.begin(); o != Oset.end(); o++)
+	for (auto o = Oset.begin(); o != Oset.end(); ++o)
 	{
 		for (auto od = o->ODset.begin(); od != o->ODset.end(); ++od)
 		{
@@ -184,12 +184,12 @@ int GraphClass::FW_UE() {
 	//STEP 1: UPDATE LinkClass TRAVEL COST
 UeLop:
 	//cout << "update cost:-----" << endl;
-	for (auto l = this->Links.begin(); l != this->Links.end(); l++)
+	for (auto l = this->Links.begin(); l != this->Links.end(); ++l)
 	{
 		l->Cost = l->BPRCost();
 		//cout << l->Id << "," << l->Cost << endl;
 	}
-	for (unsigned int i = 0; i < this->Links.size(); i++)
+	for (unsigned int i = 0; i < this->Links.size(); ++i)
 	{
 		OldLinks.at(i).Flow = this->Links.at(i).Flow;
 	}
@@ -202,7 +202,7 @@ UeLop:
 	//STEP 3: LINE SEARCH TO OBTAIN ALFA
 
 	//double Alfa = OneDim(this->Links, YLinks,V1Links,V2Links); 
-	double Alfa = LinksSDLineSearch(this->Links, YLinks);
+	double const Alfa = LinksSDLineSearch(this->Links, YLinks);
 	assert(Alfa <= 1.0 && Alfa >= 0);
 	//cout << "update Alfa:-----" << Alfa << endl;
 
@@ -225,7 +225,7 @@ UeLop:
 
 	Err = std::sqrt(Err);
 	//cout << TotalFlow << endl;
-	if (isEqual(TotalFlow, 0.0f))
+	if (isEqual(TotalFlow, 0.0))
 	{
 		cout << "Total flow=0.0" << endl;
 		cout << "Reason 1: check the largest link cost, it could be larger than the LargeNum, thus no route is found in SP" << endl;

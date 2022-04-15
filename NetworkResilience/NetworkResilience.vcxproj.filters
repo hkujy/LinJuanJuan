@@ -92,9 +92,6 @@
     <ClCompile Include="TestParadoxNetExp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HH.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LearningOperator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -58,7 +58,7 @@ public:
 	void evaluateOneSol(ScheduleClass& sol, GraphClass& g);
 	void Ini(GraphClass& g);
 	void IniPattern();
-	LinkSchRelations findDominantRelation(int ALink, int BLink);// find the dominate relationship between two links
+	//LinkSchRelations findDominantRelation(int ALink, int BLink) const;// find the dominate relationship between two links
 
 	Algorithm() : name("Unspecified"), BaseUNPM(-1.0),
 		Graph(new GraphClass), MaxFitValue(-9.9E10), MinFitValue(9.9E20),

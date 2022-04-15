@@ -3,7 +3,6 @@
 #include <iostream>
 #include <cassert>
 #include "Debug.h"
-#include <algorithm>
 #include <numeric>
 using namespace std;
 
@@ -52,7 +51,7 @@ int SelectOneIndexFrom(const vector<int>& candy, const vector<double>& prob)
 {
 	assert(candy.size() == prob.size());
 	vector<double> normProb(prob);
-	double sum = accumulate(prob.begin(), prob.end(), 0.0);
+	const double sum = accumulate(prob.begin(), prob.end(), 0.0);
 	for (int i = 0; i < prob.size(); i++)
 	{
 		normProb[i] = prob[i] / sum;

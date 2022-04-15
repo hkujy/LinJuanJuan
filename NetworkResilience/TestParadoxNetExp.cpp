@@ -5,17 +5,17 @@
 using namespace std;
 
 //Compute the ranking of different failure links
-void ComputeBaressNetUnpm(Algorithm alg)
+void ComputeBaressNetUnpm(Algorithm &alg)
 {
 	ofstream  OutFile;
-	epsUE = 1.0e-10f;
-	zero = 1.0e-26f;
+	epsUE = 1.0e-10;
+	zero = 1.0e-26;
 	maxIterUE = 5000;
 	OutFile.open("..//OutPut//BaressNetUnpm.txt", ios::trunc);
 	OutFile << "Link,Unpm,Impact,Cost,CostIncr,UEcost" << endl;
 	alg.Graph->EvaluteGraph();
-	double BaseCost = alg.Graph->TotalSystemCost;
-	double BaseUnpm = alg.Graph->UNPM;
+	const double BaseCost = alg.Graph->TotalSystemCost;
+	const double BaseUnpm = alg.Graph->UNPM;
 	ScenarioClass s;
 
 
@@ -42,13 +42,13 @@ void ComputeBaressNetUnpm(Algorithm alg)
 // check the combination of solution scenarios 
 void CheckReadSolScenario_2_period(Algorithm alg)
 {
-	epsUE = 1.0e-10f;
-	zero = 1.0e-20f;
+	epsUE = 1.0e-10;
+	zero = 1.0e-20;
 	maxIterUE = 1000;
 
 	alg.Graph->EvaluteGraph();
-	double BaseCost = alg.Graph->TotalSystemCost;
-	double BaseUnpm = alg.Graph->UNPM;
+	const double BaseCost = alg.Graph->TotalSystemCost;
+	const double BaseUnpm = alg.Graph->UNPM;
 
 	// Step 1: read data from check file 
 	ifstream fin;
@@ -75,7 +75,7 @@ void CheckReadSolScenario_2_period(Algorithm alg)
 			st.at(i) = static_cast<int>(stoi(fields[i + 5]))-1;
 			et.at(i) = st.at(i) + 2;
 		}
-		alg.Sols.push_back(ScheduleClass());
+		alg.Sols.emplace_back(ScheduleClass());
 		for (int i = 0; i < 5; i++)
 		{
 			//alg.Sols.back().LinkId.push_back(&alg.Graph->Links.at(lv.at(i)));
@@ -96,13 +96,13 @@ void CheckReadSolScenario_2_period(Algorithm alg)
 }
 void CheckReadSolScenario_1_period(Algorithm alg)
 {
-	epsUE = 1.0e-10f;
-	zero = 1.0e-20f;
+	epsUE = 1.0e-10;
+	zero = 1.0e-20;
 	maxIterUE = 1000;
 
 	alg.Graph->EvaluteGraph();
-	double BaseCost = alg.Graph->TotalSystemCost;
-	double BaseUnpm = alg.Graph->UNPM;
+	const double BaseCost = alg.Graph->TotalSystemCost;
+	const double BaseUnpm = alg.Graph->UNPM;
 
 	// Step 1: read data from check file 
 	ifstream fin;
@@ -129,7 +129,7 @@ void CheckReadSolScenario_1_period(Algorithm alg)
 			st.at(i) = static_cast<int>(stoi(fields[i + 5])) - 1;
 			et.at(i) = st.at(i) + 1;
 		}
-		alg.Sols.push_back(ScheduleClass());
+		alg.Sols.emplace_back(ScheduleClass());
 		for (int i = 0; i < 5; i++)
 		{
 			//alg.Sols.back().LinkId.push_back(&alg.Graph->Links.at(lv.at(i)));
@@ -152,14 +152,14 @@ void CheckReadSolScenario_1_period(Algorithm alg)
 // the other is based on the optimal solution
 void CompareBaressNet(Algorithm alg)
 {
-	ofstream  OutFile;
-	epsUE = 1.0e-10f;
-	zero = 1.0e-20f;
+	ofstream OutFile;
+	epsUE = 1.0e-10;
+	zero = 1.0e-20;
 	maxIterUE = 1000;
 	OutFile.open("..//OutPut//CompareBaressNet.txt", ios::trunc);
 	OutFile << "Link,Unpm,Impact,Cost,CostIncr" << endl;
 	alg.Graph->EvaluteGraph();
-	alg.Sols.push_back(ScheduleClass());
+	alg.Sols.emplace_back(ScheduleClass());
 	alg.Sols.back().LinkId.push_back(8);
 	alg.Sols.back().LinkId.push_back(3);
 	alg.Sols.back().LinkId.push_back(5);
@@ -178,7 +178,7 @@ void CompareBaressNet(Algorithm alg)
 	alg.Graph->PrintLinks_onscreen();
 	OutFile << "Seq:8,5,3,7,6, total cost = " << alg.Sols.back().Fitness << endl;
 
-	alg.Sols.push_back(ScheduleClass());
+	alg.Sols.emplace_back(ScheduleClass());
 	alg.Sols.back().LinkId.push_back(5);
 	alg.Sols.back().LinkId.push_back(8);
 	alg.Sols.back().LinkId.push_back(7);
@@ -199,13 +199,13 @@ void CompareBaressNet(Algorithm alg)
 void Check2PeriodSol(Algorithm alg)
 {
 	//ofstream  OutFile;
-	epsUE = 1.0e-10f;
-	zero = 1.0e-20f;
+	epsUE = 1.0e-10;
+	zero = 1.0e-20;
 	maxIterUE = 1000;
 	//OutFile.open("..//OutPut//CompareBaressNet.txt", ios::trunc);
 	//OutFile << "Link,Unpm,Impact,Cost,CostIncr" << endl;
 	//alg.Graph->EvaluteGraph();
-	alg.Sols.push_back(ScheduleClass());
+	alg.Sols.emplace_back(ScheduleClass());
 	alg.Sols.back().LinkId.push_back(3);
 	alg.Sols.back().LinkId.push_back(5);
 	alg.Sols.back().LinkId.push_back(8);
@@ -240,7 +240,7 @@ void Check2PeriodSol(Algorithm alg)
 }
 
 
-void TestBaraess(Algorithm alg)
+void TestBaraess(Algorithm &alg)
 {
 	ComputeBaressNetUnpm(alg);
 	//CheckReadSolScenario_2_period(alg);

@@ -891,10 +891,10 @@ int Algorithm::SelectOperatorIndex() const
 	}
 	if (this->SelectOp == SelectOperatorType::Uniform)
 	{
-		int OpId = GenRandomInt(0, NUM_OPERATORS - 1);;
+		int OpId = GenRandomInt(0, NUM_OPERATORS - 1);
 		while (gIterationCounter < LearnThresholdIter && OpId == 8)
 		{
-			OpId = GenRandomInt(0, NUM_OPERATORS - 1);;
+			OpId = GenRandomInt(0, NUM_OPERATORS - 1);
 		}
 		return OpId;
 	}

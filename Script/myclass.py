@@ -16,6 +16,7 @@ class FileFolderClass(object):
         """
         # self.root_folder = "C:\\GitCodes\\"
         self.root_folder = "C:\\GitCodes\\LinJuanJuan\\"
+        # self.root_folder = "C:\\GitCodes\\LinJuanJuanTest2\\"
         # folder = os.path.abspath(os.path.dirname(__file__))
         # x = folder.split("\\")
         # for i in range(0, len(x)-1):

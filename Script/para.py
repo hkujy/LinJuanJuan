@@ -20,8 +20,8 @@ NumOfTestSeed = 20
 # FailureLinks = [0, 6, 19, 22, 26, 27, 34, 38, 42, 55, 59, 73]
 FailureLinks = [0,2,6,12,16,19,22,26,27,29,31,34,42,50,55,59]
 
-NumofIter = 500
 global_case_id = 0
+NumofIter = 500
 
 class ParaClass(object):
     """parameter class

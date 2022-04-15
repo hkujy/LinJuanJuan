@@ -14,7 +14,9 @@ int FindValIndex(const vector<int>& vec, int key);
 int CompareThreeNumber(double A, double B, double C)
 {
 	// case 0: if all three numbers are equal
-	if (A == B && A == C) return 0;
+	if (abs(A - B) < std::numeric_limits<double>::epsilon()
+		&& abs(A - C) < std::numeric_limits<double>::epsilon()) return 0;
+	//if (A == B && A == C) return 0;
 	// other three cases
 	if (A >= B && A >= C) return 1;
 	if (B >= A && B >= C) return 2;
@@ -25,17 +27,17 @@ int CompareThreeNumber(double A, double B, double C)
 
 
 LinkSchRelations ScheduleClass::findDominantRelation(int aLink, int bLink, const vector<PatternClass> &pat,
-	enum_CompareScoreMethod &CompareScoreMethod) const
+	enum_CompareScoreMethod &CompareScoreMethod)
 {
-	size_t Aid = findPatternIndex_fun(aLink, pat);
-	size_t Bid = pat[Aid].findRelationId(bLink);
+	const size_t aLinkId = findPatternIndex_fun(aLink, pat);
+	const size_t bLinkId = pat[aLinkId].findRelationId(bLink);
 	int flag = -1;
 	switch (CompareScoreMethod)
 	{
 	case enum_CompareScoreMethod::Ave:
-		flag = CompareThreeNumber(pat[Aid].Relation[Bid].AfterScore_Ave,
-			pat[Aid].Relation[Bid].BeforeScore_Ave,
-			pat[Aid].Relation[Bid].SamePeriodScore_Ave);
+		flag = CompareThreeNumber(pat[aLinkId].Relation[bLinkId].AfterScore_Ave,
+			pat[aLinkId].Relation[bLinkId].BeforeScore_Ave,
+			pat[aLinkId].Relation[bLinkId].SamePeriodScore_Ave);
 		// if the three have the same value, then consider it is no dominated solution status
 		if (0 == flag) return LinkSchRelations::noDominated;
 		if (1 == flag) return LinkSchRelations::After;
@@ -44,9 +46,9 @@ LinkSchRelations ScheduleClass::findDominantRelation(int aLink, int bLink, const
 		break;
 	case enum_CompareScoreMethod::Total:
 		flag = CompareThreeNumber(
-			pat[Aid].Relation[Bid].AfterScore_Total,
-			pat[Aid].Relation[Bid].BeforeScore_Total,
-			pat[Aid].Relation[Bid].SamePeriodScore_Total);
+			pat[aLinkId].Relation[bLinkId].AfterScore_Total,
+			pat[aLinkId].Relation[bLinkId].BeforeScore_Total,
+			pat[aLinkId].Relation[bLinkId].SamePeriodScore_Total);
 		if (0 == flag) return LinkSchRelations::noDominated;
 		if (1 == flag) return LinkSchRelations::After;
 		if (2 == flag) return LinkSchRelations::Before;
@@ -55,53 +57,51 @@ LinkSchRelations ScheduleClass::findDominantRelation(int aLink, int bLink, const
 	case enum_CompareScoreMethod::None:
 		TRACE("ComareScoreMethod is not set");
 		break;
-	default:
-		TRACE("ComareScoreMethod is not set");
-		break;
 	}
 	return LinkSchRelations::None;
 
 
 }
-// compare the score of the different relationship
-LinkSchRelations Algorithm::findDominantRelation(int ALink, int BLink)
-{
-	// step 1 : find the patten index
-	size_t Aid = findPatternIndex(ALink);
-	size_t Bid = Pattern[Aid].findRelationId(BLink);
-	int flag = -1;
-	switch (CompareScoreMethod)
-	{
-	case enum_CompareScoreMethod::Ave:
-		 flag = CompareThreeNumber(Pattern[Aid].Relation[Bid].AfterScore_Ave,
-									  Pattern[Aid].Relation[Bid].BeforeScore_Ave,
-									  Pattern[Aid].Relation[Bid].SamePeriodScore_Ave);
-		// if the three have the same value, then consider it is no dominated solution status
-		if (0 == flag) return LinkSchRelations::noDominated;
-		if (1 == flag) return LinkSchRelations::After;
-		if (2 == flag) return LinkSchRelations::Before;
-		if (3 == flag) return LinkSchRelations::Same;
-		break;
-	case enum_CompareScoreMethod::Total:
-		 flag = CompareThreeNumber(
-						Pattern[Aid].Relation[Bid].AfterScore_Total,
-						Pattern[Aid].Relation[Bid].BeforeScore_Total,
-						Pattern[Aid].Relation[Bid].SamePeriodScore_Total);
-		if (0 == flag) return LinkSchRelations::noDominated;
-		if (1 == flag) return LinkSchRelations::After;
-		if (2 == flag) return LinkSchRelations::Before;
-		if (3 == flag) return LinkSchRelations::Same;
-		break;
-	case enum_CompareScoreMethod::None:
-		TRACE("ComareScoreMethod is not set");
-		break;
-	default:
-		TRACE("ComareScoreMethod is not set");
-		break;
-	}
-	return LinkSchRelations::None;
 
-}
+//// compare the score of the different relationship
+//LinkSchRelations Algorithm::findDominantRelation(int ALink, int BLink) const
+//{
+//	// step 1 : find the patten index
+//	size_t Aid = findPatternIndex(ALink);
+//	size_t Bid = Pattern[Aid].findRelationId(BLink);
+//	int flag = -1;
+//	switch (CompareScoreMethod)
+//	{
+//	case enum_CompareScoreMethod::Ave:
+//		 flag = CompareThreeNumber(Pattern[Aid].Relation[Bid].AfterScore_Ave,
+//									  Pattern[Aid].Relation[Bid].BeforeScore_Ave,
+//									  Pattern[Aid].Relation[Bid].SamePeriodScore_Ave);
+//		// if the three have the same value, then consider it is no dominated solution status
+//		if (0 == flag) return LinkSchRelations::noDominated;
+//		if (1 == flag) return LinkSchRelations::After;
+//		if (2 == flag) return LinkSchRelations::Before;
+//		if (3 == flag) return LinkSchRelations::Same;
+//		break;
+//	case enum_CompareScoreMethod::Total:
+//		 flag = CompareThreeNumber(
+//						Pattern[Aid].Relation[Bid].AfterScore_Total,
+//						Pattern[Aid].Relation[Bid].BeforeScore_Total,
+//						Pattern[Aid].Relation[Bid].SamePeriodScore_Total);
+//		if (0 == flag) return LinkSchRelations::noDominated;
+//		if (1 == flag) return LinkSchRelations::After;
+//		if (2 == flag) return LinkSchRelations::Before;
+//		if (3 == flag) return LinkSchRelations::Same;
+//		break;
+//	case enum_CompareScoreMethod::None:
+//		TRACE("ComareScoreMethod is not set");
+//		break;
+//	default:
+//		TRACE("ComareScoreMethod is not set");
+//		break;
+//	}
+//	return LinkSchRelations::None;
+//
+//}
 
 LinkSchRelations getReversRelation(LinkSchRelations& r)
 {

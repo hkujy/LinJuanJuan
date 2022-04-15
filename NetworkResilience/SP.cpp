@@ -1,7 +1,7 @@
 
 #include "CommonHeaders.h"
-#include <assert.h>
-#include <math.h>       /* pow */
+#include <cassert>
+#include <cmath>       /* pow */
 using namespace std;
 bool UpdateLable(const double CurrentCost, const double LinkCost, const double OldNextNodeCost, double &NewCost)
 {

@@ -4,7 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <numeric>
-#include <assert.h>
+#include <cassert>
 #include <map>
 #include "GraphElements.h"
 #include "Parameters.h"
@@ -60,7 +60,7 @@ void ScheduleClass::Nei_Swap(ScheduleClass& newSol) const
 #ifdef _DEBUG
 	cout << "------------Start Swap-----------" << endl;
 #endif // _DEBUG
-	int locA = GenRandomInt(0, static_cast<int>(LinkId.size() - 1));
+	const int locA = GenRandomInt(0, static_cast<int>(LinkId.size() - 1));
 	int locB = GenRandomInt(0, static_cast<int>(LinkId.size() - 1));
 	int whileCounter = 0;
 	while (locA == locB)
@@ -93,21 +93,17 @@ void ScheduleClass::Nei_Swap(ScheduleClass& newSol) const
 /// <param name="newSol"></param>
 void ScheduleClass::Nei_Move_One_To_Left(ScheduleClass& newSol) const
 {
-	int locA = GenRandomInt(1, int(LinkId.size() - 1));
-	int locB = locA - 1;
+	const int locA = GenRandomInt(1, static_cast<int>(LinkId.size() - 1));
+	const int locB = locA - 1;
 #ifdef _DEBUG
 	cout << "------------Start Move One To Left-----------" << endl;
-	//cout << "Before Nei_Order_to_left: LocA = " << newSol.LinkId.at(locA)->Id;
 	cout << "Before Nei_Order_to_left: LocA = " << newSol.LinkId.at(locA);
-	//cout << ",locB = " << newSol.LinkId.at(locB)->Id << endl;
 	cout << ",locB = " << newSol.LinkId.at(locB) << endl;
 #endif // _DEBUG
 	newSol.LinkId.at(locA) = LinkId.at(locB);
 	newSol.LinkId.at(locB) = LinkId.at(locA);
 #ifdef _DEBUG
-	//cout << "After Swap: LocA = " << newSol.LinkId.at(locA)->Id;
 	cout << "After Swap: LocA = " << newSol.LinkId.at(locA);
-	//cout << ", LocB = " << newSol.LinkId.at(locB)->Id << endl;
 	cout << ", LocB = " << newSol.LinkId.at(locB) << endl;
 	cout << "-----------End Move One To Left-----------" << endl;
 #endif // _DEBUG
@@ -116,23 +112,19 @@ void ScheduleClass::Nei_Move_One_To_Left(ScheduleClass& newSol) const
 /// delay one by moving it to its right
 /// </summary>
 /// <param name="newSol"></param>
-void ScheduleClass::Nei_Move_One_To_Right(ScheduleClass& newSol)
+void ScheduleClass::Nei_Move_One_To_Right(ScheduleClass& newSol) const
 {
-	int locA = GenRandomInt(0, int(LinkId.size() - 2));
-	int locB = locA + 1;
+	const int locA = GenRandomInt(0, static_cast<int>(LinkId.size() - 2));
+	const int locB = locA + 1;
 #ifdef _DEBUG
 	cout << "------------Start Move One To Right-----------" << endl;
-	//cout << "Before Nei_Order_to_right: LocA = " << newSol.LinkId.at(locA)->Id;
 	cout << "Before Nei_Order_to_right: LocA = " << newSol.LinkId.at(locA);
-	//cout << ",locB = " << newSol.LinkId.at(locB)->Id << endl;
 	cout << ",locB = " << newSol.LinkId.at(locB) << endl;
 #endif // _DEBUG
 	newSol.LinkId.at(locA) = LinkId.at(locB);
 	newSol.LinkId.at(locB) = LinkId.at(locA);
 #ifdef _DEBUG
-	//cout << "After Swap: LocA = " << newSol.LinkId.at(locA)->Id;
 	cout << "After Swap: LocA = " << newSol.LinkId.at(locA);
-	//cout << ", LocB = " << newSol.LinkId.at(locB)->Id << endl;
 	cout << ", LocB = " << newSol.LinkId.at(locB) << endl;
 	cout << "-----------End Move One To Right-----------" << endl;
 #endif // _DEBUG
@@ -142,55 +134,51 @@ void ScheduleClass::Nei_Move_One_To_Right(ScheduleClass& newSol)
 /// flip the solution from one positions
 /// </summary>
 /// <param name="newSol"></param>
-void ScheduleClass::Nei_FlipOver_OnePoint(ScheduleClass& newSol)
+void ScheduleClass::Nei_FlipOver_OnePoint(ScheduleClass& newSol) const
 {
-	int locA = GenRandomInt(0, int(LinkId.size() - 1));
+	const int locA = GenRandomInt(0, static_cast<int>(LinkId.size() - 1));
 #ifdef _DEBUG
 	cout << "-----------------Start One Point CrossOver---------" << endl;
 	cout << "Cut Point = " << locA << endl;
 #endif // _DEBUG
-	int RightCount = int(LinkId.size()) - locA;
+	const int rightCount = static_cast<int>(LinkId.size()) - locA;
 	int LeftCount = locA;
 
-	for (size_t i = 0; i < RightCount; i++)
+	for (size_t i = 0; i < rightCount; i++)
 	{
 		newSol.LinkId.at(i) = this->LinkId.at(locA + i);
 	}
 	for (size_t i = 0; i < locA; i++)
 	{
-		newSol.LinkId.at(RightCount + i) = this->LinkId.at(i);
+		newSol.LinkId.at(rightCount + i) = this->LinkId.at(i);
 	}
 #ifdef _DEBUG
 	cout << "-----before one point cross over" << endl;
 	for (size_t i = 0; i < LinkId.size() - 1; i++)
 	{
-		//cout << this->LinkId.at(i)->Id << ",";
 		cout << this->LinkId.at(i) << ",";
 	}
-	//cout << this->LinkId.back()->Id << endl;
 	cout << this->LinkId.back() << endl;
 
 	cout << "-----after one point cross over" << endl;
 	for (size_t i = 0; i < LinkId.size() - 1; i++)
 	{
-		//cout << newSol.LinkId.at(i)->Id << ",";
 		cout << newSol.LinkId.at(i) << ",";
 	}
-	//cout << newSol.LinkId.back()->Id << endl;
 	cout << newSol.LinkId.back() << endl;
 	cout << "------------End One Point Cross Over---------------------------" << endl;
 #endif // _DEBUG
 
 }
-
-void ScheduleClass::Repair_Delay() // repair the solution by postpone the repair
-{
-	//
-	cout << "repair_delay operator is called" << endl;
-}
+//
+//void ScheduleClass::Repair_Delay() // repair the solution by postpone the repair
+//{
+//	//
+//	cout << "repair_delay operator is called" << endl;
+//}
 
 void ScheduleClass::Nei_New(ScheduleClass& newSol, GraphClass& g,
-	const vector<int>& failureLinkSet, const vector<double>& resCap)
+	const vector<int>& failureLinkSet, const vector<double>& resCap) const
 {
 	newSol.GenerateIniSch(g, failureLinkSet);
 	newSol.AlignStartTime(resCap,g);
@@ -200,21 +188,22 @@ void ScheduleClass::Nei_New(ScheduleClass& newSol, GraphClass& g,
 /// randomly move one to its right 
 /// </summary>
 /// <param name="newSol"></param>
-void ScheduleClass::Nei_Insert_One_Random_To_Right(ScheduleClass& newSol) // randomly insert to a position
+void ScheduleClass::Nei_Insert_One_Random_To_Right(ScheduleClass& newSol) const
+// randomly insert to a position
 {
 #ifdef _DEBUG
 	cout << "-----------------Nei Insert One Random To Right is called------------" << endl;
 #endif // _DEBUG
-	int cp = GenRandomInt(0, int(LinkId.size() - 2));
-	int dest = GenRandomInt(cp,int(LinkId.size() - 1));
+	const int cp = GenRandomInt(0, static_cast<int>(LinkId.size() - 2));
+	int dest = GenRandomInt(cp,static_cast<int>(LinkId.size() - 1));
 	int whileCounter = 0;
 	while (dest == cp)
 	{
-		dest = GenRandomInt(cp, int(LinkId.size() - 1));
+		dest = GenRandomInt(cp, static_cast<int>(LinkId.size() - 1));
 		++whileCounter;
 		if (whileCounter > 100)
 		{
-			cout << "ERR: find random insert to the right " << endl;
+			TRACE("ERR: find random insert to the right "); 
 		}
 	}
 	// step 1: for the element before the position 
@@ -234,26 +223,24 @@ void ScheduleClass::Nei_Insert_One_Random_To_Right(ScheduleClass& newSol) // ran
 	}
 
 #ifdef _DEBUG
-	cout << "***before***" << endl;
-	//for (auto l : LinkId) cout << l->Id << endl;
-	for (auto l : LinkId) cout << l << endl;
-	cout << "Selected CP = " << cp << ", Dest = " << dest << endl;
-	cout << "***after***" << endl;
-	//for (auto l : newSol.LinkId) cout << l->Id << endl;
-	for (auto l : newSol.LinkId) cout << l << endl;
-	cout << "-----------------Complete random To Right------------" << endl;
+	std::cout << "***before***" << std::endl;
+	for (auto const l : LinkId) std::cout << l << std::endl;
+	std::cout << "Selected CP = " << cp << ", Dest = " << dest << std::endl;
+	std::cout << "***after***" << std::endl;
+	for (auto const l : newSol.LinkId) std::cout << l << endl;
+	std::cout << "-----------------Complete random To Right------------" << std::endl;
 #endif // _DEBUG
 }
 /// <summary>
 /// randomly insert it to its left 
 /// </summary>
 /// <param name="newSol"></param>
-void ScheduleClass::Nei_Insert_One_Random_To_Left(ScheduleClass& newSol)
+void ScheduleClass::Nei_Insert_One_Random_To_Left(ScheduleClass& newSol) const
 {
 #ifdef _DEBUG
-	cout << "-----------------Nei Insert One Random To Left is called------------" << endl;
+	std::cout << "-----------------Nei Insert One Random To Left is called------------" << std::endl;
 #endif // _DEBUG
-	int cp = GenRandomInt(1, int(LinkId.size() - 1)); // selected candidate not position
+	const int cp = GenRandomInt(1, static_cast<int>(LinkId.size() - 1)); // selected candidate not position
 	int dest = GenRandomInt(0, cp);
 	int whileCounter = 0;
 	while (dest == cp)
@@ -262,7 +249,7 @@ void ScheduleClass::Nei_Insert_One_Random_To_Left(ScheduleClass& newSol)
 		++whileCounter;
 		if (whileCounter > 100)
 		{
-			cout << "ERR: find random insert to the left " << endl;
+			TRACE("ERR: find random insert to the left");
 		}
 	}
 	for (size_t t = 0; t < dest; t++)
@@ -279,14 +266,13 @@ void ScheduleClass::Nei_Insert_One_Random_To_Left(ScheduleClass& newSol)
 		newSol.LinkId.at(t) = LinkId.at(t);
 	}
 #ifdef _DEBUG
-	cout << "***before***" << endl;
-	//for (auto l : LinkId) cout << l->Id << endl;
-	for (auto l : LinkId) cout << l << endl;
-	cout << "Selected CP = " << cp << ", Dest = " << dest << endl;
-	cout << "***after***" << endl;
+	std::cout << "***before***" << std::endl;
+	for (auto const l : LinkId) std::cout << l << std::endl;
+	std::cout << "Selected CP = " << cp << ", Dest = " << dest << std::endl;
+	std::cout << "***after***" << endl;
 	//for (auto l : newSol.LinkId) cout << l->Id << endl;
-	for (auto l : newSol.LinkId) cout << l << endl;
-	cout << "-----------------Complete Random To Left------------" << endl;
+	for (auto const l : newSol.LinkId) std::cout << l << std::endl;
+	std::cout << "-----------------Complete Random To Left------------" << std::endl;
 #endif // _DEBUG
 }
 
@@ -428,13 +414,11 @@ void ScheduleClass::Nei_Greedy_EI_Based(ScheduleClass& newSol, GraphClass& g, st
 	}
 
 #ifdef _DEBUG
-	cout << "***before***" << endl;
-	//for (auto l : LinkId) cout << l->Id << endl;
-	for (auto l : LinkId) cout << l << endl;
-	cout << "***after***" << endl;
-	//for (auto l : newSol.LinkId) cout << l->Id << endl;
-	for (auto l : newSol.LinkId) cout << l << endl;
-	cout << "-----------------Complete Greedy MaxEI------------" << endl;
+	std::cout << "***before***" << std::endl;
+	for (auto const l : LinkId) std::cout << l << std::endl;
+	std::cout << "***after***" << endl;
+	for (auto const l : newSol.LinkId) std::cout << l << std::endl;
+	std::cout << "-----------------Complete Greedy MaxEI------------" << std::endl;
 #endif // _DEBUG
 }
 
@@ -448,12 +432,12 @@ void ScheduleClass::Nei_Greedy_EI_Based(ScheduleClass& newSol, GraphClass& g, st
 /// <param name="pat"></param>
 void ScheduleClass::Nei_New_BasedOn_Pattern(ScheduleClass& newSol, GraphClass& g,
 	const vector<int>& failureLinkSet, const vector<double>& resCap,
-	const vector<PatternClass>& pat)
+	const vector<PatternClass>& pat) const
 {
 	newSol.GenerateIniBasedOnPattern(g,failureLinkSet,pat);
 	newSol.AlignStartTime(resCap,g);
 #ifdef _DEBUG
-	cout << "-------Generate new solution based on pattern finishes and Print the sol" << endl;
+	std::cout << "-------Generate new solution based on pattern finishes and Print the sol" << std::endl;
 	newSol.print();
 #endif // _DEBUG
 }
@@ -473,7 +457,7 @@ int getPatLoc(const vector<PatternClass> &pat, const int lid)
 //Nei:hybrid with swap and pattern
 //only swap the pattern with higher probability
 void ScheduleClass::Nei_Swap_BasedOn_Pattern(ScheduleClass& newSol, GraphClass& g, const vector<int>& failureLinkSet,
-	const vector<double>& resCap, const vector<PatternClass>& pat)
+	const vector<double>& resCap, const vector<PatternClass>& pat) const
 {
 		//Step 1: randomly generate two locations
 #ifdef _DEBUG
@@ -485,26 +469,26 @@ void ScheduleClass::Nei_Swap_BasedOn_Pattern(ScheduleClass& newSol, GraphClass& 
 		int locB = -1;
 		while (isSwap==false)
 		{
-			locA = GenRandomInt(0, int(LinkId.size() - 1));
-			locB = GenRandomInt(0, int(LinkId.size() - 1));
+			locA = GenRandomInt(0, static_cast<int>(LinkId.size() - 1));
+			locB = GenRandomInt(0, static_cast<int>(LinkId.size() - 1));
 			int whileCounter = 0;
 			while (locA == locB)
 			{
-				locB = GenRandomInt(0, int(LinkId.size() - 1));
+				locB = GenRandomInt(0, static_cast<int>(LinkId.size() - 1));
 				++whileCounter;
 				if (whileCounter > 100)
 				{
 					std::cout << "ERR: find random swap has err in counter" << endl;
 				}
 			}
-			int LinkAId = LinkId[locA];
-			int LinkBId = LinkId[locB];
+			const int LinkAId = LinkId[locA];
+			const int LinkBId = LinkId[locB];
 
-			int patAloc = getPatLoc(pat, LinkAId);
-			int patBloc = getPatLoc(pat, LinkBId);
+			const int patAloc = getPatLoc(pat, LinkAId);
+			const int patBloc = getPatLoc(pat, LinkBId);
 
-			double ScoreA2B = pat[patAloc].AbsScore[patBloc];
-			double ScoreB2A = pat[patBloc].AbsScore[patAloc];
+			const double ScoreA2B = pat[patAloc].AbsScore[patBloc];
+			const double ScoreB2A = pat[patBloc].AbsScore[patAloc];
 
 			if (locA < locB)   /// A is the first node
 			{
@@ -517,28 +501,25 @@ void ScheduleClass::Nei_Swap_BasedOn_Pattern(ScheduleClass& newSol, GraphClass& 
 			swapWhileCounter++;
 			if (swapWhileCounter > 100)
 			{
-				std::cout << "ERR: find random swap based on the pattern value, and there is an err in counter" << endl;
+				//std::cout << "ERR: find random swap based on the pattern value, and there is an err in counter" << endl;
+				TRACE("ERR: find random swap based on the pattern value, and there is an err in counter");
 			}
 		}
 #ifdef _DEBUG
-		//cout << "Before Swap: LocA = " << newSol.LinkId.at(locA)->Id;
-		cout << "Before Swap: LocA = " << newSol.LinkId.at(locA);
-		//cout << ",locB = " << newSol.LinkId.at(locB)->Id << endl;
-		cout << ",locB = " << newSol.LinkId.at(locB) << endl;
+		std::cout << "Before Swap: LocA = " << newSol.LinkId.at(locA);
+		std::cout << ",locB = " << newSol.LinkId.at(locB) << std::endl;
 #endif // _DEBUG
 		newSol.LinkId.at(locA) = LinkId.at(locB);
 		newSol.LinkId.at(locB) = LinkId.at(locA);
 
 #ifdef _DEBUG
-		//cout << "After Swap: LocA = " << newSol.LinkId.at(locA)->Id;
-		cout << "After Swap: LocA = " << newSol.LinkId.at(locA);
-		//cout << ", LocB = " << newSol.LinkId.at(locB)->Id << endl;
-		cout << ", LocB = " << newSol.LinkId.at(locB) << endl;
-		cout << "-----------End Swap-----------" << endl;
+		std::cout << "After Swap: LocA = " << newSol.LinkId.at(locA);
+		std::cout << ", LocB = " << newSol.LinkId.at(locB) << std::endl;
+		std::cout << "-----------End Swap-----------" << std::endl;
 #endif
 	}
 
-bool isEqual(LinkSchRelations& rhs, LinkSchRelations& lhs)
+bool isEqual(const LinkSchRelations& rhs, const LinkSchRelations& lhs)
 {
 	if (rhs == lhs) return true;
 	else return false;
@@ -549,7 +530,7 @@ void ScheduleClass::Nei_Swap_BasedOn_PatternRelation(ScheduleClass& newSol, Grap
 {
 	//Step 1: randomly generate two locations
 #ifdef _DEBUG
-	cout << "------------Start Swap-----------" << endl;
+	std::cout << "------------Start Swap-----------" << std::endl;
 #endif // _DEBUG
 	bool isSwap = false;
 	int swapWhileCounter = 0;
@@ -567,20 +548,20 @@ void ScheduleClass::Nei_Swap_BasedOn_PatternRelation(ScheduleClass& newSol, Grap
 			++whileCounter;
 			if (whileCounter > 100)
 			{
-				//std::cout << "ERR: find random swap has err in counter" << endl;
 				TRACE("ERR: find random swap has err in counter");
 			}
 		}
-
-		if (GenRandomReal() <= 0.9)  // take 0.9 as a threshold, if it is less than 0.9 than swap based on pattern
+		// not sure whether this will affect the prob
+		//if (GenRandomReal() <= 1.0)  // take 0.9 as a threshold, if it is less than 0.9 than swap based on pattern
+		if (GenRandomReal() <= 1.0)  // take 0.9 as a threshold, if it is less than 0.9 than swap based on pattern
 		{
 			const int LinkA = LinkId[locA];
 			const int LinkB = LinkId[locB];
 
 			// step 2: check their current relationship
-			LinkSchRelations r = this->getRelation(LinkA, LinkB);
+			LinkSchRelations r = getRelation(LinkA, LinkB);
 			// step 3: check their dominate relationship 
-			LinkSchRelations domr = this->findDominantRelation(LinkA, LinkB, pat, compareMethod);
+			LinkSchRelations domr = findDominantRelation(LinkA, LinkB, pat, compareMethod);
 
 			// in the following, swap the two only if their dominated relationship is different 
 			if (isEqual(r, domr))
@@ -608,11 +589,9 @@ void ScheduleClass::Nei_Swap_BasedOn_PatternRelation(ScheduleClass& newSol, Grap
 					TRACE("UnDetectedSwapCase");
 				}
 			}
-
 			swapWhileCounter++;
 			if (swapWhileCounter > 100)
 			{
-				//std::cout << "ERR: find random swap based on the pattern value, and there is an err in counter" << endl;
 				TRACE("ERR: find random swap based on the pattern value, and there is an err in counter");
 			}
 		}

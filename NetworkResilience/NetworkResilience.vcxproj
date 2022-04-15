@@ -35,7 +35,6 @@
     <ClCompile Include="GraphElements.cpp" />
     <ClCompile Include="DebugMsg.cpp" />
     <ClCompile Include="FW_UE.cpp" />
-    <ClCompile Include="HH.cpp" />
     <ClCompile Include="LearningOperator.cpp" />
     <ClCompile Include="LearningPattern.cpp" />
     <ClCompile Include="LineSearchUingDirective.cpp" />

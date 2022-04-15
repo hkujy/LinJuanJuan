@@ -104,7 +104,7 @@ def TestLearnThreshold(mf):
     adjust_para = {
         "isTestSingleOp": "True",
         "SingleOpIndex": 0,
-        "LearnThresholdFit": 100.0,
+        "LearnThresholdFit": 10.0,
         "LearnThresholdIter": 0,  # this is applied for the swap operator
         "SelectOperator": "ALNS"
     }
