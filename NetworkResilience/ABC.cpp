@@ -209,7 +209,7 @@ void Algorithm::GenerateIniSol()
 }
 
 // lhs is the current solution
-// rhs is the neighbour solution
+// rhs is the neighbor solution
 bool Algorithm::CompareTwoSolsAndReplace(ScheduleClass& lhs, const ScheduleClass& rhs, int neiOperatorId)
 {
 	//Compare the left hand side and the right hand side solutions 

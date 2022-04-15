@@ -155,11 +155,14 @@ def plotGant(Case:str,StartPeriod, TotalLength):
 	# exit()
 
 
-def plot_general_Gant_chart(Case:str):
+def plot_general_Gant_chart(Case:str,_root_folder:str,_best_seed:int):
 	""""
 	plot general gantt chart
 	"""
-	sol = pd.read_csv("./PrintSols.txt")
+	# sol = pd.read_csv("./PrintSols.txt")
+	sol = pd.read_csv(_root_folder+"/BestSol.txt")
+	# print(sol)
+	# input()
 	numOfLink = sol.shape[0]
 	st = []
 	et = []
@@ -228,16 +231,16 @@ def plot_general_Gant_chart(Case:str):
 
 
 
-
+def plot_gantt_chart_for_paradox():
+	plotGant(Case="LowDemand",StartPeriod=3,TotalLength=5)
+	plotGant(Case="HighDemand",StartPeriod=3,TotalLength=5)
+	
 
 if __name__ == '__main__':
 
 	# plotNetworPerformance(opt_sheet_name='objOpt',rank_sheet_name='objRank')
 	# plotGant(Case="PlotCase1",StartPeriod=3,TotalLength=6)
 	#*********************************#
-	# plot gantt chart for the paradox network
-	plotGant(Case="LowDemand",StartPeriod=3,TotalLength=5)
-	plotGant(Case="HighDemand",StartPeriod=3,TotalLength=5)
 	plot_general_Gant_chart("Gantt_SiouxFall")
 	# exit()
 	#*********************************#

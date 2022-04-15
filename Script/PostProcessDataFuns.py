@@ -9,6 +9,8 @@ import matplotlib.pyplot as plt
 from statistics import mean
 import statistics as stat
 import os
+
+from pyparsing import FollowedBy
 import para
 import numpy as np
 # root_folder = r"C:\Users\phdji\OneDrive - Danmarks Tekniske Universitet\JuanJuanLin\Tests2022/"
@@ -30,6 +32,7 @@ def getBestSeed(_folder: str):  # return the best seed number
     fn = _folder+'/BestSeed.txt'
     df = pd.read_csv(fn)
     best_seed = df["Seed"][0]
+    print("Best Seed = {0}".format(best_seed))
     return int(best_seed)
 
 
@@ -280,6 +283,68 @@ def plotRelation(_folder: str):
     df = pd.DataFrame(matrix_Dom, columns=para.FailureLinks,
                       index=para.FailureLinks)
     plotTable(df, "DomStatus")
+
+
+def print_best_seed_sol(_folder,_best_seed):
+    """
+        print the best solution of the best seed
+    """
+    sol = pd.read_csv(_folder+"/ABCPrintSols.txt")
+    num_row = sol.shape[0]
+    link = []
+    st =[]
+    et = []
+    for i in range(0,num_row):
+        if sol["Seed"][i]==_best_seed:
+            link.append(sol["Link"][i])
+            st.append(sol["St"][i])
+            et.append(sol["Et"][i])
+    with open(_folder+"BestSol.txt","w+") as f:
+        print("Seed,Link,St,Et",file=f)
+        for r in range(0,len(link)):
+            print("{0},{1},{2},{3}".format(_best_seed,link[r],st[r],et[r]),file=f)
+
+
+
+def print_best_seed_period(_folder,_best_seed):
+    """
+        print the best solution of the best seed
+    """
+    sol = pd.read_csv(_folder+"/PrintPeriod.txt")
+    num_row = sol.shape[0]
+    period = []
+    cost =[]
+    unpm = []
+    for i in range(0,num_row):
+        if sol["Seed"][i]==_best_seed:
+            period.append(sol["Period"][i])
+            cost.append(sol["Cost"][i])
+            unpm.append(sol["UNPM"][i])
+    with open(_folder+"BestPeriod.txt","w+") as f:
+        print("Seed,Period,Cost,UNPM",file=f)
+        for r in range(0,len(period)):
+            print("{0},{1},{2},{3}".format(_best_seed,period[r],cost[r],unpm[r]),file=f)
+
+
+def plot_best_seed_period(_folder):
+    """
+        plot the changes in the objective value over periods
+    """
+    best_seed = getBestSeed(_folder)
+    print_best_seed_period(_folder,best_seed)
+    df = pd.read_csv(_folder+"BestPeriod.txt")
+    lines = df.plot.line(x='Period', y='Cost')
+
+    plt.xlabel('Time',fontsize =12,fontname ='Times New Roman',fontweight='bold')
+    plt.ylabel('Total Travel Cost',fontsize = 12,fontname='Times New Roman', fontweight ='bold')
+    plt.ion()
+    plt.pause(2)
+    plt.savefig('BestPeriod.png',bbox_inches='tight',dpi=600)
+
+ 
+
+
+
 
 
 if __name__ == '__main__':
